@@ -1,28 +1,9 @@
-
-
-
-FOOD STUDIO OS
-The operating system for your kitchen
-YOUR NAME
-EMAIL (FOR DATA SYNC)
-PASSWORD
-ROLE
-👷 Worker
-👨‍🍳 Chef
-🤵 Maître
-📋 Manager
-🔑 Owner
-LANGUAGE
-🇬🇧 English
-🇪🇸 Español
-Enter
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Food Studio OS</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Fraunces:ital,opsz,wght@1,9..144,300;1,9..144,400;1,9..144,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -991,10 +972,6 @@ body {
   <div class="login-card">
     <span class="lf-label">Your name</span>
     <input class="lf-input" id="l-name" placeholder="Name..." autocomplete="name">
-    <span class="lf-label">Email (for data sync)</span>
-    <input class="lf-input" id="l-email" type="email" placeholder="your@email.com" autocomplete="email">
-    <span class="lf-label">Password</span>
-    <input class="lf-input" id="l-password" type="password" placeholder="Password" autocomplete="current-password">
     <span class="lf-label">Role</span>
     <div class="lf-roles">
       <button class="lf-role" data-r="worker" onclick="selR(this)">👷 Worker</button>
@@ -1017,7 +994,7 @@ body {
       <button class="lf-lang sel" data-l="en" onclick="selL(this)">🇬🇧 English</button>
       <button class="lf-lang" data-l="es" onclick="selL(this)">🇪🇸 Español</button>
     </div>
-    <button class="lf-btn" id="l-submit" onclick="doLogin()">Enter</button>
+    <button class="lf-btn" onclick="doLogin()">Enter</button>
   </div>
 </div>
 
@@ -1227,63 +1204,18 @@ let ctxPending={R:0,AREA:'boh',ZONE:'Hot Station'};
 // ══ LOGIN ══
 function selR(el){document.querySelectorAll('.lf-role').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');selRV=el.dataset.r;document.getElementById('lz-wrap').classList.toggle('show',['worker','chef','maitre'].includes(selRV));}
 function selL(el){document.querySelectorAll('.lf-lang').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');selLV=el.dataset.l;}
-async function doLogin(){
+function doLogin(){
   const name=document.getElementById('l-name').value.trim();
   if(!name){alert('Please enter your name');return;}
   if(!selRV){alert('Please select a role');return;}
-  const email=document.getElementById('l-email')?.value.trim();
-  const password=document.getElementById('l-password')?.value.trim();
   const zone=document.getElementById('l-zone').value||'Hot Station';
-  const btn=document.getElementById('l-submit');
-
-  if(email && password){
-    if(btn){btn.textContent='Signing in...';btn.disabled=true;}
-    
-    // Step 1: Try sign in first
-    let {data, error} = await sb.auth.signInWithPassword({email, password});
-    
-    // Step 2: If sign in fails, try sign up (new user)
-    if(error && error.message.includes('Invalid login credentials')){
-      const {data: sd, error: se} = await sb.auth.signUp({
-        email, password,
-        options:{data:{name, role:selRV}}
-      });
-      if(se){
-        alert('Could not create account: '+se.message);
-        if(btn){btn.textContent='Enter';btn.disabled=false;}
-        return;
-      }
-      data = sd;
-    } else if(error){
-      alert('Login failed: '+error.message);
-      if(btn){btn.textContent='Enter';btn.disabled=false;}
-      return;
-    }
-
-    // Step 3: Load profile, create if missing
-    await loadProfile();
-    if(!currentProfile){
-      await sb.from('profiles').upsert({
-        id: data.user?.id,
-        name: name,
-        role: selRV,
-        language: selLV,
-        color: '#B86A42'
-      });
-      await loadProfile();
-    }
-  }
-
-  // Enter the app
-  USER={name:currentProfile?.name||name, role:currentProfile?.role||selRV, lang:selLV, zone};
+  USER={name,role:selRV,lang:selLV,zone};
   if(selRV==='maitre'){AREA='foh';ZONE=zone||'All FOH';}
   else if(['worker','chef'].includes(selRV)){AREA='boh';ZONE=zone||'Hot Station';}
   else{AREA='boh';ZONE='Hot Station';}
-  if(btn){btn.textContent='Enter';btn.disabled=false;}
   document.getElementById('login').style.display='none';
   document.getElementById('app').style.display='block';
   initApp();
-  dbLoadRecipes().catch(()=>{});
 }
 
 // ══ INIT ══
@@ -1725,11 +1657,6 @@ function saveRec(){
   if(recEditId){const r=RECIPES.find(x=>x.id===recEditId);if(r){Object.assign(r,{name,rest,section,portions,costPerPortion,menuPrice,desc,ingredients,allergens});if(vnote){r.versions.forEach(v=>v.current=false);r.versions.push({num:r.versions.length+1,note:vnote,date:new Date().toISOString().slice(0,10),current:true});}}}
   else{RECIPES.push({id:'r'+Date.now(),name,rest,section,portions,costPerPortion,menuPrice,desc,ingredients,allergens,versions:[{num:1,note:vnote||'Initial recipe',date:new Date().toISOString().slice(0,10),current:true}]});}
   closeModal('m-rec-edit');renderTab();
-  // Save to Supabase if logged in
-  if(currentUser){
-    const saved=RECIPES.find(r=>recEditId?r.id===recEditId:r.name===name);
-    if(saved) dbSaveRecipe(saved).then(()=>showToast('Recipe saved to cloud ✓')).catch(()=>{});
-  }
 }
 
 // ══ AI BAR ══
@@ -2915,155 +2842,6 @@ function toggleVoice(){
     } else {showToast('Voice not supported on this device');}
   } else {if(recognizer)recognizer.stop();voiceRec=false;if(btn)btn.textContent='🎙';}
 }
-
-// ══════════════════════════════════════
-// SUPABASE — database + auth
-// ══════════════════════════════════════
-const SUPA_URL = 'https://rfdsysrdoncyoytcrzpg.supabase.co';
-const SUPA_KEY = 'sb_publishable_8k1CsgRs9sPaZII6Y_dDtg_ae6K9LAf';
-const sb = supabase.createClient(SUPA_URL, SUPA_KEY);
-
-let currentUser = null;
-let currentProfile = null;
-
-// Auth state listener
-sb.auth.onAuthStateChange(async (event, session) => {
-  if (session?.user) {
-    currentUser = session.user;
-    await loadProfile();
-  } else {
-    currentUser = null;
-    currentProfile = null;
-  }
-});
-
-async function loadProfile() {
-  if (!currentUser) return;
-  const { data } = await sb.from('profiles').select('*, restaurants(*), zones(*)').eq('id', currentUser.id).single();
-  if (data) {
-    currentProfile = data;
-    // Sync USER object with database profile
-    USER.name = data.name;
-    USER.role = data.role;
-    USER.lang = data.language || 'en';
-    if (data.zones) ZONE = data.zones.name;
-    if (data.restaurants) R = data.restaurants.slug === 'taller' ? 0 : 1;
-  }
-}
-
-// ── DB HELPERS ──
-async function dbSaveRecipe(recipe) {
-  const { data, error } = await sb.from('recipes').upsert({
-    id: recipe.id.startsWith('r') && recipe.id.length < 10 ? undefined : recipe.id,
-    name: recipe.name,
-    restaurant: recipe.rest,
-    section: recipe.section,
-    portions: recipe.portions,
-    description: recipe.desc,
-    cost_per_portion: recipe.costPerPortion,
-    menu_price: recipe.menuPrice,
-    allergens: recipe.allergens,
-    created_by: currentUser?.id
-  }).select().single();
-  if (data) {
-    // Save ingredients
-    await sb.from('recipe_ingredients').delete().eq('recipe_id', data.id);
-    if (recipe.ingredients.length) {
-      await sb.from('recipe_ingredients').insert(
-        recipe.ingredients.map((ing, i) => ({ recipe_id: data.id, name: ing.name, quantity: ing.qty, unit: ing.unit, sort_order: i }))
-      );
-    }
-    // Save version
-    await sb.from('recipe_versions').update({ is_current: false }).eq('recipe_id', data.id);
-    await sb.from('recipe_versions').insert({ recipe_id: data.id, version_number: recipe.versions.length, note: recipe.versions[recipe.versions.length-1]?.note || 'Updated', is_current: true, created_by: currentUser?.id });
-  }
-  return data;
-}
-
-async function dbLoadRecipes() {
-  const { data } = await sb.from('recipes').select('*, recipe_ingredients(*), recipe_versions(*)').eq('is_active', true).order('name');
-  if (data) {
-    RECIPES = data.map(r => ({
-      id: r.id,
-      name: r.name,
-      rest: r.restaurant,
-      section: r.section,
-      portions: r.portions,
-      desc: r.description || '',
-      costPerPortion: parseFloat(r.cost_per_portion) || 0,
-      menuPrice: parseFloat(r.menu_price) || 0,
-      allergens: r.allergens || [],
-      ingredients: (r.recipe_ingredients || []).sort((a,b) => a.sort_order-b.sort_order).map(i => ({ name: i.name, qty: i.quantity, unit: i.unit })),
-      versions: (r.recipe_versions || []).sort((a,b) => a.version_number-b.version_number).map(v => ({ num: v.version_number, note: v.note, date: v.created_at?.slice(0,10), current: v.is_current }))
-    }));
-    if (typeof renderTab === 'function') renderTab();
-  }
-}
-
-async function dbSaveTaskCompletion(taskId, serviceDate) {
-  if (!currentUser) return;
-  await sb.from('task_completions').upsert({
-    task_id: taskId,
-    completed_by: currentUser.id,
-    service_date: serviceDate || new Date().toISOString().slice(0,10)
-  });
-}
-
-async function dbSaveEOD(report) {
-  if (!currentUser) return;
-  const restId = await getRestaurantId();
-  await sb.from('eod_reports').insert({
-    restaurant_id: restId,
-    created_by: currentUser.id,
-    actual_covers: report.covers,
-    revenue: report.revenue,
-    eighty_six_notes: report.eightySix,
-    wastage_notes: report.waste,
-    stock_alerts: report.stock,
-    team_notes: report.notes
-  });
-}
-
-async function dbClockEvent(type) {
-  if (!currentUser) return;
-  await sb.from('clock_events').insert({
-    profile_id: currentUser.id,
-    event_type: type,
-    shift_date: new Date().toISOString().slice(0,10)
-  });
-}
-
-async function getRestaurantId() {
-  const slug = R === 0 ? 'taller' : 'bistro-mondo';
-  const { data } = await sb.from('restaurants').select('id').eq('slug', slug).single();
-  return data?.id;
-}
-
-async function dbSaveEvent(event) {
-  const restId = await getRestaurantId();
-  const { data } = await sb.from('events_proposals').upsert({
-    name: event.name,
-    event_date: event.date,
-    guests: event.guests,
-    restaurant_id: restId,
-    status: event.status,
-    price_per_head: event.pricePerHead,
-    notes: event.notes,
-    created_by: currentUser?.id
-  }).select().single();
-  return data;
-}
-
-// Load recipes from DB on startup
-async function initDB() {
-  const { data: { session } } = await sb.auth.getSession();
-  if (session) {
-    currentUser = session.user;
-    await loadProfile();
-    await dbLoadRecipes();
-  }
-}
-
 
 // ══════════════════════════════════════
 // AI AGENT — full voice + action system
