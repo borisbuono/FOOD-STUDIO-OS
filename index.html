@@ -1077,7 +1077,7 @@ body {
   </div>
 
   <!-- AI BAR — always visible -->
-  <div class="ai-bar">
+  <div class="ai-bar" style="display:none">
     <div class="ai-response" id="ai-response">
       <button class="ai-response-close" onclick="closeAIResponse()">×</button>
       <div id="ai-response-text"></div>
@@ -3157,6 +3157,22 @@ function openMore(){document.getElementById("more-menu").classList.add("open");d
 function closeMore(){document.getElementById("more-menu").classList.remove("open");document.getElementById("more-backdrop").classList.remove("show")}
 function startHold(e){holdTimer=setTimeout(()=>{openAI();setTimeout(()=>toggleVoice(),500)},600)}
 function endHold(e){if(holdTimer)clearTimeout(holdTimer)}
+
+var holdTimer = null;
+var holdFired = false;
+function startHold(e){
+  holdFired = false;
+  holdTimer = setTimeout(function(){
+    holdFired = true;
+    openAI();
+    setTimeout(function(){ toggleVoice(); }, 400);
+  }, 500);
+}
+function endHold(e){
+  if(holdTimer){ clearTimeout(holdTimer); holdTimer = null; }
+  if(!holdFired){ openAI(); }
+  holdFired = false;
+}
 </script>
 
 <!-- FAB BUTTON — center bottom, always visible -->
