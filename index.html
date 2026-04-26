@@ -2870,7 +2870,7 @@ async function sendAI(){
   var isDraft=q.toLowerCase().includes('draft')||q.toLowerCase().includes('recipe for')||q.toLowerCase().includes('create recipe');
   var sys='You are the Food Studio OS AI for Taller and Bistro Mondo restaurants in Ibiza. User: '+USER.name+', role: '+USER.role+', zone: '+ZONE+', restaurant: '+(R===0?'Taller':'Bistro Mondo')+'. '+(isDraft?'If drafting a recipe respond with JSON ONLY wrapped in <RECIPE>...</RECIPE> tags: {"name":"","section":"hot","rest":"both","portions":10,"desc":"","costPerPortion":0,"menuPrice":0,"ingredients":[{"name":"","qty":"","unit":""}],"allergens":[],"versionNote":"Initial recipe"}':'Answer in 2-3 sentences, concise and practical.');
   try{
-    var resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:600,system:sys,messages:helpHistory})});
+    var resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':'YOUR_KEY','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:600,system:sys,messages:helpHistory})});
     var data=await resp.json();var reply=data.content?.[0]?.text||'No response.';
     helpHistory.push({role:'assistant',content:reply});
     var recipeMatch=reply.match(/<RECIPE>([\s\S]*?)<\/RECIPE>/);
@@ -3219,7 +3219,7 @@ async function sendAIOv(){
     msgs.scrollTop=99999;
   }
   try{
-    var resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:400,system:'You are the Food Studio OS AI assistant for Taller and Bistro Mondo restaurants in Ibiza. Be concise and practical. Answer in 2-3 sentences max.',messages:[{role:'user',content:q}]})});
+    var resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':'YOUR_KEY','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:400,system:'You are the Food Studio OS AI assistant for Taller and Bistro Mondo restaurants in Ibiza. Be concise and practical. Answer in 2-3 sentences max.',messages:[{role:'user',content:q}]})});
     var data=await resp.json();
     var reply=data.content&&data.content[0]?data.content[0].text:'Could not get response.';
     var el=document.getElementById('ai-loading');
@@ -3263,7 +3263,7 @@ async function sendAIOv(){
     </div>
     <div class="ai-ov-mic-hint" id="ai-ov-hint">HOLD ✦ OR TAP MIC TO SPEAK</div>
     <div class="ai-ov-text-row">
-      <input class="ai-ov-input" id="ai-ov-input" placeholder="Or type here..." onkeydown="if(event.key==='Enter')sendAIOv()">
+      <input class="ai-ov-input" id="ai-ov-input" placeholder="Or type here..." autocomplete="off" autocorrect="off" autocapitalize="off" onkeydown="if(event.key==='Enter')sendAIOv()">
       <button class="ai-ov-send" onclick="sendAIOv()">↑</button>
     </div>
   </div>
