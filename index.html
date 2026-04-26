@@ -984,9 +984,13 @@ body {
       <span class="lf-label">Your zone</span>
       <select class="lf-zone" id="l-zone">
         <option value="">Select...</option>
-        <option>Hot Station</option><option>Cold Station</option>
-        <option>Kitchen</option><option>Pizzeria</option><option>Prep Kitchen</option>
-        <option>Terrace</option><option>Garden</option>
+        <option value="Hot Station">Hot Station</option>
+        <option value="Cold Station">Cold Station</option>
+        <option value="Kitchen">Kitchen</option>
+        <option value="Pizzeria">Pizzeria</option>
+        <option value="Prep Kitchen">Prep Kitchen</option>
+        <option value="Terrace">Terrace</option>
+        <option value="Garden">Garden</option>
       </select>
     </div>
     <span class="lf-label">Language</span>
@@ -1111,9 +1115,13 @@ body {
     <div class="ms">This will flag at the top of the team's opening list</div>
     <input class="mi" id="urg-text" placeholder="Task description...">
     <select class="mi" id="urg-zone">
-      <option>Hot Station</option><option>Cold Station</option>
-      <option>Kitchen</option><option>Pizzeria</option><option>Prep Kitchen</option>
-      <option>Terrace</option><option>Garden</option><option>All zones</option>
+      <option value="Hot Station">Hot Station</option>
+        <option value="Cold Station">Cold Station</option>
+      <option value="Kitchen">Kitchen</option>
+        <option value="Pizzeria">Pizzeria</option>
+        <option value="Prep Kitchen">Prep Kitchen</option>
+      <option value="Terrace">Terrace</option>
+        <option value="Garden">Garden</option><option>All zones</option>
     </select>
     <button class="mb" onclick="pushUrgent()" style="background:var(--ruby);">Push urgent task</button>
     <button class="mb sec" onclick="closeModal('m-urgent')">Cancel</button>
