@@ -960,6 +960,29 @@ body {
 .reprice-input { width:80px;padding:7px 10px;border-radius:8px;border:1px solid rgba(0,0,0,0.1);background:#F7F5F1;font-family:'DM Mono',monospace;font-size:14px;color:#1A1510;text-align:right;outline:none; }
 .reprice-input:focus { border-color:#B86A42; }
 .reprice-suggested { font-family:'DM Mono',monospace;font-size:13px;color:#4A7B6A;font-weight:600; }
+
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:rgba(255,255,255,.95);backdrop-filter:blur(20px);border-top:1px solid rgba(0,0,0,.07);display:flex;align-items:stretch;padding-bottom:env(safe-area-inset-bottom,0px);z-index:80;height:60px}
+.bnav-tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;background:transparent;border:none;cursor:pointer;padding:8px 4px;gap:3px;-webkit-tap-highlight-color:transparent}
+.bnav-tab:active{background:rgba(0,0,0,.03)}
+.bic{font-size:20px;line-height:1;transition:transform .15s}
+.blb{font-family:"Outfit",sans-serif;font-size:9px;font-weight:500;letter-spacing:.04em;color:#C8C0B8;text-transform:uppercase}
+.bnav-tab.active .blb{color:#B86A42}
+.bnav-tab.active .bic{transform:scale(1.15)}
+.fab-wrap{position:fixed;bottom:calc(60px + env(safe-area-inset-bottom,0px) - 20px);left:50%;transform:translateX(-50%);z-index:85}
+.fab-ring{position:absolute;inset:-6px;border-radius:50%;border:2px solid rgba(184,106,66,.2);animation:fabP 3s ease-in-out infinite;pointer-events:none}
+@keyframes fabP{0%,100%{transform:scale(1);opacity:.7}50%{transform:scale(1.12);opacity:.2}}
+.fab{width:60px;height:60px;border-radius:50%;border:none;background:#B86A42;box-shadow:0 6px 24px rgba(184,106,66,.4);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;gap:2px;transition:transform .18s;position:relative;z-index:1}
+.fab:active{transform:scale(.92)}
+.more-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.2);z-index:78;display:none;backdrop-filter:blur(4px)}
+.more-backdrop.show{display:block}
+.more-menu{position:fixed;bottom:-320px;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#fff;border-radius:24px 24px 0 0;border-top:1px solid rgba(0,0,0,.08);padding:16px 16px calc(60px + env(safe-area-inset-bottom,0px) + 8px);z-index:79;transition:bottom .32s cubic-bezier(.34,1.2,.64,1);box-shadow:0 -8px 32px rgba(0,0,0,.1)}
+.more-menu.open{bottom:0}
+.more-handle{width:36px;height:4px;background:rgba(0,0,0,.1);border-radius:2px;margin:0 auto 18px}
+.more-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.more-btn{display:flex;flex-direction:column;align-items:center;gap:7px;padding:16px 8px;border-radius:14px;border:1px solid rgba(0,0,0,.07);background:#F7F5F1;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.more-btn:active{background:#F0EDE8;transform:scale(.97)}
+.more-lbl{font-size:11px;font-weight:600;color:#5C4E3C;font-family:"Outfit",sans-serif}
+#tab-content{overflow-y:auto;-webkit-overflow-scrolling:touch;height:calc(100vh - 80px);padding:80px 16px 160px;box-sizing:border-box}
 </style>
 </head>
 <body>
@@ -1026,15 +1049,7 @@ body {
   <div id="screen-dashboard">
 
     <!-- NAV TABS -->
-    <div class="nav-tabs">
-      <button class="ntab active" onclick="switchTab(this,'today')">Today</button>
-      <button class="ntab" onclick="switchTab(this,'menu')">Menu</button>
-      <button class="ntab" onclick="switchTab(this,'mep')">MEP</button>
-      <button class="ntab" onclick="switchTab(this,'ordering')">Ordering</button>
-      <button class="ntab" onclick="switchTab(this,'recipes')">Recipes</button>
-      <button class="ntab" onclick="switchTab(this,'cleaning')">Cleaning</button>
-      <button class="ntab" onclick="switchTab(this,'briefing')">Briefing</button>
-    </div>
+    
 
     <!-- TAB CONTENT -->
     <div class="dash-scroll" id="tab-content"></div>
@@ -3121,6 +3136,11 @@ function switchTabById(tabId){
     }
   });
 }
+
+function openMore(){document.getElementById("more-menu").classList.add("open");document.getElementById("more-backdrop").classList.add("show")}
+function closeMore(){document.getElementById("more-menu").classList.remove("open");document.getElementById("more-backdrop").classList.remove("show")}
+function startHold(e){holdTimer=setTimeout(()=>{openAI();setTimeout(()=>toggleVoice(),500)},600)}
+function endHold(e){if(holdTimer)clearTimeout(holdTimer)}
 </script>
 
 <!-- FAB BUTTON — center bottom, always visible -->
@@ -3191,4 +3211,32 @@ function switchTabById(tabId){
   </div>
 </div>
 
+
+<div class="bottom-nav" id="bnav">
+  <button class="bnav-tab active" onclick="switchTab('today',this)"><span class="bic">📋</span><span class="blb">Today</span></button>
+  <button class="bnav-tab" onclick="switchTab('menu',this)"><span class="bic">🍽</span><span class="blb">Menu</span></button>
+  <div style="flex:1"></div>
+  <button class="bnav-tab" onclick="switchTab('mep',this)"><span class="bic">⚡</span><span class="blb">MEP</span></button>
+  <button class="bnav-tab" onclick="openMore()"><span class="bic">⋯</span><span class="blb">More</span></button>
+</div>
+<div class="fab-wrap">
+  <div class="fab-ring"></div>
+  <button class="fab" id="fab-btn" onclick="openAI()" ontouchstart="startHold(event)" ontouchend="endHold(event)" ontouchcancel="endHold(event)">
+    <span style="font-size:22px;color:#fff">✦</span>
+    <span style="font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.8)">ASK</span>
+  </button>
+</div>
+<div class="more-backdrop" id="more-backdrop" onclick="closeMore()"></div>
+<div class="more-menu" id="more-menu">
+  <div class="more-handle"></div>
+  <div class="more-grid">
+    <button class="more-btn" onclick="switchTab('recipes',null);closeMore()"><span style="font-size:24px">📖</span><span class="more-lbl">Recipes</span></button>
+    <button class="more-btn" onclick="switchTab('ordering',null);closeMore()"><span style="font-size:24px">📦</span><span class="more-lbl">Orders</span></button>
+    <button class="more-btn" onclick="switchTab('briefing',null);closeMore()"><span style="font-size:24px">📢</span><span class="more-lbl">Briefing</span></button>
+    <button class="more-btn" onclick="switchTab('cleaning',null);closeMore()"><span style="font-size:24px">🧹</span><span class="more-lbl">Cleaning</span></button>
+    <button class="more-btn" onclick="switchTab('events',null);closeMore()"><span style="font-size:24px">🎉</span><span class="more-lbl">Events</span></button>
+    <button class="more-btn" onclick="switchTab('schedule',null);closeMore()"><span style="font-size:24px">📅</span><span class="more-lbl">Schedule</span></button>
+    <button class="more-btn" onclick="switchTab('cookmode',null);closeMore()"><span style="font-size:24px">👨‍🍳</span><span class="more-lbl">Cook Mode</span></button>
+  </div>
+</div>
 </body>
