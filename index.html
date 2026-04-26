@@ -1558,7 +1558,7 @@ async function handleOrderAI(){
     } else {
       // Send to AI
       try{
-        const resp=await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:200,system:'You are a restaurant ordering assistant. Parse this order request and respond with a practical, concise answer in 1-2 sentences. Restaurant: '+(R===0?'Taller':'Bistro Mondo')+'. Covers: '+getCov()+'.',messages:[{role:'user',content:q}]})});
+        const resp=await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:200,system:'You are a restaurant ordering assistant. Parse this order request and respond with a practical, concise answer in 1-2 sentences. Restaurant: '+(R===0?'Taller':'Bistro Mondo')+'. Covers: '+getCov()+'.',messages:[{role:'user',content:q}]})});
         const data=await resp.json();
         const reply=data.content?.[0]?.text||'Could not process.';
         result.innerHTML=`<div style="background:#F7F5F1;border-radius:12px;padding:12px 14px;font-size:13px;color:#1A1510;line-height:1.6;">${reply}</div>`;
@@ -1740,7 +1740,7 @@ async function sendAIQuery(q){
   const isDraft=q.toLowerCase().includes('draft')||q.toLowerCase().includes('recipe for')||q.toLowerCase().includes('create recipe')||q.toLowerCase().includes('nueva receta');
   const sys=`You are the Food Studio OS AI for Taller and Bistro Mondo restaurants in Ibiza. User: ${USER.name}, role: ${USER.role}, zone: ${ZONE}, restaurant: ${R===0?'Taller':'Bistro Mondo'}, covers today: ${document.getElementById('cov-hidden')?.value||40}. ${isDraft?'If asked to draft a recipe, respond with a JSON object ONLY wrapped in <RECIPE>...</RECIPE> tags: {"name":"","section":"hot","rest":"both","portions":10,"desc":"","costPerPortion":0,"menuPrice":0,"ingredients":[{"name":"","qty":"","unit":""}],"allergens":[],"versionNote":"Initial recipe"}. Use realistic restaurant quantities and professional technique descriptions.':'Answer concisely and practically in 2-3 sentences. For quantity questions, calculate from covers. Language: '+USER.lang+'.'}`;
   try{
-    const res=await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:600,system:sys,messages:helpHistory})});
+    const res=await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:600,system:sys,messages:helpHistory})});
     const data=await res.json();const reply=data.content?.[0]?.text||'No response.';
     helpHistory.push({role:'assistant',content:reply});
     // Check for recipe JSON
@@ -2452,7 +2452,7 @@ Write in a direct, professional kitchen tone. 3-5 short punchy paragraphs. Inclu
 
   briefContent='Generating briefing...';renderTab();
   try{
-    const res=await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:500,messages:[{role:'user',content:prompt}]})});
+    const res=await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:500,messages:[{role:'user',content:prompt}]})});
     const data=await res.json();
     briefContent=data.content?.[0]?.text||'Could not generate briefing.';
   }catch(e){briefContent='Could not connect. Check your connection.';}
@@ -2836,7 +2836,7 @@ async function generateAIBriefing(){
   const allergens=MENU[R]?.filter(d=>{const rec=RECIPES.find(r=>r.id===d.recipeId);return rec&&rec.allergens.length>0;}).map(d=>d.name).join(', ')||'none';
   const prompt=`Generate a concise pre-service briefing for ${rest} restaurant in Ibiza. Tonight: ${covers} covers. Specials: ${specials}. 86'd: ${off}. Allergen dishes: ${allergens}. Format as HTML with <div class="brief-section"> headers and <div class="brief-item"><div class="brief-bullet green"></div><div class="brief-text">text</div></div> items. Keep it practical and motivating. Max 150 words.`;
   try{
-    const resp=await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:400,system:'You are a briefing assistant for a restaurant. Generate concise, practical pre-service briefings in HTML format using the classes brief-section, brief-item, brief-bullet (use green/red/gold classes), brief-text.',messages:[{role:'user',content:prompt}]})});
+    const resp=await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:400,system:'You are a briefing assistant for a restaurant. Generate concise, practical pre-service briefings in HTML format using the classes brief-section, brief-item, brief-bullet (use green/red/gold classes), brief-text.',messages:[{role:'user',content:prompt}]})});
     const data=await resp.json();
     generatedBriefing=data.content?.[0]?.text||'Could not generate briefing.';
   }catch(e){generatedBriefing='<div style="color:var(--ruby);font-size:13px;">Could not connect to AI. Use the manual briefing below.</div>';}
@@ -2870,7 +2870,7 @@ async function sendAI(){
   var isDraft=q.toLowerCase().includes('draft')||q.toLowerCase().includes('recipe for')||q.toLowerCase().includes('create recipe');
   var sys='You are the Food Studio OS AI for Taller and Bistro Mondo restaurants in Ibiza. User: '+USER.name+', role: '+USER.role+', zone: '+ZONE+', restaurant: '+(R===0?'Taller':'Bistro Mondo')+'. '+(isDraft?'If drafting a recipe respond with JSON ONLY wrapped in <RECIPE>...</RECIPE> tags: {"name":"","section":"hot","rest":"both","portions":10,"desc":"","costPerPortion":0,"menuPrice":0,"ingredients":[{"name":"","qty":"","unit":""}],"allergens":[],"versionNote":"Initial recipe"}':'Answer in 2-3 sentences, concise and practical.');
   try{
-    var resp=await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':'YOUR_KEY','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:600,system:sys,messages:helpHistory})});
+    var resp=await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':'YOUR_KEY','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:600,system:sys,messages:helpHistory})});
     var data=await resp.json();var reply=data.content?.[0]?.text||'No response.';
     helpHistory.push({role:'assistant',content:reply});
     var recipeMatch=reply.match(/<RECIPE>([\s\S]*?)<\/RECIPE>/);
@@ -3058,7 +3058,7 @@ async function sendAI() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'claude-sonnet-4-6',
         max_tokens: 700,
         system: sys,
         messages: helpHistory
@@ -3219,7 +3219,7 @@ async function sendAIOv(){
     msgs.scrollTop=99999;
   }
   try{
-    var resp=await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':'YOUR_KEY','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:400,system:'You are the Food Studio OS AI assistant for Taller and Bistro Mondo restaurants in Ibiza. Be concise and practical. Answer in 2-3 sentences max.',messages:[{role:'user',content:q}]})});
+    var resp=await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':'YOUR_KEY','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:400,system:'You are the Food Studio OS AI assistant for Taller and Bistro Mondo restaurants in Ibiza. Be concise and practical. Answer in 2-3 sentences max.',messages:[{role:'user',content:q}]})});
     var data=await resp.json();
     var reply=data.content&&data.content[0]?data.content[0].text:'Could not get response.';
     var el=document.getElementById('ai-loading');
