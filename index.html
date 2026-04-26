@@ -999,6 +999,29 @@ body {
 .more-lbl{font-size:11px;font-weight:600;color:#5C4E3C;font-family:Outfit,sans-serif}
 .more-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.2);z-index:78;display:none}
 .more-backdrop.show{display:block}
+
+#ai-overlay{position:fixed;inset:0;max-width:480px;margin:0 auto;background:rgba(255,255,255,.98);backdrop-filter:blur(24px);z-index:200;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .3s cubic-bezier(.34,1.2,.64,1);pointer-events:none}
+#ai-overlay.open{transform:translateY(0);pointer-events:all}
+.ai-ov-header{padding:52px 20px 16px;text-align:center;flex-shrink:0;position:relative}
+.ai-ov-close{position:absolute;top:16px;left:16px;width:36px;height:36px;border-radius:50%;background:#F7F5F1;border:1px solid rgba(0,0,0,.07);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:#9B8E7E}
+.ai-ov-title{font-family:'Cormorant',serif;font-style:italic;font-size:26px;font-weight:300;color:#1a1510;margin-bottom:4px}
+.ai-ov-sub{font-size:13px;color:#9B8E7E}
+.ai-ov-msgs{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:12px 20px;display:flex;flex-direction:column;gap:10px}
+.ai-msg-user{background:#B86A42;color:#fff;border-radius:16px 16px 4px 16px;padding:12px 16px;font-size:15px;line-height:1.55;align-self:flex-end;max-width:86%}
+.ai-msg-ai{background:#F7F5F1;color:#1a1510;border-radius:16px 16px 16px 4px;padding:12px 16px;font-size:15px;line-height:1.55;align-self:flex-start;max-width:86%;border:1px solid rgba(0,0,0,.07)}
+.ai-ov-chips{display:grid;grid-template-columns:1fr 1fr;gap:7px;padding:12px 20px 0;flex-shrink:0}
+.ai-ov-chip{padding:12px 10px;border-radius:12px;border:1px solid rgba(0,0,0,.1);background:#fff;color:#5C4E3C;font-family:'Outfit',sans-serif;font-size:12px;font-weight:500;cursor:pointer;text-align:left;display:flex;align-items:center;gap:8px}
+.ai-ov-chip:active{background:#F7F5F1}
+.ai-ov-input-area{padding:14px 16px calc(16px + env(safe-area-inset-bottom,0px));flex-shrink:0}
+.ai-ov-mic-wrap{display:flex;justify-content:center;margin-bottom:12px}
+.ai-ov-mic{width:72px;height:72px;border-radius:50%;border:none;background:#F7F5F1;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:30px;transition:all .2s;box-shadow:0 2px 8px rgba(0,0,0,.07)}
+.ai-ov-mic.recording{background:#FBF0F0;box-shadow:0 0 0 8px rgba(160,56,56,.1)}
+.ai-ov-mic-hint{text-align:center;font-size:10px;font-weight:600;letter-spacing:.08em;color:#C8C0B8;margin-bottom:12px;text-transform:uppercase}
+.ai-ov-text-row{display:flex;gap:8px;align-items:center;background:#fff;border:1.5px solid rgba(0,0,0,.11);border-radius:16px;padding:10px 10px 10px 16px}
+.ai-ov-text-row:focus-within{border-color:#B86A42}
+.ai-ov-input{flex:1;border:none;background:transparent;outline:none;font-family:'Outfit',sans-serif;font-size:15px;color:#1a1510}
+.ai-ov-input::placeholder{color:#C8C0B8}
+.ai-ov-send{width:40px;height:40px;border-radius:12px;border:none;background:#B86A42;color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
 </style>
 </head>
 <body>
@@ -1077,7 +1100,7 @@ body {
   </div>
 
   <!-- AI BAR — always visible -->
-  <div class="ai-bar" style="display:none">
+  <div class="ai-bar">
     <div class="ai-response" id="ai-response">
       <button class="ai-response-close" onclick="closeAIResponse()">×</button>
       <div id="ai-response-text"></div>
@@ -3173,6 +3196,40 @@ function endHold(e){
   if(!holdFired){ openAI(); }
   holdFired = false;
 }
+
+function openAI(){
+  document.getElementById('ai-overlay').classList.add('open');
+  setTimeout(()=>document.getElementById('ai-ov-input')&&document.getElementById('ai-ov-input').focus(),400);
+}
+function closeAI(){
+  document.getElementById('ai-overlay').classList.remove('open');
+}
+function quickAsk(q){
+  document.getElementById('ai-ov-input').value=q;
+  sendAIOv();
+}
+async function sendAIOv(){
+  var input=document.getElementById('ai-ov-input');
+  var q=input?input.value.trim():'';
+  if(!q)return;
+  input.value='';
+  var msgs=document.getElementById('ai-ov-msgs');
+  if(msgs){
+    msgs.innerHTML+='<div class="ai-msg-user">'+q+'</div><div class="ai-msg-ai" id="ai-loading">Thinking...</div>';
+    msgs.scrollTop=99999;
+  }
+  try{
+    var resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:400,system:'You are the Food Studio OS AI assistant for Taller and Bistro Mondo restaurants in Ibiza. Be concise and practical. Answer in 2-3 sentences max.',messages:[{role:'user',content:q}]})});
+    var data=await resp.json();
+    var reply=data.content&&data.content[0]?data.content[0].text:'Could not get response.';
+    var el=document.getElementById('ai-loading');
+    if(el){el.id='';el.textContent=reply;}
+  }catch(e){
+    var el=document.getElementById('ai-loading');
+    if(el){el.id='';el.textContent='Could not connect. Check your connection.';}
+  }
+  if(msgs)msgs.scrollTop=99999;
+}
 </script>
 
 <!-- FAB BUTTON — center bottom, always visible -->
@@ -3185,16 +3242,32 @@ function endHold(e){
 </div>
 
 <!-- AI AGENT OVERLAY — full screen, voice-first -->
-<div id="ai-overlay" onclick="handleOverlayClick(event)" style="position:fixed;inset:0;max-width:480px;margin:0 auto;background:rgba(255,255,255,0.98);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);z-index:200;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity 0.3s;">
-
-  <!-- Header -->
-  <div style="padding:54px 24px 20px;text-align:center;flex-shrink:0;position:relative;">
-    <button onclick="closeAI()" style="position:absolute;top:18px;left:18px;background:#F0EDE8;border:none;border-radius:10px;padding:8px 16px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;color:#5C4E3C;cursor:pointer;display:flex;align-items:center;gap:5px;">← Close</button>
-    <div style="font-family:'Fraunces',serif;font-style:italic;font-size:26px;font-weight:300;color:#1A1510;margin-bottom:4px;">Food Studio Assistant</div>
-    <div id="ai-status" style="font-size:13px;color:#9B8E7E;transition:all 0.3s;">Tap the mic or type — I will do the rest</div>
+<div id="ai-overlay">
+  <div class="ai-ov-header">
+    <button class="ai-ov-close" onclick="closeAI()">×</button>
+    <div class="ai-ov-title">Food Studio AI</div>
+    <div class="ai-ov-sub">Ask anything. Draft recipes. Set priorities.</div>
   </div>
-
-  <!-- Conversation messages -->
+  <div class="ai-ov-msgs" id="ai-ov-msgs"></div>
+  <div class="ai-ov-chips">
+    <button class="ai-ov-chip" onclick="quickAsk('Draft me a recipe')">📝 Draft a recipe</button>
+    <button class="ai-ov-chip" onclick="quickAsk('How much pasta for 60 covers?')">🍝 Quantities</button>
+    <button class="ai-ov-chip" onclick="quickAsk('Generate supplier orders for today')">📦 Supplier order</button>
+    <button class="ai-ov-chip" onclick="quickAsk('What are our lowest margin dishes?')">📊 Menu margins</button>
+    <button class="ai-ov-chip" onclick="quickAsk('Generate pre-service briefing')">📋 Pre-service brief</button>
+    <button class="ai-ov-chip" onclick="quickAsk('What tasks are still pending?')">⚡ Urgent tasks</button>
+  </div>
+  <div class="ai-ov-input-area">
+    <div class="ai-ov-mic-wrap">
+      <button class="ai-ov-mic" id="ai-ov-mic" onclick="toggleVoice()">🎙</button>
+    </div>
+    <div class="ai-ov-mic-hint" id="ai-ov-hint">HOLD ✦ OR TAP MIC TO SPEAK</div>
+    <div class="ai-ov-text-row">
+      <input class="ai-ov-input" id="ai-ov-input" placeholder="Or type here..." onkeydown="if(event.key==='Enter')sendAIOv()">
+      <button class="ai-ov-send" onclick="sendAIOv()">↑</button>
+    </div>
+  </div>
+</div><!-- Conversation messages -->
   <div id="ai-msgs" style="flex:1;overflow-y:auto;padding:0 20px 16px;display:flex;flex-direction:column;gap:12px;"></div>
 
     <!-- Action chips — 2x3 grid, all visible -->
