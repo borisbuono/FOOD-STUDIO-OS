@@ -983,6 +983,22 @@ body {
 .more-btn:active{background:#F0EDE8;transform:scale(.97)}
 .more-lbl{font-size:11px;font-weight:600;color:#5C4E3C;font-family:"Outfit",sans-serif}
 #tab-content{overflow-y:auto;-webkit-overflow-scrolling:touch;height:calc(100vh - 80px);padding:80px 16px 160px;box-sizing:border-box}
+
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:rgba(255,255,255,.95);backdrop-filter:blur(20px);border-top:1px solid rgba(0,0,0,.07);display:flex;align-items:center;padding-bottom:env(safe-area-inset-bottom,0px);z-index:80;height:60px}
+.bnav-tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;background:transparent;border:none;cursor:pointer;padding:8px 4px;gap:2px;-webkit-tap-highlight-color:transparent}
+.bic{font-size:20px;line-height:1}.blb{font-size:9px;font-weight:500;color:#C8C0B8;text-transform:uppercase;font-family:Outfit,sans-serif}
+.bnav-tab.active .blb{color:#B86A42}.bnav-tab.active .bic{transform:scale(1.15)}
+.fab-wrap{position:fixed;bottom:calc(60px + env(safe-area-inset-bottom,0px) - 20px);left:50%;transform:translateX(-50%);z-index:85}
+.fab{width:60px;height:60px;border-radius:50%;border:none;background:#B86A42;box-shadow:0 6px 24px rgba(184,106,66,.4);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:transform .18s}
+.fab:active{transform:scale(.92)}
+.more-menu{position:fixed;bottom:-320px;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#fff;border-radius:24px 24px 0 0;border-top:1px solid rgba(0,0,0,.08);padding:16px 16px 80px;z-index:79;transition:bottom .32s cubic-bezier(.34,1.2,.64,1)}
+.more-menu.open{bottom:0}
+.more-handle{width:36px;height:4px;background:rgba(0,0,0,.1);border-radius:2px;margin:0 auto 18px}
+.more-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.more-btn{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 8px;border-radius:14px;border:1px solid rgba(0,0,0,.07);background:#F7F5F1;cursor:pointer}
+.more-lbl{font-size:11px;font-weight:600;color:#5C4E3C;font-family:Outfit,sans-serif}
+.more-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.2);z-index:78;display:none}
+.more-backdrop.show{display:block}
 </style>
 </head>
 <body>
@@ -3239,4 +3255,23 @@ function endHold(e){if(holdTimer)clearTimeout(holdTimer)}
     <button class="more-btn" onclick="switchTab('cookmode',null);closeMore()"><span style="font-size:24px">👨‍🍳</span><span class="more-lbl">Cook Mode</span></button>
   </div>
 </div>
+
+<div class="bottom-nav">
+  <button class="bnav-tab active" onclick="switchTab('today',this)"><span class="bic">📋</span><span class="blb">Today</span></button>
+  <button class="bnav-tab" onclick="switchTab('menu',this)"><span class="bic">🍽</span><span class="blb">Menu</span></button>
+  <div style="flex:1"></div>
+  <button class="bnav-tab" onclick="switchTab('mep',this)"><span class="bic">⚡</span><span class="blb">MEP</span></button>
+  <button class="bnav-tab" onclick="openMore()"><span class="bic">⋯</span><span class="blb">More</span></button>
+</div>
+<div class="fab-wrap"><button class="fab" onclick="openAI()" ontouchstart="startHold(event)" ontouchend="endHold(event)"><span style="font-size:22px;color:#fff">✦</span><span style="font-size:8px;font-weight:700;letter-spacing:.1em;color:rgba(255,255,255,.8)">ASK</span></button></div>
+<div class="more-backdrop" id="more-backdrop" onclick="closeMore()"></div>
+<div class="more-menu" id="more-menu"><div class="more-handle"></div><div class="more-grid">
+  <button class="more-btn" onclick="switchTab('recipes',null);closeMore()"><span style="font-size:24px">📖</span><span class="more-lbl">Recipes</span></button>
+  <button class="more-btn" onclick="switchTab('ordering',null);closeMore()"><span style="font-size:24px">📦</span><span class="more-lbl">Orders</span></button>
+  <button class="more-btn" onclick="switchTab('briefing',null);closeMore()"><span style="font-size:24px">📢</span><span class="more-lbl">Briefing</span></button>
+  <button class="more-btn" onclick="switchTab('cleaning',null);closeMore()"><span style="font-size:24px">🧹</span><span class="more-lbl">Cleaning</span></button>
+  <button class="more-btn" onclick="switchTab('events',null);closeMore()"><span style="font-size:24px">🎉</span><span class="more-lbl">Events</span></button>
+  <button class="more-btn" onclick="switchTab('schedule',null);closeMore()"><span style="font-size:24px">📅</span><span class="more-lbl">Schedule</span></button>
+  <button class="more-btn" onclick="switchTab('cookmode',null);closeMore()"><span style="font-size:24px">👨‍🍳</span><span class="more-lbl">Cook</span></button>
+</div></div>
 </body>
