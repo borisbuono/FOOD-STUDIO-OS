@@ -1032,6 +1032,7 @@ body {
 @keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
 .shake{animation:shake .35s ease;}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -1264,6 +1265,11 @@ body {
 </div>
 
 <script>
+// ── Supabase client ──
+const SUPABASE_URL = 'https://rfdsysrdoncyoytcrzpg.supabase.co';
+const SUPABASE_KEY = 'PLACEHOLDER';
+const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
 const SVG_CHK=`<svg width="11" height="9" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 const ROLE_COLORS={worker:'#5A8A78',chef:'#C4783A',maitre:'#2A5F7A',manager:'#6B4E8A',owner:'#B8963A'};
 const ZONE_COLORS={cold:'#5A8A78',hot:'#C4783A',pizza:'#B8963A',dessert:'#8B6FAA',breakfast:'#6AAFCC'};
@@ -1309,6 +1315,14 @@ function initApp(){
     const chips=document.getElementById('quick-chips');
     chips.innerHTML=['Draft me a recipe','How much pasta for 60 covers?','What\'s urgent today?','Show menu margins','Generate supplier order'].map(q=>`<button class="qchip" onclick="quickQ('${q.replace(/'/g,"\\'")}')">${q}</button>`).join('');
     renderTab();
+    // ── Supabase connection test ──
+    db.from('restaurants').select('count').then(({ data, error }) => {
+      if (error) {
+        console.error('[Supabase] Connection failed:', error.message);
+      } else {
+        console.log('[Supabase] Connected ✓', data);
+      }
+    });
   } catch(err) {
     console.error('[initApp] crashed:', err);
     var app = document.getElementById('app');
