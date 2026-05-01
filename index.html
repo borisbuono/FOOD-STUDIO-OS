@@ -1316,12 +1316,9 @@ function initApp(){
     chips.innerHTML=['Draft me a recipe','How much pasta for 60 covers?','What\'s urgent today?','Show menu margins','Generate supplier order'].map(q=>`<button class="qchip" onclick="quickQ('${q.replace(/'/g,"\\'")}')">${q}</button>`).join('');
     renderTab();
     // ── Supabase connection test ──
-    db.from('restaurants').select('count').then(({ data, error }) => {
-      if (error) {
-        console.error('[Supabase] Connection failed:', error.message);
-      } else {
-        console.log('[Supabase] Connected ✓', data);
-      }
+    db.from('restaurants').select('name').then(({ data, error }) => {
+      if (error) console.error('[Supabase] Connection failed:', error.message);
+      else console.log('[Supabase] Connected ✓ Restaurants:', data.map(r => r.name).join(', '));
     });
   } catch(err) {
     console.error('[initApp] crashed:', err);
