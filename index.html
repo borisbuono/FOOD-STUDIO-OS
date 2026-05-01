@@ -1022,6 +1022,15 @@ body {
 .ai-ov-input{flex:1;border:none;background:transparent;outline:none;font-family:'Outfit',sans-serif;font-size:15px;color:#1a1510}
 .ai-ov-input::placeholder{color:#C8C0B8}
 .ai-ov-send{width:40px;height:40px;border-radius:12px;border:none;background:#B86A42;color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+
+/* ── Validation error states ── */
+.field-error{border-color:#C0392B !important;background:#FDF5F5 !important;}
+.inline-err{display:none;font-size:11px;font-weight:600;color:#C0392B;margin-top:4px;padding:0 2px;letter-spacing:.02em;font-family:'Outfit',sans-serif;}
+.inline-err.show{display:block;}
+.login-err{display:none;background:#FDF5F5;border:1px solid rgba(192,57,43,.2);border-radius:10px;padding:10px 14px;font-size:12px;font-weight:600;color:#C0392B;margin-bottom:12px;text-align:center;}
+.login-err.show{display:block;}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+.shake{animation:shake .35s ease;}
 </style>
 </head>
 <body>
@@ -1033,7 +1042,8 @@ body {
   <div class="login-tagline">The operating system for your kitchen</div>
   <div class="login-card">
     <span class="lf-label">Your name</span>
-    <input class="lf-input" id="l-name" placeholder="Name..." autocomplete="name">
+    <input class="lf-input" id="l-name" placeholder="Name..." autocomplete="name" oninput="clearFieldError('l-name','l-name-err')">
+    <span class="inline-err" id="l-name-err"></span>
     <span class="lf-label">Role</span>
     <div class="lf-roles">
       <button class="lf-role" data-r="worker" onclick="selR(this)">👷 Worker</button>
@@ -1042,6 +1052,7 @@ body {
       <button class="lf-role" data-r="manager" onclick="selR(this)">📋 Manager</button>
       <button class="lf-role" data-r="owner" onclick="selR(this)">🔑 Owner</button>
     </div>
+    <span class="inline-err" id="l-role-err"></span>
     <div class="lf-zone-wrap" id="lz-wrap">
       <span class="lf-label">Your zone</span>
       <select class="lf-zone" id="l-zone">
@@ -1060,6 +1071,7 @@ body {
       <button class="lf-lang sel" data-l="en" onclick="selL(this)">🇬🇧 English</button>
       <button class="lf-lang" data-l="es" onclick="selL(this)">🇪🇸 Español</button>
     </div>
+    <div class="login-err" id="login-global-err"></div>
     <button class="lf-btn" onclick="doLogin()">Enter</button>
   </div>
 </div>
@@ -1145,7 +1157,8 @@ body {
     <div class="mh"></div>
     <div class="mt">Manager approval</div>
     <div class="ms">Enter PIN to approve this zone (demo: 1234)</div>
-    <input class="mi" id="pin-val" type="password" maxlength="4" placeholder="PIN">
+    <input class="mi" id="pin-val" type="password" maxlength="4" placeholder="PIN" oninput="clearFieldError('pin-val','pin-val-err')">
+  <span class="inline-err" id="pin-val-err"></span>
     <button class="mb" onclick="confirmPin()">Approve</button>
     <button class="mb sec" onclick="closeModal('m-pin')">Cancel</button>
   </div>
@@ -1156,7 +1169,8 @@ body {
     <div class="mh"></div>
     <div class="mt">Close-down sign-off</div>
     <div class="ms">Enter PIN to confirm zone secured</div>
-    <input class="mi" id="close-pin-val" type="password" maxlength="4" placeholder="PIN">
+    <input class="mi" id="close-pin-val" type="password" maxlength="4" placeholder="PIN" oninput="clearFieldError('close-pin-val','close-pin-val-err')">
+  <span class="inline-err" id="close-pin-val-err"></span>
     <button class="mb" onclick="confirmClosePin()">Confirm</button>
     <button class="mb sec" onclick="closeModal('m-close-pin')">Cancel</button>
   </div>
@@ -1167,7 +1181,8 @@ body {
     <div class="mh"></div>
     <div class="mt">Push urgent task</div>
     <div class="ms">This will flag at the top of the team's opening list</div>
-    <input class="mi" id="urg-text" placeholder="Task description...">
+    <input class="mi" id="urg-text" placeholder="Task description..." oninput="clearFieldError('urg-text','urg-text-err')">
+  <span class="inline-err" id="urg-text-err"></span>
     <select class="mi" id="urg-zone">
       <option value="Hot Station">Hot Station</option>
       <option value="Cold Station">Cold Station</option>
@@ -1188,7 +1203,8 @@ body {
     <div class="mh"></div>
     <div class="mt" id="re-title">New Recipe</div>
     <span class="mfl">Name</span>
-    <input class="mi" id="re-name" placeholder="Dish name...">
+    <input class="mi" id="re-name" placeholder="Dish name..." oninput="clearFieldError('re-name','re-name-err')">
+  <span class="inline-err" id="re-name-err"></span>
     <span class="mfl">Restaurant</span>
     <div class="mtog-row" id="re-rest">
       <button class="mtog" data-v="taller" onclick="mTog('re-rest','taller')">Taller</button>
@@ -1227,7 +1243,8 @@ body {
   <div class="modal-sheet">
     <div class="mh"></div>
     <div class="mt">Add dish to menu</div>
-    <input class="mi" id="ma-name" placeholder="Dish name...">
+    <input class="mi" id="ma-name" placeholder="Dish name..." oninput="clearFieldError('ma-name','ma-name-err')">
+  <span class="inline-err" id="ma-name-err"></span>
     <span class="mfl">Section</span>
     <div class="mtog-row" id="ma-sec">
       <button class="mtog" data-v="cold" onclick="mTog('ma-sec','cold')">Cold</button>
@@ -1269,8 +1286,8 @@ function selR(el){document.querySelectorAll('.lf-role').forEach(b=>b.classList.r
 function selL(el){document.querySelectorAll('.lf-lang').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');selLV=el.dataset.l;}
 function doLogin(){
   const name=document.getElementById('l-name').value.trim();
-  if(!name){alert('Please enter your name');return;}
-  if(!selRV){alert('Please select a role');return;}
+  if(!name){showFieldError('l-name','l-name-err','Please enter your name');showLoginError('Please enter your name');return;}
+  if(!selRV){showFieldError('lf-roles','l-role-err','Please select a role');showLoginError('Please select a role');return;}
   const zone=document.getElementById('l-zone').value||'Hot Station';
   USER={name,role:selRV,lang:selLV,zone};
   if(selRV==='maitre'){AREA='foh';ZONE=zone||'All FOH';}
@@ -1283,15 +1300,20 @@ function doLogin(){
 
 // ══ INIT ══
 function initApp(){
-  const rc=ROLE_COLORS[USER.role];
-  document.getElementById('tb-av').textContent=USER.name.charAt(0).toUpperCase();
-  document.getElementById('tb-av').style.background=rc;
-  document.getElementById('tb-rest').textContent=R===0?'Taller':'Bistro Mondo';
-  document.getElementById('tb-zone').textContent=ZONE;
-  // Quick chips
-  const chips=document.getElementById('quick-chips');
-  chips.innerHTML=['Draft me a recipe','How much pasta for 60 covers?','What\'s urgent today?','Show menu margins','Generate supplier order'].map(q=>`<button class="qchip" onclick="quickQ('${q.replace(/'/g,"\\'")}')">${q}</button>`).join('');
-  renderTab();
+  try {
+    const rc=ROLE_COLORS[USER.role];
+    document.getElementById('tb-av').textContent=USER.name.charAt(0).toUpperCase();
+    document.getElementById('tb-av').style.background=rc;
+    document.getElementById('tb-rest').textContent=R===0?'Taller':'Bistro Mondo';
+    document.getElementById('tb-zone').textContent=ZONE;
+    const chips=document.getElementById('quick-chips');
+    chips.innerHTML=['Draft me a recipe','How much pasta for 60 covers?','What\'s urgent today?','Show menu margins','Generate supplier order'].map(q=>`<button class="qchip" onclick="quickQ('${q.replace(/'/g,"\\'")}')">${q}</button>`).join('');
+    renderTab();
+  } catch(err) {
+    console.error('[initApp] crashed:', err);
+    var app = document.getElementById('app');
+    if (app) app.innerHTML = '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:60vh;gap:16px;padding:32px;text-align:center"><div style="font-size:40px">⚠️</div><div style="font-family:Outfit,sans-serif;font-size:18px;font-weight:600;color:#1a1510">Something went wrong</div><div style="font-size:13px;color:#9B8E7E;line-height:1.6">The app failed to load.<br>Please refresh the page.</div><button onclick="location.reload()" style="margin-top:8px;padding:12px 24px;border-radius:12px;border:none;background:#B86A42;color:#fff;font-family:Outfit,sans-serif;font-size:14px;font-weight:600;cursor:pointer;">Refresh</button></div>';
+  }
 }
 
 // ══ TAB ROUTING ══
@@ -1436,7 +1458,7 @@ function openAddMenu(sec){
   openModal('m-menu-add');
 }
 function saveMenuDish(){
-  const name=document.getElementById('ma-name').value.trim();if(!name){alert('Enter dish name');return;}
+  const name=document.getElementById('ma-name').value.trim();if(!name){showFieldError('ma-name','ma-name-err','Enter dish name');return;}
   const sec=document.querySelector('#ma-sec .mtog.active')?.dataset.v||menuAddSec;
   const price=parseFloat(document.getElementById('ma-price').value)||0;
   const cost=parseFloat(document.getElementById('ma-cost').value)||0;
@@ -1563,7 +1585,8 @@ async function handleOrderAI(){
         const data=await resp.json();
         const reply=data.content?.[0]?.text||'Could not process.';
         result.innerHTML=`<div style="background:#F7F5F1;border-radius:12px;padding:12px 14px;font-size:13px;color:#1A1510;line-height:1.6;">${reply}</div>`;
-      }catch(e){result.innerHTML=`<div style="background:#F7F5F1;border-radius:12px;padding:12px 14px;font-size:13px;color:#9B8E7E;">Could not connect.</div>`;}
+      }catch(e){
+    console.error("[catch] Error:", e);result.innerHTML=`<div style="background:#F7F5F1;border-radius:12px;padding:12px 14px;font-size:13px;color:#9B8E7E;">Could not connect.</div>`;}
     }
   }
 }
@@ -1707,7 +1730,7 @@ function mTog(g,v){document.querySelectorAll(`#${g} .mtog`).forEach(b=>b.classLi
 function buildAllergenGrid(active){document.getElementById('re-allerg').innerHTML=ALLERGENS.map(a=>`<button class="achip${active.includes(a.id)?' active':''}" data-id="${a.id}" onclick="this.classList.toggle('active')">${a.icon}<br>${a.label}</button>`).join('');}
 function addIng(name='',qty='',unit=''){const row=document.createElement('div');row.className='ing-row';row.innerHTML=`<input class="ii" placeholder="Ingredient" value="${name}"><input class="ii" placeholder="Qty" value="${qty}" style="text-align:center;"><input class="ii" placeholder="Unit" value="${unit}" style="text-align:center;"><button class="irm" onclick="this.parentElement.remove()">×</button>`;document.getElementById('re-ings').appendChild(row);}
 function saveRec(){
-  const name=document.getElementById('re-name').value.trim();if(!name){alert('Enter dish name');return;}
+  const name=document.getElementById('re-name').value.trim();if(!name){showFieldError('re-name','re-name-err','Enter a dish name');return;}
   const rest=document.querySelector('#re-rest .mtog.active')?.dataset.v||'taller';
   const section=document.querySelector('#re-sec .mtog.active')?.dataset.v||'hot';
   const portions=parseInt(document.getElementById('re-port').value)||10;
@@ -1748,11 +1771,13 @@ async function sendAIQuery(q){
         txt.innerHTML='';
         showRecipeDraft(parsed);
         resp.classList.remove('show');
-      }catch(e){txt.textContent=reply;}
+      }catch(e){
+    console.error("[catch] Error:", e);txt.textContent=reply;}
     } else {
       txt.textContent=reply;
     }
-  }catch(e){txt.textContent='Could not connect to assistant.';}
+  }catch(e){
+    console.error("[catch] Error:", e);txt.textContent='Could not connect to assistant.';}
 }
 
 function showRecipeDraft(r){
@@ -1812,10 +1837,10 @@ function getZC(){return TASKS[R]?.[AREA]?.[ZONE]?.cleaning||{daily:[],weekly:[]}
 function toggleTask(id,prefix){const k=(prefix?prefix+'_':'')+stKey(id);taskState[k]=!taskState[k];if(taskState[k]){taskState[k+'_sig']=USER.name;taskState[k+'_ts']=new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});}renderTab();}
 function toggleCloseTask(id){const k=clKey(id);taskState[k]=!taskState[k];renderTab();}
 function togglePri(id){const k=stKey(id);taskPriority[k]=taskPriority[k]===1?0:1;renderTab();}
-function pushUrgent(){const name=document.getElementById('urg-text').value.trim();if(!name){alert('Enter task');return;}const zone=document.getElementById('urg-zone').value;const id='u'+Date.now();taskUrgent[id]={id,name,sub:'',zone};closeModal('m-urgent');showToast(`Urgent task pushed to ${zone}`);renderTab();}
+function pushUrgent(){const name=document.getElementById('urg-text').value.trim();if(!name){showFieldError('urg-text','urg-text-err','Please describe the task');return;}const zone=document.getElementById('urg-zone').value;const id='u'+Date.now();taskUrgent[id]={id,name,sub:'',zone};closeModal('m-urgent');showToast(`Urgent task pushed to ${zone}`);renderTab();}
 function doWorkerSO(){wSigned[R]=true;renderTab();}
-function confirmPin(){const p=document.getElementById('pin-val').value.trim();if(p!=='1234'){alert('Incorrect PIN');return;}mSigned[R]=true;closeModal('m-pin');document.getElementById('pin-val').value='';renderTab();}
-function confirmClosePin(){const p=document.getElementById('close-pin-val').value.trim();if(p!=='1234'){alert('Incorrect PIN');return;}clSigned[R]=true;closeModal('m-close-pin');document.getElementById('close-pin-val').value='';renderTab();}
+function confirmPin(){const p=document.getElementById('pin-val').value.trim();if(p!=='1234'){showFieldError('pin-val','pin-val-err','Incorrect PIN');return;}mSigned[R]=true;closeModal('m-pin');document.getElementById('pin-val').value='';renderTab();}
+function confirmClosePin(){const p=document.getElementById('close-pin-val').value.trim();if(p!=='1234'){showFieldError('close-pin-val','close-pin-val-err','Incorrect PIN');return;}clSigned[R]=true;closeModal('m-close-pin');document.getElementById('close-pin-val').value='';renderTab();}
 
 // ══ MODALS ══
 function openModal(id){document.getElementById(id)?.classList.add('open');}
@@ -1920,7 +1945,7 @@ function toggleEventForm(){ eventFormOpen = !eventFormOpen; renderTab(); }
 
 function saveEvent(){
   const name = document.getElementById('ef-name')?.value.trim();
-  if(!name){ alert('Enter event name'); return; }
+  if(!name){ showInlineToastError('Enter event name'); return; }
   const guests = parseInt(document.getElementById('ef-guests')?.value)||20;
   const pph = parseFloat(document.getElementById('ef-pph')?.value)||65;
   const date = document.getElementById('ef-date')?.value || new Date().toISOString().slice(0,10);
@@ -2292,7 +2317,8 @@ Write in a direct, professional kitchen tone. 3-5 short punchy paragraphs. Inclu
     const res=await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:500,messages:[{role:'user',content:prompt}]})});
     const data=await res.json();
     briefContent=data.content?.[0]?.text||'Could not generate briefing.';
-  }catch(e){briefContent='Could not connect. Check your connection.';}
+  }catch(e){
+    console.error("[catch] Error:", e);briefContent='Could not connect. Check your connection.';}
   renderTab();
 }
 
@@ -2678,7 +2704,8 @@ async function generateAIBriefing(){
     const resp=await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:400,system:'You are a briefing assistant for a restaurant. Generate concise, practical pre-service briefings in HTML format using the classes brief-section, brief-item, brief-bullet (use green/red/gold classes), brief-text.',messages:[{role:'user',content:prompt}]})});
     const data=await resp.json();
     generatedBriefing=data.content?.[0]?.text||'Could not generate briefing.';
-  }catch(e){generatedBriefing='<div style="color:var(--ruby);font-size:13px;">Could not connect to AI. Use the manual briefing below.</div>';}
+  }catch(e){
+    console.error("[catch] Error:", e);generatedBriefing='<div style="color:var(--ruby);font-size:13px;">Could not connect to AI. Use the manual briefing below.</div>';}
   renderTab();
 }
 
@@ -2849,6 +2876,7 @@ async function sendAI() {
         currentDraft = JSON.parse(recipeMatch[1].trim());
         if (el) { el.id = ''; el.innerHTML = '<div style="background:#FBF2EC;border:1px solid rgba(184,106,66,0.2);border-radius:18px 18px 18px 4px;padding:14px 16px;"><div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#B86A42;margin-bottom:6px;">✦ Recipe drafted</div><div style="font-family:Fraunces,serif;font-style:italic;font-size:20px;font-weight:300;color:#1A1510;margin-bottom:8px;">' + currentDraft.name + '</div><div style="font-size:13px;color:#5C4E3C;line-height:1.6;margin-bottom:12px;">' + currentDraft.desc + '</div><button onclick="showDraft()" style="width:100%;padding:13px;border-radius:12px;border:none;background:#B86A42;color:white;font-family:Outfit,sans-serif;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 3px 12px rgba(184,106,66,0.3);">Review & save recipe →</button></div>'; }
       } catch(e) {
+    console.error("[catch] Error:", e);
         if (el) { el.id = ''; el.innerHTML = '<div style="background:#F5F3F0;border-radius:18px 18px 18px 4px;padding:13px 16px;font-size:15px;color:#1A1510;line-height:1.6;">' + reply + '</div>'; }
       }
     } else {
@@ -2857,6 +2885,7 @@ async function sendAI() {
 
     if (status) status.textContent = 'Done — ask me anything else';
   } catch(e) {
+    console.error("[catch] Error:", e);
     var el2 = document.getElementById('ai-loading');
     if (el2) { el2.id = ''; el2.innerHTML = '<div style="background:#F5F3F0;border-radius:18px 18px 18px 4px;padding:13px 16px;font-size:15px;color:#9B8E7E;">Could not connect. Check connection and try again.</div>'; }
     if (status) status.textContent = 'Connection error';
@@ -2997,10 +3026,40 @@ async function sendAIOv(){
     var el=document.getElementById('ai-loading');
     if(el){el.id='';el.textContent=reply;}
   }catch(e){
+    console.error("[catch] Error:", e);
     var el=document.getElementById('ai-loading');
     if(el){el.id='';el.textContent='Could not connect. Check your connection.';}
   }
   if(msgs)msgs.scrollTop=99999;
+}
+
+// ── Validation helpers ──
+function showFieldError(fieldId, errId, msg) {
+  var el = document.getElementById(fieldId);
+  var err = document.getElementById(errId);
+  if (el) { el.classList.add('field-error','shake'); setTimeout(function(){ el.classList.remove('shake'); }, 400); }
+  if (err) { err.textContent = msg; err.classList.add('show'); }
+}
+function clearFieldError(fieldId, errId) {
+  var el = document.getElementById(fieldId);
+  var err = document.getElementById(errId);
+  if (el) el.classList.remove('field-error','shake');
+  if (err) err.classList.remove('show');
+}
+function showLoginError(msg) {
+  var err = document.getElementById('login-global-err');
+  if (!err) return;
+  err.textContent = msg;
+  err.classList.add('show');
+  setTimeout(function(){ err.classList.remove('show'); }, 3500);
+}
+function showInlineToastError(msg) {
+  var t = document.getElementById('toast');
+  if (!t) return;
+  t.textContent = '⚠ ' + msg;
+  t.style.background = '#C0392B';
+  t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); t.style.background = ''; }, 2800);
 }
 </script>
 
