@@ -1268,7 +1268,12 @@ body {
 // ── Supabase client ──
 const SUPABASE_URL = 'https://rfdsysrdoncyoytcrzpg.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJmZHN5c3Jkb25jeW95dGNyenBnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0OTIwNzIsImV4cCI6MjA5MjA2ODA3Mn0.demNBQdTiQLfi8JzaqLl792tm2Ob6uw6NcGazPXfjic';
-const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+// Guard: if CDN fails to load, db is null and app still works
+const db = (typeof supabase !== 'undefined')
+  ? supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+      auth: { autoRefreshToken: false, persistSession: false, detectSessionInUrl: false }
+    })
+  : null;
 
 const SVG_CHK=`<svg width="11" height="9" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 const ROLE_COLORS={worker:'#5A8A78',chef:'#C4783A',maitre:'#2A5F7A',manager:'#6B4E8A',owner:'#B8963A'};
@@ -1316,10 +1321,14 @@ function initApp(){
     chips.innerHTML=['Draft me a recipe','How much pasta for 60 covers?','What\'s urgent today?','Show menu margins','Generate supplier order'].map(q=>`<button class="qchip" onclick="quickQ('${q.replace(/'/g,"\\'")}')">${q}</button>`).join('');
     renderTab();
     // ── Supabase connection test ──
-    db.from('restaurants').select('name').then(({ data, error }) => {
-      if (error) console.error('[Supabase] Connection failed:', error.message);
-      else console.log('[Supabase] Connected ✓ Restaurants:', data.map(r => r.name).join(', '));
-    });
+    if (db) {
+      db.from('restaurants').select('name').then(({ data, error }) => {
+        if (error) console.error('[Supabase] Connection failed:', error.message);
+        else console.log('[Supabase] Connected ✓ Restaurants:', data.map(r => r.name).join(', '));
+      });
+    } else {
+      console.warn('[Supabase] Client not initialised — CDN may not have loaded.');
+    }
   } catch(err) {
     console.error('[initApp] crashed:', err);
     var app = document.getElementById('app');
