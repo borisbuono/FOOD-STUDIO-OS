@@ -119,6 +119,7 @@ body {
 
 /* ─── APP SHELL ─── */
 #app { display: none; min-height: 100dvh; }
+#app.visible { display: block; }
 
 /* ─── TOP BAR ─── */
 .topbar {
@@ -1045,6 +1046,7 @@ body {
     display: flex; align-items: center; justify-content: center;
     min-height: 100dvh; padding: 0;
     background: #1a1510;
+    max-width: 100%; margin: 0;
   }
   .login-left {
     display: flex; flex-direction: column; justify-content: center;
@@ -1070,7 +1072,7 @@ body {
   }
 
   /* ── APP shell — CSS grid ── */
-  #app {
+  #app.visible {
     display: grid;
     grid-template-rows: auto 1fr;
     grid-template-columns: 220px 1fr;
@@ -1135,7 +1137,7 @@ body {
 @media (max-width: 767px) {
   .desktop-nav { display: none; }
   .login-left { display: none; }
-  .login-right { display: block; min-height: auto; padding: 0; background: transparent; }
+  .login-right { display: block; min-height: auto; padding: 0; background: transparent; width: 100%; }
   .login-desc { display: none; }
 }
 </style>
@@ -1435,7 +1437,7 @@ function doLogin(){
   else if(['worker','chef'].includes(selRV)){AREA='boh';ZONE=zone||'Hot Station';}
   else{AREA='boh';ZONE='Hot Station';}
   document.getElementById('login').style.display='none';
-  document.getElementById('app').style.display='block';
+  document.getElementById('app').classList.add('visible');
   initApp();
 }
 
