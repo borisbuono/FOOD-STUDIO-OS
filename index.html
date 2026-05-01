@@ -1903,7 +1903,6 @@ function saveRec(){
 
 // ══ AI BAR ══
 function autoResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,100)+'px';}
-async 
 
 function closeAIResponse(){document.getElementById('ai-response').classList.remove('show');}
 
@@ -2869,7 +2868,6 @@ async function generateAIBriefing(){
 
 
 
-async 
 function adoptDraft(r){
   RECIPES.push({id:'r'+Date.now(),name:r.name,rest:r.rest||'taller',section:r.section||'hot',portions:r.portions||10,desc:r.desc||'',ingredients:r.ingredients||[],allergens:r.allergens||[],costPerPortion:r.costPerPortion||0,menuPrice:r.menuPrice||0,versions:[{num:1,note:r.versionNote||'AI draft',date:new Date().toISOString().slice(0,10),current:true}]});
   showToast('Recipe saved! ✓');closeAI();renderTab();
