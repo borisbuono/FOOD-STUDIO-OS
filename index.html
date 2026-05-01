@@ -1002,8 +1002,8 @@ body {
 
 #ai-overlay{position:fixed;inset:0;max-width:480px;margin:0 auto;background:rgba(255,255,255,.98);backdrop-filter:blur(24px);z-index:200;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .3s cubic-bezier(.34,1.2,.64,1);pointer-events:none}
 #ai-overlay.open{transform:translateY(0);pointer-events:all}
-.ai-ov-header{padding:52px 20px 16px;text-align:center;flex-shrink:0;position:relative}
-.ai-ov-close{position:absolute;top:16px;left:16px;width:36px;height:36px;border-radius:50%;background:#F7F5F1;border:1px solid rgba(0,0,0,.07);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:#9B8E7E}
+.ai-ov-header{padding:calc(env(safe-area-inset-top,16px) + 36px) 20px 16px;text-align:center;flex-shrink:0;position:relative}
+.ai-ov-close{position:absolute;top:calc(env(safe-area-inset-top,16px) + 8px);left:16px;width:44px;height:44px;border-radius:50%;background:#F7F5F1;border:1px solid rgba(0,0,0,.07);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:#9B8E7E}
 .ai-ov-title{font-family:'Cormorant',serif;font-style:italic;font-size:26px;font-weight:300;color:#1a1510;margin-bottom:4px}
 .ai-ov-sub{font-size:13px;color:#9B8E7E}
 .ai-ov-msgs{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:12px 20px;display:flex;flex-direction:column;gap:10px}
@@ -1170,12 +1170,13 @@ body {
     <input class="mi" id="urg-text" placeholder="Task description...">
     <select class="mi" id="urg-zone">
       <option value="Hot Station">Hot Station</option>
-        <option value="Cold Station">Cold Station</option>
+      <option value="Cold Station">Cold Station</option>
       <option value="Kitchen">Kitchen</option>
-        <option value="Pizzeria">Pizzeria</option>
-        <option value="Prep Kitchen">Prep Kitchen</option>
+      <option value="Pizzeria">Pizzeria</option>
+      <option value="Prep Kitchen">Prep Kitchen</option>
       <option value="Terrace">Terrace</option>
-        <option value="Garden">Garden</option><option>All zones</option>
+      <option value="Garden">Garden</option>
+      <option value="All zones">All zones</option>
     </select>
     <button class="mb" onclick="pushUrgent()" style="background:var(--ruby);">Push urgent task</button>
     <button class="mb sec" onclick="closeModal('m-urgent')">Cancel</button>
