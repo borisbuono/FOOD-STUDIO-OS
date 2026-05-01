@@ -38,7 +38,7 @@ body {
   font-family: 'Outfit', sans-serif;
   background: #FFFFFF;
   color: var(--text-primary);
-  min-height: 100vh;
+  min-height: 100dvh;
   max-width: 480px;
   margin: 0 auto;
   overflow-x: hidden;
@@ -118,7 +118,7 @@ body {
 .lf-btn:active { transform: scale(0.98); opacity: 0.9; }
 
 /* ─── APP SHELL ─── */
-#app { display: none; min-height: 100vh; }
+#app { display: none; min-height: 100dvh; }
 
 /* ─── TOP BAR ─── */
 .topbar {
@@ -167,7 +167,7 @@ body {
 #screen-detail { display: none; }
 #screen-recipe { display: none; }
 
-.dash-scroll { overflow-y: auto; padding: 12px 16px 140px; background: #FFFFFF; min-height: calc(100vh - 120px); }
+.dash-scroll { overflow-y: auto; padding: 12px 16px 140px; background: #FFFFFF; min-height: calc(100dvh - 120px); }
 
 /* ─── GREETING ─── */
 .greeting { margin-bottom: 20px; }
@@ -916,7 +916,7 @@ body {
 .labour-prog-fill { height:100%;border-radius:3px;transition:width 0.4s; }
 
 /* ── COOK MODE ── */
-.cook-screen { background:#FFFFFF;min-height:calc(100vh - 180px);display:flex;flex-direction:column; }
+.cook-screen { background:#FFFFFF;min-height:calc(100dvh - 180px);display:flex;flex-direction:column; }
 .cook-recipe-sel { background:#FFFFFF;border:1px solid rgba(0,0,0,0.07);border-radius:13px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,0.04); }
 .cook-recipe-row { display:flex;align-items:center;padding:14px 15px;gap:10px;cursor:pointer; }
 .cook-recipe-row:active { background:#F7F5F1; }
@@ -982,7 +982,7 @@ body {
 .more-btn{display:flex;flex-direction:column;align-items:center;gap:7px;padding:16px 8px;border-radius:14px;border:1px solid rgba(0,0,0,.07);background:#F7F5F1;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .more-btn:active{background:#F0EDE8;transform:scale(.97)}
 .more-lbl{font-size:11px;font-weight:600;color:#5C4E3C;font-family:"Outfit",sans-serif}
-#tab-content{overflow-y:auto;-webkit-overflow-scrolling:touch;height:calc(100vh - 60px - env(safe-area-inset-bottom,0px));padding:72px 16px calc(140px + env(safe-area-inset-bottom,0px));box-sizing:border-box}
+#tab-content{overflow-y:auto;-webkit-overflow-scrolling:touch;height:calc(100dvh - 60px - env(safe-area-inset-bottom,0px));padding:72px 16px calc(140px + env(safe-area-inset-bottom,0px));box-sizing:border-box}
 
 .bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:rgba(255,255,255,.95);backdrop-filter:blur(20px);border-top:1px solid rgba(0,0,0,.07);display:flex;align-items:center;padding-bottom:env(safe-area-inset-bottom,0px);z-index:80;height:60px}
 .bnav-tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;background:transparent;border:none;cursor:pointer;padding:8px 4px;gap:2px;-webkit-tap-highlight-color:transparent}
@@ -1313,7 +1313,6 @@ function renderTab(){
   else if(currentTab==='schedule')c.innerHTML=renderSchedule();
   else if(currentTab==='cookmode')c.innerHTML=renderCookMode();
   else if(currentTab==='briefing')c.innerHTML=renderBriefing();
-  else if(currentTab==='briefing')c.innerHTML=renderBriefing();
 }
 
 // ══ TODAY ══
@@ -1489,6 +1488,7 @@ function renderOrdering(){
     <input class="ord-ai-input" id="ord-ai-input" placeholder="e.g. Order 10kg carrots from Mercado..." onkeydown="if(event.key==='Enter')handleOrderAI()">
     <button class="ord-ai-btn" onclick="handleOrderAI()">↑ Order</button>
   </div>
+  <div id="order-results" style="margin-bottom:12px"></div>
   <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;background:#FFFFFF;border:1px solid rgba(0,0,0,0.07);border-radius:14px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.04);">
     <span style="font-size:12px;color:#9B8E7E;font-weight:500;flex-shrink:0;">Covers today</span>
     <input type="number" id="ord-cov" value="${covers}" min="1" max="300" style="flex:1;border:none;background:transparent;font-family:'DM Mono',monospace;font-size:18px;color:#4A7B6A;font-weight:600;text-align:center;outline:none;max-width:70px;">
@@ -1723,12 +1723,8 @@ function saveRec(){
 
 // ══ AI BAR ══
 function autoResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,100)+'px';}
-async function sendAI(){
-  const input=document.getElementById('ai-input');const q=input.value.trim();if(!q)return;
-  input.value='';input.style.height='auto';
-  await sendAIQuery(q);
-}
-function quickQ(q){document.getElementById('ai-input').value=q;sendAI();}
+async 
+
 function closeAIResponse(){document.getElementById('ai-response').classList.remove('show');}
 
 async function sendAIQuery(q){
@@ -1778,26 +1774,9 @@ function showRecipeDraft(r){
   </div>`+renderRecipes();
 }
 
-function adoptDraft(r){
-  RECIPES.push({id:'r'+Date.now(),name:r.name,rest:r.rest||'taller',section:r.section||'hot',portions:r.portions||10,desc:r.desc||'',ingredients:r.ingredients||[],allergens:r.allergens||[],costPerPortion:r.costPerPortion||0,menuPrice:r.menuPrice||0,versions:[{num:1,note:r.versionNote||'AI-generated draft',date:new Date().toISOString().slice(0,10),current:true}]});
-  showToast('Recipe saved to catalogue!');renderTab();
-}
 
 // ══ VOICE ══
-function toggleVoice(){
-  const btn=document.getElementById('ai-mic');
-  if(!voiceRec){
-    if('webkitSpeechRecognition' in window||'SpeechRecognition' in window){
-      const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-      recognizer=new SR();recognizer.continuous=false;recognizer.interimResults=false;
-      recognizer.lang=USER.lang==='es'?'es-ES':'en-US';
-      recognizer.onresult=e=>{const t=e.results[0][0].transcript;document.getElementById('ai-input').value=t;sendAI();};
-      recognizer.onerror=()=>{voiceRec=false;btn.textContent='🎙';btn.classList.remove('recording');};
-      recognizer.onend=()=>{voiceRec=false;btn.textContent='🎙';btn.classList.remove('recording');};
-      recognizer.start();voiceRec=true;btn.textContent='⏹';btn.classList.add('recording');
-    } else {showToast('Voice not supported on this device');}
-  } else {if(recognizer)recognizer.stop();voiceRec=false;btn.textContent='🎙';btn.classList.remove('recording');}
-}
+
 
 // ══ CONTEXT SWITCHER ══
 function openCtxModal(){
@@ -2287,149 +2266,6 @@ let briefContent='';
 let shiftLogs=[];
 let handoverNotes={};
 
-function renderBriefing(){
-  const now=new Date();
-  const h=now.getHours();
-  const isEvening=h>=15;
-  const restName=R===0?'Taller':'Bistro Mondo';
-  const covers=parseInt(document.getElementById('cov-hidden')?.value||40);
-
-  // Build context for briefing
-  const tasks=getZT('opening');
-  const doneTasks=tasks.filter(t=>taskState[stKey(t.id)]);
-  const pendingTasks=tasks.filter(t=>!taskState[stKey(t.id)]);
-  const activeMenu=MENU[R].filter(d=>!d.off);
-  const offDishes=MENU[R].filter(d=>d.off);
-  const specials=MENU[R].filter(d=>d.special&&!d.off);
-  const urgentTasks=Object.values(taskUrgent).filter(t=>t);
-
-  let html=`
-  <div class="brief-type-tabs">
-    <button class="brief-type-tab${briefType==='pre'?' active':''}" onclick="briefType='pre';renderTab()">Pre-service</button>
-    <button class="brief-type-tab${briefType==='end'?' active':''}" onclick="briefType='end';renderTab()">End of service</button>
-    <button class="brief-type-tab${briefType==='hand'?' active':''}" onclick="briefType='hand';renderTab()">Handover</button>
-  </div>`;
-
-  if(briefType==='pre'){
-    html+=`
-    <button class="brief-gen-btn" onclick="generatePreBriefing(${covers})">✦ Generate AI briefing</button>
-    ${briefContent?`<div class="brief-ai-box">${briefContent}</div><button class="brief-wa-btn" onclick="sendBriefingWA()">Send via WhatsApp</button>`:''}
-    <div class="brief-card">
-      <div class="brief-card-head">
-        <div class="brief-card-icon pre">🍽️</div>
-        <div>
-          <div class="brief-card-title">Pre-service briefing</div>
-          <div class="brief-card-meta">${restName} · ${covers} covers today</div>
-        </div>
-      </div>
-      <div class="brief-card-body">
-        <div class="brief-section">
-          <div class="brief-section-title">Covers & reservations</div>
-          <div class="brief-item"><div class="brief-item-dot ok"></div><div><div class="brief-item-text">${covers} covers booked today</div></div></div>
-          ${covers>60?`<div class="brief-item"><div class="brief-item-dot warn"></div><div><div class="brief-item-text">Large service — ensure all stations fully prepped before opening</div></div></div>`:''}
-        </div>
-        <div class="brief-section">
-          <div class="brief-section-title">Today's specials</div>
-          ${specials.length?specials.map(d=>`<div class="brief-item"><div class="brief-item-dot ok"></div><div><div class="brief-item-text">${d.name} — €${d.price}</div><div class="brief-item-sub">Margin: ${d.cost?Math.round((1-d.cost/d.price)*100)+'%':'–'}</div></div></div>`).join(''):
-          `<div class="brief-item"><div class="brief-item-dot warn"></div><div><div class="brief-item-text">No specials set — add one in Menu tab</div></div></div>`}
-        </div>
-        ${offDishes.length?`<div class="brief-section">
-          <div class="brief-section-title">86'd today</div>
-          ${offDishes.map(d=>`<div class="brief-item"><div class="brief-item-dot urgent"></div><div><div class="brief-item-text">${d.name} — OFF</div><div class="brief-item-sub">Inform team and update board</div></div></div>`).join('')}
-        </div>`:''}
-        <div class="brief-section">
-          <div class="brief-section-title">Prep status · ${ZONE}</div>
-          ${doneTasks.length?`<div class="brief-item"><div class="brief-item-dot ok"></div><div><div class="brief-item-text">${doneTasks.length} tasks completed</div></div></div>`:''}
-          ${pendingTasks.length?pendingTasks.map(t=>`<div class="brief-item"><div class="brief-item-dot warn"></div><div><div class="brief-item-text">${t.name}</div><div class="brief-item-sub">${t.sub||'Not yet done'}</div></div></div>`).join(''):
-          `<div class="brief-item"><div class="brief-item-dot ok"></div><div><div class="brief-item-text">All prep complete ✓</div></div></div>`}
-        </div>
-        ${urgentTasks.length?`<div class="brief-section">
-          <div class="brief-section-title">Urgent — from management</div>
-          ${urgentTasks.map(t=>`<div class="brief-item"><div class="brief-item-dot urgent"></div><div><div class="brief-item-text">${t.name}</div></div></div>`).join('')}
-        </div>`:''}
-        <div class="brief-section">
-          <div class="brief-section-title">Allergen reminders</div>
-          ${activeMenu.flatMap(d=>d.cost>0?[]:[])}
-          <div class="brief-item"><div class="brief-item-dot warn"></div><div><div class="brief-item-text">Always confirm allergens with kitchen before serving</div><div class="brief-item-sub">Check full allergen matrix in Recipes tab</div></div></div>
-          ${MENU[R].filter(d=>!d.off&&d.recipeId).slice(0,3).map(d=>{const rec=RECIPES.find(r=>r.id===d.recipeId);return rec&&rec.allergens.length?`<div class="brief-item"><div class="brief-item-dot warn"></div><div><div class="brief-item-text">${d.name}</div><div class="brief-item-sub">Contains: ${rec.allergens.join(', ')}</div></div></div>`:''}).join('')}
-        </div>
-      </div>
-    </div>`;
-  }
-
-  else if(briefType==='end'){
-    const lastLog=shiftLogs.filter(l=>l.type==='end'&&l.rest===R).slice(-1)[0];
-    html+=`
-    <div class="shift-log-form">
-      <div class="shift-log-title">End of service log</div>
-      <div class="shift-log-field">
-        <span class="shift-log-label">Actual covers served</span>
-        <input class="shift-log-input" id="eod-covers" type="number" placeholder="${covers}">
-      </div>
-      <div class="shift-log-field">
-        <span class="shift-log-label">Dishes that ran out</span>
-        <input class="shift-log-input" id="eod-86" placeholder="e.g. Chitarra Trufa, Ostras">
-      </div>
-      <div class="shift-log-field">
-        <span class="shift-log-label">Wastage notes</span>
-        <textarea class="shift-log-textarea" id="eod-waste" rows="2" placeholder="What was thrown away and why..."></textarea>
-      </div>
-      <div class="shift-log-field">
-        <span class="shift-log-label">Service notes</span>
-        <textarea class="shift-log-textarea" id="eod-notes" rows="3" placeholder="Issues, complaints, what went well, team performance..."></textarea>
-      </div>
-      <div class="shift-log-field">
-        <span class="shift-log-label">Outstanding tasks for tomorrow</span>
-        <textarea class="shift-log-textarea" id="eod-tomorrow" rows="2" placeholder="What needs to be carried forward..."></textarea>
-      </div>
-      <button class="shift-log-submit" onclick="saveEODLog()">Save end of service log</button>
-    </div>
-    ${lastLog?`<div class="brief-card">
-      <div class="brief-card-head"><div class="brief-card-icon end">📋</div><div><div class="brief-card-title">Last log saved</div><div class="brief-card-meta">${lastLog.date} · ${lastLog.covers} covers</div></div></div>
-      <div class="brief-card-body">
-        ${lastLog.notes?`<div class="brief-section"><div class="brief-section-title">Notes</div><div style="font-size:13px;color:var(--text-secondary);line-height:1.6;">${lastLog.notes}</div></div>`:''}
-        ${lastLog.waste?`<div class="brief-section"><div class="brief-section-title">Wastage</div><div style="font-size:13px;color:var(--text-secondary);">${lastLog.waste}</div></div>`:''}
-        ${lastLog.tomorrow?`<div class="brief-section"><div class="brief-section-title">For tomorrow</div><div style="font-size:13px;color:var(--ember);">${lastLog.tomorrow}</div></div>`:''}
-      </div>
-    </div>`:''}`;
-  }
-
-  else if(briefType==='hand'){
-    const zones=ZONES[R][AREA]||[];
-    html+=`
-    <div class="brief-card">
-      <div class="brief-card-head">
-        <div class="brief-card-icon hand">🔄</div>
-        <div>
-          <div class="brief-card-title">Shift handover</div>
-          <div class="brief-card-meta">${restName} · ${AREA==='boh'?'Back of House':'Front of House'}</div>
-        </div>
-      </div>
-      <div class="brief-card-body">
-        ${zones.map(zone=>{
-          const zt=TASKS[R]?.[AREA]?.[zone]?.opening||[];
-          const zdone=zt.filter(t=>taskState[`${R}_${AREA}_${zone}_${t.id}`]).length;
-          const pct=zt.length?Math.round(zdone/zt.length*100):0;
-          const isReady=pct>=80;
-          return `<div class="handover-zone">
-            <div class="hz-title">
-              ${zone}
-              <span class="hz-status ${isReady?'ready':'issues'}">${isReady?'Ready':'Needs attention'}</span>
-            </div>
-            <div class="hz-items">
-              <div class="hz-item">✓ ${zdone}/${zt.length} opening tasks done (${pct}%)</div>
-              ${handoverNotes[zone]?`<div class="hz-item" style="color:var(--text-primary);">📝 ${handoverNotes[zone]}</div>`:''}
-            </div>
-            <textarea class="shift-log-textarea" placeholder="Add handover note for ${zone}..." style="margin-top:8px;font-size:12px;" onchange="handoverNotes['${zone}']=this.value" rows="2">${handoverNotes[zone]||''}</textarea>
-          </div>`;
-        }).join('')}
-        <button class="brief-wa-btn" onclick="sendHandoverWA()">📲 Send handover to incoming team</button>
-      </div>
-    </div>`;
-  }
-
-  return html;
-}
 
 async function generatePreBriefing(covers){
   const restName=R===0?'Taller':'Bistro Mondo';
@@ -2732,6 +2568,8 @@ function renderEOD(rest,covers){
       <textarea class="eod-textarea" id="eod-waste" placeholder="What was thrown away? Why?"></textarea>
       <span class="eod-label">Team performance & incidents</span>
       <textarea class="eod-textarea" id="eod-notes" placeholder="Any issues, highlights, or notes for tomorrow..."></textarea>
+      <span class="eod-label">Priorities for tomorrow</span>
+      <textarea class="eod-textarea" id="eod-tomorrow" placeholder="What needs to happen first thing tomorrow?"></textarea>
       <span class="eod-label">Stock alerts — what's running low?</span>
       <textarea class="eod-textarea" id="eod-stock" placeholder="e.g. Trufa fresca — order tomorrow, Masa madre — refresh needed"></textarea>
       <button class="eod-submit" onclick="submitEOD()">Submit end of day report</button>
@@ -2844,89 +2682,22 @@ async function generateAIBriefing(){
 }
 
 // ══ AI OVERLAY ══
-function openAI(){
-  var o=document.getElementById('ai-overlay');
-  if(o){o.style.opacity='1';o.style.pointerEvents='all';}
-  setTimeout(function(){var i=document.getElementById('ai-input');if(i)i.focus();},300);
-}
-function closeAI(){
-  var o=document.getElementById('ai-overlay');
-  if(o){o.style.opacity='0';o.style.pointerEvents='none';}
-}
-function quickQ(q){
-  var i=document.getElementById('ai-input');if(i)i.value=q;
-  sendAI();
-}
-async function sendAI(){
-  var input=document.getElementById('ai-input');
-  var q=input?input.value.trim():'';if(!q)return;
-  if(input)input.value='';
-  var msgs=document.getElementById('ai-msgs');
-  if(msgs){
-    msgs.innerHTML+=`<div style="border-radius:14px;padding:12px 14px;font-size:14px;line-height:1.55;max-width:88%;background:#B86A42;color:white;align-self:flex-end;margin-left:auto;">${q}</div><div id="ai-loading" style="border-radius:14px;padding:12px 14px;font-size:14px;line-height:1.55;max-width:88%;background:#F7F5F1;color:#1A1510;border:1px solid rgba(0,0,0,0.07);">Thinking...</div>`;
-    msgs.scrollTop=99999;
-  }
-  helpHistory.push({role:'user',content:q});
-  var isDraft=q.toLowerCase().includes('draft')||q.toLowerCase().includes('recipe for')||q.toLowerCase().includes('create recipe');
-  var sys='You are the Food Studio OS AI for Taller and Bistro Mondo restaurants in Ibiza. User: '+USER.name+', role: '+USER.role+', zone: '+ZONE+', restaurant: '+(R===0?'Taller':'Bistro Mondo')+'. '+(isDraft?'If drafting a recipe respond with JSON ONLY wrapped in <RECIPE>...</RECIPE> tags: {"name":"","section":"hot","rest":"both","portions":10,"desc":"","costPerPortion":0,"menuPrice":0,"ingredients":[{"name":"","qty":"","unit":""}],"allergens":[],"versionNote":"Initial recipe"}':'Answer in 2-3 sentences, concise and practical.');
-  try{
-    var resp=await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:600,system:sys,messages:helpHistory})});
-    var data=await resp.json();var reply=data.content?.[0]?.text||'No response.';
-    helpHistory.push({role:'assistant',content:reply});
-    var recipeMatch=reply.match(/<RECIPE>([\s\S]*?)<\/RECIPE>/);
-    var el=document.getElementById('ai-loading');
-    if(recipeMatch){
-      try{
-        var parsed=JSON.parse(recipeMatch[1].trim());
-        if(el){el.id='';el.innerHTML='<div style="background:#FBF2EC;border-radius:14px;padding:14px 16px;"><div style="font-style:italic;font-size:18px;color:#1A1510;margin-bottom:6px;">'+parsed.name+'</div><div style="font-size:13px;color:#5C4E3C;margin-bottom:10px;">'+parsed.desc+'</div><button onclick="showDraft()" style="width:100%;padding:12px;border-radius:10px;border:none;background:#B86A42;color:white;font-size:13px;font-weight:600;cursor:pointer;">Review & save recipe</button></div>';}
-      }catch(e){if(el){el.id='';el.textContent=reply;}}
-    } else {
-      if(el){el.id='';el.textContent=reply;}
-    }
-  }catch(e){var el2=document.getElementById('ai-loading');if(el2){el2.id='';el2.textContent='Could not connect.';}}
-  var msgs2=document.getElementById('ai-msgs');if(msgs2)msgs2.scrollTop=99999;
-}
+
+
+
+async 
 function adoptDraft(r){
   RECIPES.push({id:'r'+Date.now(),name:r.name,rest:r.rest||'taller',section:r.section||'hot',portions:r.portions||10,desc:r.desc||'',ingredients:r.ingredients||[],allergens:r.allergens||[],costPerPortion:r.costPerPortion||0,menuPrice:r.menuPrice||0,versions:[{num:1,note:r.versionNote||'AI draft',date:new Date().toISOString().slice(0,10),current:true}]});
   showToast('Recipe saved! ✓');closeAI();renderTab();
 }
 // voiceRec declared above
-function toggleVoice(){
-  var btn=document.getElementById('ai-mic');
-  if(!voiceRec){
-    if('webkitSpeechRecognition' in window||'SpeechRecognition' in window){
-      var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-      recognizer=new SR();recognizer.continuous=false;recognizer.interimResults=false;recognizer.lang='en-US';
-      recognizer.onresult=function(e){var t=e.results[0][0].transcript;var i=document.getElementById('ai-input');if(i)i.value=t;sendAI();};
-      recognizer.onerror=function(){voiceRec=false;if(btn)btn.textContent='🎙';};
-      recognizer.onend=function(){voiceRec=false;if(btn)btn.textContent='🎙';};
-      recognizer.start();voiceRec=true;if(btn)btn.textContent='⏹';
-    } else {showToast('Voice not supported on this device');}
-  } else {if(recognizer)recognizer.stop();voiceRec=false;if(btn)btn.textContent='🎙';}
-}
+
 
 // ══════════════════════════════════════
 // AI AGENT — full voice + action system
 // ══════════════════════════════════════
 
 
-
-
-
-function openAI() {
-  var o = document.getElementById('ai-overlay');
-  if (!o) return;
-  o.style.opacity = '1';
-  o.style.pointerEvents = 'all';
-  // Reset chips to context-aware defaults
-  updateAIChips();
-}
-
-function closeAI() {
-  var o = document.getElementById('ai-overlay');
-  if (o) { o.style.opacity = '0'; o.style.pointerEvents = 'none'; }
-  if (voiceRec && recognizer) { recognizer.stop(); }
-}
 
 function handleOverlayClick(e) {
   if (e.target === document.getElementById('ai-overlay')) closeAI();
@@ -3178,8 +2949,8 @@ function switchTabById(tabId){
 
 function openMore(){document.getElementById("more-menu").classList.add("open");document.getElementById("more-backdrop").classList.add("show")}
 function closeMore(){document.getElementById("more-menu").classList.remove("open");document.getElementById("more-backdrop").classList.remove("show")}
-function startHold(e){holdTimer=setTimeout(()=>{openAI();setTimeout(()=>toggleVoice(),500)},600)}
-function endHold(e){if(holdTimer)clearTimeout(holdTimer)}
+
+
 
 var holdTimer = null;
 var holdFired = false;
@@ -3262,6 +3033,7 @@ async function sendAIOv(){
       <button class="ai-ov-mic" id="ai-ov-mic" onclick="toggleVoice()">🎙</button>
     </div>
     <div class="ai-ov-mic-hint" id="ai-ov-hint">HOLD ✦ OR TAP MIC TO SPEAK</div>
+    <div id="ai-status" style="text-align:center;font-size:11px;color:#B86A42;min-height:16px;margin-bottom:4px"></div>
     <div class="ai-ov-text-row">
       <input class="ai-ov-input" id="ai-ov-input" placeholder="Or type here..." autocomplete="off" autocorrect="off" autocapitalize="off" onkeydown="if(event.key==='Enter')sendAIOv()">
       <button class="ai-ov-send" onclick="sendAIOv()">↑</button>
