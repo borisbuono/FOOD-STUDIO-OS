@@ -3142,6 +3142,20 @@ async function sendAI() {
   var input = document.getElementById('ai-input');
   var q = input ? input.value.trim() : '';
   if (!q) return;
+  if (input) { input.value = ''; autoResize(input); }
+  // Open the overlay so the conversation is visible, then send
+  openAI();
+  setTimeout(async function(){
+    var ovInput = document.getElementById('ai-ov-input');
+    if (ovInput) ovInput.value = q;
+    await sendAIOv();
+  }, 320);
+}
+
+async function sendAI_unused() {
+  var input = document.getElementById('ai-input');
+  var q = input ? input.value.trim() : '';
+  if (!q) return;
   if (input) input.value = '';
 
   var msgs = document.getElementById('ai-msgs');
@@ -3353,19 +3367,68 @@ async function sendAIOv(){
   input.value='';
   var msgs=document.getElementById('ai-ov-msgs');
   if(msgs){
-    msgs.innerHTML+='<div class="ai-msg-user">'+q+'</div><div class="ai-msg-ai" id="ai-loading">Thinking...</div>';
+    msgs.innerHTML+='<div class="ai-msg-user">'+q+'</div><div class="ai-msg-ai" id="ai-loading">Thinking…</div>';
     msgs.scrollTop=99999;
   }
+
+  // Build rich context
+  var ctx='';
   try{
-    var resp=await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:400,system:'You are the Food Studio OS AI assistant for Taller and Bistro Mondo restaurants in Ibiza. Be concise and practical. Answer in 2-3 sentences max.',messages:[{role:'user',content:q}]})});
+    if(typeof R!=='undefined')ctx+='Restaurant: '+(R===0?'Taller':'Bistro Mondo')+'. ';
+    if(typeof ZONE!=='undefined')ctx+='Zone: '+ZONE+'. ';
+    if(typeof USER!=='undefined')ctx+='User: '+USER.name+' ('+USER.role+'). ';
+    if(typeof getCov==='function')ctx+='Covers today: '+getCov()+'. ';
+    if(typeof MENU!=='undefined'&&typeof R!=='undefined'){
+      var sp=MENU[R]?MENU[R].filter(function(d){return d.special&&!d.off;}).map(function(d){return d.name;}).join(', '):'';
+      if(sp)ctx+='Specials: '+sp+'. ';
+      var off=MENU[R]?MENU[R].filter(function(d){return d.off;}).map(function(d){return d.name;}).join(', '):'';
+      if(off)ctx+="86'd: "+off+'. ';
+    }
+  }catch(ignored){}
+
+  var lq=q.toLowerCase();
+  var isDraft=lq.includes('draft')||lq.includes('recipe for')||lq.includes('create recipe')||lq.includes('nueva receta')||lq.includes('receta');
+  var isBriefing=lq.includes('briefing')||lq.includes('brief')||lq.includes('pre-service');
+  var isOrder=lq.includes('order')||lq.includes('supplier')||lq.includes('pedido');
+
+  var sys='You are the Food Studio OS AI assistant for Taller and Bistro Mondo restaurants in Ibiza. '+ctx;
+  if(isDraft){
+    sys+=' The chef wants to draft a recipe. Respond ONLY with a JSON object wrapped in <RECIPE>…</RECIPE> tags with these exact fields: {"name":"","section":"hot","rest":"both","portions":10,"desc":"2-3 sentence professional description","costPerPortion":0,"menuPrice":0,"ingredients":[{"name":"","qty":"","unit":""}],"allergens":[],"versionNote":"AI draft v1"}. section: cold|hot|pizza|dessert|breakfast. rest: taller|bistro-mondo|both. Allergens from EU 14: gluten,crustacean,eggs,fish,peanuts,soy,milk,nuts,celery,mustard,sesame,sulphites,lupin,molluscs.';
+  } else if(isBriefing){
+    sys+=' Generate a concise pre-service briefing: covers, specials, 86s, one allergen reminder, one motivating line. Under 80 words.';
+  } else if(isOrder){
+    sys+=' Give a practical answer about quantities and suppliers in 3-4 sentences.';
+  } else {
+    sys+=' Answer in 2-3 sentences maximum. Calculate from covers when asked quantities. Be direct and practical. Language: '+(typeof USER!=='undefined'&&USER.lang==='es'?'Spanish':'English')+'.';
+  }
+
+  if(!helpHistory)helpHistory=[];
+  helpHistory.push({role:'user',content:q});
+
+  try{
+    var resp=await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:700,system:sys,messages:helpHistory})});
+    if(!resp.ok){throw new Error('HTTP '+resp.status);}
     var data=await resp.json();
-    var reply=data.content&&data.content[0]?data.content[0].text:'Could not get response.';
+    if(data.error){throw new Error(data.error.message||'API error');}
+    var reply=data.content&&data.content[0]?data.content[0].text:'No response received.';
+    helpHistory.push({role:'assistant',content:reply});
+
     var el=document.getElementById('ai-loading');
-    if(el){el.id='';el.textContent=reply;}
+    var recipeMatch=reply.match(/<RECIPE>([\s\S]*?)<\/RECIPE>/);
+    if(recipeMatch){
+      try{
+        currentDraft=JSON.parse(recipeMatch[1].trim());
+        if(el){el.id='';el.innerHTML='<div style="background:#FBF2EC;border:1px solid rgba(184,106,66,0.2);border-radius:14px;padding:14px 16px;margin-top:4px;"><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#B86A42;margin-bottom:6px;">✦ Recipe drafted</div><div style="font-family:Fraunces,serif;font-style:italic;font-size:18px;color:#1A1510;margin-bottom:6px;">'+currentDraft.name+'</div><div style="font-size:13px;color:#5C4E3C;line-height:1.6;margin-bottom:12px;">'+currentDraft.desc+'</div><button onclick="showDraft()" style="width:100%;padding:12px;border-radius:10px;border:none;background:#B86A42;color:white;font-family:Outfit,sans-serif;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 3px 10px rgba(184,106,66,0.3);">Review & save →</button></div>';}
+      }catch(e){
+        if(el){el.id='';el.textContent=reply;}
+      }
+    } else {
+      if(el){el.id='';el.textContent=reply;}
+    }
   }catch(e){
-    console.error("[catch] Error:", e);
+    console.error('AI error:',e);
     var el=document.getElementById('ai-loading');
-    if(el){el.id='';el.textContent='Could not connect. Check your connection.';}
+    if(el){el.id='';el.innerHTML='<span style="color:#A03838;">Could not connect — '+e.message+'</span>';}
   }
   if(msgs)msgs.scrollTop=99999;
 }
