@@ -124,8 +124,7 @@ body {
 /* ─── TOP BAR ─── */
 .topbar {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 14px 16px 0; position: fixed; top: 12px; left: 50%;
-  transform: translateX(-50%);
+  padding: 10px 16px; position: relative;
   width: 100%; max-width: 100%;
   z-index: 100;
   background: transparent;
@@ -322,6 +321,47 @@ body {
 .dish-86.active { background: var(--ruby-pale); color: var(--ruby); }
 .dish-86.off { background: rgba(90,138,120,0.15); color: var(--fern); }
 
+/* ─── MENU SECTION (renderMenu) ─── */
+.menu-sec{background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;margin-bottom:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.menu-sec-head{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.msh-left{display:flex;align-items:center;gap:8px}
+.msh-right{display:flex;align-items:center;gap:6px}
+.msh-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.msh-dot.cold{background:#5A8A78}.msh-dot.hot{background:#C4783A}.msh-dot.pizza{background:#B8963A}.msh-dot.dessert{background:#8B6FAA}.msh-dot.breakfast{background:#6AAFCC}
+.msh-title{font-size:13px;font-weight:600;color:#1A1510}
+.msh-count{font-size:11px;color:#9B8E7E;font-family:'DM Mono',monospace}
+.msh-add{font-size:11px;font-weight:600;padding:3px 9px;border-radius:7px;border:1px solid rgba(184,106,66,.3);background:#FBF2EC;color:#B86A42;cursor:pointer;font-family:'Outfit',sans-serif}
+.menu-sec-body{border-top:1px solid rgba(0,0,0,.07)}
+.dish-name{font-size:14px;font-weight:500;color:#1A1510}
+.dish-meta{font-size:11px;color:#9B8E7E;font-family:'DM Mono',monospace;margin-top:2px}
+.dish-training{max-height:0;overflow:hidden;transition:max-height .3s ease;background:#FAFAF8}
+.dish-training.open{max-height:500px;border-top:1px solid rgba(0,0,0,.06)}
+.dt-section{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#9B8E7E;padding:10px 16px 4px}
+.dt-desc{font-size:13px;color:#5C4E3C;line-height:1.5;padding:0 16px 10px}
+.dt-allergen-row{display:flex;flex-wrap:wrap;gap:5px;padding:0 16px 10px}
+.dt-allergen{font-size:11px;padding:3px 8px;border-radius:6px;background:rgba(160,56,56,.1);color:#A03838}
+.dt-recipe-link{display:flex;align-items:center;gap:8px;padding:8px 16px 10px;cursor:pointer}
+.dt-recipe-icon{font-size:16px}.dt-recipe-text{font-size:12px;color:#B86A42;flex:1}.dt-recipe-arrow{font-size:12px;color:#B86A42}
+.dt-video{display:flex;align-items:center;gap:12px;padding:10px 16px 14px;cursor:pointer}
+.dt-video-icon{width:36px;height:36px;border-radius:10px;background:rgba(0,0,0,.06);display:flex;align-items:center;justify-content:center;font-size:14px;color:#9B8E7E;flex-shrink:0}
+.dt-video-text{font-size:13px;font-weight:500;color:#1A1510}.dt-video-sub{font-size:11px;color:#9B8E7E;margin-top:1px}
+/* ─── MENU PREVIEW ─── */
+.menu-preview-card{background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:14px;margin-bottom:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.menu-preview-head{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.menu-preview-title{font-size:13px;font-weight:600;color:#1A1510}
+.menu-preview-badge{font-size:11px;font-weight:600;color:#B86A42;padding:4px 10px;border-radius:8px;background:#FBF2EC}
+.menu-preview-body{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.menu-preview-body.open{max-height:1200px}
+.menu-print{padding:20px 16px}
+.menu-print-rest{font-family:'Fraunces',serif;font-style:italic;font-size:22px;color:#1A1510;margin-bottom:3px}
+.menu-print-sub{font-size:11px;color:#9B8E7E;font-family:'DM Mono',monospace;margin-bottom:16px;text-transform:uppercase;letter-spacing:.08em}
+.menu-print-section{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#9B8E7E;margin:12px 0 6px}
+.menu-print-dish{display:flex;align-items:baseline;gap:6px;margin-bottom:5px}
+.menu-print-name{font-size:13px;color:#1A1510;flex:1}
+.menu-print-dots{flex:1;border-bottom:1px dotted rgba(0,0,0,.15);margin:0 4px}
+.menu-print-price{font-size:13px;font-family:'DM Mono',monospace;color:#1A1510;font-weight:600}
+.menu-print-desc{font-size:11px;color:#9B8E7E;margin-bottom:8px;font-style:italic}
+
 /* ─── RECIPE CARD ─── */
 .rec-card {
   background: #FFFFFF; border: 1px solid rgba(0,0,0,0.07);
@@ -499,7 +539,7 @@ body {
 .ai-bar {
   position: fixed; bottom: 0; left: 0; right: 0; max-width: 480px; margin: 0 auto;
   background: var(--ink); border-top: 1px solid var(--border);
-  padding: 12px 16px 28px; z-index: 90;
+  padding: 12px 16px 28px; z-index: 75;
 }
 .ai-bar-inner {
   display: flex; align-items: center; gap: 8px;
@@ -962,22 +1002,22 @@ body {
 .reprice-input:focus { border-color:#B86A42; }
 .reprice-suggested { font-family:'DM Mono',monospace;font-size:13px;color:#4A7B6A;font-weight:600; }
 
-.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:rgba(255,255,255,.95);backdrop-filter:blur(20px);border-top:1px solid rgba(0,0,0,.07);display:flex;align-items:stretch;padding-bottom:env(safe-area-inset-bottom,0px);z-index:80;height:60px}
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:rgba(255,255,255,.95);backdrop-filter:blur(20px);border-top:1px solid rgba(0,0,0,.07);display:flex;align-items:stretch;padding-bottom:env(safe-area-inset-bottom,0px);z-index:85;height:60px}
 .bnav-tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;background:transparent;border:none;cursor:pointer;padding:8px 4px;gap:3px;-webkit-tap-highlight-color:transparent}
 .bnav-tab:active{background:rgba(0,0,0,.03)}
 .bic{font-size:20px;line-height:1;transition:transform .15s}
 .blb{font-family:"Outfit",sans-serif;font-size:9px;font-weight:500;letter-spacing:.04em;color:#C8C0B8;text-transform:uppercase}
 .bnav-tab.active .blb{color:#B86A42}
 .bnav-tab.active .bic{transform:scale(1.15)}
-.fab-wrap{position:fixed;bottom:calc(60px + env(safe-area-inset-bottom,0px) - 20px);left:50%;transform:translateX(-50%);z-index:85}
+.fab-wrap{position:fixed;bottom:calc(60px + env(safe-area-inset-bottom,0px) - 20px);left:50%;transform:translateX(-50%);z-index:87}
 .fab-ring{position:absolute;inset:-6px;border-radius:50%;border:2px solid rgba(184,106,66,.2);animation:fabP 3s ease-in-out infinite;pointer-events:none}
 @keyframes fabP{0%,100%{transform:scale(1);opacity:.7}50%{transform:scale(1.12);opacity:.2}}
 .fab{width:60px;height:60px;border-radius:50%;border:none;background:#B86A42;box-shadow:0 6px 24px rgba(184,106,66,.4);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;gap:2px;transition:transform .18s;position:relative;z-index:1}
 .fab:active{transform:scale(.92)}
-.more-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.2);z-index:78;display:none;backdrop-filter:blur(4px)}
+.more-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.2);z-index:92;display:none;backdrop-filter:blur(4px)}
 .more-backdrop.show{display:block}
-.more-menu{position:fixed;bottom:-320px;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#fff;border-radius:24px 24px 0 0;border-top:1px solid rgba(0,0,0,.08);padding:16px 16px calc(60px + env(safe-area-inset-bottom,0px) + 8px);z-index:79;transition:bottom .32s cubic-bezier(.34,1.2,.64,1);box-shadow:0 -8px 32px rgba(0,0,0,.1)}
-.more-menu.open{bottom:0}
+.more-menu{position:fixed;bottom:-520px;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#fff;border-radius:24px 24px 0 0;border-top:1px solid rgba(0,0,0,.08);padding:16px 16px calc(60px + env(safe-area-inset-bottom,0px) + 8px);z-index:93;transition:bottom .32s cubic-bezier(.34,1.2,.64,1);box-shadow:0 -8px 32px rgba(0,0,0,.1);pointer-events:none}
+.more-menu.open{bottom:0;pointer-events:auto}
 .more-handle{width:36px;height:4px;background:rgba(0,0,0,.1);border-radius:2px;margin:0 auto 18px}
 .more-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .more-btn{display:flex;flex-direction:column;align-items:center;gap:7px;padding:16px 8px;border-radius:14px;border:1px solid rgba(0,0,0,.07);background:#F7F5F1;cursor:pointer;-webkit-tap-highlight-color:transparent}
@@ -985,20 +1025,20 @@ body {
 .more-lbl{font-size:11px;font-weight:600;color:#5C4E3C;font-family:"Outfit",sans-serif}
 #tab-content{overflow-y:auto;-webkit-overflow-scrolling:touch;height:calc(100dvh - 60px - env(safe-area-inset-bottom,0px));padding:72px 16px calc(140px + env(safe-area-inset-bottom,0px));box-sizing:border-box}
 
-.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:rgba(255,255,255,.95);backdrop-filter:blur(20px);border-top:1px solid rgba(0,0,0,.07);display:flex;align-items:center;padding-bottom:env(safe-area-inset-bottom,0px);z-index:80;height:60px}
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:rgba(255,255,255,.95);backdrop-filter:blur(20px);border-top:1px solid rgba(0,0,0,.07);display:flex;align-items:center;padding-bottom:env(safe-area-inset-bottom,0px);z-index:85;height:60px}
 .bnav-tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;background:transparent;border:none;cursor:pointer;padding:8px 4px;gap:2px;-webkit-tap-highlight-color:transparent}
 .bic{font-size:20px;line-height:1}.blb{font-size:9px;font-weight:500;color:#C8C0B8;text-transform:uppercase;font-family:Outfit,sans-serif}
 .bnav-tab.active .blb{color:#B86A42}.bnav-tab.active .bic{transform:scale(1.15)}
-.fab-wrap{position:fixed;bottom:calc(60px + env(safe-area-inset-bottom,0px) - 20px);left:50%;transform:translateX(-50%);z-index:85}
+.fab-wrap{position:fixed;bottom:calc(60px + env(safe-area-inset-bottom,0px) - 20px);left:50%;transform:translateX(-50%);z-index:87}
 .fab{width:60px;height:60px;border-radius:50%;border:none;background:#B86A42;box-shadow:0 6px 24px rgba(184,106,66,.4);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:transform .18s}
 .fab:active{transform:scale(.92)}
-.more-menu{position:fixed;bottom:-320px;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#fff;border-radius:24px 24px 0 0;border-top:1px solid rgba(0,0,0,.08);padding:16px 16px 80px;z-index:79;transition:bottom .32s cubic-bezier(.34,1.2,.64,1)}
-.more-menu.open{bottom:0}
+.more-menu{position:fixed;bottom:-520px;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#fff;border-radius:24px 24px 0 0;border-top:1px solid rgba(0,0,0,.08);padding:16px 16px 80px;z-index:93;transition:bottom .32s cubic-bezier(.34,1.2,.64,1);pointer-events:none}
+.more-menu.open{bottom:0;pointer-events:auto}
 .more-handle{width:36px;height:4px;background:rgba(0,0,0,.1);border-radius:2px;margin:0 auto 18px}
 .more-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .more-btn{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 8px;border-radius:14px;border:1px solid rgba(0,0,0,.07);background:#F7F5F1;cursor:pointer}
 .more-lbl{font-size:11px;font-weight:600;color:#5C4E3C;font-family:Outfit,sans-serif}
-.more-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.2);z-index:78;display:none}
+.more-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.2);z-index:92;display:none}
 .more-backdrop.show{display:block}
 
 #ai-overlay{position:fixed;inset:0;max-width:480px;margin:0 auto;background:rgba(255,255,255,.98);backdrop-filter:blur(24px);z-index:200;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .3s cubic-bezier(.34,1.2,.64,1);pointer-events:none}
@@ -1209,7 +1249,7 @@ body {
         </div>
       </div>
     </div>
-  </div>
+  </div></div><!-- /topbar-shell -->
 
   <!-- DASHBOARD SCREEN -->
   <div id="screen-dashboard">
@@ -1416,13 +1456,15 @@ const ZONES={0:{boh:['Hot Station','Cold Station'],foh:['All FOH'],admin:['Admin
 let USER={name:'',role:'owner',lang:'en',zone:''},selRV='',selLV='en';
 let R=0,AREA='boh',ZONE='Hot Station';
 let currentTab='today',recEditId=null,menuAddSec='hot';
-let taskState={},cleanState={},mepState={},dishOpen={};
+let taskState={},cleanState={},mepState={},dishOpen={},menuSectionOpen={};
 let taskPriority={},taskUrgent={};
 let wSigned=[false,false],mSigned=[false,false],clSigned=[false,false];
 let recFilter='all',recSearch='';
 let helpHistory=[];
 let voiceRec=false,recognizer=null,voiceText='';
 let ctxPending={R:0,AREA:'boh',ZONE:'Hot Station'};
+
+function getCov(){return parseInt(document.getElementById('cov-hidden')?.value||document.getElementById('mep-cov')?.value||40);}
 
 // ══ LOGIN ══
 function selR(el){document.querySelectorAll('.lf-role').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');selRV=el.dataset.r;document.getElementById('lz-wrap').classList.toggle('show',['worker','chef','maitre'].includes(selRV));}
@@ -3331,22 +3373,4 @@ function showInlineToastError(msg) {
   </div>
 </div>
 
-<div class="bottom-nav">
-  <button class="bnav-tab active" onclick="switchTab('today',this)" data-tab="today"><span class="bic">📋</span><span class="blb">Today</span></button>
-  <button class="bnav-tab" onclick="switchTab('menu',this)" data-tab="menu"><span class="bic">🍽</span><span class="blb">Menu</span></button>
-  <div style="flex:1"></div>
-  <button class="bnav-tab" onclick="switchTab('mep',this)" data-tab="mep"><span class="bic">⚡</span><span class="blb">MEP</span></button>
-  <button class="bnav-tab" onclick="openMore()"><span class="bic">⋯</span><span class="blb">More</span></button>
-</div>
-<div class="fab-wrap"><button class="fab" onclick="openAI()" ontouchstart="startHold(event)" ontouchend="endHold(event)"><span style="font-size:22px;color:#fff">✦</span><span style="font-size:8px;font-weight:700;letter-spacing:.1em;color:rgba(255,255,255,.8)">ASK</span></button></div>
-<div class="more-backdrop" id="more-backdrop" onclick="closeMore()"></div>
-<div class="more-menu" id="more-menu"><div class="more-handle"></div><div class="more-grid">
-  <button class="more-btn" onclick="switchTab('recipes',null);closeMore()"><span style="font-size:24px">📖</span><span class="more-lbl">Recipes</span></button>
-  <button class="more-btn" onclick="switchTab('ordering',null);closeMore()"><span style="font-size:24px">📦</span><span class="more-lbl">Orders</span></button>
-  <button class="more-btn" onclick="switchTab('briefing',null);closeMore()"><span style="font-size:24px">📢</span><span class="more-lbl">Briefing</span></button>
-  <button class="more-btn" onclick="switchTab('cleaning',null);closeMore()"><span style="font-size:24px">🧹</span><span class="more-lbl">Cleaning</span></button>
-  <button class="more-btn" onclick="switchTab('events',null);closeMore()"><span style="font-size:24px">🎉</span><span class="more-lbl">Events</span></button>
-  <button class="more-btn" onclick="switchTab('schedule',null);closeMore()"><span style="font-size:24px">📅</span><span class="more-lbl">Schedule</span></button>
-  <button class="more-btn" onclick="switchTab('cookmode',null);closeMore()"><span style="font-size:24px">👨‍🍳</span><span class="more-lbl">Cook</span></button>
-</div></div>
 </body>
