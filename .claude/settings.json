@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git:*)",
+      "Bash(npx serve:*)",
+      "Bash(grep:*)",
+      "Bash(find:*)",
+      "Bash(ls:*)",
+      "Bash(mkdir:*)",
+      "Bash(cat:*)",
+      "Read(/Users/admin/foodstudio/**)",
+      "Write(/Users/admin/foodstudio/onboarding/**)",
+      "Write(/Users/admin/foodstudio/skills/**)",
+      "Write(/Users/admin/foodstudio/agents/**)",
+      "Write(/Users/admin/foodstudio/CLAUDE.md)"
+    ]
+  }
+}
