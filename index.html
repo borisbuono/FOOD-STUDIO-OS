@@ -199,6 +199,34 @@ body {
 .stat-tile.em .stat-n { color: var(--ember); }
 .stat-tile.good .stat-n { color: var(--fern); }
 
+/* ─── TODAY COMPACT HEADER ─── */
+.today-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;}
+.today-date{font-size:11px;color:var(--text-tertiary);font-family:'DM Mono',monospace;font-weight:500;margin-top:3px;white-space:nowrap;}
+.stat-strip{display:flex;align-items:center;gap:0;margin-bottom:14px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:14px;box-shadow:0 1px 4px rgba(0,0,0,.04);overflow:hidden;}
+.ss-item{display:flex;flex-direction:column;align-items:center;flex:1;padding:10px 8px;}
+.ss-n{font-family:'DM Mono',monospace;font-size:22px;font-weight:600;color:var(--text-primary);line-height:1;}
+.ss-n.em{color:var(--ember)}.ss-n.good{color:var(--fern)}
+.ss-l{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-tertiary);margin-top:3px;}
+.ss-div{width:1px;height:36px;background:rgba(0,0,0,.07);flex-shrink:0;}
+/* ─── PHASE TABS ─── */
+.phase-tabs{display:flex;gap:6px;margin-bottom:14px;}
+.phase-tab{flex:1;padding:8px 4px;border-radius:11px;border:1.5px solid rgba(0,0,0,.08);background:transparent;color:var(--text-secondary);font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .18s;-webkit-tap-highlight-color:transparent;}
+.phase-tab.active{border-color:var(--ember);background:#FBF2EC;color:var(--ember);}
+/* ─── WORKFLOW CARDS ─── */
+.wf-card{background:#fff;border:1px solid rgba(184,106,66,.2);border-left:3px solid var(--ember);border-radius:14px;margin-bottom:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04);}
+.wf-head{display:flex;align-items:center;gap:10px;padding:12px 14px 8px;}
+.wf-icon{width:34px;height:34px;border-radius:10px;background:#FBF2EC;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.wf-info{flex:1;min-width:0;}
+.wf-name{font-size:14px;font-weight:600;color:var(--text-primary);}
+.wf-stepmeta{font-size:10px;color:var(--text-tertiary);font-family:'DM Mono',monospace;margin-top:1px;}
+.wf-btn-next{background:var(--ember);color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Outfit',sans-serif;white-space:nowrap;}
+.wf-btn-close{background:rgba(0,0,0,.06);color:var(--text-secondary);border:none;border-radius:8px;padding:6px 9px;font-size:12px;cursor:pointer;}
+.wf-body{padding:0 14px 12px;}
+.wf-step-text{font-size:13px;color:var(--text-primary);line-height:1.5;}
+.wf-timer{font-size:11px;color:var(--ember);margin-top:3px;font-family:'DM Mono',monospace;}
+.wf-bar{height:3px;background:rgba(0,0,0,.06);border-radius:2px;margin-top:10px;}
+.wf-bar-fill{height:3px;background:var(--ember);border-radius:2px;transition:width .3s ease;}
+
 /* ─── SECTION LABEL ─── */
 .sect-label {
   font-size: 10px; font-weight: 600; letter-spacing: 0.12em;
@@ -537,9 +565,13 @@ body {
 
 /* ─── AI INPUT BAR ─── */
 .ai-bar {
-  position: fixed; bottom: 0; left: 0; right: 0; max-width: 480px; margin: 0 auto;
-  background: var(--ink); border-top: 1px solid var(--border);
-  padding: 12px 16px 28px; z-index: 75;
+  position: fixed; bottom: 68px; left: 50%; transform: translateX(-50%);
+  width: calc(100% - 32px); max-width: 448px;
+  background: rgba(255,255,255,0.97); backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid rgba(0,0,0,0.09); border-radius: 20px;
+  padding: 10px 12px; z-index: 75;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.10);
 }
 .ai-bar-inner {
   display: flex; align-items: center; gap: 8px;
@@ -571,12 +603,14 @@ body {
 
 /* ─── AI RESPONSE STREAM ─── */
 .ai-response {
-  position: fixed; bottom: 90px; left: 16px; right: 16px; max-width: calc(480px - 32px);
-  background: var(--ink-mid); border: 1px solid var(--ember);
-  border-radius: 16px; padding: 14px 16px; z-index: 85;
+  position: fixed; bottom: 126px; left: 16px; right: 16px;
+  max-width: calc(480px - 32px); margin: 0 auto;
+  background: #FFFFFF; border: 1px solid var(--ember);
+  border-radius: 16px; padding: 14px 16px; z-index: 80;
   font-size: 14px; color: var(--text-primary); line-height: 1.6;
   max-height: 200px; overflow-y: auto;
   animation: slideUp 0.25s ease; display: none;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.12);
 }
 .ai-response.show { display: block; }
 .ai-response-close {
@@ -1286,17 +1320,17 @@ body {
 
   <!-- AI BAR — always visible -->
   <div class="ai-bar">
-    <div class="ai-response" id="ai-response">
-      <button class="ai-response-close" onclick="closeAIResponse()">×</button>
-      <div id="ai-response-text"></div>
-    </div>
-    <div class="quick-chips" id="quick-chips"></div>
     <div class="ai-bar-inner">
-      <textarea class="ai-input" id="ai-input" placeholder="Ask anything, create a recipe, set priority..." rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendAI();}" oninput="autoResize(this)"></textarea>
+      <textarea class="ai-input" id="ai-input" placeholder="Ask anything..." rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendAI();}" oninput="autoResize(this)"></textarea>
       <button class="ai-mic" onclick="toggleVoice()" id="ai-mic">🎙</button>
       <button class="ai-send" onclick="sendAI()" id="ai-send">↑</button>
     </div>
   </div>
+</div>
+<!-- AI RESPONSE — outside ai-bar so fixed positioning works correctly -->
+<div class="ai-response" id="ai-response">
+  <button class="ai-response-close" onclick="closeAIResponse()">×</button>
+  <div id="ai-response-text"></div>
 </div>
 
 <!-- TOAST -->
@@ -1463,8 +1497,27 @@ let recFilter='all',recSearch='';
 let helpHistory=[];
 let voiceRec=false,recognizer=null,voiceText='';
 let ctxPending={R:0,AREA:'boh',ZONE:'Hot Station'};
+let todayPhase=null,activeWorkflows=[];
 
 function getCov(){return parseInt(document.getElementById('cov-hidden')?.value||document.getElementById('mep-cov')?.value||40);}
+function getPhase(){const h=new Date().getHours();if(h>=5&&h<12)return'opening';if(h>=22||h<5)return'closing';return'service';}
+function getTodayPhase(){return todayPhase||getPhase();}
+function setTodayPhase(p){todayPhase=p;renderTab();}
+function wfStart(recipeId){
+  const r=RECIPES.find(x=>x.id===recipeId);
+  const steps=RECIPE_STEPS[recipeId]||[];
+  if(!r||!steps.length){showToast('No steps defined for this recipe');return;}
+  if(activeWorkflows.find(w=>w.recipeId===recipeId)){showToast('Already running: '+r.name);return;}
+  const now=new Date();
+  const t=now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
+  activeWorkflows.push({recipeId,recipeName:r.name,stepIdx:0,steps,startedAt:t});
+  todayPhase='service';
+  switchTab('today',null);
+  showToast('Workflow started — '+r.name);
+}
+function wfNext(idx){if(activeWorkflows[idx]&&activeWorkflows[idx].stepIdx<activeWorkflows[idx].steps.length-1){activeWorkflows[idx].stepIdx++;renderTab();}}
+function wfComplete(idx){const name=activeWorkflows[idx]?.recipeName||'';activeWorkflows.splice(idx,1);renderTab();showToast(name+' — complete ✓');}
+function wfClose(idx){activeWorkflows.splice(idx,1);renderTab();}
 
 // ══ LOGIN ══
 function selR(el){document.querySelectorAll('.lf-role').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');selRV=el.dataset.r;document.getElementById('lz-wrap').classList.toggle('show',['worker','chef','maitre'].includes(selRV));}
@@ -1491,8 +1544,6 @@ function initApp(){
     document.getElementById('tb-av').style.background=rc;
     document.getElementById('tb-rest').textContent=R===0?'Taller':'Bistro Mondo';
     document.getElementById('tb-zone').textContent=ZONE;
-    const chips=document.getElementById('quick-chips');
-    chips.innerHTML=['Draft me a recipe','How much pasta for 60 covers?','What\'s urgent today?','Show menu margins','Generate supplier order'].map(q=>`<button class="qchip" onclick="quickQ('${q.replace(/'/g,"\\'")}')">${q}</button>`).join('');
     renderTab();
     // ── Supabase connection test ──
     if (db) {
@@ -1539,72 +1590,145 @@ function renderTab(){
 // ══ TODAY ══
 function renderToday(){
   const now=new Date();const h=now.getHours();
-  const greet=h<12?'Good morning':h<17?'Good afternoon':'Good evening';
   const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
   const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  const tasks=getZT('opening');
-  const allTasks=[...Object.entries(taskUrgent).filter(([k,v])=>v).map(([k,v])=>({...v,_urg:true})),...tasks];
-  const done=allTasks.filter(t=>taskState[t._urg?'urg_'+t.id:stKey(t.id)]).length;
-  const pend=allTasks.length-done;
-  const ws=wSigned[R];const ms=mSigned[R];
+  const phase=getTodayPhase();
+  const covers=parseInt(document.getElementById('cov-hidden')?.value||40);
+  const openTasks=getZT('opening');
+  const closeTasks=getZT('closing');
+  const allUrgent=Object.entries(taskUrgent).filter(([k,v])=>v).map(([k,v])=>({...v,_urg:true}));
+  const phaseTasks=phase==='closing'?[...allUrgent,...closeTasks]:[...allUrgent,...openTasks];
+  const donePhaseTasks=phaseTasks.filter(t=>{const k=t._urg?'urg_'+t.id:(phase==='closing'?clKey(t.id):stKey(t.id));return !!taskState[k];}).length;
+  const pendingCount=phaseTasks.length-donePhaseTasks;
+  const ws=wSigned[R],ms=mSigned[R];
   const canMgr=['manager','owner'].includes(USER.role);
+
   let html=`
-    <div class="greeting">
-      <div class="greeting-left">
-        <div class="greeting-line"><em>${greet}</em>, ${USER.name.split(' ')[0]}.</div>
-        <div class="greeting-sub">${ZONE} · ${R===0?'Taller':'Bistro Mondo'}</div>
+    <input type="hidden" id="cov-hidden" value="${covers}">
+    <div class="today-header">
+      <div>
+        <div style="font-size:13px;font-weight:600;color:var(--text-primary);">${USER.name.split(' ')[0]} · ${ZONE}</div>
+        <div style="font-size:11px;color:var(--text-tertiary);">${days[now.getDay()]} ${now.getDate()} ${months[now.getMonth()]} · ${R===0?'Taller':'Bistro Mondo'}</div>
       </div>
-      <div class="greeting-date">${days[now.getDay()]} ${now.getDate()} ${months[now.getMonth()]}</div>
     </div>
-    <div class="stat-row">
-      <div class="stat-tile good"><span class="stat-n">${document.getElementById('cov-hidden')?.value||40}</span><span class="stat-l">Covers</span></div>
-      <div class="stat-tile${pend>0?' em':''}"><span class="stat-n">${pend}</span><span class="stat-l">Pending</span></div>
-      <div class="stat-tile good"><span class="stat-n">${done}</span><span class="stat-l">Done</span></div>
+    <div class="stat-strip">
+      <div class="ss-item"><span class="ss-n">${covers}</span><span class="ss-l">Covers</span></div>
+      <div class="ss-div"></div>
+      <div class="ss-item"><span class="ss-n${pendingCount>0?' em':''}">${pendingCount}</span><span class="ss-l">Pending</span></div>
+      <div class="ss-div"></div>
+      <div class="ss-item"><span class="ss-n">${donePhaseTasks}</span><span class="ss-l">Done</span></div>
+      <div class="ss-div"></div>
+      <div class="ss-item"><span class="ss-n" style="font-size:16px;">${phase==='opening'?'🌅':phase==='service'?'🔥':'🌙'}</span><span class="ss-l">${phase.charAt(0).toUpperCase()+phase.slice(1)}</span></div>
     </div>
-    <input type="hidden" id="cov-hidden" value="40">
-    <div class="sect-label">Opening checklist <button onclick="openModal('m-urgent')" style="display:${canMgr?'inline':'none'}">⚡ Push urgent</button></div>`;
-  allTasks.sort((a,b)=>{
-    if(a._urg&&!b._urg)return -1;if(!a._urg&&b._urg)return 1;
-    return (taskPriority[stKey(b.id)]||0)-(taskPriority[stKey(a.id)]||0);
-  }).forEach(task=>{
-    const k=task._urg?'urg_'+task.id:stKey(task.id);
-    const isDone=!!taskState[k];const isPri=!task._urg&&taskPriority[stKey(task.id)]===1;
-    const sig=taskState[k+'_sig']||'';const ts=taskState[k+'_ts']||'';
-    html+=`<div class="task-card${task._urg?' urgent':isPri?' priority':isDone?' done':''}">
-      <div class="tc-row" onclick="toggleTask('${task.id}','${task._urg?'urg':''}')">
-        <div class="tc-check"><span class="tc-check-icon">${SVG_CHK}</span></div>
-        <div class="tc-body">
-          <div class="tc-name">${task.name}</div>
-          ${task._urg?`<div class="tc-sub urg">⚡ Urgent — from manager</div>`:task.sub?`<div class="tc-sub">${task.sub}</div>`:''}
-        </div>
-        <div class="tc-right">
-          ${task._urg?`<span class="tc-badge urgent">URGENT</span>`:`<button class="tc-pri${isPri?' on':''}" onclick="event.stopPropagation();togglePri('${task.id}')">★</button>`}
-        </div>
-      </div>
-      ${isDone&&sig?`<div class="tc-signed">✓ ${sig} · ${ts}</div>`:''}
+    <div class="phase-tabs">
+      <button class="phase-tab${phase==='opening'?' active':''}" onclick="setTodayPhase('opening')">🌅 Opening</button>
+      <button class="phase-tab${phase==='service'?' active':''}" onclick="setTodayPhase('service')">🔥 Service</button>
+      <button class="phase-tab${phase==='closing'?' active':''}" onclick="setTodayPhase('closing')">🌙 Closing</button>
     </div>`;
-  });
-  if(!allTasks.length)html+=`<div style="text-align:center;padding:40px;color:var(--text-tertiary);font-size:14px;">No tasks for this zone yet.</div>`;
-  // Sign off
-  html+=`<div class="signoff-row">
-    <div class="so-icon">✍️</div>
-    <div class="so-info"><div class="so-title">Worker sign-off</div><div class="so-sub" id="so-w-sub">${ws?`Signed by ${USER.name}`:pend>0?`${pend} tasks remaining`:'All done — tap to sign off'}</div></div>
-    <button class="so-btn${ws?' signed':''}" onclick="doWorkerSO()">${ws?'✓ Signed':'Sign off'}</button>
-  </div>`;
-  if(canMgr){html+=`<div class="signoff-row mgr">
-    <div class="so-icon">🔑</div>
-    <div class="so-info"><div class="so-title">Manager approval</div><div class="so-sub">${ms?`Approved`:'Awaiting worker sign-off'}</div></div>
-    <button class="so-btn${ms?' signed':''}" id="mgr-btn" onclick="openModal('m-pin')" ${ws&&!ms?'':'disabled'}>${ms?'✓ Approved':'Approve'}</button>
-  </div>`;}
-  // Closing section
-  const cTasks=getZT('closing');const cDone=cTasks.filter(t=>taskState[clKey(t.id)]).length;
-  html+=`<div class="sect-label" style="margin-top:20px;">Closing checklist</div>`;
-  cTasks.forEach(task=>{
-    const k=clKey(task.id);const isDone=!!taskState[k];
-    html+=`<div class="task-card${isDone?' done':''}"><div class="tc-row" onclick="toggleCloseTask('${task.id}')"><div class="tc-check"><span class="tc-check-icon">${SVG_CHK}</span></div><div class="tc-body"><div class="tc-name">${task.name}</div>${task.sub?`<div class="tc-sub">${task.sub}</div>`:''}</div></div></div>`;
-  });
-  if(!cTasks.length)html+=`<div style="text-align:center;padding:20px;color:var(--text-tertiary);font-size:13px;">No closing tasks for this zone.</div>`;
-  if(canMgr||clSigned[R]){html+=`<div class="signoff-row mgr"><div class="so-icon">🔒</div><div class="so-info"><div class="so-title">Close-down sign-off</div><div class="so-sub">Manager confirms zone secured</div></div><button class="so-btn${clSigned[R]?' signed':''}" onclick="openModal('m-close-pin')">${clSigned[R]?'✓ Closed':'Sign off'}</button></div>`;}
+
+  // Active workflows — always show if running
+  if(activeWorkflows.length>0){
+    html+=`<div class="sect-label">Active workflows</div>`;
+    activeWorkflows.forEach((wf,idx)=>{
+      const step=wf.steps[wf.stepIdx];
+      const pct=Math.round((wf.stepIdx/wf.steps.length)*100);
+      const isLast=wf.stepIdx>=wf.steps.length-1;
+      html+=`<div class="wf-card">
+        <div class="wf-head">
+          <div class="wf-icon">👨‍🍳</div>
+          <div class="wf-info">
+            <div class="wf-name">${wf.recipeName}</div>
+            <div class="wf-stepmeta">Step ${wf.stepIdx+1} / ${wf.steps.length} · started ${wf.startedAt}</div>
+          </div>
+          <button class="wf-btn-close" onclick="wfClose(${idx})">✕</button>
+        </div>
+        <div class="wf-body">
+          <div class="wf-step-text">${step?.text||'All steps complete'}</div>
+          ${step?.timer_seconds>0?`<div class="wf-timer">⏱ ${Math.floor(step.timer_seconds/60)}m ${step.timer_seconds%60>0?step.timer_seconds%60+'s':''}</div>`:''}
+          <div class="wf-bar"><div class="wf-bar-fill" style="width:${pct}%"></div></div>
+          <button class="wf-btn-next" onclick="${isLast?'wfComplete('+idx+')':'wfNext('+idx+')'}">${isLast?'Mark complete ✓':'Next step →'}</button>
+        </div>
+      </div>`;
+    });
+  }
+
+  // Phase-specific content
+  if(phase==='service'){
+    // MEP progress card
+    const mepZoneData=MEP[R]?.[ZONE]||[];
+    if(mepZoneData.length>0){
+      const mepTotal=mepZoneData.reduce((a,d)=>a+d.components.length,0);
+      const mepDone=mepZoneData.reduce((a,d)=>a+d.components.filter(c=>mepState[`${R}_${ZONE}_${d.dish}_${c.name}`]).length,0);
+      const mepPct=mepTotal>0?Math.round(mepDone/mepTotal*100):0;
+      html+=`<div class="sect-label">MEP status</div>
+      <div class="wf-card" onclick="switchTab('mep',document.querySelector('[data-tab=mep]'))" style="cursor:pointer;">
+        <div class="wf-head">
+          <div class="wf-icon">⚡</div>
+          <div class="wf-info"><div class="wf-name">Mise en Place</div><div class="wf-stepmeta">${mepDone} of ${mepTotal} components ready</div></div>
+          <span style="color:var(--text-tertiary);font-size:16px;line-height:1;">→</span>
+        </div>
+        <div class="wf-bar" style="margin-top:8px;"><div class="wf-bar-fill" style="width:${mepPct}%"></div></div>
+      </div>`;
+    }
+    // Urgent tasks only during service
+    if(allUrgent.length>0){
+      html+=`<div class="sect-label">Urgent${canMgr?` <button onclick="openModal('m-urgent')">⚡ Push</button>`:''}`;
+      html+=`</div>`;
+      allUrgent.forEach(task=>{
+        const k='urg_'+task.id;const isDone=!!taskState[k];
+        html+=`<div class="task-card urgent${isDone?' done':''}"><div class="tc-row" onclick="toggleTask('${task.id}','urg')"><div class="tc-check"><span class="tc-check-icon">${SVG_CHK}</span></div><div class="tc-body"><div class="tc-name">${task.name}</div><div class="tc-sub urg">⚡ Urgent — from manager</div></div><div class="tc-right"><span class="tc-badge urgent">URGENT</span></div></div></div>`;
+      });
+    }
+    if(!allUrgent.length&&!mepZoneData.length){
+      html+=`<div style="text-align:center;padding:40px 20px;color:var(--text-tertiary);font-size:14px;">Service is running. Use Cook Mode to start a workflow.</div>`;
+    }
+  } else {
+    // Opening / Closing checklist
+    const tasks=phaseTasks;
+    const phaseLabel=phase==='opening'?'Opening':'Closing';
+    html+=`<div class="sect-label">${phaseLabel} checklist${canMgr&&phase==='opening'?` <button onclick="openModal('m-urgent')">⚡ Push urgent</button>`:''}`;
+    html+=`</div>`;
+    tasks.sort((a,b)=>{
+      if(a._urg&&!b._urg)return -1;if(!a._urg&&b._urg)return 1;
+      return (taskPriority[stKey(b.id)]||0)-(taskPriority[stKey(a.id)]||0);
+    }).forEach(task=>{
+      const k=task._urg?'urg_'+task.id:(phase==='closing'?clKey(task.id):stKey(task.id));
+      const isDone=!!taskState[k];
+      const isPri=!task._urg&&phase!=='closing'&&taskPriority[stKey(task.id)]===1;
+      const sig=taskState[k+'_sig']||'';const ts=taskState[k+'_ts']||'';
+      const toggleFn=task._urg?`toggleTask('${task.id}','urg')`:(phase==='closing'?`toggleCloseTask('${task.id}')`:`toggleTask('${task.id}','')`);
+      html+=`<div class="task-card${task._urg?' urgent':isPri?' priority':isDone?' done':''}">
+        <div class="tc-row" onclick="${toggleFn}">
+          <div class="tc-check"><span class="tc-check-icon">${SVG_CHK}</span></div>
+          <div class="tc-body">
+            <div class="tc-name">${task.name}</div>
+            ${task._urg?`<div class="tc-sub urg">⚡ Urgent</div>`:task.sub?`<div class="tc-sub">${task.sub}</div>`:''}
+          </div>
+          <div class="tc-right">
+            ${task._urg?`<span class="tc-badge urgent">URGENT</span>`:phase!=='closing'?`<button class="tc-pri${isPri?' on':''}" onclick="event.stopPropagation();togglePri('${task.id}')">★</button>`:''}
+          </div>
+        </div>
+        ${isDone&&sig?`<div class="tc-signed">✓ ${sig} · ${ts}</div>`:''}
+      </div>`;
+    });
+    if(!tasks.length)html+=`<div style="text-align:center;padding:32px 20px;color:var(--text-tertiary);font-size:14px;">No ${phaseLabel.toLowerCase()} tasks for this zone.</div>`;
+  }
+
+  // Sign-off rows
+  if(phase!=='closing'){
+    html+=`<div class="signoff-row">
+      <div class="so-icon">✍️</div>
+      <div class="so-info"><div class="so-title">Worker sign-off</div><div class="so-sub" id="so-w-sub">${ws?`Signed by ${USER.name}`:pendingCount>0?`${pendingCount} tasks remaining`:'All done — tap to sign off'}</div></div>
+      <button class="so-btn${ws?' signed':''}" onclick="doWorkerSO()">${ws?'✓ Signed':'Sign off'}</button>
+    </div>`;
+    if(canMgr){html+=`<div class="signoff-row mgr">
+      <div class="so-icon">🔑</div>
+      <div class="so-info"><div class="so-title">Manager approval</div><div class="so-sub">${ms?'Approved':'Awaiting worker sign-off'}</div></div>
+      <button class="so-btn${ms?' signed':''}" id="mgr-btn" onclick="openModal('m-pin')" ${ws&&!ms?'':'disabled'}>${ms?'✓ Approved':'Approve'}</button>
+    </div>`;}
+  } else {
+    if(canMgr||clSigned[R]){html+=`<div class="signoff-row mgr"><div class="so-icon">🔒</div><div class="so-info"><div class="so-title">Close-down sign-off</div><div class="so-sub">Manager confirms zone secured</div></div><button class="so-btn${clSigned[R]?' signed':''}" onclick="openModal('m-close-pin')">${clSigned[R]?'✓ Closed':'Sign off'}</button></div>`;}
+  }
   return html;
 }
 
@@ -3259,15 +3383,6 @@ function showInlineToastError(msg) {
 }
 </script>
 
-<!-- FAB BUTTON — center bottom, always visible -->
-<div style="position:fixed;bottom:26px;left:50%;transform:translateX(-50%);z-index:190;display:flex;flex-direction:column;align-items:center;gap:8px;">
-  <div style="position:absolute;inset:-8px;border-radius:50%;border:2px solid rgba(184,106,66,0.15);animation:fabPulse 3s ease-in-out infinite;pointer-events:none;"></div>
-  <button onclick="openAI()" ontouchstart="startHoldVoice(event)" ontouchend="endHoldVoice(event)" onmousedown="startHoldVoice(event)" onmouseup="endHoldVoice(event)" onmouseleave="endHoldVoice(event)" style="width:68px;height:68px;border-radius:50%;border:none;background:#B86A42;box-shadow:0 8px 28px rgba(184,106,66,0.4),0 2px 8px rgba(184,106,66,0.2);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;gap:3px;transition:transform 0.18s;-webkit-tap-highlight-color:transparent;" onmousedown="this.style.transform='scale(0.93)'" onmouseup="this.style.transform='scale(1)'" ontouchstart="this.style.transform='scale(0.93)'" ontouchend="this.style.transform='scale(1)'">
-    <span style="font-size:24px;line-height:1;color:white;">✦</span>
-    <span style="font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.75);">Ask</span>
-  </button>
-</div>
-
 <!-- AI AGENT OVERLAY — full screen, voice-first -->
 <div id="ai-overlay">
   <div class="ai-ov-header">
@@ -3293,36 +3408,6 @@ function showInlineToastError(msg) {
     <div class="ai-ov-text-row">
       <input class="ai-ov-input" id="ai-ov-input" placeholder="Or type here..." autocomplete="off" autocorrect="off" autocapitalize="off" onkeydown="if(event.key==='Enter')sendAIOv()">
       <button class="ai-ov-send" onclick="sendAIOv()">↑</button>
-    </div>
-  </div>
-</div><!-- Conversation messages -->
-  <div id="ai-msgs" style="flex:1;overflow-y:auto;padding:0 20px 16px;display:flex;flex-direction:column;gap:12px;"></div>
-
-    <!-- Action chips — 2x3 grid, all visible -->
-  <div style="padding:0 20px 20px;flex-shrink:0;">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-      <button onclick="quickQ('Draft me a recipe')" style="padding:14px 12px;border-radius:14px;border:1px solid rgba(0,0,0,0.09);background:white;color:#1A1510;font-family:'Outfit',sans-serif;font-size:13px;font-weight:500;cursor:pointer;text-align:left;box-shadow:0 1px 4px rgba(0,0,0,0.06);display:flex;align-items:center;gap:8px;"><span style="font-size:20px;">📝</span><span>Draft a recipe</span></button>
-      <button onclick="quickQ('How much pasta for 60 covers?')" style="padding:14px 12px;border-radius:14px;border:1px solid rgba(0,0,0,0.09);background:white;color:#1A1510;font-family:'Outfit',sans-serif;font-size:13px;font-weight:500;cursor:pointer;text-align:left;box-shadow:0 1px 4px rgba(0,0,0,0.06);display:flex;align-items:center;gap:8px;"><span style="font-size:20px;">🍝</span><span>Quantities</span></button>
-      <button onclick="quickQ('Generate supplier orders for today')" style="padding:14px 12px;border-radius:14px;border:1px solid rgba(0,0,0,0.09);background:white;color:#1A1510;font-family:'Outfit',sans-serif;font-size:13px;font-weight:500;cursor:pointer;text-align:left;box-shadow:0 1px 4px rgba(0,0,0,0.06);display:flex;align-items:center;gap:8px;"><span style="font-size:20px;">📦</span><span>Supplier order</span></button>
-      <button onclick="quickQ('What are our lowest margin dishes?')" style="padding:14px 12px;border-radius:14px;border:1px solid rgba(0,0,0,0.09);background:white;color:#1A1510;font-family:'Outfit',sans-serif;font-size:13px;font-weight:500;cursor:pointer;text-align:left;box-shadow:0 1px 4px rgba(0,0,0,0.06);display:flex;align-items:center;gap:8px;"><span style="font-size:20px;">📊</span><span>Menu margins</span></button>
-      <button onclick="quickQ('Generate pre-service briefing')" style="padding:14px 12px;border-radius:14px;border:1px solid rgba(0,0,0,0.09);background:white;color:#1A1510;font-family:'Outfit',sans-serif;font-size:13px;font-weight:500;cursor:pointer;text-align:left;box-shadow:0 1px 4px rgba(0,0,0,0.06);display:flex;align-items:center;gap:8px;"><span style="font-size:20px;">📋</span><span>Pre-service brief</span></button>
-      <button onclick="quickQ('What tasks are still pending?')" style="padding:14px 12px;border-radius:14px;border:1px solid rgba(0,0,0,0.09);background:white;color:#1A1510;font-family:'Outfit',sans-serif;font-size:13px;font-weight:500;cursor:pointer;text-align:left;box-shadow:0 1px 4px rgba(0,0,0,0.06);display:flex;align-items:center;gap:8px;"><span style="font-size:20px;">⚡</span><span>Urgent tasks</span></button>
-    </div>
-  </div>
-
-  <!-- Voice + text input -->
-  <div style="padding:0 20px 40px;flex-shrink:0;">
-
-    <!-- Big mic button — voice primary -->
-    <div style="display:flex;align-items:center;justify-content:center;margin-bottom:16px;">
-      <button id="ai-mic-big" onclick="toggleVoice()" style="width:72px;height:72px;border-radius:50%;border:none;background:#F5F3F0;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:32px;transition:all 0.2s;box-shadow:0 2px 12px rgba(0,0,0,0.08);-webkit-tap-highlight-color:transparent;">🎙</button>
-    </div>
-    <div id="voice-hint" style="text-align:center;font-size:11px;color:#C8C0B8;margin-bottom:14px;font-family:'Outfit',sans-serif;letter-spacing:0.04em;">TAP MIC TO SPEAK</div>
-
-    <!-- Text input fallback -->
-    <div style="display:flex;gap:8px;align-items:center;background:white;border:1.5px solid rgba(0,0,0,0.1);border-radius:16px;padding:10px 10px 10px 16px;box-shadow:0 2px 10px rgba(0,0,0,0.06);">
-      <input id="ai-input" placeholder="Or type here..." onkeydown="if(event.key==='Enter')sendAI()" style="flex:1;border:none;background:transparent;outline:none;font-family:'Outfit',sans-serif;font-size:15px;color:#1A1510;" autocomplete="off">
-      <button onclick="sendAI()" style="width:40px;height:40px;border-radius:12px;border:none;background:#B86A42;color:white;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;flex-shrink:0;box-shadow:0 2px 8px rgba(184,106,66,0.3);">↑</button>
     </div>
   </div>
 </div>
