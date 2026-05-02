@@ -161,7 +161,7 @@ body {
 }
 .tb-ctx-text { font-size: 11px; font-weight: 500; color: var(--text-secondary); line-height: 1.2; }
 .tb-ctx-zone { font-size: 10px; color: #9B8E7E; }
-.tb-more-btn { background: transparent; border: none; font-size: 20px; color: var(--text-tertiary); cursor: pointer; padding: 6px 4px; line-height: 1; letter-spacing: 2px; -webkit-tap-highlight-color: transparent; }
+.tb-more-btn { background: rgba(0,0,0,0.06); border: none; border-radius: 9px; font-size: 14px; color: var(--text-secondary); cursor: pointer; padding: 6px 10px; line-height: 1; letter-spacing: 3px; -webkit-tap-highlight-color: transparent; font-weight: 700; }
 
 /* ─── DASHBOARD SCREEN ─── */
 #screen-dashboard { display: block; }
@@ -624,19 +624,19 @@ body {
 .comp-qty.hi { color: var(--ember); }
 
 /* ─── CLEANING ─── */
-.clean-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.clean-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
 .cl-tile {
   background: #FFFFFF; border: 1px solid rgba(0,0,0,0.07);
-  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
-  border-radius: 13px; padding: 14px 13px; cursor: pointer; position: relative;
-  min-height: 90px; transition: all 0.18s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  border-radius: 12px; padding: 13px 12px; cursor: pointer; position: relative;
+  min-height: 72px; transition: all 0.18s; display: flex; flex-direction: column; justify-content: center;
 }
 .cl-tile:active { transform: scale(0.97); }
-.cl-tile.done { border-color: var(--fern); background: rgba(90,138,120,0.08); }
-.cl-icon { font-size: 22px; margin-bottom: 7px; display: block; }
-.cl-name { font-size: 12px; font-weight: 600; color: var(--text-primary); line-height: 1.3; }
+.cl-tile.done { border-color: var(--fern); background: rgba(90,138,120,0.07); }
+.cl-icon { display: none; }
+.cl-name { font-size: 12px; font-weight: 600; color: var(--text-primary); line-height: 1.4; }
 .cl-tile.done .cl-name { color: var(--fern); }
-.cl-freq { font-size: 10px; color: var(--text-tertiary); margin-top: 3px; font-family: 'DM Mono', monospace; }
+.cl-freq { font-size: 9px; color: var(--text-tertiary); margin-top: 3px; font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: .04em; }
 .cl-tick {
   position: absolute; top: 10px; right: 10px;
   background: var(--fern); color: white; border-radius: 50%;
