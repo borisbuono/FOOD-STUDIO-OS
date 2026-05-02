@@ -2036,9 +2036,12 @@ function hideDetail(){document.getElementById('screen-detail').style.display='no
 
 // ══ CLEANING ══
 function renderCleaning(){
-  const cl=getZC();let dd=0,wd=0;
+  const cl=getZC();
   if(!cl.daily.length&&!cl.weekly.length)return`<div style="text-align:center;padding:40px;color:var(--text-tertiary);">No cleaning tasks for this zone.</div>`;
-  const mkC=(c,type)=>{const k=`${R}_${AREA}_${ZONE}_${type}_${c.id}`;const done=!!cleanState[k];if(done)(type==='d'?dd++:wd++);return `<div class="cl-tile${done?' done':''}" onclick="cleanState['${k}']=!cleanState['${k}'];renderTab()"><div class="cl-tick">✓</div><span class="cl-icon">${c.icon}</span><div class="cl-name">${c.name}</div><div class="cl-freq">${c.freq}</div></div>`;};
+  const mkC=(c,type)=>{const k=`${R}_${AREA}_${ZONE}_${type}_${c.id}`;const done=!!cleanState[k];return `<div class="cl-tile${done?' done':''}" onclick="cleanState['${k}']=!cleanState['${k}'];renderTab()"><div class="cl-tick">✓</div><span class="cl-icon">${c.icon}</span><div class="cl-name">${c.name}</div><div class="cl-freq">${c.freq}</div></div>`;};
+  // Count BEFORE building HTML so template literals capture correct values
+  const dd=cl.daily.filter(c=>!!cleanState[`${R}_${AREA}_${ZONE}_d_${c.id}`]).length;
+  const wd=cl.weekly.filter(c=>!!cleanState[`${R}_${AREA}_${ZONE}_w_${c.id}`]).length;
   let html=`<div class="sect-label">Daily cleaning <span>${dd}/${cl.daily.length}</span></div><div class="clean-grid">${cl.daily.map(c=>mkC(c,'d')).join('')}</div>`;
   if(cl.weekly.length){html+=`<div class="sect-label" style="margin-top:18px;">Weekly deep clean <span>${wd}/${cl.weekly.length}</span></div><div class="clean-grid">${cl.weekly.map(c=>mkC(c,'w')).join('')}</div>`;}
   return html;
@@ -2454,10 +2457,18 @@ function renderCookMode(){
   }
   let html = `<div style="margin-bottom:14px;font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#9B8E7E;">Select a recipe to cook</div>`;
   RECIPES.filter(r => RECIPE_STEPS[r.id]).forEach(r => {
-    html += `<div class="cook-recipe-sel"><div class="cook-recipe-row" onclick="startCookMode('${r.id}')">
-      <div style="flex:1"><div class="cook-recipe-name">${r.name}</div><div class="cook-recipe-meta">${r.portions} portions base · ${(RECIPE_STEPS[r.id]||[]).length} steps</div></div>
-      <span style="color:#B86A42;font-size:20px;">▶</span>
-    </div></div>`;
+    const alreadyRunning = activeWorkflows.find(w => w.recipeId === r.id);
+    html += `<div class="cook-recipe-sel">
+      <div class="cook-recipe-row" onclick="startCookMode('${r.id}')">
+        <div style="flex:1"><div class="cook-recipe-name">${r.name}</div><div class="cook-recipe-meta">${r.portions} portions base · ${(RECIPE_STEPS[r.id]||[]).length} steps</div></div>
+        <span style="color:#B86A42;font-size:20px;">▶</span>
+      </div>
+      <div style="padding:0 12px 12px;display:flex;gap:8px;">
+        <button onclick="event.stopPropagation();wfStart('${r.id}')" style="flex:1;padding:9px 12px;border-radius:10px;border:none;background:${alreadyRunning?'#E8F5F0':'#FBF2EC'};color:${alreadyRunning?'#4A7B6A':'#B86A42'};font-family:Outfit,sans-serif;font-size:12px;font-weight:600;cursor:pointer;-webkit-tap-highlight-color:transparent;">
+          ${alreadyRunning ? '✓ Running on Today' : '📌 Pin to Today'}
+        </button>
+      </div>
+    </div>`;
   });
   // Show all recipes even without steps
   RECIPES.filter(r => !RECIPE_STEPS[r.id]).forEach(r => {
