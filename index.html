@@ -1439,6 +1439,7 @@ body {
           <div class="tb-ctx-zone" id="tb-zone">Hot Station</div>
         </div>
       </div>
+      <span id="sync-dot" title="Sync offline" style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#C8C0B8;margin-right:4px;flex-shrink:0;transition:background 0.4s;"></span>
       <button class="tb-more-btn" onclick="openMore()" title="More screens">···</button>
     </div>
   </div></div><!-- /topbar-shell -->
@@ -1672,7 +1673,7 @@ let todayPhase=null,activeWorkflows=[];
 function getCov(){return parseInt(document.getElementById('cov-hidden')?.value||document.getElementById('mep-cov')?.value||40);}
 function getPhase(){const h=new Date().getHours();if(h>=5&&h<12)return'opening';if(h>=22||h<5)return'closing';return'service';}
 function getTodayPhase(){return todayPhase||getPhase();}
-function setTodayPhase(p){todayPhase=p;saveState();renderTab();}
+function setTodayPhase(p){todayPhase=p;saveState({todayPhase:p});renderTab();}
 function wfStart(recipeId){
   const r=RECIPES.find(x=>x.id===recipeId);
   const steps=RECIPE_STEPS[recipeId]||[];
@@ -1715,12 +1716,20 @@ function doLogin(){
 function initApp(){
   try {
     const rc=ROLE_COLORS[USER.role];
-    document.getElementById('tb-av').textContent=USER.name.charAt(0).toUpperCase();
-    document.getElementById('tb-av').style.background=rc;
+    const av=document.getElementById('tb-av');
+    if(USER._googlePicture){
+      av.style.backgroundImage=`url(${USER._googlePicture})`;
+      av.style.backgroundSize='cover';av.style.backgroundPosition='center';
+      av.textContent='';
+    } else {
+      av.textContent=USER.name.charAt(0).toUpperCase();
+      av.style.background=rc;
+    }
     document.getElementById('tb-rest').textContent=R===0?'Taller':'Bistro Mondo';
     document.getElementById('tb-zone').textContent=ZONE;
     const ctxLbl=document.getElementById('ctx-name-lbl');
     if(ctxLbl)ctxLbl.textContent=USER.name+(USER._googleEmail?' ('+USER._googleEmail+')':'');
+    initShiftSync();
     renderTab();
     // ── Supabase: load live recipes in background ──
     loadSupabaseRecipes();
@@ -2011,7 +2020,7 @@ function renderMEP(){
       const mk=`${R}_${ZONE}_${dish.dish}_${c.name}`;const isDone=!!mepState[mk];
       const isInt=c.unit==='pcs'||c.unit==='scoops';
       const qty=(c.perCover*covers).toFixed(isInt?0:2);const hi=parseFloat(qty)>5;
-      html+=`<div class="comp-row${isDone?' done':''}" onclick="mepState['${mk}']=!mepState['${mk}'];saveState();renderTab()"><div class="comp-chk">${SVG_CHK}</div><div class="comp-body"><div class="comp-name">${c.name}</div><div class="comp-method">${c.method}</div></div><div class="comp-qty${hi?' hi':''}">${qty} ${c.unit}</div></div>`;
+      html+=`<div class="comp-row${isDone?' done':''}" onclick="toggleMEP('${mk}')"><div class="comp-chk">${SVG_CHK}</div><div class="comp-body"><div class="comp-name">${c.name}</div><div class="comp-method">${c.method}</div></div><div class="comp-qty${hi?' hi':''}">${qty} ${c.unit}</div></div>`;
     });
     html+=`</div></div>`;
   });
@@ -2227,7 +2236,7 @@ function hideDetail(){document.getElementById('screen-detail').style.display='no
 function renderCleaning(){
   const cl=getZC();
   if(!cl.daily.length&&!cl.weekly.length)return`<div style="text-align:center;padding:40px;color:var(--text-tertiary);">No cleaning tasks for this zone.</div>`;
-  const mkC=(c,type)=>{const k=`${R}_${AREA}_${ZONE}_${type}_${c.id}`;const done=!!cleanState[k];return `<div class="cl-tile${done?' done':''}" onclick="cleanState['${k}']=!cleanState['${k}'];saveState();renderTab()"><div class="cl-tick">✓</div><span class="cl-icon">${c.icon}</span><div class="cl-name">${c.name}</div><div class="cl-freq">${c.freq}</div></div>`;};
+  const mkC=(c,type)=>{const k=`${R}_${AREA}_${ZONE}_${type}_${c.id}`;const done=!!cleanState[k];return `<div class="cl-tile${done?' done':''}" onclick="toggleClean('${k}')"><div class="cl-tick">✓</div><span class="cl-icon">${c.icon}</span><div class="cl-name">${c.name}</div><div class="cl-freq">${c.freq}</div></div>`;};
   // Count BEFORE building HTML so template literals capture correct values
   const dd=cl.daily.filter(c=>!!cleanState[`${R}_${AREA}_${ZONE}_d_${c.id}`]).length;
   const wd=cl.weekly.filter(c=>!!cleanState[`${R}_${AREA}_${ZONE}_w_${c.id}`]).length;
@@ -2353,15 +2362,17 @@ function buildCtxZones(){
   if(!ctxPending.ZONE&&zones.length)ctxPending.ZONE=zones[0];
 }
 function applyCtx(){
+  const prevR=R;
   R=ctxPending.R;AREA=ctxPending.AREA;ZONE=ctxPending.ZONE||ZONES[R][AREA][0]||'';
   document.getElementById('tb-rest').textContent=R===0?'Taller':'Bistro Mondo';
   document.getElementById('tb-zone').textContent=ZONE;
   saveSession();
+  if(R!==prevR) initShiftSync(); // rejoin correct restaurant channel
   closeModal('m-ctx');renderTab();
 }
 
 // ══ PERSISTENCE ══
-function saveState(){
+function saveState(delta){
   try{
     const today=new Date().toDateString();
     localStorage.setItem('fs_state',JSON.stringify({
@@ -2372,6 +2383,7 @@ function saveState(){
       activeWorkflows,todayPhase
     }));
   }catch(e){}
+  if(delta) broadcastDelta(delta);
 }
 function loadState(){
   try{
@@ -2409,8 +2421,64 @@ function loadSession(){
 }
 function doSignOut(){
   try{localStorage.removeItem('fs_session');localStorage.removeItem('fs_state');}catch(e){}
+  if(shiftChannel&&db){try{db.removeChannel(shiftChannel);}catch(e){}}
   location.reload();
 }
+
+// ══ REALTIME SYNC ══
+// Broadcasts state deltas to all team members on the same restaurant + date channel
+let shiftChannel=null,syncStatus='off';
+
+function initShiftSync(){
+  if(!db)return;
+  const today=new Date().toISOString().slice(0,10);
+  const chName=`fs-${today}-r${R}`;
+  if(shiftChannel){try{db.removeChannel(shiftChannel);}catch(e){} shiftChannel=null;}
+  syncStatus='connecting';
+  shiftChannel=db.channel(chName,{config:{broadcast:{self:false}}});
+  shiftChannel
+    .on('broadcast',{event:'delta'},({payload})=>{ applyDelta(payload); })
+    .subscribe((status)=>{
+      syncStatus=status==='SUBSCRIBED'?'on':status==='CLOSED'||status==='CHANNEL_ERROR'?'error':'connecting';
+      updateSyncDot();
+    });
+}
+
+function broadcastDelta(delta){
+  if(!shiftChannel||syncStatus!=='on')return;
+  try{ shiftChannel.send({type:'broadcast',event:'delta',payload:{...delta,_by:USER.name,_ts:Date.now()}}); }catch(e){}
+}
+
+function applyDelta(d){
+  if(!d)return;
+  let changed=false;
+  if(d.taskState){Object.assign(taskState,d.taskState);changed=true;}
+  if(d.mepState) {Object.assign(mepState, d.mepState); changed=true;}
+  if(d.cleanState){Object.assign(cleanState,d.cleanState);changed=true;}
+  if(d.taskUrgent){Object.assign(taskUrgent,d.taskUrgent);changed=true;}
+  if(d.wSigned!==undefined){wSigned=d.wSigned;changed=true;}
+  if(d.mSigned!==undefined){mSigned=d.mSigned;changed=true;}
+  if(d.clSigned!==undefined){clSigned=d.clSigned;changed=true;}
+  if(d.todayPhase!==undefined){todayPhase=d.todayPhase;changed=true;}
+  if(!changed)return;
+  saveState(); // persist to localStorage (no delta → no rebroadcast)
+  renderTab();
+  if(d._by&&d._by!==USER.name){
+    const what=d.taskState?'task':d.mepState?'MEP':d.cleanState?'clean':'update';
+    showToast('✔ '+d._by+' — '+what);
+  }
+}
+
+function updateSyncDot(){
+  const dot=document.getElementById('sync-dot');
+  if(!dot)return;
+  const colors={'on':'#4A7B6A','connecting':'#A8893A','error':'#C0392B','off':'#C8C0B8'};
+  dot.style.background=colors[syncStatus]||colors.off;
+  dot.title=syncStatus==='on'?'Live sync active':syncStatus==='connecting'?'Connecting…':syncStatus==='error'?'Sync error':'Offline';
+}
+
+function toggleMEP(mk){mepState[mk]=!mepState[mk];saveState({mepState:{[mk]:mepState[mk]}});renderTab();}
+function toggleClean(k){cleanState[k]=!cleanState[k];saveState({cleanState:{[k]:cleanState[k]}});renderTab();}
 
 // ══ GOOGLE SIGN-IN ══
 // To enable: set GOOGLE_CLIENT_ID in your Vercel env vars or paste it below.
@@ -2502,13 +2570,19 @@ function stKey(id){return `${R}_${AREA}_${ZONE}_${id}`;}
 function clKey(id){return `${R}_${AREA}_${ZONE}_cl_${id}`;}
 function getZT(mod){return TASKS[R]?.[AREA]?.[ZONE]?.[mod]||[];}
 function getZC(){return TASKS[R]?.[AREA]?.[ZONE]?.cleaning||{daily:[],weekly:[]};}
-function toggleTask(id,prefix){const k=(prefix?prefix+'_':'')+stKey(id);taskState[k]=!taskState[k];if(taskState[k]){taskState[k+'_sig']=USER.name;taskState[k+'_ts']=new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});}saveState();renderTab();}
-function toggleCloseTask(id){const k=clKey(id);taskState[k]=!taskState[k];saveState();renderTab();}
+function toggleTask(id,prefix){
+  const k=(prefix?prefix+'_':'')+stKey(id);
+  taskState[k]=!taskState[k];
+  const delta={[k]:taskState[k]};
+  if(taskState[k]){taskState[k+'_sig']=USER.name;taskState[k+'_ts']=new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});delta[k+'_sig']=taskState[k+'_sig'];delta[k+'_ts']=taskState[k+'_ts'];}
+  saveState({taskState:delta});renderTab();
+}
+function toggleCloseTask(id){const k=clKey(id);taskState[k]=!taskState[k];saveState({taskState:{[k]:taskState[k]}});renderTab();}
 function togglePri(id){const k=stKey(id);taskPriority[k]=taskPriority[k]===1?0:1;saveState();renderTab();}
-function pushUrgent(){const name=document.getElementById('urg-text').value.trim();if(!name){showFieldError('urg-text','urg-text-err','Please describe the task');return;}const zone=document.getElementById('urg-zone').value;const id='u'+Date.now();taskUrgent[id]={id,name,sub:'',zone};closeModal('m-urgent');showToast(`Urgent task pushed to ${zone}`);saveState();renderTab();}
-function doWorkerSO(){wSigned[R]=true;saveState();renderTab();}
-function confirmPin(){const p=document.getElementById('pin-val').value.trim();if(p!=='1234'){showFieldError('pin-val','pin-val-err','Incorrect PIN');return;}mSigned[R]=true;closeModal('m-pin');document.getElementById('pin-val').value='';saveState();renderTab();}
-function confirmClosePin(){const p=document.getElementById('close-pin-val').value.trim();if(p!=='1234'){showFieldError('close-pin-val','close-pin-val-err','Incorrect PIN');return;}clSigned[R]=true;closeModal('m-close-pin');document.getElementById('close-pin-val').value='';saveState();renderTab();}
+function pushUrgent(){const name=document.getElementById('urg-text').value.trim();if(!name){showFieldError('urg-text','urg-text-err','Please describe the task');return;}const zone=document.getElementById('urg-zone').value;const id='u'+Date.now();taskUrgent[id]={id,name,sub:'',zone};closeModal('m-urgent');showToast(`Urgent task pushed to ${zone}`);saveState({taskUrgent:{[id]:taskUrgent[id]}});renderTab();}
+function doWorkerSO(){wSigned[R]=true;saveState({wSigned});renderTab();}
+function confirmPin(){const p=document.getElementById('pin-val').value.trim();if(p!=='1234'){showFieldError('pin-val','pin-val-err','Incorrect PIN');return;}mSigned[R]=true;closeModal('m-pin');document.getElementById('pin-val').value='';saveState({mSigned});renderTab();}
+function confirmClosePin(){const p=document.getElementById('close-pin-val').value.trim();if(p!=='1234'){showFieldError('close-pin-val','close-pin-val-err','Incorrect PIN');return;}clSigned[R]=true;closeModal('m-close-pin');document.getElementById('close-pin-val').value='';saveState({clSigned});renderTab();}
 
 // ══ MODALS ══
 function openModal(id){document.getElementById(id)?.classList.add('open');}
