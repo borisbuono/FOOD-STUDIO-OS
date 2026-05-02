@@ -240,6 +240,51 @@ body {
 .brief-inline-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
 .brief-inline-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ember);}
 .brief-inline-body{font-size:13px;color:var(--text-primary);line-height:1.7;white-space:pre-wrap;}
+/* ── Command Center ── */
+.cc-stats{display:flex;gap:8px;margin-bottom:14px;}
+.cc-stat{flex:1;background:#fff;border:1px solid var(--glass-border);border-radius:12px;padding:10px 8px;text-align:center;}
+.cc-stat-n{display:block;font-family:'DM Mono',monospace;font-size:20px;font-weight:700;color:var(--text-primary);}
+.cc-stat-n.warn{color:#C07030;}
+.cc-stat-l{display:block;font-size:9px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-tertiary);margin-top:2px;}
+.cc-tree{display:flex;flex-direction:column;gap:2px;margin-bottom:6px;}
+.cc-node{display:flex;align-items:center;gap:10px;padding:9px 12px;background:#fff;border-radius:11px;border:1px solid var(--glass-border);}
+.cc-node-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.cc-node-body{flex:1;min-width:0;}
+.cc-node-name{font-size:13px;font-weight:600;color:var(--text-primary);}
+.cc-node-meta{font-size:11px;color:var(--text-tertiary);}
+.cc-node-type{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;flex-shrink:0;}
+.cc-matrix{background:#fff;border:1px solid var(--glass-border);border-radius:12px;overflow:hidden;margin-bottom:6px;}
+.cc-matrix-row{display:flex;border-bottom:1px solid var(--glass-border);}
+.cc-matrix-row:last-child{border-bottom:none;}
+.cc-matrix-row.header .cc-matrix-cat{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--text-tertiary);padding:8px 6px;text-align:center;border-left:1px solid var(--glass-border);}
+.cc-matrix-entity{flex:2;padding:10px 12px;font-size:12px;font-weight:600;color:var(--text-primary);display:flex;align-items:center;}
+.cc-matrix-cat{flex:1;}
+.cc-matrix-cell{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 4px;border-left:1px solid var(--glass-border);font-size:12px;color:var(--text-tertiary);}
+.cc-matrix-cell.ok{color:#4A7B6A;font-weight:700;}
+.cc-matrix-ver{font-size:9px;color:var(--text-tertiary);font-weight:400;margin-top:1px;}
+.cc-skill-card{background:#fff;border:1px solid var(--glass-border);border-radius:12px;padding:12px 14px;margin-bottom:7px;}
+.cc-skill-head{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.cc-skill-cat{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:3px 8px;border-radius:6px;}
+.cc-skill-cat.brand{background:#FBF2EC;color:var(--ember);}
+.cc-skill-cat.kitchen{background:#E8F5F0;color:#4A7B6A;}
+.cc-skill-cat.ops{background:#EEF2F8;color:#2A5F7A;}
+.cc-skill-cat.finance{background:#F5F0FB;color:#6B4E8A;}
+.cc-skill-name{font-size:13px;font-weight:600;color:var(--text-primary);flex:1;}
+.cc-skill-ver{font-size:10px;color:var(--text-tertiary);font-family:'DM Mono',monospace;}
+.cc-skill-body{font-size:12px;color:var(--text-secondary);line-height:1.6;}
+.cc-flag{background:#fff;border:1px solid var(--glass-border);border-radius:12px;padding:12px 14px;margin-bottom:7px;}
+.cc-flag-head{display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap;}
+.cc-flag-type{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:3px 8px;border-radius:6px;flex-shrink:0;}
+.cc-flag-section{font-size:11px;color:var(--text-tertiary);flex:1;}
+.cc-flag-entity{font-size:10px;font-weight:600;color:var(--ember);}
+.cc-flag-desc{font-size:12px;color:var(--text-secondary);line-height:1.6;}
+.cc-coa-group{background:#fff;border:1px solid var(--glass-border);border-radius:12px;overflow:hidden;margin-bottom:8px;}
+.cc-coa-group-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--text-tertiary);padding:8px 12px;background:var(--ink-mid);border-bottom:1px solid var(--glass-border);}
+.cc-coa-row{display:flex;align-items:center;gap:10px;padding:9px 12px;border-bottom:1px solid var(--glass-border);}
+.cc-coa-row:last-child{border-bottom:none;}
+.cc-coa-code{font-family:'DM Mono',monospace;font-size:11px;font-weight:700;color:var(--ember);min-width:40px;}
+.cc-coa-name{flex:1;font-size:12px;color:var(--text-primary);}
+.cc-coa-holded{font-family:'DM Mono',monospace;font-size:10px;color:var(--text-tertiary);}
 /* Brief chips in strip (legacy, kept for fallback) */
 .brief-strip{display:flex;align-items:center;gap:6px;margin-bottom:12px;flex-wrap:wrap;}
 .brief-chips{display:flex;gap:5px;flex-wrap:wrap;flex:1;}
@@ -1540,6 +1585,14 @@ const db = (typeof supabase !== 'undefined')
     })
   : null;
 
+// ── Supabase REST helper (anon key, read-only) ────────────────────────────
+async function sbFetch(path){
+  const h={apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`};
+  const r=await fetch(`${SUPABASE_URL}/rest/v1/${path}`,{headers:h});
+  if(!r.ok)throw new Error(`${path} → ${r.status} ${r.statusText}`);
+  return r.json();
+}
+
 const SVG_CHK=`<svg width="11" height="9" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 const ROLE_COLORS={worker:'#5A8A78',chef:'#C4783A',maitre:'#2A5F7A',manager:'#6B4E8A',owner:'#B8963A'};
 const ZONE_COLORS={cold:'#5A8A78',hot:'#C4783A',pizza:'#B8963A',dessert:'#8B6FAA',breakfast:'#6AAFCC'};
@@ -1604,6 +1657,8 @@ function initApp(){
     document.getElementById('tb-rest').textContent=R===0?'Taller':'Bistro Mondo';
     document.getElementById('tb-zone').textContent=ZONE;
     renderTab();
+    // ── Supabase: load live recipes in background ──
+    loadSupabaseRecipes();
     // ── Supabase connection test ──
     if (db) {
       db.from('restaurants').select('name').then(({ data, error }) => {
@@ -1645,6 +1700,7 @@ function renderTab(){
   else if(currentTab==='cookmode')c.innerHTML=renderCookMode();
   else if(currentTab==='briefing')c.innerHTML=renderBriefing();
   else if(currentTab==='production')c.innerHTML=renderProduction();
+  else if(currentTab==='command')c.innerHTML=renderCommandCenter();
 }
 
 // ══ TODAY ══
@@ -2014,7 +2070,18 @@ function copyText(text,sup){navigator.clipboard?.writeText(text).then(()=>showTo
 
 // ══ RECIPES ══
 function renderRecipes(){
-  const filtered=RECIPES.filter(r=>{const ms=!recSearch||r.name.toLowerCase().includes(recSearch.toLowerCase());const mf=recFilter==='all'||r.rest===recFilter||r.section===recFilter||(recFilter==='both'&&r.rest==='both');return ms&&mf;});
+  const filtered=RECIPES.filter(r=>{
+    const ms=!recSearch||r.name.toLowerCase().includes(recSearch.toLowerCase());
+    const rest=r.rest||'both';
+    // 'both' recipes appear under every restaurant filter
+    const mf=recFilter==='all'
+      ||(recFilter==='taller'&&(rest==='taller'||rest==='both'))
+      ||(recFilter==='bistro'&&(rest==='bistro'||rest==='both'))
+      ||rest===recFilter
+      ||r.section===recFilter
+      ||(recFilter==='both'&&rest==='both');
+    return ms&&mf;
+  });
   let html=`<div style="display:flex;gap:7px;margin-bottom:10px;">
     <input value="${recSearch}" placeholder="Search recipes..." oninput="recSearch=this.value;renderTab()" style="flex:1;padding:10px 13px;border-radius:10px;border:1px solid var(--glass-border);background:var(--ink-mid);font-family:'Outfit',sans-serif;font-size:13px;color:var(--text-primary);outline:none;">
     <button onclick="openAddRec()" style="padding:10px 14px;border-radius:10px;border:none;background:var(--ember);color:white;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;flex-shrink:0;">+ New</button>
@@ -2681,6 +2748,45 @@ const PROVIDERS = [
 ];
 
 
+// ── Supabase → RECIPES loader ─────────────────────────────────────────────
+let sbRecipesLoaded=false;
+async function loadSupabaseRecipes(){
+  if(sbRecipesLoaded)return;
+  try{
+    const [recipes,ings]=await Promise.all([
+      sbFetch('recipes?select=*&order=created_at.asc'),
+      sbFetch('recipe_ingredients?select=*&order=sort_order.asc')
+    ]);
+    let added=0;
+    recipes.forEach(rec=>{
+      // Normalise: Supabase uses 'restaurant', app uses 'rest'
+      const rest=rec.restaurant||'both';
+      // Skip exact name duplicates already in the hardcoded seed
+      if(RECIPES.find(r=>r.name.toLowerCase()===rec.name.toLowerCase()))return;
+      const recIngs=ings
+        .filter(i=>i.recipe_id===rec.id)
+        .map(i=>({name:i.name,qty:String(i.qty??''),unit:i.unit||''}));
+      RECIPES.push({
+        id:rec.id,
+        name:rec.name,
+        rest,
+        section:rec.section||'cold',
+        portions:rec.portions||10,
+        desc:rec.description||'',
+        ingredients:recIngs,
+        allergens:rec.allergens||[],
+        costPerPortion:rec.cost_per_portion||0,
+        menuPrice:rec.menu_price||0,
+        versions:[{num:1,note:rec.version_note||'Database',date:(rec.created_at||'').slice(0,10)||'2025-01-01',current:true}],
+        _fromSupabase:true
+      });
+      added++;
+    });
+    sbRecipesLoaded=true;
+    if(added>0&&currentTab==='production'&&prodTab==='recipes')renderTab();
+  }catch(e){console.warn('Supabase recipes:',e.message);}
+}
+
 let MENU=[
   [{id:'m1',name:'Chitarra Trufa',section:'hot',price:18,cost:4.20,recipeId:'r1',off:false,special:true},{id:'m2',name:'Pan Saigon',section:'cold',price:14,cost:2.80,recipeId:'r2',off:false,special:false},{id:'m3',name:'Pollo Green Curry',section:'hot',price:16,cost:3.60,recipeId:'r3',off:false,special:false},{id:'m4',name:'Gateau Marcel',section:'dessert',price:10,cost:2.10,recipeId:'r4',off:false,special:false},{id:'m5',name:'Falafel',section:'pizza',price:12,cost:1.80,recipeId:'r5',off:false,special:false},{id:'m6',name:'Margherita',section:'pizza',price:14,cost:3.20,recipeId:null,off:false,special:false},{id:'m7',name:'Ensalada Verde',section:'cold',price:9,cost:1.50,recipeId:null,off:false,special:false},{id:'m8',name:'Sopa del Día',section:'hot',price:8,cost:1.20,recipeId:null,off:false,special:false},{id:'m9',name:'Arancini',section:'pizza',price:12,cost:1.90,recipeId:'r12',off:false,special:false},{id:'m10',name:'Tarta del Día',section:'dessert',price:8,cost:1.80,recipeId:null,off:false,special:false}],
   [{id:'b1',name:'Ostras',section:'cold',price:16,cost:4.80,recipeId:'r6',off:false,special:false},{id:'b2',name:'Cous Cous Marrakesh',section:'cold',price:13,cost:2.20,recipeId:'r7',off:false,special:false},{id:'b3',name:'Mariscos Pica Pica',section:'cold',price:22,cost:6.50,recipeId:'r8',off:false,special:true},{id:'b4',name:'Crème Caramel',section:'dessert',price:9,cost:1.40,recipeId:'r9',off:false,special:false},{id:'b5',name:'Vegan Cheesecake',section:'dessert',price:11,cost:2.80,recipeId:'r10',off:false,special:false},{id:'b6',name:'Chitarra Trufa',section:'hot',price:18,cost:4.20,recipeId:'r1',off:false,special:false},{id:'b7',name:'Chicken Wings',section:'hot',price:14,cost:3.20,recipeId:null,off:false,special:false},{id:'b8',name:'Margherita',section:'pizza',price:14,cost:3.20,recipeId:'r11',off:false,special:false},{id:'b9',name:'Pizza Bianca',section:'pizza',price:16,cost:3.80,recipeId:null,off:false,special:false},{id:'b10',name:'Arancini',section:'pizza',price:12,cost:1.90,recipeId:'r12',off:false,special:false},{id:'b11',name:'Falafel',section:'pizza',price:12,cost:1.80,recipeId:'r5',off:false,special:false},{id:'b12',name:'Pollo Green Curry',section:'hot',price:16,cost:3.60,recipeId:'r3',off:false,special:false},{id:'b13',name:'Gateau Marcel',section:'dessert',price:10,cost:2.10,recipeId:'r4',off:false,special:false}]
@@ -2986,6 +3092,155 @@ function switchToProduction(){
   currentTab='production';
   document.querySelectorAll('.ntab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.ntab[data-tab="production"]').forEach(t=>t.classList.add('active'));
+}
+
+// ══ COMMAND CENTER (live Supabase) ══════════════════════════════════════════
+let ccData=null,ccLoading=false,ccSection='entities';
+
+async function loadCommandCenter(){
+  if(ccLoading||ccData)return;
+  ccLoading=true;renderTab();
+  try{
+    const[entities,rels,skills,flags,coa]=await Promise.all([
+      sbFetch('entities?select=*&order=created_at.asc'),
+      sbFetch('entity_relationships?select=*'),
+      sbFetch('skills?select=*&order=created_at.asc'),
+      sbFetch('review_flags?select=*&resolved=eq.false&order=created_at.asc'),
+      sbFetch('chart_of_accounts?select=*&order=code.asc'),
+    ]);
+    ccData={entities,rels,skills,flags,coa};
+  }catch(e){ccData={_error:e.message};}
+  ccLoading=false;renderTab();
+}
+
+function renderCommandCenter(){
+  if(!ccData&&!ccLoading){loadCommandCenter();}
+  const loading=!ccData||ccLoading;
+  if(loading)return`<div style="text-align:center;padding:48px 20px;color:var(--text-tertiary);font-size:13px;">Connecting to database…</div>`;
+  if(ccData._error)return`<div style="padding:16px;background:#FBF0F0;border-radius:12px;color:#A03838;font-size:13px;line-height:1.6;">Connection error: ${ccData._error}</div>`;
+  const{entities,rels,skills,flags,coa}=ccData;
+  const tabs=[{id:'entities',label:'Entities'},{id:'skills',label:'Skills'},{id:'flags',label:`Flags${flags.length?' ('+flags.length+')':''}`},{id:'coa',label:'Accounts'}];
+  let html=`<div class="prod-tabs">
+    ${tabs.map(t=>`<button class="prod-tab${ccSection===t.id?' active':''}" onclick="ccSection='${t.id}';renderTab()">${t.label}</button>`).join('')}
+  </div>
+  <div class="cc-stats">
+    <div class="cc-stat"><span class="cc-stat-n">${entities.length}</span><span class="cc-stat-l">Entities</span></div>
+    <div class="cc-stat"><span class="cc-stat-n">${skills.length}</span><span class="cc-stat-l">Skills</span></div>
+    <div class="cc-stat"><span class="cc-stat-n${flags.length?' warn':''}">${flags.length}</span><span class="cc-stat-l">Open flags</span></div>
+    <div class="cc-stat"><span class="cc-stat-n">${coa.length}</span><span class="cc-stat-l">Accounts</span></div>
+  </div>`;
+  if(ccSection==='entities')html+=renderCCEntities(entities,rels);
+  else if(ccSection==='skills')html+=renderCCSkills(entities,skills);
+  else if(ccSection==='flags')html+=renderCCFlags(flags,entities);
+  else html+=renderCCCoA(coa,entities);
+  return html;
+}
+
+function renderCCEntities(entities,rels){
+  // Build adjacency: parent_id → [children]
+  const children={};
+  rels.forEach(r=>{if(!children[r.parent_id])children[r.parent_id]=[];children[r.parent_id].push(r.child_id);});
+  // Find roots (no parent)
+  const hasParent=new Set(rels.map(r=>r.child_id));
+  const roots=entities.filter(e=>!hasParent.has(e.id));
+  const typeColor={holding:'#B86A42',venue:'#4A7B6A',client:'#2A5F7A',partner:'#6B4E8A',supplier:'#A8893A'};
+  function renderNode(id,depth){
+    const e=entities.find(x=>x.id===id);if(!e)return'';
+    const kids=(children[id]||[]);
+    const indent=depth*16;
+    let html=`<div class="cc-node" style="padding-left:${indent+12}px">
+      <span class="cc-node-dot" style="background:${typeColor[e.type]||'#C8C0B8'}"></span>
+      <div class="cc-node-body">
+        <div class="cc-node-name">${e.name}</div>
+        <div class="cc-node-meta">${e.type}${e.city?` · ${e.city}`:''}${e.country?`, ${e.country}`:''}</div>
+      </div>
+      <span class="cc-node-type" style="color:${typeColor[e.type]||'var(--text-tertiary)'};">${e.type}</span>
+    </div>`;
+    kids.forEach(kid=>html+=renderNode(kid,depth+1));
+    return html;
+  }
+  let html='<div class="sect-label">Entity tree</div><div class="cc-tree">';
+  roots.forEach(r=>html+=renderNode(r.id,0));
+  if(!roots.length&&entities.length){entities.forEach(e=>html+=renderNode(e.id,0));}
+  html+='</div>';
+  return html;
+}
+
+function renderCCSkills(entities,skills){
+  const cats=['brand','kitchen','ops','finance'];
+  const catLabel={brand:'Brand',kitchen:'Kitchen',ops:'Ops',finance:'Finance'};
+  const venues=entities.filter(e=>['holding','venue'].includes(e.type));
+  let html=`<div class="sect-label">Skill coverage matrix</div>
+  <div class="cc-matrix">
+    <div class="cc-matrix-row header">
+      <div class="cc-matrix-entity"></div>
+      ${cats.map(c=>`<div class="cc-matrix-cat">${catLabel[c]}</div>`).join('')}
+    </div>`;
+  venues.forEach(ent=>{
+    html+=`<div class="cc-matrix-row"><div class="cc-matrix-entity">${ent.name}</div>`;
+    cats.forEach(cat=>{
+      const s=skills.find(sk=>sk.entity_id===ent.id&&sk.category===cat);
+      html+=`<div class="cc-matrix-cell${s?' ok':''}"><span>${s?'✓':'—'}</span>${s?`<span class="cc-matrix-ver">v${s.version||1}</span>`:''}</div>`;
+    });
+    html+='</div>';
+  });
+  html+='</div>';
+  // Detail: skill content preview
+  if(skills.length){
+    html+=`<div class="sect-label" style="margin-top:14px;">Skills (${skills.length})</div>`;
+    skills.forEach(s=>{
+      const ent=entities.find(e=>e.id===s.entity_id);
+      html+=`<div class="cc-skill-card">
+        <div class="cc-skill-head">
+          <span class="cc-skill-cat ${s.category}">${s.category}</span>
+          <span class="cc-skill-name">${ent?.name||'Unknown'}</span>
+          <span class="cc-skill-ver">v${s.version||1}</span>
+        </div>
+        <div class="cc-skill-body">${(s.content||'').slice(0,180)}${(s.content||'').length>180?'…':''}</div>
+      </div>`;
+    });
+  }
+  return html;
+}
+
+function renderCCFlags(flags,entities){
+  if(!flags.length)return`<div style="text-align:center;padding:40px;color:var(--text-tertiary);font-size:13px;">No open flags.</div>`;
+  const typeColor={GAP:'#A03838',JUDGMENT:'#C07030',CONFLICT:'#A03838',OUTDATED:'#9B8E7E'};
+  const typeBg={GAP:'#FBF0F0',JUDGMENT:'#FBF3E8',CONFLICT:'#FBF0F0',OUTDATED:'#F7F5F1'};
+  let html=`<div class="sect-label">${flags.length} open flag${flags.length>1?'s':''}</div>`;
+  flags.forEach(f=>{
+    const ent=entities?.find(e=>e.id===f.entity_id);
+    html+=`<div class="cc-flag">
+      <div class="cc-flag-head">
+        <span class="cc-flag-type" style="background:${typeBg[f.type]};color:${typeColor[f.type]};">${f.type}</span>
+        <span class="cc-flag-section">${f.section||''}</span>
+        ${ent?`<span class="cc-flag-entity">${ent.name}</span>`:''}
+      </div>
+      <div class="cc-flag-desc">${f.description||f.gap_description||f.what_was_ambiguous||''}</div>
+    </div>`;
+  });
+  return html;
+}
+
+function renderCCCoA(coa,entities){
+  if(!coa.length)return`<div style="text-align:center;padding:40px;color:var(--text-tertiary);font-size:13px;">No accounts loaded.</div>`;
+  const groupLabel={'70':'Revenue (70)','60':'Food & Beverage (60)','64':'Labour (64)','62':'External Services (62)','68':'Depreciation (68)','66':'Financial (66)','75':'Other Income (75)'};
+  const groups={};
+  coa.forEach(a=>{const g=a.account_group||a.code?.toString().slice(0,2)||'Other';if(!groups[g])groups[g]=[];groups[g].push(a);});
+  let html=`<div class="sect-label">${coa.length} accounts</div>`;
+  Object.entries(groups).sort((a,b)=>a[0].localeCompare(b[0])).forEach(([g,accts])=>{
+    html+=`<div class="cc-coa-group">
+      <div class="cc-coa-group-label">${groupLabel[g]||g}</div>`;
+    accts.forEach(a=>{
+      html+=`<div class="cc-coa-row">
+        <span class="cc-coa-code">${a.code}</span>
+        <span class="cc-coa-name">${a.name}</span>
+        ${a.holded_id?`<span class="cc-coa-holded">${a.holded_id}</span>`:''}
+      </div>`;
+    });
+    html+='</div>';
+  });
+  return html;
 }
 
 // EOD reports store
@@ -3801,6 +4056,7 @@ function showInlineToastError(msg) {
     <button class="more-btn" onclick="switchTab('menu',null);closeMore()"><span class="more-lbl">Menu</span></button>
     <button class="more-btn" onclick="switchTab('events',null);closeMore()"><span class="more-lbl">Events</span></button>
     <button class="more-btn" onclick="switchTab('schedule',null);closeMore()"><span class="more-lbl">Schedule</span></button>
+    <button class="more-btn" onclick="switchTab('command',null);closeMore()"><span class="more-lbl">Command</span></button>
   </div>
 </div>
 
