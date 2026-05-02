@@ -1148,7 +1148,7 @@ body {
 .bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:rgba(255,255,255,.97);backdrop-filter:blur(20px);border-top:1px solid rgba(0,0,0,.06);display:flex;align-items:stretch;padding-bottom:env(safe-area-inset-bottom,0px);z-index:85;height:56px}
 .bnav-tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;background:transparent;border:none;cursor:pointer;padding:0 4px;gap:0;-webkit-tap-highlight-color:transparent;position:relative}
 .bic{display:none}
-.blb{font-size:10px;font-weight:500;color:#B8AFA8;text-transform:uppercase;letter-spacing:.06em;font-family:Outfit,sans-serif;transition:color .15s}
+.blb{font-size:11px;font-weight:500;color:#B8AFA8;text-transform:uppercase;letter-spacing:.07em;font-family:Outfit,sans-serif;transition:color .15s}
 .bnav-tab.active .blb{color:#1A1510;font-weight:700}
 .bnav-tab.active::after{content:'';position:absolute;top:0;left:25%;width:50%;height:2px;background:#B86A42;border-radius:0 0 2px 2px}
 /* AI round button */
@@ -1601,7 +1601,7 @@ const ZONES={0:{boh:['Hot Station','Cold Station'],foh:['All FOH'],admin:['Admin
 // ══ STATE ══
 let USER={name:'',role:'owner',lang:'en',zone:''},selRV='',selLV='en';
 let R=0,AREA='boh',ZONE='Hot Station';
-let currentTab='today',recEditId=null,menuAddSec='hot',prodTab='recipes',todaySubTab='day';
+let currentTab='today',recEditId=null,menuAddSec='hot',prodTab='mep',todaySubTab='day';
 let taskState={},cleanState={},mepState={},dishOpen={},menuSectionOpen={};
 let taskPriority={},taskUrgent={};
 let wSigned=[false,false],mSigned=[false,false],clSigned=[false,false];
@@ -1789,7 +1789,7 @@ function renderToday(){
       const mepDone=mepZoneData.reduce((a,d)=>a+d.components.filter(c=>mepState[`${R}_${ZONE}_${d.dish}_${c.name}`]).length,0);
       const mepPct=mepTotal>0?Math.round(mepDone/mepTotal*100):0;
       html+=`<div class="sect-label">MEP status</div>
-      <div class="wf-card" onclick="switchTab('mep',document.querySelector('[data-tab=mep]'))" style="cursor:pointer;">
+      <div class="wf-card" onclick="prodTab='mep';switchTab('production',document.querySelector('[data-tab=production]'))" style="cursor:pointer;">
         <div class="wf-head">
           <div class="wf-icon" style="font-size:11px;font-weight:700;color:var(--ember);letter-spacing:.04em;text-transform:uppercase;">MEP</div>
           <div class="wf-info"><div class="wf-name">Mise en Place</div><div class="wf-stepmeta">${mepDone} of ${mepTotal} components ready</div></div>
@@ -2783,7 +2783,7 @@ async function loadSupabaseRecipes(){
       added++;
     });
     sbRecipesLoaded=true;
-    if(added>0&&currentTab==='production'&&prodTab==='recipes')renderTab();
+    if(added>0&&currentTab==='production'&&(prodTab==='recipes'||prodTab==='mep'))renderTab();
   }catch(e){console.warn('Supabase recipes:',e.message);}
 }
 
@@ -3069,16 +3069,17 @@ function renderProduction(){
   // When in active cook step view — full screen, no sub-tabs
   if(cookRecipeId) return renderCookActive();
 
-  const tabs=[{id:'recipes',label:'📖 Recipes'},{id:'orders',label:'📦 Orders'}];
+  const tabs=[
+    {id:'mep',    label:'MEP'},
+    {id:'recipes',label:'Recipes'},
+    {id:'orders', label:'Orders'},
+  ];
   let html=`<div class="prod-tabs">
     ${tabs.map(t=>`<button class="prod-tab${prodTab===t.id?' active':''}" onclick="prodTab='${t.id}';renderTab()">${t.label}</button>`).join('')}
   </div>`;
-  if(prodTab==='recipes'){
-    // Recipe list with cook mode integration inline
-    html+=renderRecipesWithCook();
-  } else {
-    html+=renderOrdering();
-  }
+  if(prodTab==='mep')      html+=renderMEP();
+  else if(prodTab==='recipes') html+=renderRecipesWithCook();
+  else                     html+=renderOrdering();
   return html;
 }
 
@@ -4043,7 +4044,6 @@ function showInlineToastError(msg) {
 
 <div class="bottom-nav" id="bnav">
   <button class="bnav-tab ntab active" onclick="switchTab('today',this)" data-tab="today"><span class="blb">Today</span></button>
-  <button class="bnav-tab ntab" onclick="switchTab('mep',this)" data-tab="mep"><span class="blb">MEP</span></button>
   <button class="bnav-tab ntab" onclick="switchTab('cleaning',this)" data-tab="cleaning"><span class="blb">Tasks</span></button>
   <button class="bnav-tab ntab" onclick="switchTab('production',this)" data-tab="production"><span class="blb">Production</span></button>
 </div>
