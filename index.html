@@ -116,6 +116,47 @@ body {
   transition: all 0.2s; letter-spacing: 0.02em;
 }
 .lf-btn:active { transform: scale(0.98); opacity: 0.9; }
+.lf-divider {
+  display: flex; align-items: center; gap: 10px; margin: 16px 0;
+}
+.lf-divider::before, .lf-divider::after {
+  content: ''; flex: 1; height: 1px; background: rgba(0,0,0,0.1);
+}
+.lf-divider span {
+  font-size: 11px; color: #9B8E7E; white-space: nowrap; text-transform: uppercase; letter-spacing: 0.08em;
+}
+.lf-google-btn {
+  width: 100%; padding: 13px 15px; border-radius: 12px;
+  border: 1px solid rgba(0,0,0,0.12); background: #FFFFFF;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 500; color: #1A1510;
+  cursor: pointer; transition: all 0.18s; margin-bottom: 0;
+}
+.lf-google-btn:hover { background: #F7F5F1; border-color: rgba(0,0,0,0.18); }
+.lf-google-btn svg { flex-shrink: 0; }
+.lf-google-ok {
+  display: flex; align-items: center; gap: 8px; padding: 9px 12px;
+  border-radius: 10px; background: rgba(74,123,106,0.1); margin-bottom: 12px;
+  font-size: 13px; color: #3A6B5A; font-weight: 500;
+}
+.lf-google-ok .g-av {
+  width: 26px; height: 26px; border-radius: 50%; object-fit: cover; flex-shrink: 0;
+}
+.lf-google-ok .g-av-init {
+  width: 26px; height: 26px; border-radius: 50%; background: #4A7B6A;
+  color: white; font-size: 12px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.signout-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 0; border-top: 1px solid rgba(0,0,0,0.07); margin-top: 12px;
+}
+.signout-btn {
+  font-size: 12px; color: #9B8E7E; background: none; border: none;
+  cursor: pointer; padding: 4px 8px; border-radius: 6px;
+  font-family: 'Outfit', sans-serif;
+}
+.signout-btn:hover { background: rgba(0,0,0,0.05); color: #5C4E3C; }
 
 /* ─── APP SHELL ─── */
 #app { display: none; min-height: 100dvh; }
@@ -1319,6 +1360,7 @@ body {
 }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://accounts.google.com/gsi/client" async></script>
 </head>
 <body>
 
@@ -1364,6 +1406,18 @@ body {
     </div>
     <div class="login-err" id="login-global-err"></div>
     <button class="lf-btn" onclick="doLogin()">Enter</button>
+    <div id="lf-google-wrap" style="display:none;">
+      <div class="lf-divider"><span>or</span></div>
+      <button class="lf-google-btn" onclick="triggerGoogleLogin()">
+        <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z"/><path fill="#FBBC05" d="M3.964 10.707c-.18-.54-.282-1.117-.282-1.707s.102-1.167.282-1.707V4.961H.957C.347 6.175 0 7.55 0 9s.348 2.825.957 4.039l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.961L3.964 7.293C4.672 5.166 6.656 3.58 9 3.58z"/></svg>
+        Sign in with Google
+      </button>
+    </div>
+    <div id="lf-google-signed" style="display:none;" class="lf-google-ok">
+      <div class="g-av-init" id="lf-g-init">G</div>
+      <span id="lf-g-name">Signed in with Google</span>
+      <button style="margin-left:auto;font-size:11px;color:#9B8E7E;background:none;border:none;cursor:pointer;" onclick="clearGoogleLogin()">✕</button>
+    </div>
   </div>
   </div>
 </div>
@@ -1460,6 +1514,10 @@ body {
     <div class="mtog-row" id="ctx-zone"></div>
     <button class="mb" style="margin-top:16px;" onclick="applyCtx()">Apply</button>
     <button class="mb sec" onclick="closeModal('m-ctx')">Cancel</button>
+    <div class="signout-row">
+      <span style="font-size:12px;color:#9B8E7E;">Signed in as <strong id="ctx-name-lbl"></strong></span>
+      <button class="signout-btn" onclick="doSignOut()">Sign out</button>
+    </div>
   </div>
 </div>
 
@@ -1614,7 +1672,7 @@ let todayPhase=null,activeWorkflows=[];
 function getCov(){return parseInt(document.getElementById('cov-hidden')?.value||document.getElementById('mep-cov')?.value||40);}
 function getPhase(){const h=new Date().getHours();if(h>=5&&h<12)return'opening';if(h>=22||h<5)return'closing';return'service';}
 function getTodayPhase(){return todayPhase||getPhase();}
-function setTodayPhase(p){todayPhase=p;renderTab();}
+function setTodayPhase(p){todayPhase=p;saveState();renderTab();}
 function wfStart(recipeId){
   const r=RECIPES.find(x=>x.id===recipeId);
   const steps=RECIPE_STEPS[recipeId]||[];
@@ -1624,12 +1682,13 @@ function wfStart(recipeId){
   const t=now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
   activeWorkflows.push({recipeId,recipeName:r.name,stepIdx:0,steps,startedAt:t});
   todayPhase='service';
+  saveState();
   switchTab('today',null);
   showToast('Workflow started — '+r.name);
 }
-function wfNext(idx){if(activeWorkflows[idx]&&activeWorkflows[idx].stepIdx<activeWorkflows[idx].steps.length-1){activeWorkflows[idx].stepIdx++;renderTab();}}
-function wfComplete(idx){const name=activeWorkflows[idx]?.recipeName||'';activeWorkflows.splice(idx,1);renderTab();showToast(name+' — complete ✓');}
-function wfClose(idx){activeWorkflows.splice(idx,1);renderTab();}
+function wfNext(idx){if(activeWorkflows[idx]&&activeWorkflows[idx].stepIdx<activeWorkflows[idx].steps.length-1){activeWorkflows[idx].stepIdx++;saveState();renderTab();}}
+function wfComplete(idx){const name=activeWorkflows[idx]?.recipeName||'';activeWorkflows.splice(idx,1);saveState();renderTab();showToast(name+' — complete ✓');}
+function wfClose(idx){activeWorkflows.splice(idx,1);saveState();renderTab();}
 
 // ══ LOGIN ══
 function selR(el){document.querySelectorAll('.lf-role').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');selRV=el.dataset.r;document.getElementById('lz-wrap').classList.toggle('show',['worker','chef','maitre'].includes(selRV));}
@@ -1639,10 +1698,14 @@ function doLogin(){
   if(!name){showFieldError('l-name','l-name-err','Please enter your name');showLoginError('Please enter your name');return;}
   if(!selRV){showFieldError('lf-roles','l-role-err','Please select a role');showLoginError('Please select a role');return;}
   const zone=document.getElementById('l-zone').value||'Hot Station';
+  const prev=USER; // preserve Google fields if present
   USER={name,role:selRV,lang:selLV,zone};
+  if(prev._googleId){USER._googleId=prev._googleId;USER._googleEmail=prev._googleEmail;USER._googlePicture=prev._googlePicture;}
   if(selRV==='maitre'){AREA='foh';ZONE=zone||'All FOH';}
   else if(['worker','chef'].includes(selRV)){AREA='boh';ZONE=zone||'Hot Station';}
   else{AREA='boh';ZONE='Hot Station';}
+  saveSession();
+  loadState(); // restore today's operational state if any
   document.getElementById('login').style.display='none';
   document.getElementById('app').classList.add('visible');
   initApp();
@@ -1656,6 +1719,8 @@ function initApp(){
     document.getElementById('tb-av').style.background=rc;
     document.getElementById('tb-rest').textContent=R===0?'Taller':'Bistro Mondo';
     document.getElementById('tb-zone').textContent=ZONE;
+    const ctxLbl=document.getElementById('ctx-name-lbl');
+    if(ctxLbl)ctxLbl.textContent=USER.name+(USER._googleEmail?' ('+USER._googleEmail+')':'');
     renderTab();
     // ── Supabase: load live recipes in background ──
     loadSupabaseRecipes();
@@ -1946,7 +2011,7 @@ function renderMEP(){
       const mk=`${R}_${ZONE}_${dish.dish}_${c.name}`;const isDone=!!mepState[mk];
       const isInt=c.unit==='pcs'||c.unit==='scoops';
       const qty=(c.perCover*covers).toFixed(isInt?0:2);const hi=parseFloat(qty)>5;
-      html+=`<div class="comp-row${isDone?' done':''}" onclick="mepState['${mk}']=!mepState['${mk}'];renderTab()"><div class="comp-chk">${SVG_CHK}</div><div class="comp-body"><div class="comp-name">${c.name}</div><div class="comp-method">${c.method}</div></div><div class="comp-qty${hi?' hi':''}">${qty} ${c.unit}</div></div>`;
+      html+=`<div class="comp-row${isDone?' done':''}" onclick="mepState['${mk}']=!mepState['${mk}'];saveState();renderTab()"><div class="comp-chk">${SVG_CHK}</div><div class="comp-body"><div class="comp-name">${c.name}</div><div class="comp-method">${c.method}</div></div><div class="comp-qty${hi?' hi':''}">${qty} ${c.unit}</div></div>`;
     });
     html+=`</div></div>`;
   });
@@ -2162,7 +2227,7 @@ function hideDetail(){document.getElementById('screen-detail').style.display='no
 function renderCleaning(){
   const cl=getZC();
   if(!cl.daily.length&&!cl.weekly.length)return`<div style="text-align:center;padding:40px;color:var(--text-tertiary);">No cleaning tasks for this zone.</div>`;
-  const mkC=(c,type)=>{const k=`${R}_${AREA}_${ZONE}_${type}_${c.id}`;const done=!!cleanState[k];return `<div class="cl-tile${done?' done':''}" onclick="cleanState['${k}']=!cleanState['${k}'];renderTab()"><div class="cl-tick">✓</div><span class="cl-icon">${c.icon}</span><div class="cl-name">${c.name}</div><div class="cl-freq">${c.freq}</div></div>`;};
+  const mkC=(c,type)=>{const k=`${R}_${AREA}_${ZONE}_${type}_${c.id}`;const done=!!cleanState[k];return `<div class="cl-tile${done?' done':''}" onclick="cleanState['${k}']=!cleanState['${k}'];saveState();renderTab()"><div class="cl-tick">✓</div><span class="cl-icon">${c.icon}</span><div class="cl-name">${c.name}</div><div class="cl-freq">${c.freq}</div></div>`;};
   // Count BEFORE building HTML so template literals capture correct values
   const dd=cl.daily.filter(c=>!!cleanState[`${R}_${AREA}_${ZONE}_d_${c.id}`]).length;
   const wd=cl.weekly.filter(c=>!!cleanState[`${R}_${AREA}_${ZONE}_w_${c.id}`]).length;
@@ -2291,21 +2356,159 @@ function applyCtx(){
   R=ctxPending.R;AREA=ctxPending.AREA;ZONE=ctxPending.ZONE||ZONES[R][AREA][0]||'';
   document.getElementById('tb-rest').textContent=R===0?'Taller':'Bistro Mondo';
   document.getElementById('tb-zone').textContent=ZONE;
+  saveSession();
   closeModal('m-ctx');renderTab();
 }
+
+// ══ PERSISTENCE ══
+function saveState(){
+  try{
+    const today=new Date().toDateString();
+    localStorage.setItem('fs_state',JSON.stringify({
+      _date:today,
+      taskState,cleanState,mepState,
+      wSigned,mSigned,clSigned,
+      taskPriority,taskUrgent,
+      activeWorkflows,todayPhase
+    }));
+  }catch(e){}
+}
+function loadState(){
+  try{
+    const raw=localStorage.getItem('fs_state');
+    if(!raw)return;
+    const s=JSON.parse(raw);
+    const today=new Date().toDateString();
+    if(s._date!==today)return; // new day — fresh operational state
+    taskState=s.taskState||{};
+    cleanState=s.cleanState||{};
+    mepState=s.mepState||{};
+    wSigned=s.wSigned||[false,false];
+    mSigned=s.mSigned||[false,false];
+    clSigned=s.clSigned||[false,false];
+    taskPriority=s.taskPriority||{};
+    taskUrgent=s.taskUrgent||{};
+    activeWorkflows=s.activeWorkflows||[];
+    todayPhase=s.todayPhase||null;
+  }catch(e){}
+}
+function saveSession(){
+  try{
+    localStorage.setItem('fs_session',JSON.stringify({USER,R,AREA,ZONE}));
+  }catch(e){}
+}
+function loadSession(){
+  try{
+    const raw=localStorage.getItem('fs_session');
+    if(!raw)return false;
+    const s=JSON.parse(raw);
+    if(!s.USER?.name||!s.USER?.role)return false;
+    USER=s.USER;R=s.R??0;AREA=s.AREA||'boh';ZONE=s.ZONE||'Hot Station';
+    return true;
+  }catch(e){return false;}
+}
+function doSignOut(){
+  try{localStorage.removeItem('fs_session');localStorage.removeItem('fs_state');}catch(e){}
+  location.reload();
+}
+
+// ══ GOOGLE SIGN-IN ══
+// To enable: set GOOGLE_CLIENT_ID in your Vercel env vars or paste it below.
+// Create credentials at console.cloud.google.com → APIs & Services → OAuth 2.0 Client ID (Web application)
+// Add your deployed domain to "Authorised JavaScript origins"
+const GOOGLE_CLIENT_ID = (typeof process !== 'undefined' && process.env?.VITE_GOOGLE_CLIENT_ID) || '';
+
+function initGoogleSignIn(attempt){
+  attempt=attempt||0;
+  const clientId = GOOGLE_CLIENT_ID ||
+    document.querySelector('meta[name="google-client-id"]')?.content || '';
+  if(!clientId) return; // not configured — Google button stays hidden
+  if(typeof google === 'undefined' || !google?.accounts?.id){
+    if(attempt < 10) setTimeout(()=>initGoogleSignIn(attempt+1), 400);
+    return;
+  }
+  const wrap = document.getElementById('lf-google-wrap');
+  if(wrap) wrap.style.display = '';
+  google.accounts.id.initialize({
+    client_id: clientId,
+    callback: handleGoogleCredential,
+    auto_select: false,
+    cancel_on_tap_outside: true,
+  });
+}
+function triggerGoogleLogin(){
+  const clientId = GOOGLE_CLIENT_ID ||
+    document.querySelector('meta[name="google-client-id"]')?.content || '';
+  if(!clientId){showLoginError('Google Client ID not configured — contact admin.');return;}
+  if(typeof google==='undefined'||!google.accounts){showLoginError('Google Sign-In script not loaded. Check your connection.');return;}
+  google.accounts.id.prompt((notification)=>{
+    if(notification.isNotDisplayed()||notification.isSkippedMoment()){
+      // Fallback: render button popup
+      const btn=document.getElementById('lf-google-wrap');
+      if(btn) google.accounts.id.renderButton(btn,{theme:'outline',size:'large',width:'100%'});
+    }
+  });
+}
+function handleGoogleCredential(response){
+  try{
+    const parts=response.credential.split('.');
+    const payload=JSON.parse(atob(parts[1].replace(/-/g,'+').replace(/_/g,'/')));
+    const name=payload.name||payload.email?.split('@')[0]||'';
+    const email=payload.email||'';
+    const picture=payload.picture||'';
+    // Store Google identity on USER for display purposes
+    USER._googleId=payload.sub;
+    USER._googleEmail=email;
+    USER._googlePicture=picture;
+    // Pre-fill name field
+    const nameInput=document.getElementById('l-name');
+    if(nameInput&&!nameInput.value)nameInput.value=name;
+    // Show Google-signed indicator
+    const signed=document.getElementById('lf-google-signed');
+    const init=document.getElementById('lf-g-init');
+    const nameLbl=document.getElementById('lf-g-name');
+    if(signed){signed.style.display='flex';}
+    if(init){
+      if(picture){init.innerHTML=`<img class="g-av" src="${picture}" alt="avatar">`;}
+      else{init.textContent=name.charAt(0).toUpperCase();}
+    }
+    if(nameLbl)nameLbl.textContent=name+' (Google)';
+    document.getElementById('lf-google-wrap').style.display='none';
+    showToast('Google account connected — choose your role');
+  }catch(e){showLoginError('Google sign-in failed: '+e.message);}
+}
+function clearGoogleLogin(){
+  USER._googleId=null;USER._googleEmail=null;USER._googlePicture=null;
+  document.getElementById('lf-google-signed').style.display='none';
+  document.getElementById('lf-google-wrap').style.display='';
+}
+
+// ── Auto-login from saved session ──
+window.addEventListener('DOMContentLoaded',()=>{
+  // Try to restore session
+  if(loadSession()){
+    loadState();
+    document.getElementById('login').style.display='none';
+    document.getElementById('app').classList.add('visible');
+    initApp();
+    return;
+  }
+  // No saved session — show login, init Google Sign-In if configured
+  setTimeout(initGoogleSignIn, 500); // after GSI script loads
+});
 
 // ══ TASK ACTIONS ══
 function stKey(id){return `${R}_${AREA}_${ZONE}_${id}`;}
 function clKey(id){return `${R}_${AREA}_${ZONE}_cl_${id}`;}
 function getZT(mod){return TASKS[R]?.[AREA]?.[ZONE]?.[mod]||[];}
 function getZC(){return TASKS[R]?.[AREA]?.[ZONE]?.cleaning||{daily:[],weekly:[]};}
-function toggleTask(id,prefix){const k=(prefix?prefix+'_':'')+stKey(id);taskState[k]=!taskState[k];if(taskState[k]){taskState[k+'_sig']=USER.name;taskState[k+'_ts']=new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});}renderTab();}
-function toggleCloseTask(id){const k=clKey(id);taskState[k]=!taskState[k];renderTab();}
-function togglePri(id){const k=stKey(id);taskPriority[k]=taskPriority[k]===1?0:1;renderTab();}
-function pushUrgent(){const name=document.getElementById('urg-text').value.trim();if(!name){showFieldError('urg-text','urg-text-err','Please describe the task');return;}const zone=document.getElementById('urg-zone').value;const id='u'+Date.now();taskUrgent[id]={id,name,sub:'',zone};closeModal('m-urgent');showToast(`Urgent task pushed to ${zone}`);renderTab();}
-function doWorkerSO(){wSigned[R]=true;renderTab();}
-function confirmPin(){const p=document.getElementById('pin-val').value.trim();if(p!=='1234'){showFieldError('pin-val','pin-val-err','Incorrect PIN');return;}mSigned[R]=true;closeModal('m-pin');document.getElementById('pin-val').value='';renderTab();}
-function confirmClosePin(){const p=document.getElementById('close-pin-val').value.trim();if(p!=='1234'){showFieldError('close-pin-val','close-pin-val-err','Incorrect PIN');return;}clSigned[R]=true;closeModal('m-close-pin');document.getElementById('close-pin-val').value='';renderTab();}
+function toggleTask(id,prefix){const k=(prefix?prefix+'_':'')+stKey(id);taskState[k]=!taskState[k];if(taskState[k]){taskState[k+'_sig']=USER.name;taskState[k+'_ts']=new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});}saveState();renderTab();}
+function toggleCloseTask(id){const k=clKey(id);taskState[k]=!taskState[k];saveState();renderTab();}
+function togglePri(id){const k=stKey(id);taskPriority[k]=taskPriority[k]===1?0:1;saveState();renderTab();}
+function pushUrgent(){const name=document.getElementById('urg-text').value.trim();if(!name){showFieldError('urg-text','urg-text-err','Please describe the task');return;}const zone=document.getElementById('urg-zone').value;const id='u'+Date.now();taskUrgent[id]={id,name,sub:'',zone};closeModal('m-urgent');showToast(`Urgent task pushed to ${zone}`);saveState();renderTab();}
+function doWorkerSO(){wSigned[R]=true;saveState();renderTab();}
+function confirmPin(){const p=document.getElementById('pin-val').value.trim();if(p!=='1234'){showFieldError('pin-val','pin-val-err','Incorrect PIN');return;}mSigned[R]=true;closeModal('m-pin');document.getElementById('pin-val').value='';saveState();renderTab();}
+function confirmClosePin(){const p=document.getElementById('close-pin-val').value.trim();if(p!=='1234'){showFieldError('close-pin-val','close-pin-val-err','Incorrect PIN');return;}clSigned[R]=true;closeModal('m-close-pin');document.getElementById('close-pin-val').value='';saveState();renderTab();}
 
 // ══ MODALS ══
 function openModal(id){document.getElementById(id)?.classList.add('open');}
