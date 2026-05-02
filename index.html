@@ -1095,37 +1095,42 @@ body {
 .more-btn{display:flex;flex-direction:column;align-items:center;gap:7px;padding:16px 8px;border-radius:14px;border:1px solid rgba(0,0,0,.07);background:#F7F5F1;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .more-btn:active{background:#F0EDE8;transform:scale(.97)}
 .more-lbl{font-size:11px;font-weight:600;color:#5C4E3C;font-family:"Outfit",sans-serif}
-#tab-content{overflow-y:auto;-webkit-overflow-scrolling:touch;height:calc(100dvh - 60px - env(safe-area-inset-bottom,0px));padding:72px 16px calc(140px + env(safe-area-inset-bottom,0px));box-sizing:border-box}
+/* ai-bar hidden — access via round button only */
+.ai-bar{display:none}
+#tab-content{overflow-y:auto;-webkit-overflow-scrolling:touch;height:calc(100dvh - 60px - env(safe-area-inset-bottom,0px));padding:72px 16px calc(90px + env(safe-area-inset-bottom,0px));box-sizing:border-box}
 
-.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:rgba(255,255,255,.95);backdrop-filter:blur(20px);border-top:1px solid rgba(0,0,0,.07);display:flex;align-items:center;padding-bottom:env(safe-area-inset-bottom,0px);z-index:85;height:60px}
-.bnav-tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;background:transparent;border:none;cursor:pointer;padding:8px 4px;gap:2px;-webkit-tap-highlight-color:transparent}
-.bic{font-size:20px;line-height:1}.blb{font-size:9px;font-weight:500;color:#C8C0B8;text-transform:uppercase;font-family:Outfit,sans-serif}
-.bnav-tab.active .blb{color:#B86A42}.bnav-tab.active .bic{transform:scale(1.15)}
-.bnav-ai{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;background:transparent;border:none;cursor:pointer;padding:8px 4px;gap:2px;-webkit-tap-highlight-color:transparent;border-left:1px solid rgba(0,0,0,.06)}
-.bnav-ai .bic{font-size:18px;color:#B86A42;transition:transform .15s}
-.bnav-ai .blb{font-size:9px;font-weight:700;color:#B86A42;text-transform:uppercase;font-family:Outfit,sans-serif;letter-spacing:.04em}
-.bnav-ai:active .bic{transform:scale(.92)}
+/* ── Bottom nav — text only, no icons ── */
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:rgba(255,255,255,.97);backdrop-filter:blur(20px);border-top:1px solid rgba(0,0,0,.06);display:flex;align-items:stretch;padding-bottom:env(safe-area-inset-bottom,0px);z-index:85;height:56px}
+.bnav-tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;background:transparent;border:none;cursor:pointer;padding:0 4px;gap:0;-webkit-tap-highlight-color:transparent;position:relative}
+.bic{display:none}
+.blb{font-size:10px;font-weight:500;color:#B8AFA8;text-transform:uppercase;letter-spacing:.06em;font-family:Outfit,sans-serif;transition:color .15s}
+.bnav-tab.active .blb{color:#1A1510;font-weight:700}
+.bnav-tab.active::after{content:'';position:absolute;top:0;left:25%;width:50%;height:2px;background:#B86A42;border-radius:0 0 2px 2px}
+/* AI round button */
 .ai-fab-right{
   position:fixed;
-  bottom:calc(60px + env(safe-area-inset-bottom,0px) + 14px);
+  bottom:calc(56px + env(safe-area-inset-bottom,0px) + 16px);
   right:16px;
-  width:52px;height:52px;border-radius:50%;border:none;
+  width:48px;height:48px;border-radius:50%;border:none;
   background:#B86A42;
-  color:#fff;font-size:22px;line-height:1;
+  color:#fff;font-size:20px;line-height:1;
   display:flex;align-items:center;justify-content:center;
   cursor:pointer;z-index:88;
-  box-shadow:0 4px 18px rgba(184,106,66,.45),0 1px 4px rgba(184,106,66,.2);
+  box-shadow:0 4px 16px rgba(184,106,66,.4);
   transition:transform .15s;
   -webkit-tap-highlight-color:transparent;
+  font-family:'Outfit',sans-serif;font-weight:300;letter-spacing:0;
 }
 .ai-fab-right:active{transform:scale(.91)}
-.more-menu{position:fixed;bottom:-520px;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#fff;border-radius:24px 24px 0 0;border-top:1px solid rgba(0,0,0,.08);padding:16px 16px 80px;z-index:93;transition:bottom .32s cubic-bezier(.34,1.2,.64,1);pointer-events:none}
+/* More drawer */
+.more-menu{position:fixed;bottom:-400px;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#fff;border-radius:20px 20px 0 0;border-top:1px solid rgba(0,0,0,.06);padding:14px 16px calc(56px + env(safe-area-inset-bottom,0px) + 8px);z-index:93;transition:bottom .3s cubic-bezier(.34,1.2,.64,1);pointer-events:none}
 .more-menu.open{bottom:0;pointer-events:auto}
-.more-handle{width:36px;height:4px;background:rgba(0,0,0,.1);border-radius:2px;margin:0 auto 18px}
-.more-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.more-btn{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 8px;border-radius:14px;border:1px solid rgba(0,0,0,.07);background:#F7F5F1;cursor:pointer}
-.more-lbl{font-size:11px;font-weight:600;color:#5C4E3C;font-family:Outfit,sans-serif}
-.more-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.2);z-index:92;display:none}
+.more-handle{width:32px;height:3px;background:rgba(0,0,0,.08);border-radius:2px;margin:0 auto 16px}
+.more-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.more-btn{display:flex;align-items:center;justify-content:center;padding:14px 8px;border-radius:12px;border:1px solid rgba(0,0,0,.06);background:#F7F5F1;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.more-btn:active{background:#F0EDE8;transform:scale(.97)}
+.more-lbl{font-size:12px;font-weight:600;color:#5C4E3C;font-family:Outfit,sans-serif}
+.more-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.15);z-index:92;display:none;backdrop-filter:blur(2px)}
 .more-backdrop.show{display:block}
 
 #ai-overlay{position:fixed;inset:0;max-width:480px;margin:0 auto;background:rgba(255,255,255,.98);backdrop-filter:blur(24px);z-index:200;display:flex;flex-direction:column;transform:translateY(100%);transition:transform .3s cubic-bezier(.34,1.2,.64,1);pointer-events:none}
@@ -1335,7 +1340,7 @@ body {
           <div class="tb-ctx-zone" id="tb-zone">Hot Station</div>
         </div>
       </div>
-      <button class="tb-more-btn" onclick="openMore()" title="More screens">⋯</button>
+      <button class="tb-more-btn" onclick="openMore()" title="More screens">···</button>
     </div>
   </div></div><!-- /topbar-shell -->
 
@@ -1673,11 +1678,11 @@ function renderToday(){
       <div class="ss-div"></div>
       <div class="ss-item"><span class="ss-n">${donePhaseTasks}</span><span class="ss-l">Done</span></div>
       <div class="ss-div"></div>
-      <div class="ss-item"><span class="ss-n" style="font-size:16px;">${phase==='opening'?'🌅':phase==='service'?'🔥':'🌙'}</span><span class="ss-l">${phase.charAt(0).toUpperCase()+phase.slice(1)}</span></div>
+      <div class="ss-item"><span class="ss-n" style="font-size:12px;letter-spacing:.04em;">${phase.charAt(0).toUpperCase()+phase.slice(1)}</span><span class="ss-l">Phase</span></div>
     </div>
     <div class="today-subtabs">
       <button class="today-stab${todaySubTab==='day'?' active':''}" onclick="todaySubTab='day';renderTab()">Day</button>
-      <button class="today-stab${todaySubTab==='brief'?' active':''}" onclick="todaySubTab='brief';renderTab()">Briefing</button>
+      <button class="today-stab${todaySubTab==='brief'?' active':''}" onclick="todaySubTab='brief';renderTab()">Brief</button>
     </div>`;
 
   // ── BRIEFING sub-tab ──────────────────────────────────────
@@ -1688,9 +1693,9 @@ function renderToday(){
 
   // ── DAY sub-tab (default) ─────────────────────────────────
   html+=`<div class="phase-tabs">
-      <button class="phase-tab${phase==='opening'?' active':''}" onclick="setTodayPhase('opening')">🌅 Opening</button>
-      <button class="phase-tab${phase==='service'?' active':''}" onclick="setTodayPhase('service')">🔥 Service</button>
-      <button class="phase-tab${phase==='closing'?' active':''}" onclick="setTodayPhase('closing')">🌙 Closing</button>
+      <button class="phase-tab${phase==='opening'?' active':''}" onclick="setTodayPhase('opening')">Opening</button>
+      <button class="phase-tab${phase==='service'?' active':''}" onclick="setTodayPhase('service')">Service</button>
+      <button class="phase-tab${phase==='closing'?' active':''}" onclick="setTodayPhase('closing')">Closing</button>
     </div>`;
 
   // Active workflows — always show if running
@@ -1702,7 +1707,7 @@ function renderToday(){
       const isLast=wf.stepIdx>=wf.steps.length-1;
       html+=`<div class="wf-card">
         <div class="wf-head">
-          <div class="wf-icon">👨‍🍳</div>
+          <div class="wf-icon" style="font-size:11px;font-weight:700;color:var(--ember);letter-spacing:.04em;text-transform:uppercase;">Cook</div>
           <div class="wf-info">
             <div class="wf-name">${wf.recipeName}</div>
             <div class="wf-stepmeta">Step ${wf.stepIdx+1} / ${wf.steps.length} · started ${wf.startedAt}</div>
@@ -1730,7 +1735,7 @@ function renderToday(){
       html+=`<div class="sect-label">MEP status</div>
       <div class="wf-card" onclick="switchTab('mep',document.querySelector('[data-tab=mep]'))" style="cursor:pointer;">
         <div class="wf-head">
-          <div class="wf-icon">⚡</div>
+          <div class="wf-icon" style="font-size:11px;font-weight:700;color:var(--ember);letter-spacing:.04em;text-transform:uppercase;">MEP</div>
           <div class="wf-info"><div class="wf-name">Mise en Place</div><div class="wf-stepmeta">${mepDone} of ${mepTotal} components ready</div></div>
           <span style="color:var(--text-tertiary);font-size:16px;line-height:1;">→</span>
         </div>
@@ -1739,11 +1744,11 @@ function renderToday(){
     }
     // Urgent tasks only during service
     if(allUrgent.length>0){
-      html+=`<div class="sect-label">Urgent${canMgr?` <button onclick="openModal('m-urgent')">⚡ Push</button>`:''}`;
+      html+=`<div class="sect-label">Urgent${canMgr?` <button onclick="openModal('m-urgent')">Push</button>`:''}`;
       html+=`</div>`;
       allUrgent.forEach(task=>{
         const k='urg_'+task.id;const isDone=!!taskState[k];
-        html+=`<div class="task-card urgent${isDone?' done':''}"><div class="tc-row" onclick="toggleTask('${task.id}','urg')"><div class="tc-check"><span class="tc-check-icon">${SVG_CHK}</span></div><div class="tc-body"><div class="tc-name">${task.name}</div><div class="tc-sub urg">⚡ Urgent — from manager</div></div><div class="tc-right"><span class="tc-badge urgent">URGENT</span></div></div></div>`;
+        html+=`<div class="task-card urgent${isDone?' done':''}"><div class="tc-row" onclick="toggleTask('${task.id}','urg')"><div class="tc-check"><span class="tc-check-icon">${SVG_CHK}</span></div><div class="tc-body"><div class="tc-name">${task.name}</div><div class="tc-sub urg">Urgent — from manager</div></div><div class="tc-right"><span class="tc-badge urgent">URGENT</span></div></div></div>`;
       });
     }
     if(!allUrgent.length&&!mepZoneData.length){
@@ -1753,7 +1758,7 @@ function renderToday(){
     // Opening / Closing checklist
     const tasks=phaseTasks;
     const phaseLabel=phase==='opening'?'Opening':'Closing';
-    html+=`<div class="sect-label">${phaseLabel} checklist${canMgr&&phase==='opening'?` <button onclick="openModal('m-urgent')">⚡ Push urgent</button>`:''}`;
+    html+=`<div class="sect-label">${phaseLabel} checklist${canMgr&&phase==='opening'?` <button onclick="openModal('m-urgent')">Push urgent</button>`:''}`;
     html+=`</div>`;
     tasks.sort((a,b)=>{
       if(a._urg&&!b._urg)return -1;if(!a._urg&&b._urg)return 1;
@@ -1769,7 +1774,7 @@ function renderToday(){
           <div class="tc-check"><span class="tc-check-icon">${SVG_CHK}</span></div>
           <div class="tc-body">
             <div class="tc-name">${task.name}</div>
-            ${task._urg?`<div class="tc-sub urg">⚡ Urgent</div>`:task.sub?`<div class="tc-sub">${task.sub}</div>`:''}
+            ${task._urg?`<div class="tc-sub urg">Urgent</div>`:task.sub?`<div class="tc-sub">${task.sub}</div>`:''}
           </div>
           <div class="tc-right">
             ${task._urg?`<span class="tc-badge urgent">URGENT</span>`:phase!=='closing'?`<button class="tc-pri${isPri?' on':''}" onclick="event.stopPropagation();togglePri('${task.id}')">★</button>`:''}
@@ -1784,17 +1789,17 @@ function renderToday(){
   // Sign-off rows
   if(phase!=='closing'){
     html+=`<div class="signoff-row">
-      <div class="so-icon">✍️</div>
+      <div class="so-icon" style="font-size:11px;font-weight:700;color:var(--text-tertiary);">SIG</div>
       <div class="so-info"><div class="so-title">Worker sign-off</div><div class="so-sub" id="so-w-sub">${ws?`Signed by ${USER.name}`:pendingCount>0?`${pendingCount} tasks remaining`:'All done — tap to sign off'}</div></div>
       <button class="so-btn${ws?' signed':''}" onclick="doWorkerSO()">${ws?'✓ Signed':'Sign off'}</button>
     </div>`;
     if(canMgr){html+=`<div class="signoff-row mgr">
-      <div class="so-icon">🔑</div>
+      <div class="so-icon" style="font-size:11px;font-weight:700;color:var(--ember);">MGR</div>
       <div class="so-info"><div class="so-title">Manager approval</div><div class="so-sub">${ms?'Approved':'Awaiting worker sign-off'}</div></div>
       <button class="so-btn${ms?' signed':''}" id="mgr-btn" onclick="openModal('m-pin')" ${ws&&!ms?'':'disabled'}>${ms?'✓ Approved':'Approve'}</button>
     </div>`;}
   } else {
-    if(canMgr||clSigned[R]){html+=`<div class="signoff-row mgr"><div class="so-icon">🔒</div><div class="so-info"><div class="so-title">Close-down sign-off</div><div class="so-sub">Manager confirms zone secured</div></div><button class="so-btn${clSigned[R]?' signed':''}" onclick="openModal('m-close-pin')">${clSigned[R]?'✓ Closed':'Sign off'}</button></div>`;}
+    if(canMgr||clSigned[R]){html+=`<div class="signoff-row mgr"><div class="so-icon" style="font-size:11px;font-weight:700;color:var(--ember);">LOCK</div><div class="so-info"><div class="so-title">Close-down sign-off</div><div class="so-sub">Manager confirms zone secured</div></div><button class="so-btn${clSigned[R]?' signed':''}" onclick="openModal('m-close-pin')">${clSigned[R]?'✓ Closed':'Sign off'}</button></div>`;}
   }
   return html;
 }
@@ -2901,10 +2906,10 @@ function renderBriefingStrip(){
   const mepPct=totalMEP?Math.round(doneMEP/totalMEP*100):0;
 
   let chips='';
-  if(specials.length) chips+=`<span class="brief-chip gold">⭐ ${specials.length} special${specials.length>1?'s':''}</span>`;
-  if(off86.length)    chips+=`<span class="brief-chip red">🚫 ${off86.length} 86'd</span>`;
-  if(allergenDishes.length) chips+=`<span class="brief-chip amber">⚠️ ${allergenDishes.length} allergen${allergenDishes.length>1?'s':''}</span>`;
-  chips+=`<span class="brief-chip mep${mepPct>=80?' ok':''}">⚡ MEP ${mepPct}%</span>`;
+  if(specials.length) chips+=`<span class="brief-chip gold">${specials.length} special${specials.length>1?'s':''}</span>`;
+  if(off86.length)    chips+=`<span class="brief-chip red">${off86.length} 86'd</span>`;
+  if(allergenDishes.length) chips+=`<span class="brief-chip amber">${allergenDishes.length} allergen${allergenDishes.length>1?'s':''}</span>`;
+  chips+=`<span class="brief-chip mep${mepPct>=80?' ok':''}">MEP ${mepPct}%</span>`;
 
   let html=`<div class="brief-strip">
     <div class="brief-chips">${chips}</div>
@@ -3743,16 +3748,16 @@ function showInlineToastError(msg) {
   </div>
   <div class="ai-ov-msgs" id="ai-ov-msgs"></div>
   <div class="ai-ov-chips">
-    <button class="ai-ov-chip" onclick="quickAsk('Draft me a recipe')">📝 Draft a recipe</button>
-    <button class="ai-ov-chip" onclick="quickAsk('How much pasta for 60 covers?')">🍝 Quantities</button>
-    <button class="ai-ov-chip" onclick="quickAsk('Generate supplier orders for today')">📦 Supplier order</button>
-    <button class="ai-ov-chip" onclick="quickAsk('What are our lowest margin dishes?')">📊 Menu margins</button>
-    <button class="ai-ov-chip" onclick="quickAsk('Generate pre-service briefing')">📋 Pre-service brief</button>
-    <button class="ai-ov-chip" onclick="quickAsk('What tasks are still pending?')">⚡ Urgent tasks</button>
+    <button class="ai-ov-chip" onclick="quickAsk('Draft me a recipe')">Draft a recipe</button>
+    <button class="ai-ov-chip" onclick="quickAsk('How much pasta for 60 covers?')">Quantities</button>
+    <button class="ai-ov-chip" onclick="quickAsk('Generate supplier orders for today')">Supplier order</button>
+    <button class="ai-ov-chip" onclick="quickAsk('What are our lowest margin dishes?')">Menu margins</button>
+    <button class="ai-ov-chip" onclick="quickAsk('Generate pre-service briefing')">Pre-service brief</button>
+    <button class="ai-ov-chip" onclick="quickAsk('What tasks are still pending?')">Urgent tasks</button>
   </div>
   <div class="ai-ov-input-area">
     <div class="ai-ov-mic-wrap">
-      <button class="ai-ov-mic" id="ai-ov-mic" onclick="toggleVoice()">🎙</button>
+      <button class="ai-ov-mic" id="ai-ov-mic" onclick="toggleVoice()"><svg width="14" height="18" viewBox="0 0 14 18" fill="none"><rect x="4" y="0" width="6" height="11" rx="3" fill="currentColor"/><path d="M1 8c0 3.314 2.686 6 6 6s6-2.686 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/><line x1="7" y1="14" x2="7" y2="17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="4" y1="17" x2="10" y2="17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
     </div>
     <div class="ai-ov-mic-hint" id="ai-ov-hint">HOLD ✦ OR TAP MIC TO SPEAK</div>
     <div id="ai-status" style="text-align:center;font-size:11px;color:#B86A42;min-height:16px;margin-bottom:4px"></div>
@@ -3782,10 +3787,10 @@ function showInlineToastError(msg) {
 
 
 <div class="bottom-nav" id="bnav">
-  <button class="bnav-tab ntab active" onclick="switchTab('today',this)" data-tab="today"><span class="bic">📋</span><span class="blb">Today</span></button>
-  <button class="bnav-tab ntab" onclick="switchTab('mep',this)" data-tab="mep"><span class="bic">⚡</span><span class="blb">MEP</span></button>
-  <button class="bnav-tab ntab" onclick="switchTab('cleaning',this)" data-tab="cleaning"><span class="bic">🧹</span><span class="blb">Tasks</span></button>
-  <button class="bnav-tab ntab" onclick="switchTab('production',this)" data-tab="production"><span class="bic">📦</span><span class="blb">Production</span></button>
+  <button class="bnav-tab ntab active" onclick="switchTab('today',this)" data-tab="today"><span class="blb">Today</span></button>
+  <button class="bnav-tab ntab" onclick="switchTab('mep',this)" data-tab="mep"><span class="blb">MEP</span></button>
+  <button class="bnav-tab ntab" onclick="switchTab('cleaning',this)" data-tab="cleaning"><span class="blb">Tasks</span></button>
+  <button class="bnav-tab ntab" onclick="switchTab('production',this)" data-tab="production"><span class="blb">Production</span></button>
 </div>
 <!-- AI round button — right side, thumb-friendly -->
 <button class="ai-fab-right" onclick="openAI()" ontouchstart="startHold(event)" ontouchend="endHold(event)" ontouchcancel="endHold(event)">✦</button>
@@ -3793,9 +3798,9 @@ function showInlineToastError(msg) {
 <div class="more-menu" id="more-menu">
   <div class="more-handle"></div>
   <div class="more-grid">
-    <button class="more-btn" onclick="switchTab('menu',null);closeMore()"><span style="font-size:24px">🍽</span><span class="more-lbl">Menu</span></button>
-    <button class="more-btn" onclick="switchTab('events',null);closeMore()"><span style="font-size:24px">🎉</span><span class="more-lbl">Events</span></button>
-    <button class="more-btn" onclick="switchTab('schedule',null);closeMore()"><span style="font-size:24px">📅</span><span class="more-lbl">Schedule</span></button>
+    <button class="more-btn" onclick="switchTab('menu',null);closeMore()"><span class="more-lbl">Menu</span></button>
+    <button class="more-btn" onclick="switchTab('events',null);closeMore()"><span class="more-lbl">Events</span></button>
+    <button class="more-btn" onclick="switchTab('schedule',null);closeMore()"><span class="more-lbl">Schedule</span></button>
   </div>
 </div>
 
