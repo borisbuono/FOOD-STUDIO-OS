@@ -1068,6 +1068,20 @@ body {
 .bnav-ai .bic{font-size:18px;color:#B86A42;transition:transform .15s}
 .bnav-ai .blb{font-size:9px;font-weight:700;color:#B86A42;text-transform:uppercase;font-family:Outfit,sans-serif;letter-spacing:.04em}
 .bnav-ai:active .bic{transform:scale(.92)}
+.ai-fab-right{
+  position:fixed;
+  bottom:calc(60px + env(safe-area-inset-bottom,0px) + 14px);
+  right:16px;
+  width:52px;height:52px;border-radius:50%;border:none;
+  background:#B86A42;
+  color:#fff;font-size:22px;line-height:1;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;z-index:88;
+  box-shadow:0 4px 18px rgba(184,106,66,.45),0 1px 4px rgba(184,106,66,.2);
+  transition:transform .15s;
+  -webkit-tap-highlight-color:transparent;
+}
+.ai-fab-right:active{transform:scale(.91)}
 .more-menu{position:fixed;bottom:-520px;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#fff;border-radius:24px 24px 0 0;border-top:1px solid rgba(0,0,0,.08);padding:16px 16px 80px;z-index:93;transition:bottom .32s cubic-bezier(.34,1.2,.64,1);pointer-events:none}
 .more-menu.open{bottom:0;pointer-events:auto}
 .more-handle{width:36px;height:4px;background:rgba(0,0,0,.1);border-radius:2px;margin:0 auto 18px}
@@ -3438,8 +3452,9 @@ function showInlineToastError(msg) {
   <button class="bnav-tab ntab" onclick="switchTab('briefing',this)" data-tab="briefing"><span class="bic">📢</span><span class="blb">Briefing</span></button>
   <button class="bnav-tab ntab" onclick="switchTab('mep',this)" data-tab="mep"><span class="bic">⚡</span><span class="blb">MEP</span></button>
   <button class="bnav-tab ntab" onclick="switchTab('cleaning',this)" data-tab="cleaning"><span class="bic">🧹</span><span class="blb">Tasks</span></button>
-  <button class="bnav-ai" onclick="openAI()"><span class="bic">✦</span><span class="blb">Ask AI</span></button>
 </div>
+<!-- AI round button — right side, thumb-friendly -->
+<button class="ai-fab-right" onclick="openAI()" ontouchstart="startHold(event)" ontouchend="endHold(event)" ontouchcancel="endHold(event)">✦</button>
 <div class="more-backdrop" id="more-backdrop" onclick="closeMore()"></div>
 <div class="more-menu" id="more-menu">
   <div class="more-handle"></div>
