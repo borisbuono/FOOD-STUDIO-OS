@@ -213,6 +213,43 @@ body {
 .phase-tabs{display:flex;gap:6px;margin-bottom:14px;}
 .phase-tab{flex:1;padding:8px 4px;border-radius:11px;border:1.5px solid rgba(0,0,0,.08);background:transparent;color:var(--text-secondary);font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .18s;-webkit-tap-highlight-color:transparent;}
 .phase-tab.active{border-color:var(--ember);background:#FBF2EC;color:var(--ember);}
+/* Today sub-tabs */
+.today-subtabs{display:flex;gap:0;margin-bottom:14px;background:var(--ink-mid);border-radius:11px;padding:3px;}
+.today-stab{flex:1;padding:7px 8px;border-radius:9px;border:none;background:transparent;color:var(--text-tertiary);font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .18s;-webkit-tap-highlight-color:transparent;}
+.today-stab.active{background:#fff;color:var(--text-primary);box-shadow:0 1px 4px rgba(0,0,0,.09);}
+/* Production sub-tabs */
+.prod-tabs{display:flex;gap:0;margin-bottom:14px;background:var(--ink-mid);border-radius:11px;padding:3px;}
+.prod-tab{flex:1;padding:8px 8px;border-radius:9px;border:none;background:transparent;color:var(--text-tertiary);font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .18s;-webkit-tap-highlight-color:transparent;}
+.prod-tab.active{background:#fff;color:var(--text-primary);box-shadow:0 1px 4px rgba(0,0,0,.09);}
+/* Briefing inline elements */
+.brief-snapshot{display:flex;gap:8px;margin-bottom:14px;}
+.bsnap-item{flex:1;background:#fff;border-radius:12px;padding:10px 8px;text-align:center;border:1px solid var(--glass-border);}
+.bsnap-n{display:block;font-family:'DM Mono',monospace;font-size:18px;font-weight:700;color:var(--text-primary);line-height:1;}
+.bsnap-n.warn{color:#C07030;}
+.bsnap-l{display:block;font-size:10px;color:var(--text-tertiary);margin-top:2px;}
+.bi-card{display:flex;align-items:center;gap:10px;background:#fff;border-radius:12px;padding:11px 13px;margin-bottom:7px;border:1px solid var(--glass-border);font-size:13px;color:var(--text-primary);line-height:1.5;}
+.bi-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.bi-dot.gold{background:#C8A030;}
+.bi-dot.red{background:#C03030;}
+.bi-dot.amber{background:#C07030;}
+.bi-dot.green{background:#3A7D5C;}
+.bi-labour{display:flex;justify-content:space-between;align-items:center;padding:10px 13px;background:var(--ink-mid);border-radius:11px;margin-bottom:7px;font-size:12px;color:var(--text-secondary);}
+.bi-shift{display:flex;align-items:center;gap:10px;padding:9px 13px;background:#fff;border-radius:12px;margin-bottom:6px;border:1px solid var(--glass-border);}
+.brief-gen-btn{width:100%;padding:12px;border-radius:12px;border:1.5px dashed rgba(184,106,66,.35);background:transparent;color:var(--ember);font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.brief-inline-card{background:#fff;border:1px solid var(--ember);border-radius:14px;padding:14px;margin-bottom:14px;font-size:13px;color:var(--text-primary);line-height:1.6;}
+.brief-inline-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.brief-inline-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ember);}
+.brief-inline-body{font-size:13px;color:var(--text-primary);line-height:1.7;white-space:pre-wrap;}
+/* Brief chips in strip (legacy, kept for fallback) */
+.brief-strip{display:flex;align-items:center;gap:6px;margin-bottom:12px;flex-wrap:wrap;}
+.brief-chips{display:flex;gap:5px;flex-wrap:wrap;flex:1;}
+.brief-chip{padding:4px 9px;border-radius:14px;font-size:11px;font-weight:600;font-family:'Outfit',sans-serif;}
+.brief-chip.gold{background:#FBF5E0;color:#A8893A;}
+.brief-chip.red{background:#FBF0F0;color:#A03838;}
+.brief-chip.amber{background:#FBF3E8;color:#C07030;}
+.brief-chip.mep{background:var(--ink-mid);color:var(--text-tertiary);}
+.brief-chip.mep.ok{background:#EFF9F3;color:var(--fern);}
+.brief-strip-btn{flex-shrink:0;padding:6px 12px;border-radius:12px;border:none;background:var(--ember);color:#fff;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;-webkit-tap-highlight-color:transparent;}
 /* ─── WORKFLOW CARDS ─── */
 .wf-card{background:#fff;border:1px solid rgba(184,106,66,.2);border-left:3px solid var(--ember);border-radius:14px;margin-bottom:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04);}
 .wf-head{display:flex;align-items:center;gap:10px;padding:12px 14px 8px;}
@@ -1506,7 +1543,7 @@ const ZONES={0:{boh:['Hot Station','Cold Station'],foh:['All FOH'],admin:['Admin
 // ══ STATE ══
 let USER={name:'',role:'owner',lang:'en',zone:''},selRV='',selLV='en';
 let R=0,AREA='boh',ZONE='Hot Station';
-let currentTab='today',recEditId=null,menuAddSec='hot';
+let currentTab='today',recEditId=null,menuAddSec='hot',prodTab='recipes',todaySubTab='day';
 let taskState={},cleanState={},mepState={},dishOpen={},menuSectionOpen={};
 let taskPriority={},taskUrgent={};
 let wSigned=[false,false],mSigned=[false,false],clSigned=[false,false];
@@ -1602,6 +1639,7 @@ function renderTab(){
   else if(currentTab==='schedule')c.innerHTML=renderSchedule();
   else if(currentTab==='cookmode')c.innerHTML=renderCookMode();
   else if(currentTab==='briefing')c.innerHTML=renderBriefing();
+  else if(currentTab==='production')c.innerHTML=renderProduction();
 }
 
 // ══ TODAY ══
@@ -1637,7 +1675,19 @@ function renderToday(){
       <div class="ss-div"></div>
       <div class="ss-item"><span class="ss-n" style="font-size:16px;">${phase==='opening'?'🌅':phase==='service'?'🔥':'🌙'}</span><span class="ss-l">${phase.charAt(0).toUpperCase()+phase.slice(1)}</span></div>
     </div>
-    <div class="phase-tabs">
+    <div class="today-subtabs">
+      <button class="today-stab${todaySubTab==='day'?' active':''}" onclick="todaySubTab='day';renderTab()">Day</button>
+      <button class="today-stab${todaySubTab==='brief'?' active':''}" onclick="todaySubTab='brief';renderTab()">Briefing</button>
+    </div>`;
+
+  // ── BRIEFING sub-tab ──────────────────────────────────────
+  if(todaySubTab==='brief'){
+    html+=renderTodayBriefing(covers,phase);
+    return html;
+  }
+
+  // ── DAY sub-tab (default) ─────────────────────────────────
+  html+=`<div class="phase-tabs">
       <button class="phase-tab${phase==='opening'?' active':''}" onclick="setTodayPhase('opening')">🌅 Opening</button>
       <button class="phase-tab${phase==='service'?' active':''}" onclick="setTodayPhase('service')">🔥 Service</button>
       <button class="phase-tab${phase==='closing'?' active':''}" onclick="setTodayPhase('closing')">🌙 Closing</button>
@@ -2028,7 +2078,9 @@ function showRecipeDetail(id){
     <div class="det-actions">
       <button class="det-btn primary" onclick="openEditRec('${r.id}')">Edit recipe</button>
       <button class="det-btn secondary" onclick="openNewVer('${r.id}')">New version</button>
-    </div>`;
+    </div>
+    ${RECIPE_STEPS[r.id]?.length ? `<button onclick="hideDetail();switchToProduction();startCookMode('${r.id}')" style="width:100%;margin-top:8px;padding:13px;border-radius:12px;border:none;background:var(--ember);color:white;font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;cursor:pointer;">▶ Cook now</button>`:''}
+    <button onclick="wfStart('${r.id}');showToast('${r.name} pinned to Today')" style="width:100%;margin-top:8px;padding:12px;border-radius:12px;border:1.5px solid var(--ember);background:transparent;color:var(--ember);font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;">📌 Pin to Today</button>`;
   document.getElementById('screen-dashboard').style.display='none';
   document.getElementById('screen-detail').style.display='block';
 }
@@ -2480,7 +2532,7 @@ function renderCookMode(){
   return html;
 }
 
-function startCookMode(id){ cookRecipeId=id; cookStep=0; cookPortions=RECIPES.find(r=>r.id===id)?.portions||10; renderTab(); }
+function startCookMode(id){ cookRecipeId=id; cookStep=0; cookPortions=RECIPES.find(r=>r.id===id)?.portions||10; switchToProduction(); renderTab(); }
 
 function renderCookActive(){
   const r = RECIPES.find(x => x.id === cookRecipeId);
@@ -2722,6 +2774,214 @@ const SHIFTS=[
   {id:'s4',name:'Sofia',role:'Maître',zone:'Terrace',color:'#6B4E8A',start:'11:00',end:'23:00',clockIn:null,clockOut:null},
   {id:'s5',name:'Lucia',role:'Worker',zone:'Kitchen',color:'#B8963A',start:'10:00',end:'18:00',clockIn:null,clockOut:null},
 ];
+
+// ══ TODAY — BRIEFING SUB-TAB (service info + events + schedule) ══
+function renderTodayBriefing(covers,phase){
+  const rest=R===0?'Taller':'Bistro Mondo';
+  const activeMenu=MENU[R]?.filter(d=>!d.off)||[];
+  const specials=activeMenu.filter(d=>d.special);
+  const off86=MENU[R]?.filter(d=>d.off)||[];
+  const allergenDishes=activeMenu.filter(d=>{const rec=RECIPES.find(r=>r.id===d.recipeId);return rec&&rec.allergens.length>0;});
+  let totalMEP=0,doneMEP=0;
+  Object.values(MEP[R]||{}).forEach(dishes=>{dishes.forEach(dish=>{dish.components.forEach(c=>{totalMEP++;if(mepState[`${R}_${ZONE}_${dish.dish}_${c.name}`])doneMEP++;});});});
+  const mepPct=totalMEP?Math.round(doneMEP/totalMEP*100):0;
+  const now=new Date();
+  const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+  let html='';
+
+  // ── AI generate button ───────────────────────────────────
+  html+=`<button class="brief-gen-btn" style="margin-bottom:14px;" onclick="generateTodayBrief()">✦ Generate AI briefing</button>`;
+  if(window.todayBriefLoading){
+    html+=`<div class="brief-inline-card"><div style="text-align:center;padding:18px;color:var(--text-tertiary);font-size:13px;">✦ Generating…</div></div>`;
+  } else if(window.todayBriefText){
+    html+=`<div class="brief-inline-card">
+      <div class="brief-inline-head">
+        <span class="brief-inline-label">AI Briefing · ${rest}</span>
+        <button onclick="window.todayBriefText=null;renderTab()" style="background:none;border:none;color:var(--text-tertiary);font-size:16px;cursor:pointer;line-height:1;">×</button>
+      </div>
+      <div class="brief-inline-body">${window.todayBriefText}</div>
+    </div>`;
+  }
+
+  // ── Service snapshot ─────────────────────────────────────
+  html+=`<div class="brief-snapshot">
+    <div class="bsnap-item"><span class="bsnap-n">${covers}</span><span class="bsnap-l">Covers</span></div>
+    <div class="bsnap-item"><span class="bsnap-n${mepPct<80?' warn':''}">${mepPct}%</span><span class="bsnap-l">MEP</span></div>
+    <div class="bsnap-item"><span class="bsnap-n">${specials.length}</span><span class="bsnap-l">Specials</span></div>
+    <div class="bsnap-item"><span class="bsnap-n${off86.length?' warn':''}">${off86.length}</span><span class="bsnap-l">86'd</span></div>
+  </div>`;
+
+  // ── Specials ─────────────────────────────────────────────
+  if(specials.length){
+    html+=`<div class="sect-label">Specials</div>`;
+    specials.forEach(d=>{
+      const mg=d.price&&d.cost?Math.round((1-d.cost/d.price)*100):null;
+      html+=`<div class="bi-card"><span class="bi-dot gold"></span><div style="flex:1"><strong>${d.name}</strong>${d.price?` — €${d.price}`:''}${mg!==null?` <span style="color:var(--text-tertiary);font-size:11px;">(${mg}% margin)</span>`:''}</div></div>`;
+    });
+  }
+
+  // ── 86'd ─────────────────────────────────────────────────
+  if(off86.length){
+    html+=`<div class="sect-label">86'd tonight</div>`;
+    off86.forEach(d=>{html+=`<div class="bi-card"><span class="bi-dot red"></span><div style="flex:1">${d.name}</div></div>`;});
+  }
+
+  // ── Allergen alerts ──────────────────────────────────────
+  if(allergenDishes.length){
+    html+=`<div class="sect-label">Allergen alerts</div>`;
+    allergenDishes.slice(0,4).forEach(d=>{
+      const rec=RECIPES.find(r=>r.id===d.recipeId);if(!rec)return;
+      const aNames=rec.allergens.map(a=>{const al=ALLERGENS.find(x=>x.id===a);return al?al.label:'';}).filter(Boolean).join(', ');
+      html+=`<div class="bi-card"><span class="bi-dot amber"></span><div style="flex:1"><strong>${d.name}</strong> — ${aNames}</div></div>`;
+    });
+  }
+
+  // ── Events ───────────────────────────────────────────────
+  const upcomingEvents=EVENTS.filter(ev=>ev.status!=='complete').slice(0,3);
+  html+=`<div class="sect-label" style="margin-top:6px;">Upcoming events <button onclick="toggleEventForm()" style="background:none;border:none;color:var(--ember);font-size:11px;font-weight:700;font-family:'Outfit',sans-serif;cursor:pointer;">+ New</button></div>`;
+  if(window.eventFormOpen){html+=renderEventForm();}
+  if(!upcomingEvents.length){
+    html+=`<div class="bi-card" style="color:var(--text-tertiary);font-size:13px;">No upcoming events.</div>`;
+  } else {
+    upcomingEvents.forEach(ev=>{
+      const totalCost=ev.menu.reduce((a,d)=>a+d.costPer*d.qty,0);
+      const totalRev=ev.guests*ev.pricePerHead;
+      const mg=Math.round((1-totalCost/totalRev)*100);
+      const mgColor=mg>65?'var(--fern)':mg>45?'#A8893A':'#A03838';
+      html+=`<div class="bi-card" style="flex-direction:column;align-items:stretch;gap:4px;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="event-status ${ev.status}">${ev.status.toUpperCase()}</span>
+          <span style="font-size:11px;color:var(--text-tertiary);font-family:'DM Mono',monospace;">${ev.date}</span>
+          <span style="margin-left:auto;font-family:'DM Mono',monospace;font-size:12px;font-weight:700;color:${mgColor};">${mg}% margin</span>
+        </div>
+        <div style="font-size:14px;font-weight:600;color:var(--text-primary);">${ev.name}</div>
+        <div style="font-size:12px;color:var(--text-tertiary);">${ev.guests} guests · €${ev.pricePerHead}/head · €${totalRev.toFixed(0)} revenue</div>
+      </div>`;
+    });
+    if(EVENTS.filter(ev=>ev.status!=='complete').length>3){
+      html+=`<button onclick="currentTab='events';renderTab()" style="width:100%;padding:10px;border-radius:11px;border:1px solid var(--glass-border);background:transparent;color:var(--ember);font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;">View all events →</button>`;
+    }
+  }
+
+  // ── Today's schedule ─────────────────────────────────────
+  const todayDow=now.getDay();
+  const dayShifts=WEEK_SHIFTS.map(s=>({...s,todayShift:s.schedule.find(sh=>sh.day===todayDow)})).filter(s=>s.todayShift);
+  html+=`<div class="sect-label" style="margin-top:6px;">Today's team <span style="font-weight:400;font-size:10px;color:var(--text-tertiary);">${days[todayDow]}</span></div>`;
+  if(!dayShifts.length){
+    html+=`<div class="bi-card" style="color:var(--text-tertiary);font-size:13px;">No shifts scheduled today.</div>`;
+  } else {
+    const hourlyRates={Owner:0,Chef:18,'Maître':16,Worker:14};
+    const totalHrs=dayShifts.reduce((a,s)=>{const[sh,sm]=s.todayShift.start.split(':').map(Number);const[eh,em]=s.todayShift.end.split(':').map(Number);return a+((eh*60+em)-(sh*60+sm))/60;},0);
+    const totalCost=dayShifts.reduce((a,s)=>{const[sh,sm]=s.todayShift.start.split(':').map(Number);const[eh,em]=s.todayShift.end.split(':').map(Number);const hrs=((eh*60+em)-(sh*60+sm))/60;return a+hrs*(hourlyRates[s.role]||14);},0);
+    const projRev=covers*35;
+    const labPct=Math.round((totalCost/projRev)*100);
+    const labColor=labPct<25?'var(--fern)':labPct<35?'#A8893A':'#A03838';
+    html+=`<div class="bi-labour">
+      <span>${dayShifts.length} staff · ${totalHrs.toFixed(1)}h total</span>
+      <span style="font-family:'DM Mono',monospace;font-size:12px;font-weight:700;color:${labColor};">€${totalCost.toFixed(0)} (${labPct}%)</span>
+    </div>`;
+    dayShifts.forEach(s=>{
+      html+=`<div class="bi-shift"><div class="shift-av" style="background:${s.color}">${s.name.charAt(0)}</div><div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--text-primary);">${s.name}</div><div style="font-size:11px;color:var(--text-tertiary);">${s.role} · ${s.todayShift.zone}</div></div><div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--text-secondary);">${s.todayShift.start}–${s.todayShift.end}</div></div>`;
+    });
+  }
+
+  return html;
+}
+
+// ══ BRIEFING STRIP (embedded in Today) ══
+function renderBriefingStrip(){
+  const activeMenu=MENU[R]?.filter(d=>!d.off)||[];
+  const specials=activeMenu.filter(d=>d.special);
+  const off86=MENU[R]?.filter(d=>d.off)||[];
+  const allergenDishes=activeMenu.filter(d=>{const rec=RECIPES.find(r=>r.id===d.recipeId);return rec&&rec.allergens.length>0;});
+  // MEP overall %
+  let totalMEP=0,doneMEP=0;
+  Object.values(MEP[R]||{}).forEach(dishes=>{dishes.forEach(dish=>{dish.components.forEach(c=>{totalMEP++;if(mepState[`${R}_${ZONE}_${dish.dish}_${c.name}`])doneMEP++;});});});
+  const mepPct=totalMEP?Math.round(doneMEP/totalMEP*100):0;
+
+  let chips='';
+  if(specials.length) chips+=`<span class="brief-chip gold">⭐ ${specials.length} special${specials.length>1?'s':''}</span>`;
+  if(off86.length)    chips+=`<span class="brief-chip red">🚫 ${off86.length} 86'd</span>`;
+  if(allergenDishes.length) chips+=`<span class="brief-chip amber">⚠️ ${allergenDishes.length} allergen${allergenDishes.length>1?'s':''}</span>`;
+  chips+=`<span class="brief-chip mep${mepPct>=80?' ok':''}">⚡ MEP ${mepPct}%</span>`;
+
+  let html=`<div class="brief-strip">
+    <div class="brief-chips">${chips}</div>
+    <button class="brief-strip-btn" onclick="toggleTodayBriefCard()">✦ Brief</button>
+  </div>`;
+
+  // AI brief card — shown when todayBriefOpen is true
+  if(window.todayBriefOpen){
+    html+=`<div class="brief-inline-card">`;
+    if(window.todayBriefLoading){
+      html+=`<div style="text-align:center;padding:18px;color:var(--text-tertiary);font-size:13px;">✦ Generating briefing…</div>`;
+    } else if(window.todayBriefText){
+      html+=`<div class="brief-inline-head">
+        <span class="brief-inline-label">AI Briefing · ${R===0?'Taller':'Bistro Mondo'}</span>
+        <button onclick="window.todayBriefOpen=false;renderTab()" style="background:none;border:none;color:var(--text-tertiary);font-size:16px;cursor:pointer;line-height:1;">×</button>
+      </div>
+      <div class="brief-inline-body">${window.todayBriefText}</div>`;
+    } else {
+      // Specials detail
+      if(specials.length){html+=`<div class="bi-section">Specials</div>`;specials.forEach(d=>{const mg=d.price&&d.cost?Math.round((1-d.cost/d.price)*100):null;html+=`<div class="bi-row"><span class="bi-dot gold"></span><strong>${d.name}</strong> — €${d.price}${mg!==null?' <small>('+mg+'% margin)</small>':''}</div>`;});}
+      if(off86.length){html+=`<div class="bi-section">86'd</div>`;off86.forEach(d=>{html+=`<div class="bi-row"><span class="bi-dot red"></span>${d.name}</div>`;});}
+      if(allergenDishes.length){html+=`<div class="bi-section">Allergens</div>`;allergenDishes.slice(0,3).forEach(d=>{const rec=RECIPES.find(r=>r.id===d.recipeId);if(!rec)return;const aNames=rec.allergens.map(a=>{const al=ALLERGENS.find(x=>x.id===a);return al?al.label:'';}).filter(Boolean).join(', ');html+=`<div class="bi-row"><span class="bi-dot amber"></span>${d.name} — ${aNames}</div>`;});}
+      html+=`<button class="brief-gen-btn" onclick="generateTodayBrief()">✦ Generate AI briefing</button>`;
+    }
+    html+=`</div>`;
+  }
+  return html;
+}
+function toggleTodayBriefCard(){window.todayBriefOpen=!window.todayBriefOpen;renderTab();}
+async function generateTodayBrief(){
+  const covers=parseInt(document.getElementById('cov-hidden')?.value||40);
+  const rest=R===0?'Taller':'Bistro Mondo';
+  const activeMenu=MENU[R]?.filter(d=>!d.off)||[];
+  const specials=activeMenu.filter(d=>d.special);
+  const off86=MENU[R]?.filter(d=>d.off)||[];
+  let totalMEP=0,doneMEP=0;
+  Object.values(MEP[R]||{}).forEach(dishes=>{dishes.forEach(dish=>{dish.components.forEach(c=>{totalMEP++;if(mepState[`${R}_${ZONE}_${dish.dish}_${c.name}`])doneMEP++;});});});
+  const mepPct=totalMEP?Math.round(doneMEP/totalMEP*100):0;
+  window.todayBriefOpen=true;window.todayBriefLoading=true;window.todayBriefText=null;renderTab();
+  try{
+    const prompt=`Write a concise pre-service kitchen briefing for ${rest}. Covers: ${covers}. MEP: ${mepPct}% done. Specials: ${specials.map(d=>d.name).join(', ')||'none'}. 86'd: ${off86.map(d=>d.name).join(', ')||'none'}. Keep it punchy, 3-4 bullet points, practical tone for kitchen team.`;
+    const resp=await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-haiku-4-5',max_tokens:250,system:'You are a head chef writing a pre-service briefing. Be direct and practical. Use bullet points.',messages:[{role:'user',content:prompt}]})});
+    const data=await resp.json();
+    window.todayBriefText=data.content?.[0]?.text||'Could not generate briefing.';
+  }catch(e){window.todayBriefText='Connection error — try again.';}
+  window.todayBriefLoading=false;renderTab();
+}
+
+// ══ PRODUCTION (Recipes + Cook Mode + Orders combined) ══
+function renderProduction(){
+  // When in active cook step view — full screen, no sub-tabs
+  if(cookRecipeId) return renderCookActive();
+
+  const tabs=[{id:'recipes',label:'📖 Recipes'},{id:'orders',label:'📦 Orders'}];
+  let html=`<div class="prod-tabs">
+    ${tabs.map(t=>`<button class="prod-tab${prodTab===t.id?' active':''}" onclick="prodTab='${t.id}';renderTab()">${t.label}</button>`).join('')}
+  </div>`;
+  if(prodTab==='recipes'){
+    // Recipe list with cook mode integration inline
+    html+=renderRecipesWithCook();
+  } else {
+    html+=renderOrdering();
+  }
+  return html;
+}
+
+function renderRecipesWithCook(){
+  // Recipe detail is handled by the #screen-detail overlay (showRecipeDetail)
+  // Cook Mode replaces the production tab content when active
+  return renderRecipes();
+}
+
+function switchToProduction(){
+  currentTab='production';
+  document.querySelectorAll('.ntab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.ntab[data-tab="production"]').forEach(t=>t.classList.add('active'));
+}
 
 // EOD reports store
 let eodReports=[];
@@ -3523,9 +3783,9 @@ function showInlineToastError(msg) {
 
 <div class="bottom-nav" id="bnav">
   <button class="bnav-tab ntab active" onclick="switchTab('today',this)" data-tab="today"><span class="bic">📋</span><span class="blb">Today</span></button>
-  <button class="bnav-tab ntab" onclick="switchTab('briefing',this)" data-tab="briefing"><span class="bic">📢</span><span class="blb">Briefing</span></button>
   <button class="bnav-tab ntab" onclick="switchTab('mep',this)" data-tab="mep"><span class="bic">⚡</span><span class="blb">MEP</span></button>
   <button class="bnav-tab ntab" onclick="switchTab('cleaning',this)" data-tab="cleaning"><span class="bic">🧹</span><span class="blb">Tasks</span></button>
+  <button class="bnav-tab ntab" onclick="switchTab('production',this)" data-tab="production"><span class="bic">📦</span><span class="blb">Production</span></button>
 </div>
 <!-- AI round button — right side, thumb-friendly -->
 <button class="ai-fab-right" onclick="openAI()" ontouchstart="startHold(event)" ontouchend="endHold(event)" ontouchcancel="endHold(event)">✦</button>
@@ -3534,9 +3794,6 @@ function showInlineToastError(msg) {
   <div class="more-handle"></div>
   <div class="more-grid">
     <button class="more-btn" onclick="switchTab('menu',null);closeMore()"><span style="font-size:24px">🍽</span><span class="more-lbl">Menu</span></button>
-    <button class="more-btn" onclick="switchTab('recipes',null);closeMore()"><span style="font-size:24px">📖</span><span class="more-lbl">Recipes</span></button>
-    <button class="more-btn" onclick="switchTab('ordering',null);closeMore()"><span style="font-size:24px">📦</span><span class="more-lbl">Orders</span></button>
-    <button class="more-btn" onclick="switchTab('cookmode',null);closeMore()"><span style="font-size:24px">👨‍🍳</span><span class="more-lbl">Cook Mode</span></button>
     <button class="more-btn" onclick="switchTab('events',null);closeMore()"><span style="font-size:24px">🎉</span><span class="more-lbl">Events</span></button>
     <button class="more-btn" onclick="switchTab('schedule',null);closeMore()"><span style="font-size:24px">📅</span><span class="more-lbl">Schedule</span></button>
   </div>
