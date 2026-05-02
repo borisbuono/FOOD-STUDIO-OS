@@ -161,6 +161,7 @@ body {
 }
 .tb-ctx-text { font-size: 11px; font-weight: 500; color: var(--text-secondary); line-height: 1.2; }
 .tb-ctx-zone { font-size: 10px; color: #9B8E7E; }
+.tb-more-btn { background: transparent; border: none; font-size: 20px; color: var(--text-tertiary); cursor: pointer; padding: 6px 4px; line-height: 1; letter-spacing: 2px; -webkit-tap-highlight-color: transparent; }
 
 /* ─── DASHBOARD SCREEN ─── */
 #screen-dashboard { display: block; }
@@ -1063,9 +1064,10 @@ body {
 .bnav-tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;background:transparent;border:none;cursor:pointer;padding:8px 4px;gap:2px;-webkit-tap-highlight-color:transparent}
 .bic{font-size:20px;line-height:1}.blb{font-size:9px;font-weight:500;color:#C8C0B8;text-transform:uppercase;font-family:Outfit,sans-serif}
 .bnav-tab.active .blb{color:#B86A42}.bnav-tab.active .bic{transform:scale(1.15)}
-.fab-wrap{position:fixed;bottom:calc(60px + env(safe-area-inset-bottom,0px) - 20px);left:50%;transform:translateX(-50%);z-index:87}
-.fab{width:60px;height:60px;border-radius:50%;border:none;background:#B86A42;box-shadow:0 6px 24px rgba(184,106,66,.4);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:transform .18s}
-.fab:active{transform:scale(.92)}
+.bnav-ai{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;background:transparent;border:none;cursor:pointer;padding:8px 4px;gap:2px;-webkit-tap-highlight-color:transparent;border-left:1px solid rgba(0,0,0,.06)}
+.bnav-ai .bic{font-size:18px;color:#B86A42;transition:transform .15s}
+.bnav-ai .blb{font-size:9px;font-weight:700;color:#B86A42;text-transform:uppercase;font-family:Outfit,sans-serif;letter-spacing:.04em}
+.bnav-ai:active .bic{transform:scale(.92)}
 .more-menu{position:fixed;bottom:-520px;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#fff;border-radius:24px 24px 0 0;border-top:1px solid rgba(0,0,0,.08);padding:16px 16px 80px;z-index:93;transition:bottom .32s cubic-bezier(.34,1.2,.64,1);pointer-events:none}
 .more-menu.open{bottom:0;pointer-events:auto}
 .more-handle{width:36px;height:4px;background:rgba(0,0,0,.1);border-radius:2px;margin:0 auto 18px}
@@ -1282,6 +1284,7 @@ body {
           <div class="tb-ctx-zone" id="tb-zone">Hot Station</div>
         </div>
       </div>
+      <button class="tb-more-btn" onclick="openMore()" title="More screens">⋯</button>
     </div>
   </div></div><!-- /topbar-shell -->
 
@@ -3431,30 +3434,22 @@ function showInlineToastError(msg) {
 
 
 <div class="bottom-nav" id="bnav">
-  <button class="bnav-tab active" onclick="switchTab('today',this)" data-tab="today"><span class="bic">📋</span><span class="blb">Today</span></button>
-  <button class="bnav-tab" onclick="switchTab('menu',this)" data-tab="menu"><span class="bic">🍽</span><span class="blb">Menu</span></button>
-  <div style="flex:1"></div>
-  <button class="bnav-tab" onclick="switchTab('mep',this)" data-tab="mep"><span class="bic">⚡</span><span class="blb">MEP</span></button>
-  <button class="bnav-tab" onclick="openMore()"><span class="bic">⋯</span><span class="blb">More</span></button>
-</div>
-<div class="fab-wrap">
-  <div class="fab-ring"></div>
-  <button class="fab" id="fab-btn" onclick="openAI()" ontouchstart="startHold(event)" ontouchend="endHold(event)" ontouchcancel="endHold(event)">
-    <span style="font-size:22px;color:#fff">✦</span>
-    <span style="font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.8)">ASK</span>
-  </button>
+  <button class="bnav-tab ntab active" onclick="switchTab('today',this)" data-tab="today"><span class="bic">📋</span><span class="blb">Today</span></button>
+  <button class="bnav-tab ntab" onclick="switchTab('briefing',this)" data-tab="briefing"><span class="bic">📢</span><span class="blb">Briefing</span></button>
+  <button class="bnav-tab ntab" onclick="switchTab('mep',this)" data-tab="mep"><span class="bic">⚡</span><span class="blb">MEP</span></button>
+  <button class="bnav-tab ntab" onclick="switchTab('cleaning',this)" data-tab="cleaning"><span class="bic">🧹</span><span class="blb">Tasks</span></button>
+  <button class="bnav-ai" onclick="openAI()"><span class="bic">✦</span><span class="blb">Ask AI</span></button>
 </div>
 <div class="more-backdrop" id="more-backdrop" onclick="closeMore()"></div>
 <div class="more-menu" id="more-menu">
   <div class="more-handle"></div>
   <div class="more-grid">
+    <button class="more-btn" onclick="switchTab('menu',null);closeMore()"><span style="font-size:24px">🍽</span><span class="more-lbl">Menu</span></button>
     <button class="more-btn" onclick="switchTab('recipes',null);closeMore()"><span style="font-size:24px">📖</span><span class="more-lbl">Recipes</span></button>
     <button class="more-btn" onclick="switchTab('ordering',null);closeMore()"><span style="font-size:24px">📦</span><span class="more-lbl">Orders</span></button>
-    <button class="more-btn" onclick="switchTab('briefing',null);closeMore()"><span style="font-size:24px">📢</span><span class="more-lbl">Briefing</span></button>
-    <button class="more-btn" onclick="switchTab('cleaning',null);closeMore()"><span style="font-size:24px">🧹</span><span class="more-lbl">Cleaning</span></button>
+    <button class="more-btn" onclick="switchTab('cookmode',null);closeMore()"><span style="font-size:24px">👨‍🍳</span><span class="more-lbl">Cook Mode</span></button>
     <button class="more-btn" onclick="switchTab('events',null);closeMore()"><span style="font-size:24px">🎉</span><span class="more-lbl">Events</span></button>
     <button class="more-btn" onclick="switchTab('schedule',null);closeMore()"><span style="font-size:24px">📅</span><span class="more-lbl">Schedule</span></button>
-    <button class="more-btn" onclick="switchTab('cookmode',null);closeMore()"><span style="font-size:24px">👨‍🍳</span><span class="more-lbl">Cook Mode</span></button>
   </div>
 </div>
 
