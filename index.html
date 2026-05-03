@@ -4277,25 +4277,120 @@ async function saveObStep3(){
 }
 
 function renderObStep4(){
-  // TODO(cowork): this step will call the onboarding-agent Edge Function to walk Drive/docs
+  const generated=!!obData.skillsGenerated;
+  const progress=obData.agentProgress||[];
   return`<div class="ob-card">
-    <div class="ob-title">Document inventory</div>
-    <div class="ob-desc">The OS agent will read your existing documents to build your Skill files automatically.</div>
-    <div class="ob-stub-notice">
-      <div style="font-size:28px;margin-bottom:10px;">⚙</div>
-      <div style="font-weight:600;margin-bottom:6px;">LLM agent — Loop 4 build target</div>
-      <div style="font-size:12px;line-height:1.6;color:var(--text-tertiary);">
-        The document walk + Skill generation runs here in the final version.<br>
-        System prompt: <code>onboarding_agent_prompt_v1.md</code><br>
-        Edge Function: <code>supabase/functions/onboarding-agent</code>
-        <!-- TODO(cowork): write onboarding_agent_prompt_v2_module.md once frontend is stable -->
-      </div>
+    <div class="ob-title">Generate your Skill files</div>
+    <div class="ob-desc">The OS agent drafts 4 starter Skills (Brand · Kitchen · Operations · Finance) for your venue. You refine them in the next step.</div>
+
+    <div class="ob-form">
+      <label class="ob-label">Tell the agent about your venue (optional)</label>
+      <textarea class="ob-input" id="ob-context" rows="6" placeholder="What kind of food do you serve? What's your brand voice or philosophy? Any signature dishes, partners, or constraints? The more context, the better the drafts. (Or leave empty and we'll generate generic starters.)" oninput="obData.context=this.value" ${generated?'disabled':''}>${obData.context||''}</textarea>
     </div>
+
+    <button class="ob-btn" id="ob-generate-btn" onclick="runOnboardingAgent()" ${generated?'disabled style="opacity:.6;"':''}>
+      ${generated?'✓ Skills generated':'✦ Generate starter Skills'}
+    </button>
+
+    <div id="ob-agent-progress" style="margin-top:14px;font-size:12.5px;line-height:1.7;">
+      ${progress.map(p=>`<div style="color:${p.status==='ok'?'#4A7B6A':p.status==='err'?'#A03838':'#A8893A'};">${p.status==='ok'?'✓':p.status==='err'?'✗':'…'} ${p.label}${p.detail?' — '+p.detail:''}</div>`).join('')}
+    </div>
+
     <div class="ob-nav">
       <button class="ob-btn-sec" onclick="obStep=3;renderTab()">Back</button>
-      <button class="ob-btn" onclick="obStep=5;renderTab()">Skip — use manual Skills</button>
+      <button class="ob-btn" onclick="obStep=5;renderTab()" ${generated?'':'style="opacity:.5;"'}>${generated?'Next — Review Skills':'Skip — manual Skills'}</button>
     </div>
   </div>`;
+}
+
+async function runOnboardingAgent(){
+  if(!obData.entityId){showToast('Entity not created yet — go back to Step 1');return;}
+  if(obData.skillsGenerated){return;}
+
+  const cats=[
+    {key:'brand',label:'Brand Book',sections:'Entity overview · Brand positioning (2-3 sentences) · Voice & tone · Forbidden language · Menu language standards · Guest communication style · Visual direction · Pricing presentation · What makes this place different'},
+    {key:'kitchen',label:'Kitchen Standards',sections:'Kitchen philosophy · Recipe format · Allergen handling (14 EU allergens) · Yield/trim conventions · Critical Control Points · Station structure · MEP conventions · Plating standards · Supplier preferences'},
+    {key:'operations',label:'Operations',sections:'Opening procedures · Service phases & briefing · Closing procedures · Cleaning & HACCP · Team comms · Equipment list · Event/group protocols · Complaint handling'},
+    {key:'finance',label:'Finance Context',sections:'Business structure · Chart of accounts approach · COGS targets · Revenue reporting cadence · Key suppliers & payment terms · Seasonal patterns'},
+  ];
+
+  obData.agentProgress=cats.map(c=>({key:c.key,label:c.label,status:'pending'}));
+  renderTab();
+
+  for(let i=0;i<cats.length;i++){
+    const c=cats[i];
+    obData.agentProgress[i].status='running';
+    renderTab();
+
+    const sysPrompt=`You are the Food Studio OS Onboarding Agent generating a starter Skill file for a venue that just signed up.
+
+VENUE CONTEXT
+- Public name: ${obData.name||'(unspecified)'}
+- Legal entity: ${obData.legalName||'(unspecified)'}
+- Legal form: ${obData.legalForm||'(unspecified)'}
+- Type: ${obData.entityType||'operating_venue'}
+- Country / city: ${obData.city||'(unspecified)'}
+- Operator's notes: ${obData.context||'(none provided)'}
+
+YOUR TASK
+Draft a starter "${c.label}" Skill file in Markdown.
+Sections to include: ${c.sections}.
+
+RULES
+- Output Markdown only — no preamble, no commentary, no triple-backtick wrapping.
+- Start with: # ${obData.name||'Venue'} — ${c.label}
+- For each section: write what you can confidently infer from the context, then add a [GAP — operator to fill] line for what's missing.
+- Use sensible defaults from the venue type and city, but never invent specifics (real supplier names, real recipe details).
+- Keep it under 600 words total.
+- Voice: direct, professional, restaurant-industry. No marketing fluff.`;
+
+    try{
+      const r=await fetch('/api/ai',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          model:'claude-sonnet-4-6',
+          max_tokens:1500,
+          system:sysPrompt,
+          messages:[{role:'user',content:`Generate the ${c.label} Skill for ${obData.name||'this venue'}.`}],
+        }),
+      });
+      const data=await r.json();
+      if(data.error){throw new Error(data.error.message||'AI error');}
+      const content=(data.content&&data.content[0]&&data.content[0].text)||'';
+      if(!content)throw new Error('no content returned');
+
+      // Save to Supabase
+      const sr=await fetch(`${SUPABASE_URL}/rest/v1/skills`,{
+        method:'POST',
+        headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json',Prefer:'return=minimal'},
+        body:JSON.stringify({
+          entity_id:obData.entityId,
+          category:c.key,
+          content,
+          version:1,
+          is_current:true,
+          source_files:['onboarding_wizard_step4_v1'],
+          metadata:{generated_by:'onboarding_agent_v1',context_provided:!!obData.context,generated_at:new Date().toISOString()},
+        }),
+      });
+      if(!sr.ok){const et=await sr.text();throw new Error('save: '+et.slice(0,80));}
+      obData.agentProgress[i]={key:c.key,label:c.label,status:'ok'};
+    }catch(e){
+      obData.agentProgress[i]={key:c.key,label:c.label,status:'err',detail:e.message};
+    }
+    renderTab();
+  }
+
+  const allOk=obData.agentProgress.every(p=>p.status==='ok');
+  obData.skillsGenerated=allOk;
+  if(allOk){
+    // Refresh skills in Command Center cache so Step 5 sees them
+    if(typeof skillsData!=='undefined')skillsData=null;
+  }else{
+    showToast('Some Skills failed — check progress; you can re-run.');
+  }
+  renderTab();
 }
 
 function renderObStep5(){
