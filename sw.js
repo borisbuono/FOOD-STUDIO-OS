@@ -1,8 +1,12 @@
-// Food Studio service worker — minimal install + offline shell
-const SHELL_CACHE = 'fs-shell-v1';
-const SHELL_ASSETS = [
-  '/',
-  '/index.html',
+// Food Studio service worker — v2
+// Strategy:
+//   - HTML (navigation): network-first, fall back to cache; ensures updates pick up
+//   - Static assets (PNG/JSON/JS/CSS): cache-first with stale-while-revalidate
+//   - Supabase + /api/: pass-through (never cached, always live)
+const STATIC_CACHE = 'fs-static-v2';
+const HTML_CACHE = 'fs-html-v2';
+
+const STATIC_ASSETS = [
   '/manifest.json',
   '/assets/food_studio_horizontal_600.png',
   '/assets/food_studio_vertical_white_480.png',
@@ -12,40 +16,65 @@ const SHELL_ASSETS = [
 ];
 
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(SHELL_CACHE).then(cache => cache.addAll(SHELL_ASSETS).catch(() => {}))
-  );
+  // Take over immediately so users get the new SW behaviour without closing tabs
   self.skipWaiting();
+  event.waitUntil(
+    caches.open(STATIC_CACHE).then(c => c.addAll(STATIC_ASSETS).catch(() => {}))
+  );
 });
 
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then(keys => Promise.all(
-      keys.filter(k => k !== SHELL_CACHE).map(k => caches.delete(k))
-    ))
+      keys.filter(k => k !== STATIC_CACHE && k !== HTML_CACHE).map(k => caches.delete(k))
+    )).then(() => self.clients.claim())
   );
-  self.clients.claim();
 });
 
 self.addEventListener('fetch', (event) => {
-  const url = new URL(event.request.url);
-  // Pass-through for Supabase, /api, and cross-origin: don't cache live data
+  const req = event.request;
+  if (req.method !== 'GET') return;
+  const url = new URL(req.url);
+
+  // Pass-through: live data, never cache
   if (url.hostname.includes('supabase.co') ||
       url.pathname.startsWith('/api/') ||
       url.origin !== self.location.origin) {
-    return; // browser default
+    return;
   }
-  // Cache-first for shell assets, fall back to network
-  event.respondWith(
-    caches.match(event.request).then(cached =>
-      cached || fetch(event.request).then(resp => {
-        // Stash successful GET responses for next visit
-        if (event.request.method === 'GET' && resp && resp.status === 200) {
+
+  // HTML / navigation requests → network-first (so app updates land on refresh)
+  const isHTML = req.mode === 'navigate' ||
+                 (req.headers.get('accept') || '').includes('text/html');
+  if (isHTML) {
+    event.respondWith(
+      fetch(req).then(resp => {
+        if (resp && resp.status === 200) {
           const clone = resp.clone();
-          caches.open(SHELL_CACHE).then(cache => cache.put(event.request, clone)).catch(() => {});
+          caches.open(HTML_CACHE).then(c => c.put(req, clone)).catch(() => {});
         }
         return resp;
-      }).catch(() => caches.match('/index.html'))
-    )
+      }).catch(() => caches.match(req).then(c => c || caches.match('/index.html')))
+    );
+    return;
+  }
+
+  // Static assets → cache-first, fetch in background to refresh next time
+  event.respondWith(
+    caches.match(req).then(cached => {
+      const networkFetch = fetch(req).then(resp => {
+        if (resp && resp.status === 200) {
+          const clone = resp.clone();
+          caches.open(STATIC_CACHE).then(c => c.put(req, clone)).catch(() => {});
+        }
+        return resp;
+      }).catch(() => cached);
+      return cached || networkFetch;
+    })
   );
+});
+
+// Allow the app to ask for an immediate skipWaiting — used by an Update banner
+self.addEventListener('message', (event) => {
+  if (event.data === 'skipWaiting') self.skipWaiting();
 });

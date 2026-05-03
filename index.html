@@ -18,7 +18,18 @@
 <script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').catch(e => console.warn('SW registration failed:', e));
+    navigator.serviceWorker.register('/sw.js').then(reg => {
+      // Check for updates every time the app gains focus
+      reg.update().catch(()=>{});
+      window.addEventListener('focus', () => reg.update().catch(()=>{}));
+      // When a new SW takes control, reload once so users see the latest code
+      let reloaded = false;
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (reloaded) return;
+        reloaded = true;
+        location.reload();
+      });
+    }).catch(e => console.warn('SW registration failed:', e));
   });
 }
 </script>
