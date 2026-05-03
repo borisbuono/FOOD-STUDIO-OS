@@ -1358,6 +1358,429 @@ body {
   .login-right { display: block; min-height: auto; padding: 0; background: transparent; width: 100%; }
   .login-desc { display: none; }
 }
+
+/* ═══════════════════════════════════════════════════════
+   SKILLS MODULE
+════════════════════════════════════════════════════════ */
+.skill-card {
+  background: #fff;
+  border: 1px solid var(--glass-border);
+  border-radius: 14px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: box-shadow .15s;
+}
+.skill-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.08); }
+.skill-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+}
+.skill-card-icon {
+  font-size: 22px;
+  flex-shrink: 0;
+}
+.skill-card-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.3;
+}
+.skill-card-sub {
+  font-size: 11px;
+  color: var(--text-light);
+  margin-top: 2px;
+}
+.skill-card-chevron {
+  margin-left: auto;
+  font-size: 14px;
+  color: var(--text-light);
+  flex-shrink: 0;
+}
+.skill-card-preview {
+  font-size: 12px;
+  color: var(--text-light);
+  padding: 0 14px 12px;
+  line-height: 1.5;
+}
+.skill-card-body {
+  padding: 0 16px 14px;
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.6;
+  border-top: 1px solid var(--glass-border);
+  margin-top: 2px;
+}
+.skill-card-body .sk-h1 { font-size: 15px; font-weight: 700; margin: 12px 0 6px; }
+.skill-card-body .sk-h2 { font-size: 14px; font-weight: 600; margin: 10px 0 5px; }
+.skill-card-body .sk-h3 { font-size: 13px; font-weight: 600; margin: 8px 0 4px; }
+.skill-card-body .sk-li { margin: 3px 0 3px 16px; list-style: disc; }
+.skill-cat-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--text-light);
+  margin: 18px 0 8px;
+}
+.skill-cat-label:first-child { margin-top: 0; }
+.skills-empty {
+  text-align: center;
+  padding: 48px 20px;
+  color: var(--text-light);
+  font-size: 14px;
+}
+
+/* ═══════════════════════════════════════════════════════
+   ONBOARDING WIZARD
+════════════════════════════════════════════════════════ */
+.ob-steps {
+  display: flex;
+  align-items: center;
+  padding: 0 4px;
+  margin-bottom: 20px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.ob-steps::-webkit-scrollbar { display: none; }
+.ob-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  position: relative;
+}
+.ob-step-dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #E8E2DA;
+  color: #9B8E7E;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .2s, color .2s;
+  z-index: 1;
+}
+.ob-step.done .ob-step-dot  { background: var(--accent); color: #fff; }
+.ob-step.active .ob-step-dot { background: var(--brand); color: #fff; box-shadow: 0 0 0 3px rgba(186,106,66,.18); }
+.ob-step-lbl {
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--text-light);
+  margin-top: 4px;
+  white-space: nowrap;
+}
+.ob-step.active .ob-step-lbl { color: var(--brand); }
+.ob-step-line {
+  flex: 1;
+  height: 2px;
+  background: #E8E2DA;
+  min-width: 14px;
+  max-width: 40px;
+  margin-bottom: 16px;
+  transition: background .2s;
+}
+.ob-step-line.done { background: var(--accent); }
+
+.ob-card {
+  background: #fff;
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 22px 18px;
+}
+.ob-icon {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+.ob-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+.ob-desc {
+  font-size: 14px;
+  color: var(--text-light);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+.ob-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+.ob-label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--text-light);
+  margin-bottom: 5px;
+  display: block;
+}
+.ob-input, .ob-select {
+  width: 100%;
+  padding: 10px 13px;
+  border: 1.5px solid var(--glass-border);
+  border-radius: 10px;
+  font-size: 14px;
+  color: var(--text);
+  background: var(--bg);
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color .15s;
+}
+.ob-input:focus, .ob-select:focus {
+  border-color: var(--brand);
+}
+.ob-radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.ob-radio {
+  padding: 7px 14px;
+  border: 1.5px solid var(--glass-border);
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: all .15s;
+  background: #fff;
+}
+.ob-radio.selected, .ob-radio.sel {
+  border-color: var(--brand);
+  background: rgba(186,106,66,.08);
+  color: var(--brand);
+  font-weight: 600;
+}
+.ob-nav {
+  display: flex;
+  gap: 10px;
+  margin-top: 6px;
+}
+.ob-btn {
+  flex: 1;
+  padding: 12px 0;
+  background: var(--brand);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s;
+}
+.ob-btn:hover { background: #a0561f; }
+.ob-btn:disabled { background: #C9B99F; cursor: default; }
+.ob-btn-sec {
+  flex: 1;
+  padding: 12px 0;
+  background: transparent;
+  color: var(--text-light);
+  border: 1.5px solid var(--glass-border);
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.ob-provider-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.ob-provider {
+  border: 1.5px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 14px 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: all .15s;
+  background: #fff;
+}
+.ob-provider.selected, .ob-provider.sel {
+  border-color: var(--brand);
+  background: rgba(186,106,66,.06);
+}
+.ob-provider:hover { border-color: #ccc; }
+.ob-p-icon { font-size: 22px; margin-bottom: 5px; }
+.ob-p-name { font-size: 13px; font-weight: 600; color: var(--text); }
+.ob-p-region { font-size: 11px; color: var(--text-light); }
+.ob-webhook-box {
+  background: #F8F4EF;
+  border: 1px solid var(--glass-border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin: 12px 0;
+}
+.ob-webhook-box p {
+  font-size: 12px;
+  color: var(--text-light);
+  margin: 0 0 7px;
+}
+.ob-webhook-url {
+  font-family: 'SF Mono', 'Menlo', monospace;
+  font-size: 11px;
+  color: var(--brand);
+  word-break: break-all;
+  background: #fff;
+  padding: 6px 10px;
+  border-radius: 7px;
+  border: 1px solid var(--glass-border);
+  display: block;
+}
+.ob-info-box {
+  background: rgba(120,180,120,.09);
+  border: 1px solid rgba(120,180,120,.28);
+  border-radius: 10px;
+  padding: 11px 14px;
+  font-size: 13px;
+  color: #3a7a3a;
+  margin: 10px 0;
+}
+.ob-stub-notice {
+  background: rgba(186,106,66,.07);
+  border: 1px dashed rgba(186,106,66,.4);
+  border-radius: 10px;
+  padding: 16px 14px;
+  font-size: 13px;
+  color: var(--brand);
+  line-height: 1.6;
+  margin: 10px 0;
+}
+.ob-test-btn {
+  padding: 8px 16px;
+  background: transparent;
+  border: 1.5px solid var(--brand);
+  color: var(--brand);
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .15s;
+}
+.ob-test-btn:hover { background: var(--brand); color: #fff; }
+.ob-skill-status {
+  font-size: 12px;
+  color: var(--text-light);
+  margin-top: 6px;
+}
+
+/* ═══════════════════════════════════════════════════════
+   INTEGRATIONS CONFIG
+════════════════════════════════════════════════════════ */
+.int-section {
+  margin-bottom: 22px;
+}
+.int-section-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .09em;
+  color: var(--text-light);
+  margin-bottom: 10px;
+}
+.int-row {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  gap: 12px;
+}
+.int-row-left { flex: 1; min-width: 0; }
+.int-row-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+.int-row-sub {
+  font-size: 12px;
+  color: var(--text-light);
+  margin-top: 2px;
+}
+.int-row-right { flex-shrink: 0; }
+.int-status {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+.int-status.ok {
+  background: rgba(80,170,90,.12);
+  color: #2a8a2a;
+}
+.int-status.off {
+  background: rgba(0,0,0,.06);
+  color: var(--text-light);
+}
+.int-empty {
+  font-size: 13px;
+  color: var(--text-light);
+  text-align: center;
+  padding: 16px 0;
+  font-style: italic;
+}
+.int-add-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  width: 100%;
+  padding: 11px 0;
+  background: transparent;
+  border: 1.5px dashed var(--glass-border);
+  border-radius: 12px;
+  color: var(--text-light);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 6px;
+  transition: border-color .15s, color .15s;
+}
+.int-add-btn:hover {
+  border-color: var(--brand);
+  color: var(--brand);
+}
+.int-covers-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.int-cover-card {
+  flex: 1;
+  background: #fff;
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 14px 12px;
+  text-align: center;
+}
+.int-cover-num {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--brand);
+  line-height: 1;
+}
+.int-cover-lbl {
+  font-size: 11px;
+  color: var(--text-light);
+  margin-top: 3px;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://accounts.google.com/gsi/client" async></script>
@@ -1775,6 +2198,9 @@ function renderTab(){
   else if(currentTab==='briefing')c.innerHTML=renderBriefing();
   else if(currentTab==='production')c.innerHTML=renderProduction();
   else if(currentTab==='command')c.innerHTML=renderCommandCenter();
+  else if(currentTab==='skills')c.innerHTML=renderSkills();
+  else if(currentTab==='onboarding')c.innerHTML=renderOnboarding();
+  else if(currentTab==='integrations')c.innerHTML=renderIntegrations();
 }
 
 // ══ TODAY ══
@@ -2144,40 +2570,57 @@ function copyText(text,sup){navigator.clipboard?.writeText(text).then(()=>showTo
 
 // ══ RECIPES ══
 function renderRecipes(){
+  // Default filter is context-aware: show current restaurant + shared 'both' recipes
+  const defaultFilter = R===0 ? 'taller' : 'bistro';
+  const activeFilter  = recFilter==='all' ? defaultFilter : recFilter;
+
   const filtered=RECIPES.filter(r=>{
     const ms=!recSearch||r.name.toLowerCase().includes(recSearch.toLowerCase());
     const rest=r.rest||'both';
-    // 'both' recipes appear under every restaurant filter
+    // 'both' = shared Holdings library — appears on every restaurant view
     const mf=recFilter==='all'
-      ||(recFilter==='taller'&&(rest==='taller'||rest==='both'))
-      ||(recFilter==='bistro'&&(rest==='bistro'||rest==='both'))
-      ||rest===recFilter
-      ||r.section===recFilter
-      ||(recFilter==='both'&&rest==='both');
+      ||(activeFilter==='taller'&&(rest==='taller'||rest==='both'))
+      ||(activeFilter==='bistro'&&(rest==='bistro'||rest==='bistro_mondo'||rest==='both'))
+      ||rest===activeFilter
+      ||r.section===activeFilter
+      ||(activeFilter==='both'&&rest==='both');
     return ms&&mf;
   });
+
+  const bothCount=RECIPES.filter(r=>(r.rest||'both')==='both').length;
+  const sbCount  =RECIPES.filter(r=>r._fromSupabase).length;
+
   let html=`<div style="display:flex;gap:7px;margin-bottom:10px;">
     <input value="${recSearch}" placeholder="Search recipes..." oninput="recSearch=this.value;renderTab()" style="flex:1;padding:10px 13px;border-radius:10px;border:1px solid var(--glass-border);background:var(--ink-mid);font-family:'Outfit',sans-serif;font-size:13px;color:var(--text-primary);outline:none;">
     <button onclick="openAddRec()" style="padding:10px 14px;border-radius:10px;border:none;background:var(--ember);color:white;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;flex-shrink:0;">+ New</button>
   </div>
   <div style="display:flex;gap:5px;overflow-x:auto;scrollbar-width:none;margin-bottom:12px;padding-bottom:2px;">
-    ${['all','taller','bistro','both','cold','hot','pizza','dessert','breakfast'].map(f=>`<button onclick="recFilter='${f}';renderTab()" style="flex-shrink:0;padding:5px 11px;border-radius:14px;border:1px solid var(--glass-border);background:${recFilter===f?'var(--ember)':'transparent'};color:${recFilter===f?'white':'var(--text-tertiary)'};font-family:'Outfit',sans-serif;font-size:11px;cursor:pointer;white-space:nowrap;">${f.charAt(0).toUpperCase()+f.slice(1)}</button>`).join('')}
-  </div>`;
+    ${['all','taller','bistro','both','cold','hot','pizza','dessert','breakfast'].map(f=>{
+      const isActive=(f==='all'&&recFilter==='all')||(f===recFilter);
+      const label=f==='all'?(R===0?'Taller':'Bistro')+' + Shared':f==='taller'?'Taller':f==='bistro'?'Bistro':f.charAt(0).toUpperCase()+f.slice(1);
+      return `<button onclick="recFilter='${f}';renderTab()" style="flex-shrink:0;padding:5px 11px;border-radius:14px;border:1px solid var(--glass-border);background:${isActive?'var(--ember)':'transparent'};color:${isActive?'white':'var(--text-tertiary)'};font-family:'Outfit',sans-serif;font-size:11px;cursor:pointer;white-space:nowrap;">${label}</button>`;
+    }).join('')}
+  </div>
+  ${sbCount>0?`<div style="font-size:11px;color:var(--text-tertiary);margin-bottom:10px;padding:7px 10px;background:#F7F5F1;border-radius:8px;">Holdings library: ${bothCount} shared recipe${bothCount!==1?'s':''} loaded from database</div>`:''}`;
+
   if(!filtered.length)return html+`<div style="text-align:center;padding:40px;color:var(--text-tertiary);">No recipes found.</div>`;
   filtered.forEach(r=>{
     const cv=r.versions.find(v=>v.current)||r.versions[r.versions.length-1];
     const mg=r.menuPrice?Math.round((1-r.costPerPortion/r.menuPrice)*100):null;
     const mgColor=mg===null?'var(--text-tertiary)':mg>60?'#5A8A78':mg>40?'#C4783A':'#A83232';
+    const restLabel=r.rest==='taller'?'Taller':r.rest==='bistro'||r.rest==='bistro_mondo'?'Bistro Mondo':'Holdings';
+    const restBg   =r.rest==='both'?'rgba(184,106,66,0.12)':r.rest==='taller'?'rgba(74,123,106,0.1)':'rgba(42,95,122,0.1)';
+    const restClr  =r.rest==='both'?'var(--ember)':r.rest==='taller'?'#3A6B5A':'#2A5F7A';
     html+=`<div class="rec-card" onclick="showRecipeDetail('${r.id}')">
       <div class="rc-row">
         <div class="rc-accent" style="background:${ZONE_COLORS[r.section]||'var(--fern)'};"></div>
         <div class="rc-body">
-          <div class="rc-name">${r.name}</div>
-          <div class="rc-meta">${r.portions} portions · ${r.ingredients.length} ingredients${r.costPerPortion?` · €${r.costPerPortion.toFixed(2)}/portion`:''}</div>
+          <div class="rc-name">${r.name}${r._fromSupabase?'<span style="margin-left:6px;font-size:9px;font-weight:700;letter-spacing:.06em;color:var(--ember);opacity:.7;">DB</span>':''}</div>
+          <div class="rc-meta">${r.portions} portions · ${r.ingredients.length} ingredients${r.costPerPortion?` · €${(+r.costPerPortion).toFixed(2)}/portion`:''}</div>
           <div class="rc-tags">
-            <span class="rc-tag ${r.rest}">${r.rest==='taller'?'Taller':r.rest==='bistro'?'Bistro Mondo':'Both'}</span>
+            <span class="rc-tag" style="background:${restBg};color:${restClr};">${restLabel}</span>
             <span class="rc-tag" style="background:rgba(255,255,255,0.06);color:var(--text-tertiary);">${r.section.charAt(0).toUpperCase()+r.section.slice(1)}</span>
-            ${r.allergens.length?`<span class="rc-tag allergen">⚠️ ${r.allergens.length} allergen${r.allergens.length>1?'s':''}</span>`:''}
+            ${r.allergens&&r.allergens.length?`<span class="rc-tag allergen">${r.allergens.length} allergen${r.allergens.length>1?'s':''}</span>`:''}
           </div>
         </div>
         <div class="rc-right">
@@ -3042,7 +3485,7 @@ async function loadSupabaseRecipes(){
       if(RECIPES.find(r=>r.name.toLowerCase()===rec.name.toLowerCase()))return;
       const recIngs=ings
         .filter(i=>i.recipe_id===rec.id)
-        .map(i=>({name:i.name,qty:String(i.qty??''),unit:i.unit||''}));
+        .map(i=>({name:i.name,qty:String(i.quantity??i.qty??''),unit:i.unit||''})); // Supabase col = 'quantity'
       RECIPES.push({
         id:rec.id,
         name:rec.name,
@@ -3519,6 +3962,487 @@ function renderCCCoA(coa,entities){
     html+='</div>';
   });
   return html;
+}
+
+// ══ SKILLS MODULE ══════════════════════════════════════════════════════════════
+// Reads from Supabase skills table; role-filtered knowledge base for staff
+let skillsData=null,skillsLoading=false;
+
+async function loadSkillsData(){
+  if(skillsLoading||skillsData)return;
+  skillsLoading=true;renderTab();
+  try{
+    const[skills,entities]=await Promise.all([
+      sbFetch('skills?select=*,entities(name,entity_type,slug)&is_current=eq.true&order=created_at.asc'),
+      sbFetch('entities?select=id,name,entity_type,slug'),
+    ]);
+    skillsData={skills,entities};
+  }catch(e){skillsData={_error:e.message};}
+  skillsLoading=false;renderTab();
+}
+
+function renderSkills(){
+  if(!skillsData&&!skillsLoading){loadSkillsData();}
+  if(skillsLoading||!skillsData)return`<div style="text-align:center;padding:48px;color:var(--text-tertiary);font-size:13px;">Loading skills…</div>`;
+  if(skillsData._error)return`<div style="padding:16px;background:#FBF0F0;border-radius:12px;color:#A03838;font-size:13px;">Error: ${skillsData._error}</div>`;
+
+  const{skills,entities}=skillsData;
+  // Role-based category filter
+  const roleCats={worker:['kitchen'],chef:['kitchen','operations'],maitre:['operations','brand'],manager:['brand','kitchen','operations','finance'],owner:['brand','kitchen','operations','finance']};
+  const allowedCats=roleCats[USER.role]||['kitchen'];
+
+  // Entity filter: workers/chefs see their restaurant's skills; managers/owners see all
+  const restSlug=R===0?'taller-sa-penya':'bistro-mondo';
+  const filtered=skills.filter(s=>{
+    const cat=(s.category||'').toLowerCase();
+    if(!allowedCats.includes(cat))return false;
+    if(['worker','chef','maitre'].includes(USER.role)){
+      const ent=entities.find(e=>e.id===s.entity_id);
+      if(!ent)return false;
+      return ent.slug===restSlug||ent.entity_type==='holding_company';
+    }
+    return true;
+  });
+
+  if(!filtered.length)return`<div style="text-align:center;padding:40px;color:var(--text-tertiary);font-size:13px;">No skills available for your role.</div>`;
+
+  const catColors={brand:'#B86A42',kitchen:'#4A7B6A',operations:'#2A5F7A',finance:'#6B4E8A'};
+  const catLabel={brand:'Brand',kitchen:'Kitchen',operations:'Operations',finance:'Finance'};
+
+  let html=`<div style="font-size:11px;color:var(--text-tertiary);margin-bottom:16px;">Your role: <strong style="color:var(--text-secondary);text-transform:capitalize;">${USER.role}</strong> · ${filtered.length} skill${filtered.length!==1?'s':''} available</div>`;
+
+  // Group by category
+  const byCategory={};
+  filtered.forEach(s=>{
+    const c=s.category||'general';
+    if(!byCategory[c])byCategory[c]=[];
+    byCategory[c].push(s);
+  });
+
+  Object.entries(byCategory).sort((a,b)=>allowedCats.indexOf(a[0])-allowedCats.indexOf(b[0])).forEach(([cat,catSkills])=>{
+    const color=catColors[cat]||'var(--text-secondary)';
+    html+=`<div style="margin-bottom:20px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:${color};margin-bottom:10px;">${catLabel[cat]||cat}</div>`;
+    catSkills.forEach(s=>{
+      const ent=entities.find(e=>e.id===s.entity_id);
+      const entName=ent?ent.name:'Unknown entity';
+      const isOpen=!!window[`skillOpen_${s.id}`];
+      // Truncate content preview to first 200 chars
+      const preview=(s.content||'').replace(/^#+.+\n/gm,'').replace(/\n+/g,' ').trim().slice(0,200);
+      html+=`<div class="skill-card" onclick="window['skillOpen_${s.id}']=!window['skillOpen_${s.id}'];renderTab()">
+        <div class="skill-card-header">
+          <div>
+            <div class="skill-card-title">${catLabel[cat]||cat} — ${entName}</div>
+            <div class="skill-card-sub">v${s.version||1} · ${(s.source_files||[]).length} source${(s.source_files||[]).length!==1?'s':''}</div>
+          </div>
+          <span style="font-size:14px;color:var(--text-tertiary);flex-shrink:0;">${isOpen?'↑':'↓'}</span>
+        </div>
+        ${isOpen?`<div class="skill-card-body">${renderSkillContent(s.content||'')}</div>`:`<div class="skill-card-preview">${preview}…</div>`}
+      </div>`;
+    });
+    html+='</div>';
+  });
+  return html;
+}
+
+function renderSkillContent(md){
+  // Minimal markdown → HTML: headers, bold, lists
+  return md
+    .replace(/^### (.+)$/gm,'<div class="sk-h3">$1</div>')
+    .replace(/^## (.+)$/gm,'<div class="sk-h2">$1</div>')
+    .replace(/^# (.+)$/gm,'<div class="sk-h1">$1</div>')
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/^- (.+)$/gm,'<div class="sk-li">$1</div>')
+    .replace(/\n\n+/g,'<br>')
+    .replace(/\n/g,'<br>');
+}
+
+// ══ ONBOARDING WIZARD ══════════════════════════════════════════════════════════
+// Loop 4 build target — 7-step wizard to onboard a new venue into the OS
+let obStep=0,obData={};  // onboarding wizard state
+
+function renderOnboarding(){
+  const steps=['Welcome','Your venue','Booking system','Accounting','Review docs','Skill preview','Activate'];
+  const canMgr=['manager','owner'].includes(USER.role);
+  if(!canMgr)return`<div style="padding:32px;text-align:center;color:var(--text-tertiary);font-size:13px;">Onboarding is for owners and managers.</div>`;
+
+  let html=`
+  <div class="ob-steps">
+    ${steps.map((s,i)=>`<div class="ob-step${i===obStep?' active':i<obStep?' done':''}">
+      <div class="ob-step-dot">${i<obStep?'✓':i+1}</div>
+      <div class="ob-step-lbl">${s}</div>
+    </div>`).join('<div class="ob-step-line"></div>')}
+  </div>`;
+
+  if(obStep===0) html+=renderObStep0();
+  else if(obStep===1) html+=renderObStep1();
+  else if(obStep===2) html+=renderObStep2();
+  else if(obStep===3) html+=renderObStep3();
+  else if(obStep===4) html+=renderObStep4();
+  else if(obStep===5) html+=renderObStep5();
+  else if(obStep===6) html+=renderObStep6();
+
+  return html;
+}
+
+function renderObStep0(){
+  return`<div class="ob-card">
+    <div class="ob-icon">✦</div>
+    <div class="ob-title">Welcome to Food Studio OS</div>
+    <div class="ob-desc">This wizard sets up your venue in about 10 minutes.<br>You can save and return at any time.</div>
+    <button class="ob-btn" onclick="obStep=1;renderTab()">Start onboarding</button>
+    <button class="ob-btn-sec" onclick="switchTab('today',null)">I'll do it later</button>
+  </div>`;
+}
+
+function renderObStep1(){
+  return`<div class="ob-card">
+    <div class="ob-title">Tell us about your venue</div>
+    <div class="ob-desc">This creates your entity in the system.</div>
+    <div class="ob-form">
+      <label class="ob-label">Public name <span class="ob-req">*</span></label>
+      <input class="ob-input" id="ob-name" placeholder="e.g. Bistro Mondo" value="${obData.name||''}" oninput="obData.name=this.value">
+      <label class="ob-label">Legal entity name</label>
+      <input class="ob-input" id="ob-legal" placeholder="e.g. Bistro Mondo S.L." value="${obData.legalName||''}" oninput="obData.legalName=this.value">
+      <label class="ob-label">Legal form</label>
+      <select class="ob-select" onchange="obData.legalForm=this.value">
+        ${['S.L.','S.A.','Sole trader / Autónomo','DBA','Other'].map(f=>`<option${obData.legalForm===f?' selected':''}>${f}</option>`).join('')}
+      </select>
+      <label class="ob-label">Country / City</label>
+      <input class="ob-input" id="ob-city" placeholder="e.g. Spain / Ibiza" value="${obData.city||''}" oninput="obData.city=this.value">
+      <label class="ob-label">Type</label>
+      <div class="ob-radio-group">
+        ${[{v:'operating_venue',l:'Operating venue'},{v:'holding_company',l:'Holding company'},{v:'consultancy_client',l:'Consultancy client'},{v:'partner',l:'Partner'}].map(t=>`
+        <button class="ob-radio${obData.entityType===t.v?' sel':''}" onclick="obData.entityType='${t.v}';renderTab()">${t.l}</button>`).join('')}
+      </div>
+      <label class="ob-label">Parent entity (optional)</label>
+      <select class="ob-select" onchange="obData.parentEntityId=this.value">
+        <option value="">None</option>
+        <!-- TODO(cowork): populate from entities table once we have entity_id lookup in this context -->
+      </select>
+    </div>
+    <div class="ob-nav">
+      <button class="ob-btn-sec" onclick="obStep=0;renderTab()">Back</button>
+      <button class="ob-btn" onclick="saveObStep1()">Next — Booking system</button>
+    </div>
+  </div>`;
+}
+
+async function saveObStep1(){
+  if(!obData.name){showToast('Please enter a venue name');return;}
+  try{
+    const payload={
+      name:obData.name,
+      slug:obData.name.toLowerCase().replace(/[^a-z0-9]+/g,'-'),
+      entity_type:obData.entityType||'operating_venue',
+      legal_name:obData.legalName||null,
+      legal_form:obData.legalForm||null,
+      city:obData.city||null,
+      onboarding_progress:JSON.stringify({current_step:2,steps_completed:[0,1],started_at:new Date().toISOString(),completed_at:null}),
+    };
+    if(obData.parentEntityId)payload.parent_entity_id=obData.parentEntityId;
+    const r=await fetch(`${SUPABASE_URL}/rest/v1/entities`,{
+      method:'POST',
+      headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json',Prefer:'return=representation'},
+      body:JSON.stringify(payload),
+    });
+    if(!r.ok){const e=await r.text();showToast('Error saving entity: '+e);return;}
+    const rows=await r.json();
+    obData.entityId=(rows[0]||{}).id||null;
+    obStep=2;renderTab();
+  }catch(e){showToast('Save failed: '+e.message);}
+}
+
+function renderObStep2(){
+  const providers=['thefork','sevenrooms','resy','covermanager','opentable','hotel_pms','google_sheets','manual'];
+  const labels={thefork:'TheFork / LaFourchette',sevenrooms:'SevenRooms',resy:'Resy',covermanager:'CoverManager',opentable:'OpenTable',hotel_pms:'Hotel PMS (Mews / Opera / Cloudbeds)',google_sheets:'Google Sheets (via webhook)',manual:'Manual entry only'};
+  return`<div class="ob-card">
+    <div class="ob-title">Connect your booking system</div>
+    <div class="ob-desc">Covers will sync automatically each day.</div>
+    <div class="ob-provider-grid">
+      ${providers.map(p=>`<button class="ob-provider${obData.bookingProvider===p?' sel':''}" onclick="obData.bookingProvider='${p}';renderTab()">
+        <span class="ob-p-name">${labels[p]}</span>
+      </button>`).join('')}
+    </div>
+    ${obData.bookingProvider&&obData.bookingProvider!=='manual'?`
+    <div class="ob-webhook-box">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-tertiary);margin-bottom:6px;">Webhook URL</div>
+      <div class="ob-webhook-url">https://food-studio-os.vercel.app/api/covers</div>
+      <div style="font-size:11px;color:var(--text-tertiary);margin-top:6px;">Paste this URL into your ${labels[obData.bookingProvider]} settings → Webhooks → New webhook. Set source header to <code>${obData.bookingProvider}</code>.</div>
+    </div>`:''}
+    ${obData.bookingProvider==='manual'?`<div class="ob-info-box">You can enter covers manually each day from the Today tab.</div>`:''}
+    <div class="ob-nav">
+      <button class="ob-btn-sec" onclick="obStep=1;renderTab()">Back</button>
+      <button class="ob-btn" onclick="saveObStep2()">Next — Accounting</button>
+    </div>
+  </div>`;
+}
+
+async function saveObStep2(){
+  if(obData.bookingProvider&&obData.bookingProvider!=='manual'&&obData.entityId){
+    try{
+      await fetch(`${SUPABASE_URL}/rest/v1/entity_integrations`,{
+        method:'POST',
+        headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json',Prefer:'resolution=merge-duplicates'},
+        body:JSON.stringify({entity_id:obData.entityId,integration_type:'reservations',platform:obData.bookingProvider,status:'pending',config:{webhook_configured:false}}),
+      });
+    }catch(e){console.warn('booking integration save:',e.message);}
+  }
+  obStep=3;renderTab();
+}
+
+function renderObStep3(){
+  const platforms=['holded','quickbooks','xero','sage','manual'];
+  const labels={holded:'Holded (Spain)',quickbooks:'QuickBooks Online',xero:'Xero',sage:'Sage',manual:'Manual / none yet'};
+  const countries={holded:'Spain',quickbooks:'US / International',xero:'UK / AU / NZ',sage:'UK / EU'};
+  return`<div class="ob-card">
+    <div class="ob-title">Connect your accounting platform</div>
+    <div class="ob-desc">Revenue and cost data will flow into your OS.</div>
+    <div class="ob-provider-grid">
+      ${platforms.map(p=>`<button class="ob-provider${obData.accountingPlatform===p?' sel':''}" onclick="obData.accountingPlatform='${p}';renderTab()">
+        <span class="ob-p-name">${labels[p]}</span>
+        ${countries[p]?`<span class="ob-p-region">${countries[p]}</span>`:''}
+      </button>`).join('')}
+    </div>
+    ${obData.accountingPlatform==='holded'?`
+    <div class="ob-form" style="margin-top:14px;">
+      <label class="ob-label">Holded API key</label>
+      <input class="ob-input" id="ob-holded-key" type="password" placeholder="Paste your Holded API key…" value="${obData.holdedKey||''}" oninput="obData.holdedKey=this.value">
+      <div style="font-size:11px;color:var(--text-tertiary);margin-top:4px;">Find it in Holded → Settings → API → Generate key. Auth header: <code>key: YOUR_KEY</code></div>
+      <button class="ob-test-btn" onclick="testHoldedKey()">Test connection</button>
+      <div id="ob-holded-status" style="font-size:12px;margin-top:8px;"></div>
+    </div>`:''}
+    ${obData.accountingPlatform&&obData.accountingPlatform!=='holded'&&obData.accountingPlatform!=='manual'?`
+    <div class="ob-info-box" style="margin-top:12px;">
+      <strong>${labels[obData.accountingPlatform]}</strong> dispatcher is on the roadmap.<br>
+      <!-- TODO(cowork): add ${obData.accountingPlatform} dispatcher contract doc when client with this platform arrives -->
+      <span style="color:var(--ember);">Coming soon.</span> You can continue and connect later.
+    </div>`:''}
+    <div class="ob-nav">
+      <button class="ob-btn-sec" onclick="obStep=2;renderTab()">Back</button>
+      <button class="ob-btn" onclick="saveObStep3()">Next — Review docs</button>
+    </div>
+  </div>`;
+}
+
+async function testHoldedKey(){
+  const key=document.getElementById('ob-holded-key')?.value||obData.holdedKey||'';
+  const el=document.getElementById('ob-holded-status');
+  if(!key){if(el)el.innerHTML='<span style="color:#A03838">No key entered.</span>';return;}
+  if(el)el.innerHTML='<span style="color:#A8893A">Testing…</span>';
+  try{
+    const r=await fetch('/api/holded/health?restaurant='+(R===0?'taller':'bistro_mondo'));
+    const d=await r.json();
+    if(el)el.innerHTML=d.ok?'<span style="color:#4A7B6A">Connected ✓</span>':'<span style="color:#A03838">Connection failed. Check the key.</span>';
+    if(d.ok)obData.holdedKeyValid=true;
+  }catch(e){if(el)el.innerHTML='<span style="color:#A03838">Test failed: '+e.message+'</span>';}
+}
+
+async function saveObStep3(){
+  if(obData.accountingPlatform&&obData.accountingPlatform!=='manual'&&obData.entityId){
+    try{
+      await fetch(`${SUPABASE_URL}/rest/v1/entity_integrations`,{
+        method:'POST',
+        headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json',Prefer:'resolution=merge-duplicates'},
+        body:JSON.stringify({
+          entity_id:obData.entityId,
+          integration_type:'accounting',
+          platform:obData.accountingPlatform,
+          status:obData.holdedKeyValid?'connected':'pending',
+          capabilities:{read_pl:true,read_transactions:true,write_invoices:false},
+          config:{key_configured:!!obData.holdedKey,key_valid:!!obData.holdedKeyValid},
+        }),
+      });
+    }catch(e){console.warn('accounting integration save:',e.message);}
+  }
+  obStep=4;renderTab();
+}
+
+function renderObStep4(){
+  // TODO(cowork): this step will call the onboarding-agent Edge Function to walk Drive/docs
+  return`<div class="ob-card">
+    <div class="ob-title">Document inventory</div>
+    <div class="ob-desc">The OS agent will read your existing documents to build your Skill files automatically.</div>
+    <div class="ob-stub-notice">
+      <div style="font-size:28px;margin-bottom:10px;">⚙</div>
+      <div style="font-weight:600;margin-bottom:6px;">LLM agent — Loop 4 build target</div>
+      <div style="font-size:12px;line-height:1.6;color:var(--text-tertiary);">
+        The document walk + Skill generation runs here in the final version.<br>
+        System prompt: <code>onboarding_agent_prompt_v1.md</code><br>
+        Edge Function: <code>supabase/functions/onboarding-agent</code>
+        <!-- TODO(cowork): write onboarding_agent_prompt_v2_module.md once frontend is stable -->
+      </div>
+    </div>
+    <div class="ob-nav">
+      <button class="ob-btn-sec" onclick="obStep=3;renderTab()">Back</button>
+      <button class="ob-btn" onclick="obStep=5;renderTab()">Skip — use manual Skills</button>
+    </div>
+  </div>`;
+}
+
+function renderObStep5(){
+  const entitySkills=skillsData?.skills?.filter(s=>s.entity_id===obData.entityId)||[];
+  return`<div class="ob-card">
+    <div class="ob-title">Your Skills</div>
+    <div class="ob-desc">Review and edit the generated Skill files for your venue.</div>
+    ${entitySkills.length?entitySkills.map(s=>`
+    <div class="skill-card" style="margin-bottom:10px;">
+      <div class="skill-card-header">
+        <div class="skill-card-title">${(s.category||'').charAt(0).toUpperCase()+(s.category||'').slice(1)} Skill</div>
+        <span class="ob-skill-status">v${s.version}</span>
+      </div>
+      <div class="skill-card-preview">${(s.content||'').slice(0,160)}…</div>
+    </div>`).join(''):`
+    <div class="ob-info-box">
+      No Skills generated yet. The agent will populate these during the document walk (Step 4).<br>
+      You can add Skills manually later via the Command Center.
+    </div>`}
+    <div class="ob-nav">
+      <button class="ob-btn-sec" onclick="obStep=4;renderTab()">Back</button>
+      <button class="ob-btn" onclick="obStep=6;renderTab()">Activate venue</button>
+    </div>
+  </div>`;
+}
+
+function renderObStep6(){
+  return`<div class="ob-card" style="text-align:center;">
+    <div style="font-size:48px;margin-bottom:12px;">✦</div>
+    <div class="ob-title">${obData.name||'Your venue'} is ready</div>
+    <div class="ob-desc" style="margin-bottom:20px;">
+      ${obData.entityId?`Entity created in database.`:''}
+      ${obData.bookingProvider&&obData.bookingProvider!=='manual'?`<br>Booking webhook registered (${obData.bookingProvider}).`:''}
+      ${obData.accountingPlatform&&obData.accountingPlatform!=='manual'?`<br>Accounting: ${obData.accountingPlatform}${obData.holdedKeyValid?' ✓':' (pending key)'}`:''}</div>
+    <button class="ob-btn" onclick="obStep=0;obData={};switchTab('today',null)">Go to Today</button>
+    <button class="ob-btn-sec" onclick="switchTab('command',null)">View in Command Center</button>
+    <div style="font-size:11px;color:var(--text-tertiary);margin-top:16px;">Loop 4 milestone — onboarding wizard complete.</div>
+  </div>`;
+}
+
+// ══ INTEGRATIONS CONFIG ════════════════════════════════════════════════════════
+// Shows booking + accounting integration status for owner/manager
+let intData=null,intLoading=false;
+
+async function loadIntegrations(){
+  if(intLoading||intData)return;
+  intLoading=true;renderTab();
+  try{
+    const[bookings,accounting,covers]=await Promise.all([
+      sbFetch('booking_integrations?select=*&order=created_at.asc'),
+      sbFetch('accounting_integrations?select=*&order=created_at.asc'),
+      sbFetch('covers?select=*&service_date=eq.'+new Date().toISOString().slice(0,10)+'&order=service_type.asc'),
+    ]);
+    intData={bookings,accounting,covers};
+  }catch(e){intData={_error:e.message};}
+  intLoading=false;renderTab();
+}
+
+function renderIntegrations(){
+  const canMgr=['manager','owner'].includes(USER.role);
+  if(!canMgr)return`<div style="padding:32px;text-align:center;color:var(--text-tertiary);font-size:13px;">Manager or owner access required.</div>`;
+  if(!intData&&!intLoading){loadIntegrations();}
+  if(intLoading||!intData)return`<div style="text-align:center;padding:48px;color:var(--text-tertiary);font-size:13px;">Loading…</div>`;
+  if(intData._error)return`<div style="padding:16px;background:#FBF0F0;border-radius:12px;color:#A03838;font-size:13px;">Error: ${intData._error}</div>`;
+
+  const{bookings,accounting,covers}=intData;
+  const restSlug=R===0?'taller':'bistro_mondo';
+
+  const todayCovers=covers.filter(c=>c.restaurant===restSlug);
+  const totalPax=todayCovers.reduce((s,c)=>s+(c.pax||0),0);
+
+  let html=`<div class="sect-label">Integrations — ${R===0?'Taller':'Bistro Mondo'}</div>`;
+
+  // ── Today's covers from booking system ─────────────────────────────────────
+  html+=`<div class="int-section">
+    <div class="int-section-title">Covers today</div>
+    ${todayCovers.length?todayCovers.map(c=>`
+    <div class="int-row">
+      <div class="int-row-left">
+        <div class="int-row-name">${c.service_type.charAt(0).toUpperCase()+c.service_type.slice(1)}</div>
+        <div class="int-row-sub">${c.source} · ${new Date(c.updated_at||c.created_at).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</div>
+      </div>
+      <div class="int-row-right"><strong>${c.pax}</strong> pax</div>
+    </div>`).join(''):`
+    <div class="int-empty">No covers logged today.
+      <button class="int-add-btn" onclick="openAddCovers()">+ Add manually</button>
+    </div>`}
+    ${totalPax>0?`<div style="font-size:12px;font-weight:600;color:var(--text-secondary);padding:8px 0;border-top:1px solid rgba(0,0,0,0.06);margin-top:4px;">Total: ${totalPax} covers</div>`:''}
+  </div>`;
+
+  // ── Booking system connections ──────────────────────────────────────────────
+  const myBookings=bookings.filter(b=>b.restaurant===restSlug);
+  html+=`<div class="int-section">
+    <div class="int-section-title">Booking systems</div>
+    ${myBookings.length?myBookings.map(b=>`
+    <div class="int-row">
+      <div class="int-row-left">
+        <div class="int-row-name">${b.display_name||b.provider}</div>
+        <div class="int-row-sub">${b.last_sync_at?'Last sync: '+new Date(b.last_sync_at).toLocaleDateString():'Never synced'}</div>
+      </div>
+      <div class="int-status ${b.is_active?'ok':'off'}">${b.is_active?'Active':'Off'}</div>
+    </div>`).join(''):`
+    <div class="int-empty">No booking system connected.
+      <button class="int-add-btn" onclick="obStep=2;switchTab('onboarding',null)">Connect one</button>
+    </div>`}
+  </div>`;
+
+  // ── Accounting connections ──────────────────────────────────────────────────
+  const myAccounting=accounting.filter(a=>a.restaurant===restSlug);
+  const holdedKey=R===0?'HOLDED_API_KEY_TALLER':'HOLDED_API_KEY_BISTRO_MONDO';
+  html+=`<div class="int-section">
+    <div class="int-section-title">Accounting</div>
+    ${myAccounting.length?myAccounting.map(a=>`
+    <div class="int-row">
+      <div class="int-row-left">
+        <div class="int-row-name">${a.provider.charAt(0).toUpperCase()+a.provider.slice(1)}</div>
+        <div class="int-row-sub">${a.last_sync_at?'Last sync: '+new Date(a.last_sync_at).toLocaleDateString():'Not yet synced'}</div>
+      </div>
+      <div class="int-status ${a.is_active?'ok':'off'}">${a.is_active?'Active':'Off'}</div>
+    </div>`).join(''):`
+    <div class="int-empty">No accounting platform connected.<br>
+      <span style="font-size:11px;color:var(--text-tertiary);">Add <code>${holdedKey}</code> to Vercel env vars, then connect via Onboarding.</span>
+      <button class="int-add-btn" onclick="obStep=3;switchTab('onboarding',null)">Connect Holded</button>
+    </div>`}
+    ${myAccounting.some(a=>a.provider==='holded')?`
+    <button class="int-add-btn" style="margin-top:10px;width:100%" onclick="syncHoldedEOD()">Sync EOD to Holded</button>`:''}
+  </div>
+
+  <div style="font-size:11px;color:var(--text-tertiary);margin-top:20px;padding:12px;background:#F7F5F1;border-radius:10px;line-height:1.6;">
+    Webhook endpoint: <code>/api/covers</code><br>
+    Holded proxy: <code>/api/holded/health</code><br>
+    <!-- TODO(cowork): add /api/holded/pos-report call from EOD report save button -->
+  </div>`;
+
+  return html;
+}
+
+async function openAddCovers(){
+  const pax=prompt('Covers today (total pax)?');
+  if(!pax||isNaN(parseInt(pax)))return;
+  const restSlug=R===0?'taller':'bistro_mondo';
+  try{
+    await fetch('/api/covers',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({restaurant:restSlug,date:new Date().toISOString().slice(0,10),pax:parseInt(pax),service_type:'dinner',source:'manual'}),
+    });
+    intData=null; // force reload
+    showToast(`${pax} covers logged for today`);
+    renderTab();
+  }catch(e){showToast('Failed: '+e.message);}
+}
+
+async function syncHoldedEOD(){
+  showToast('Syncing to Holded…');
+  try{
+    const r=await fetch('/api/holded/pos-report',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({restaurant:R===0?'taller':'bistro_mondo',date:new Date().toISOString().slice(0,10)}),
+    });
+    const d=await r.json();
+    if(d.holded?.connected)showToast('Holded sync complete ✓');
+    else showToast('Prepared — Holded write not yet live');
+  }catch(e){showToast('Sync failed: '+e.message);}
 }
 
 // EOD reports store
@@ -4137,7 +5061,12 @@ function switchTabById(tabId){
   });
 }
 
-function openMore(){document.getElementById("more-menu").classList.add("open");document.getElementById("more-backdrop").classList.add("show")}
+function openMore(){
+  const isMgr=['manager','owner'].includes(USER.role);
+  document.querySelectorAll('.more-btn.mgr-only').forEach(b=>b.style.display=isMgr?'':'none');
+  document.getElementById("more-menu").classList.add("open");
+  document.getElementById("more-backdrop").classList.add("show");
+}
 function closeMore(){document.getElementById("more-menu").classList.remove("open");document.getElementById("more-backdrop").classList.remove("show")}
 
 
@@ -4329,11 +5258,14 @@ function showInlineToastError(msg) {
 <div class="more-backdrop" id="more-backdrop" onclick="closeMore()"></div>
 <div class="more-menu" id="more-menu">
   <div class="more-handle"></div>
-  <div class="more-grid">
+  <div id="more-grid-inner" class="more-grid">
     <button class="more-btn" onclick="switchTab('menu',null);closeMore()"><span class="more-lbl">Menu</span></button>
     <button class="more-btn" onclick="switchTab('events',null);closeMore()"><span class="more-lbl">Events</span></button>
     <button class="more-btn" onclick="switchTab('schedule',null);closeMore()"><span class="more-lbl">Schedule</span></button>
     <button class="more-btn" onclick="switchTab('command',null);closeMore()"><span class="more-lbl">Command</span></button>
+    <button class="more-btn" onclick="switchTab('skills',null);closeMore()"><span class="more-lbl">Skills</span></button>
+    <button class="more-btn mgr-only" onclick="switchTab('integrations',null);closeMore()" style="display:none"><span class="more-lbl">Integrations</span></button>
+    <button class="more-btn mgr-only" onclick="switchTab('onboarding',null);closeMore()" style="display:none"><span class="more-lbl">Onboard</span></button>
   </div>
 </div>
 
