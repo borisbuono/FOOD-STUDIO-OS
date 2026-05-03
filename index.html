@@ -2783,7 +2783,7 @@ function openNewVer(id){openEditRec(id);document.getElementById('re-title').text
 function mTog(g,v){document.querySelectorAll(`#${g} .mtog`).forEach(b=>b.classList.toggle('active',b.dataset.v===v));}
 function buildAllergenGrid(active){document.getElementById('re-allerg').innerHTML=ALLERGENS.map(a=>`<button class="achip${active.includes(a.id)?' active':''}" data-id="${a.id}" onclick="this.classList.toggle('active')">${a.icon}<br>${a.label}</button>`).join('');}
 function addIng(name='',qty='',unit=''){const row=document.createElement('div');row.className='ing-row';row.innerHTML=`<input class="ii" placeholder="Ingredient" value="${name}"><input class="ii" placeholder="Qty" value="${qty}" style="text-align:center;"><input class="ii" placeholder="Unit" value="${unit}" style="text-align:center;"><button class="irm" onclick="this.parentElement.remove()">×</button>`;document.getElementById('re-ings').appendChild(row);}
-function saveRec(){
+async function saveRec(){
   const name=document.getElementById('re-name').value.trim();if(!name){showFieldError('re-name','re-name-err','Enter a dish name');return;}
   const rest=document.querySelector('#re-rest .mtog.active')?.dataset.v||'taller';
   const section=document.querySelector('#re-sec .mtog.active')?.dataset.v||'hot';
@@ -2794,9 +2794,68 @@ function saveRec(){
   const vnote=document.getElementById('re-vnote').value.trim();
   const allergens=[...document.querySelectorAll('#re-allerg .achip.active')].map(b=>b.dataset.id);
   const ingredients=[...document.getElementById('re-ings').querySelectorAll('.ing-row')].map(row=>{const inp=row.querySelectorAll('input');return{name:inp[0].value.trim(),qty:inp[1].value.trim(),unit:inp[2].value.trim()};}).filter(i=>i.name);
-  if(recEditId){const r=RECIPES.find(x=>x.id===recEditId);if(r){Object.assign(r,{name,rest,section,portions,costPerPortion,menuPrice,desc,ingredients,allergens});if(vnote){r.versions.forEach(v=>v.current=false);r.versions.push({num:r.versions.length+1,note:vnote,date:new Date().toISOString().slice(0,10),current:true});}}}
-  else{RECIPES.push({id:'r'+Date.now(),name,rest,section,portions,costPerPortion,menuPrice,desc,ingredients,allergens,versions:[{num:1,note:vnote||'Initial recipe',date:new Date().toISOString().slice(0,10),current:true}]});}
-  closeModal('m-rec-edit');renderTab();
+
+  closeModal('m-rec-edit');
+
+  if(recEditId){
+    // EDIT existing recipe — local first, then sync to Supabase if it has a UUID id
+    const r=RECIPES.find(x=>x.id===recEditId);
+    if(r){
+      Object.assign(r,{name,rest,section,portions,costPerPortion,menuPrice,desc,ingredients,allergens});
+      if(vnote){r.versions.forEach(v=>v.current=false);r.versions.push({num:r.versions.length+1,note:vnote,date:new Date().toISOString().slice(0,10),current:true});}
+    }
+    renderTab();
+    // If the recipe has a Supabase UUID (looks like 8-4-4-4-12 hex), PATCH it
+    if(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(recEditId)){
+      try{
+        await fetch(`${SUPABASE_URL}/rest/v1/recipes?id=eq.${recEditId}`,{
+          method:'PATCH',
+          headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json',Prefer:'return=minimal'},
+          body:JSON.stringify({name,restaurant:rest,section,portions,description:desc,cost_per_portion:costPerPortion,menu_price:menuPrice,allergens,updated_at:new Date().toISOString()})
+        });
+        // Replace ingredients (delete all + insert new)
+        await fetch(`${SUPABASE_URL}/rest/v1/recipe_ingredients?recipe_id=eq.${recEditId}`,{method:'DELETE',headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`}});
+        if(ingredients.length){
+          const ingPayload=ingredients.map((ing,i)=>({recipe_id:recEditId,name:ing.name,quantity:String(ing.qty||''),unit:ing.unit||'',sort_order:i+1}));
+          await fetch(`${SUPABASE_URL}/rest/v1/recipe_ingredients`,{method:'POST',headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(ingPayload)});
+        }
+        showToast('Recipe updated ✓');
+      }catch(e){console.warn('recipe edit save:',e.message);showToast('Saved locally — DB sync failed');}
+    }else{
+      showToast('Recipe updated');
+    }
+    return;
+  }
+
+  // NEW recipe — optimistic local push + Supabase INSERT
+  const tempId='r'+Date.now();
+  RECIPES.push({id:tempId,name,rest,section,portions,costPerPortion,menuPrice,desc,ingredients,allergens,versions:[{num:1,note:vnote||'Initial recipe',date:new Date().toISOString().slice(0,10),current:true}],_pending:true});
+  showToast('Saving recipe…');
+  renderTab();
+  try{
+    const recPayload={name,restaurant:rest,section,portions,description:desc,cost_per_portion:costPerPortion,menu_price:menuPrice,allergens,is_active:true};
+    const r=await fetch(`${SUPABASE_URL}/rest/v1/recipes`,{
+      method:'POST',
+      headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json',Prefer:'return=representation'},
+      body:JSON.stringify(recPayload),
+    });
+    if(!r.ok){throw new Error('save: '+(await r.text()).slice(0,80));}
+    const rows=await r.json();
+    const dbId=(rows[0]||{}).id;
+    if(dbId){
+      const idx=RECIPES.findIndex(x=>x.id===tempId);
+      if(idx>=0){RECIPES[idx].id=dbId;delete RECIPES[idx]._pending;RECIPES[idx]._fromSupabase=true;}
+      if(ingredients.length){
+        const ingPayload=ingredients.map((ing,i)=>({recipe_id:dbId,name:ing.name,quantity:String(ing.qty||''),unit:ing.unit||'',sort_order:i+1}));
+        await fetch(`${SUPABASE_URL}/rest/v1/recipe_ingredients`,{method:'POST',headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify(ingPayload)});
+      }
+      showToast('Recipe saved ✓');
+      renderTab();
+    }
+  }catch(e){
+    console.warn('recipe save:',e.message);
+    showToast('Saved locally — DB sync failed');
+  }
 }
 
 // ══ AI BAR ══
