@@ -5032,9 +5032,64 @@ async function generateAIBriefing(){
 
 
 
-function adoptDraft(r){
-  RECIPES.push({id:'r'+Date.now(),name:r.name,rest:r.rest||'taller',section:r.section||'hot',portions:r.portions||10,desc:r.desc||'',ingredients:r.ingredients||[],allergens:r.allergens||[],costPerPortion:r.costPerPortion||0,menuPrice:r.menuPrice||0,versions:[{num:1,note:r.versionNote||'AI draft',date:new Date().toISOString().slice(0,10),current:true}]});
-  showToast('Recipe saved! ✓');closeAI();renderTab();
+async function adoptDraft(r){
+  if(!r||!r.name){showToast('No recipe to save');return;}
+  // Optimistic local update
+  const tempId='r'+Date.now();
+  RECIPES.push({id:tempId,name:r.name,rest:r.rest||'both',section:r.section||'hot',portions:r.portions||10,desc:r.desc||'',ingredients:r.ingredients||[],allergens:r.allergens||[],costPerPortion:r.costPerPortion||0,menuPrice:r.menuPrice||0,versions:[{num:1,note:r.versionNote||'AI draft',date:new Date().toISOString().slice(0,10),current:true}],_pending:true});
+  showToast('Saving recipe…');
+  // Persist to Supabase
+  try{
+    const recPayload={
+      name:r.name,
+      restaurant:r.rest||'both',
+      section:r.section||'hot',
+      portions:r.portions||10,
+      description:r.desc||'',
+      cost_per_portion:r.costPerPortion||0,
+      menu_price:r.menuPrice||0,
+      allergens:r.allergens||[],
+      is_active:true,
+    };
+    const recResp=await fetch(`${SUPABASE_URL}/rest/v1/recipes`,{
+      method:'POST',
+      headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json',Prefer:'return=representation'},
+      body:JSON.stringify(recPayload),
+    });
+    if(!recResp.ok){const err=await recResp.text();throw new Error('save: '+err.slice(0,80));}
+    const recRows=await recResp.json();
+    const dbId=(recRows[0]||{}).id;
+    if(dbId){
+      // Replace local temp with the DB-backed row
+      const idx=RECIPES.findIndex(x=>x.id===tempId);
+      if(idx>=0){RECIPES[idx].id=dbId;delete RECIPES[idx]._pending;}
+      // Save ingredients
+      if(Array.isArray(r.ingredients)&&r.ingredients.length){
+        const ingPayload=r.ingredients.map(function(ing,i){return{recipe_id:dbId,name:ing.name||'',quantity:String(ing.qty||ing.quantity||''),unit:ing.unit||'',sort_order:i+1};});
+        await fetch(`${SUPABASE_URL}/rest/v1/recipe_ingredients`,{
+          method:'POST',
+          headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json',Prefer:'return=minimal'},
+          body:JSON.stringify(ingPayload),
+        }).catch(function(e){console.warn('ingredients save:',e.message);});
+      }
+    }
+    showToast('Recipe saved to library ✓');
+  }catch(e){
+    console.warn('Recipe save failed:',e.message);
+    showToast('Saved locally — Supabase save failed: '+e.message);
+  }
+  closeAI();
+  currentDraft=null;
+  if(currentTab==='production'||currentTab==='recipes')renderTab();
+}
+
+// Trigger a save-intent re-prompt for the last recipe-shaped reply
+async function aiSaveLastAsRecipe(){
+  // Add a synthetic user message + send through existing flow
+  const inp=document.getElementById('ai-ov-input');
+  if(!inp){showToast('AI overlay not open');return;}
+  inp.value='Save the recipe you just gave me to my library — output the <RECIPE> JSON tag.';
+  await sendAIOv();
 }
 // voiceRec declared above
 
@@ -5373,13 +5428,16 @@ async function sendAIOv(){
   }catch(ignored){}
 
   var lq=q.toLowerCase();
-  var isDraft=lq.includes('draft')||lq.includes('recipe for')||lq.includes('create recipe')||lq.includes('nueva receta')||lq.includes('receta');
+  var isDraft=lq.includes('draft')||lq.includes('recipe')||lq.includes('receta')||lq.includes('dish')||(lq.includes('make')&&(lq.includes('a ')||lq.includes('me ')))||lq.includes('cook ');
+  var isSave=lq.includes('save')||lq.includes('library')||lq.includes('add to')||lq.includes('store this')||lq.includes('keep this')||(lq.includes('add')&&lq.includes('it'));
   var isBriefing=lq.includes('briefing')||lq.includes('brief')||lq.includes('pre-service');
   var isOrder=lq.includes('order')||lq.includes('supplier')||lq.includes('pedido');
 
   var sys='You are the Food Studio OS AI assistant for Taller and Bistro Mondo restaurants in Ibiza. '+ctx;
   if(isDraft){
-    sys+=' The chef wants to draft a recipe. Respond ONLY with a JSON object wrapped in <RECIPE>…</RECIPE> tags with these exact fields: {"name":"","section":"hot","rest":"both","portions":10,"desc":"2-3 sentence professional description","costPerPortion":0,"menuPrice":0,"ingredients":[{"name":"","qty":"","unit":""}],"allergens":[],"versionNote":"AI draft v1"}. section: cold|hot|pizza|dessert|breakfast. rest: taller|bistro-mondo|both. Allergens from EU 14: gluten,crustacean,eggs,fish,peanuts,soy,milk,nuts,celery,mustard,sesame,sulphites,lupin,molluscs.';
+    sys+=' The chef wants a recipe. Respond in TWO parts:\n1. A brief professional explanation in markdown (1-2 short paragraphs OR an ingredient table + method, max 200 words)\n2. AT THE END, append the structured recipe JSON wrapped in <RECIPE>…</RECIPE> tags so it can be saved to the recipe library with one click.\nJSON shape: {"name":"","section":"hot","rest":"both","portions":10,"desc":"2-3 sentence professional description","costPerPortion":0,"menuPrice":0,"ingredients":[{"name":"","qty":"","unit":""}],"allergens":[],"versionNote":"AI draft v1"}. section: cold|hot|pizza|dessert|breakfast. rest: taller|bistro-mondo|both. Allergens from EU 14: gluten,crustacean,eggs,fish,peanuts,soy,milk,nuts,celery,mustard,sesame,sulphites,lupin,molluscs. Use realistic restaurant quantities. The <RECIPE> tag is required so the user can save the recipe — never skip it.';
+  } else if(isSave&&!currentDraft){
+    sys+=' The user wants to save the previous recipe to the library. Reread your earlier reply and convert it to the structured recipe JSON wrapped in <RECIPE>…</RECIPE> tags: {"name":"","section":"hot","rest":"both","portions":10,"desc":"2-3 sentence professional description","costPerPortion":0,"menuPrice":0,"ingredients":[{"name":"","qty":"","unit":""}],"allergens":[],"versionNote":"AI draft v1"}. section: cold|hot|pizza|dessert|breakfast. rest: taller|bistro-mondo|both. Allergens from EU 14: gluten,crustacean,eggs,fish,peanuts,soy,milk,nuts,celery,mustard,sesame,sulphites,lupin,molluscs. Output ONLY the <RECIPE> JSON tag and a one-line confirmation above it.';
   } else if(isBriefing){
     sys+=' Generate a concise pre-service briefing: covers, specials, 86s, one allergen reminder, one motivating line. Under 80 words.';
   } else if(isOrder){
@@ -5401,15 +5459,26 @@ async function sendAIOv(){
 
     var el=document.getElementById('ai-loading');
     var recipeMatch=reply.match(/<RECIPE>([\s\S]*?)<\/RECIPE>/);
+    var explanation=recipeMatch?reply.replace(/<RECIPE>[\s\S]*?<\/RECIPE>/,'').trim():reply;
     if(recipeMatch){
       try{
         currentDraft=JSON.parse(recipeMatch[1].trim());
-        if(el){el.id='';el.innerHTML='<div style="background:#FBF2EC;border:1px solid rgba(184,106,66,0.2);border-radius:14px;padding:14px 16px;margin-top:4px;"><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#B86A42;margin-bottom:6px;">✦ Recipe drafted</div><div style="font-family:Fraunces,serif;font-style:italic;font-size:18px;color:#1A1510;margin-bottom:6px;">'+currentDraft.name+'</div><div style="font-size:13px;color:#5C4E3C;line-height:1.6;margin-bottom:12px;">'+currentDraft.desc+'</div><button onclick="showDraft()" style="width:100%;padding:12px;border-radius:10px;border:none;background:#B86A42;color:white;font-family:Outfit,sans-serif;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 3px 10px rgba(184,106,66,0.3);">Review & save →</button></div>';}
-      }catch(e){
-        if(el){el.id='';el.textContent=reply;}
+        if(el){
+          el.id='';
+          var explHtml=explanation?'<div style="font-size:13.5px;color:#1A1510;line-height:1.7;margin-bottom:10px;white-space:pre-wrap;">'+explanation.replace(/[<>]/g,function(c){return c==='<'?'&lt;':'&gt;';})+'</div>':'';
+          el.innerHTML=explHtml+'<div style="background:#FBF2EC;border:1px solid rgba(184,106,66,0.2);border-radius:14px;padding:14px 16px;margin-top:4px;"><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#B86A42;margin-bottom:6px;">✦ Recipe ready to save</div><div style="font-family:Fraunces,serif;font-style:italic;font-size:18px;color:#1A1510;margin-bottom:6px;">'+currentDraft.name+'</div><div style="font-size:12px;color:#5C4E3C;line-height:1.5;margin-bottom:12px;">'+(currentDraft.desc||'')+'</div><button onclick="adoptDraft(currentDraft)" style="width:100%;padding:12px;border-radius:10px;border:none;background:#B86A42;color:white;font-family:Outfit,sans-serif;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 3px 10px rgba(184,106,66,0.3);">Save to library →</button></div>';
+        }
+      }catch(parseErr){
+        if(el){el.id='';el.innerHTML='<div style="font-size:13.5px;line-height:1.7;white-space:pre-wrap;">'+reply.replace(/[<>]/g,function(c){return c==='<'?'&lt;':'&gt;';})+'</div>';}
       }
     } else {
-      if(el){el.id='';el.textContent=reply;}
+      if(el){
+        el.id='';
+        // Plain reply with conditional "Save as recipe" button if it looks like a recipe
+        var looksLikeRecipe=/ingredient|method|step|portion|yield|recipe/i.test(reply)&&reply.length>200;
+        var saveBtn=looksLikeRecipe?'<button onclick="aiSaveLastAsRecipe()" style="margin-top:10px;padding:10px 16px;border-radius:10px;border:1px solid var(--ember);background:transparent;color:var(--ember);font-family:Outfit,sans-serif;font-size:13px;font-weight:600;cursor:pointer;">+ Save this as a recipe</button>':'';
+        el.innerHTML='<div style="font-size:13.5px;line-height:1.7;white-space:pre-wrap;">'+reply.replace(/[<>]/g,function(c){return c==='<'?'&lt;':'&gt;';})+'</div>'+saveBtn;
+      }
     }
   }catch(e){
     console.error('AI error:',e);
