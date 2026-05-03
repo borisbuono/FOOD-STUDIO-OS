@@ -2093,6 +2093,7 @@ let voiceRec=false,recognizer=null,voiceText='';
 let ctxPending={R:0,AREA:'boh',ZONE:'Hot Station'};
 let todayPhase=null,activeWorkflows=[];
 let SUPABASE_BRIEFINGS=[];let sbBriefingsLoaded=false;
+let SUPABASE_URGENT_TASKS=[];let sbUrgentLoaded=false;
 
 function getCov(){return parseInt(document.getElementById('cov-hidden')?.value||document.getElementById('mep-cov')?.value||40);}
 function getPhase(){const h=new Date().getHours();if(h>=5&&h<12)return'opening';if(h>=22||h<5)return'closing';return'service';}
@@ -2158,6 +2159,7 @@ function initApp(){
     // ── Supabase: load live recipes in background ──
     loadSupabaseRecipes();
     loadSupabaseBriefings();
+    loadSupabaseUrgentTasks();
     // ── Supabase connection test ──
     if (db) {
       db.from('restaurants').select('name').then(({ data, error }) => {
@@ -2808,8 +2810,9 @@ function buildCtxZones(){
 }
 function applyCtx(){
   sbBriefingsLoaded=false;SUPABASE_BRIEFINGS=[];
+  sbUrgentLoaded=false;SUPABASE_URGENT_TASKS=[];
   const prevR=R;
-  R=ctxPending.R;loadSupabaseBriefings();AREA=ctxPending.AREA;ZONE=ctxPending.ZONE||ZONES[R][AREA][0]||'';
+  R=ctxPending.R;loadSupabaseBriefings();loadSupabaseUrgentTasks();AREA=ctxPending.AREA;ZONE=ctxPending.ZONE||ZONES[R][AREA][0]||'';
   document.getElementById('tb-rest').textContent=R===0?'Taller':'Bistro Mondo';
   document.getElementById('tb-zone').textContent=ZONE;
   saveSession();
@@ -3021,11 +3024,53 @@ function toggleTask(id,prefix){
   taskState[k]=!taskState[k];
   const delta={[k]:taskState[k]};
   if(taskState[k]){taskState[k+'_sig']=USER.name;taskState[k+'_ts']=new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});delta[k+'_sig']=taskState[k+'_sig'];delta[k+'_ts']=taskState[k+'_ts'];}
-  saveState({taskState:delta});renderTab();
+  saveState({taskState:delta});
+  // If this is an urgent task being marked done AND it's a Supabase-backed row, resolve it in DB
+  if(prefix==='urg'&&taskState[k]&&taskUrgent[id]&&taskUrgent[id]._supabase){
+    fetch(`${SUPABASE_URL}/rest/v1/urgent_tasks?id=eq.${id}`,{
+      method:'PATCH',
+      headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json'},
+      body:JSON.stringify({resolved:true,resolved_at:new Date().toISOString()}),
+    }).catch(e=>console.warn('urgent resolve:',e.message));
+  }
+  renderTab();
 }
 function toggleCloseTask(id){const k=clKey(id);taskState[k]=!taskState[k];saveState({taskState:{[k]:taskState[k]}});renderTab();}
 function togglePri(id){const k=stKey(id);taskPriority[k]=taskPriority[k]===1?0:1;saveState();renderTab();}
-function pushUrgent(){const name=document.getElementById('urg-text').value.trim();if(!name){showFieldError('urg-text','urg-text-err','Please describe the task');return;}const zone=document.getElementById('urg-zone').value;const id='u'+Date.now();taskUrgent[id]={id,name,sub:'',zone};closeModal('m-urgent');showToast(`Urgent task pushed to ${zone}`);saveState({taskUrgent:{[id]:taskUrgent[id]}});renderTab();}
+async function pushUrgent(){
+  const name=document.getElementById('urg-text').value.trim();
+  if(!name){showFieldError('urg-text','urg-text-err','Please describe the task');return;}
+  const zone=document.getElementById('urg-zone').value;
+  closeModal('m-urgent');
+  // Optimistic UI: add with temp id immediately
+  const tempId='u'+Date.now();
+  taskUrgent[tempId]={id:tempId,name,sub:'',zone,_pending:true};
+  showToast(`Urgent task pushed to ${zone}`);
+  saveState({taskUrgent:{[tempId]:taskUrgent[tempId]}});
+  renderTab();
+  // Insert to Supabase in the background
+  try{
+    const restSlug=R===0?'taller':'bistro-mondo';
+    const restaurants=await sbFetch(`restaurants?slug=eq.${restSlug}&select=id`);
+    if(!restaurants.length)return;
+    const restId=restaurants[0].id;
+    const r=await fetch(`${SUPABASE_URL}/rest/v1/urgent_tasks`,{
+      method:'POST',
+      headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json',Prefer:'return=representation'},
+      body:JSON.stringify({restaurant_id:restId,zone,name,sub:'',service_date:new Date().toISOString().slice(0,10)}),
+    });
+    if(r.ok){
+      const rows=await r.json();
+      const dbId=(rows[0]||{}).id;
+      if(dbId){
+        delete taskUrgent[tempId];
+        taskUrgent[dbId]={id:dbId,name,sub:'',zone,_supabase:true};
+        saveState({taskUrgent:{[dbId]:taskUrgent[dbId]}});
+        renderTab();
+      }
+    }
+  }catch(e){console.warn('urgent_tasks insert:',e.message);}
+}
 function doWorkerSO(){wSigned[R]=true;saveState({wSigned});renderTab();}
 function confirmPin(){const p=document.getElementById('pin-val').value.trim();if(p!=='1234'){showFieldError('pin-val','pin-val-err','Incorrect PIN');return;}mSigned[R]=true;closeModal('m-pin');document.getElementById('pin-val').value='';saveState({mSigned});renderTab();}
 function confirmClosePin(){const p=document.getElementById('close-pin-val').value.trim();if(p!=='1234'){showFieldError('close-pin-val','close-pin-val-err','Incorrect PIN');return;}clSigned[R]=true;closeModal('m-close-pin');document.getElementById('close-pin-val').value='';saveState({clSigned});renderTab();}
@@ -3523,6 +3568,26 @@ async function loadSupabaseBriefings(){
     sbBriefingsLoaded=true;
     if(currentTab==='briefing'||(currentTab==='today'&&todaySubTab==='brief'))renderTab();
   }catch(e){console.warn('Supabase briefings:',e.message);}
+}
+
+async function loadSupabaseUrgentTasks(){
+  if(sbUrgentLoaded)return;
+  try{
+    const today=new Date().toISOString().slice(0,10);
+    const restSlug=R===0?'taller':'bistro-mondo';
+    const restaurants=await sbFetch(`restaurants?slug=eq.${restSlug}&select=id`);
+    if(!restaurants.length)return;
+    const restId=restaurants[0].id;
+    const rows=await sbFetch(`urgent_tasks?restaurant_id=eq.${restId}&service_date=eq.${today}&resolved=eq.false&order=created_at.desc`);
+    rows.forEach(t=>{
+      if(!taskUrgent[t.id]){
+        taskUrgent[t.id]={id:t.id,name:t.name,sub:t.sub||'',zone:t.zone||'',_supabase:true};
+      }
+    });
+    SUPABASE_URGENT_TASKS=rows;
+    sbUrgentLoaded=true;
+    if(currentTab==='today')renderTab();
+  }catch(e){console.warn('Supabase urgent_tasks:',e.message);}
 }
 
 let MENU=[
