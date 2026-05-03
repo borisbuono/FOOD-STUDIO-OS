@@ -226,6 +226,7 @@ body {
 .tb-title { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #1F2916; }
 .tb-logo { height: 28px; width: auto; display: block; }
 .login-logo { width: 220px; max-width: 60%; height: auto; display: block; margin: 0 auto 14px; }
+.login-logo-mobile { display: none; }
 .tb-right { display: flex; align-items: center; gap: 8px; }
 .tb-context {
   display: flex; align-items: center; gap: 6px;
@@ -1399,6 +1400,7 @@ body {
   .login-left { display: none; }
   .login-right { display: block; min-height: auto; padding: 0; background: transparent; width: 100%; }
   .login-desc { display: none; }
+  .login-logo-mobile { display: block; width: 160px; height: auto; margin: 0 auto 24px; }
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -1838,6 +1840,7 @@ body {
   </div>
   <div class="login-right">
   <div class="login-card">
+    <img src="assets/food_studio_vertical_480.png" alt="Food Studio" class="login-logo-mobile">
     <span class="lf-label">Your name</span>
     <input class="lf-input" id="l-name" placeholder="Name..." autocomplete="name" oninput="clearFieldError('l-name','l-name-err')">
     <span class="inline-err" id="l-name-err"></span>
