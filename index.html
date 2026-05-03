@@ -5682,7 +5682,7 @@ function showInlineToastError(msg) {
 
 <div class="bottom-nav" id="bnav">
   <button class="bnav-tab ntab active" onclick="switchTab('today',this)" data-tab="today"><span class="blb">Today</span></button>
-  <button class="bnav-tab ntab" onclick="switchTab('cleaning',this)" data-tab="cleaning"><span class="blb">Tasks</span></button>
+  <button class="bnav-tab ntab" onclick="switchTab('briefing',this)" data-tab="briefing"><span class="blb">Brief</span></button>
   <button class="bnav-tab ntab" onclick="switchTab('production',this)" data-tab="production"><span class="blb">Production</span></button>
 </div>
 <!-- AI round button — right side, thumb-friendly -->
@@ -5692,10 +5692,12 @@ function showInlineToastError(msg) {
   <div class="more-handle"></div>
   <div id="more-grid-inner" class="more-grid">
     <button class="more-btn" onclick="switchTab('menu',null);closeMore()"><span class="more-lbl">Menu</span></button>
+    <button class="more-btn" onclick="switchTab('cleaning',null);closeMore()"><span class="more-lbl">Cleaning</span></button>
+    <button class="more-btn" onclick="switchTab('cookmode',null);closeMore()"><span class="more-lbl">Cook Mode</span></button>
     <button class="more-btn" onclick="switchTab('events',null);closeMore()"><span class="more-lbl">Events</span></button>
     <button class="more-btn" onclick="switchTab('schedule',null);closeMore()"><span class="more-lbl">Schedule</span></button>
-    <button class="more-btn" onclick="switchTab('command',null);closeMore()"><span class="more-lbl">Command</span></button>
     <button class="more-btn" onclick="switchTab('skills',null);closeMore()"><span class="more-lbl">Skills</span></button>
+    <button class="more-btn mgr-only" onclick="switchTab('command',null);closeMore()" style="display:none"><span class="more-lbl">Command</span></button>
     <button class="more-btn mgr-only" onclick="switchTab('integrations',null);closeMore()" style="display:none"><span class="more-lbl">Integrations</span></button>
     <button class="more-btn mgr-only" onclick="switchTab('onboarding',null);closeMore()" style="display:none"><span class="more-lbl">Onboard</span></button>
   </div>
