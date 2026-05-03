@@ -4394,24 +4394,47 @@ RULES
 }
 
 function renderObStep5(){
-  const entitySkills=skillsData?.skills?.filter(s=>s.entity_id===obData.entityId)||[];
+  // Fetch fresh skills for this entity if not already loaded
+  if(!obData.entityId){
+    return`<div class="ob-card">
+      <div class="ob-title">Your Skills</div>
+      <div class="ob-info-box">No entity created yet — go back to Step 1.</div>
+      <div class="ob-nav"><button class="ob-btn-sec" onclick="obStep=1;renderTab()">Back to Step 1</button></div>
+    </div>`;
+  }
+  if(obData.entitySkills===undefined){
+    obData.entitySkills='loading';
+    fetch(`${SUPABASE_URL}/rest/v1/skills?entity_id=eq.${obData.entityId}&is_current=eq.true&order=category.asc`,{
+      headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`}
+    }).then(r=>r.json()).then(rows=>{obData.entitySkills=rows||[];renderTab();}).catch(()=>{obData.entitySkills=[];renderTab();});
+  }
+  const skills=Array.isArray(obData.entitySkills)?obData.entitySkills:[];
+  const loading=obData.entitySkills==='loading';
+  const expandedKey='expandedSkill';
+
   return`<div class="ob-card">
     <div class="ob-title">Your Skills</div>
-    <div class="ob-desc">Review and edit the generated Skill files for your venue.</div>
-    ${entitySkills.length?entitySkills.map(s=>`
-    <div class="skill-card" style="margin-bottom:10px;">
-      <div class="skill-card-header">
-        <div class="skill-card-title">${(s.category||'').charAt(0).toUpperCase()+(s.category||'').slice(1)} Skill</div>
-        <span class="ob-skill-status">v${s.version}</span>
-      </div>
-      <div class="skill-card-preview">${(s.content||'').slice(0,160)}…</div>
-    </div>`).join(''):`
+    <div class="ob-desc">Review the generated Skill files. Click any card to expand. Edit later in the Command Center.</div>
+    ${loading?`<div class="ob-info-box">Loading Skills…</div>`:''}
+    ${!loading&&skills.length===0?`
     <div class="ob-info-box">
-      No Skills generated yet. The agent will populate these during the document walk (Step 4).<br>
-      You can add Skills manually later via the Command Center.
-    </div>`}
+      No Skills found for this venue yet.<br>
+      Go back to Step 4 to generate them, or skip and add manually via the Command Center.
+    </div>`:''}
+    ${skills.map(sk=>{
+      const cat=(sk.category||'').charAt(0).toUpperCase()+(sk.category||'').slice(1);
+      const isExp=obData[expandedKey]===sk.id;
+      const preview=(sk.content||'').slice(0,200);
+      return`<div class="skill-card" style="margin-bottom:10px;cursor:pointer;" onclick="obData.${expandedKey}='${obData[expandedKey]===sk.id?'':sk.id}';renderTab()">
+        <div class="skill-card-header">
+          <div class="skill-card-title">${cat} Skill</div>
+          <span class="ob-skill-status">v${sk.version||1}${sk.metadata?.generated_by?' · '+sk.metadata.generated_by:''}</span>
+        </div>
+        ${isExp?`<div class="skill-card-preview" style="white-space:pre-wrap;max-height:400px;overflow-y:auto;font-size:12.5px;line-height:1.6;">${(sk.content||'').replace(/[<>]/g,c=>c==='<'?'&lt;':'&gt;')}</div>`:`<div class="skill-card-preview">${preview.replace(/[<>]/g,c=>c==='<'?'&lt;':'&gt;')}…</div>`}
+      </div>`;
+    }).join('')}
     <div class="ob-nav">
-      <button class="ob-btn-sec" onclick="obStep=4;renderTab()">Back</button>
+      <button class="ob-btn-sec" onclick="obData.entitySkills=undefined;obStep=4;renderTab()">Back</button>
       <button class="ob-btn" onclick="obStep=6;renderTab()">Activate venue</button>
     </div>
   </div>`;
