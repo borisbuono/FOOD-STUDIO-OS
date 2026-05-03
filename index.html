@@ -195,6 +195,8 @@ body {
 .tb-mark span:nth-child(2) { width: 5px; height: 18px; }
 .tb-mark span:nth-child(3) { width: 3px; height: 9px; }
 .tb-title { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #1A1510; }
+.tb-logo { height: 28px; width: auto; display: block; }
+.login-logo { width: 220px; max-width: 60%; height: auto; display: block; margin: 0 auto 14px; }
 .tb-right { display: flex; align-items: center; gap: 8px; }
 .tb-context {
   display: flex; align-items: center; gap: 6px;
@@ -1801,8 +1803,7 @@ body {
 <!-- ─── LOGIN ─── -->
 <div id="login">
   <div class="login-left">
-    <div class="login-brand"><span></span><span></span><span></span></div>
-    <div class="login-name">Food Studio OS</div>
+    <img src="assets/food_studio_vertical_480.png" alt="Food Studio" class="login-logo">
     <div class="login-tagline">The operating system for your kitchen</div>
     <div class="login-desc">Manage your team, menu, recipes,<br>suppliers and service — in one place.</div>
   </div>
@@ -1862,8 +1863,7 @@ body {
   <!-- TOP BAR -->
   <div class="topbar-shell"><div class="topbar">
     <div class="tb-brand">
-      <div class="tb-mark"><span></span><span></span><span></span></div>
-      <div class="tb-title">Food Studio OS</div>
+      <img src="assets/food_studio_horizontal_600.png" alt="Food Studio" class="tb-logo" height="32">
     </div>
     <div class="tb-right">
       <div class="tb-context" onclick="openCtxModal()" id="tb-ctx">
