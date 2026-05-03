@@ -5083,13 +5083,73 @@ async function adoptDraft(r){
   if(currentTab==='production'||currentTab==='recipes')renderTab();
 }
 
-// Trigger a save-intent re-prompt for the last recipe-shaped reply
+// Silently re-prompt the AI to convert its last reply into structured recipe JSON,
+// then open the save card directly. No user message gets posted to chat.
 async function aiSaveLastAsRecipe(){
-  // Add a synthetic user message + send through existing flow
-  const inp=document.getElementById('ai-ov-input');
-  if(!inp){showToast('AI overlay not open');return;}
-  inp.value='Save the recipe you just gave me to my library — output the <RECIPE> JSON tag.';
-  await sendAIOv();
+  if(!helpHistory||!helpHistory.length){showToast('No recipe to save yet');return;}
+  // Find the last assistant reply (the recipe content)
+  let lastReply='';
+  for(let i=helpHistory.length-1;i>=0;i--){
+    if(helpHistory[i].role==='assistant'){lastReply=helpHistory[i].content;break;}
+  }
+  if(!lastReply){showToast('No recipe to save yet');return;}
+
+  // Show inline conversion indicator
+  const msgs=document.getElementById('ai-ov-msgs');
+  let loaderEl=null;
+  if(msgs){
+    loaderEl=document.createElement('div');
+    loaderEl.className='ai-msg-ai';
+    loaderEl.style.cssText='font-size:12.5px;color:var(--text-tertiary);';
+    loaderEl.innerHTML='<span style="display:inline-block;animation:pulse 1.4s ease-in-out infinite;">✦ Converting to recipe format…</span>';
+    msgs.appendChild(loaderEl);
+    msgs.scrollTop=99999;
+  }
+
+  // System prompt for conversion only — no chat history needed beyond the recipe content
+  const sys=`You are a recipe formatter. Convert the recipe below into a Food Studio OS recipe JSON object wrapped in <RECIPE>…</RECIPE> tags. Output ONLY the <RECIPE> JSON tag — no preamble, no explanation, no markdown.
+
+JSON shape: {"name":"","section":"hot","rest":"both","portions":10,"desc":"2-3 sentence professional description","costPerPortion":0,"menuPrice":0,"ingredients":[{"name":"","qty":"","unit":""}],"allergens":[],"versionNote":"AI draft v1"}
+
+Constraints:
+- section: cold|hot|pizza|dessert|breakfast
+- rest: taller|bistro-mondo|both
+- ingredients[].qty: numeric string (e.g. "500", "2.5"). ingredients[].unit: g|kg|ml|L|pcs|leaves|tbsp|tsp|cloves|to taste
+- Allergens from EU 14: gluten,crustacean,eggs,fish,peanuts,soy,milk,nuts,celery,mustard,sesame,sulphites,lupin,molluscs
+
+Recipe to convert:
+${lastReply}`;
+
+  try{
+    const resp=await fetch('/api/ai',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-6',
+        max_tokens:1500,
+        system:sys,
+        messages:[{role:'user',content:'Convert and output the <RECIPE> JSON.'}],
+      }),
+    });
+    if(!resp.ok)throw new Error('HTTP '+resp.status);
+    const data=await resp.json();
+    if(data.error)throw new Error(data.error.message||'API error');
+    const text=(data.content&&data.content[0]&&data.content[0].text)||'';
+    const m=text.match(/<RECIPE>([\s\S]*?)<\/RECIPE>/);
+    if(!m)throw new Error('AI did not produce structured recipe');
+    const parsed=JSON.parse(m[1].trim());
+    if(loaderEl&&loaderEl.parentNode)loaderEl.parentNode.removeChild(loaderEl);
+    currentDraft=parsed;
+    // Open the save card directly — same UI as the auto-detected path
+    const card=document.createElement('div');
+    card.className='ai-msg-ai';
+    card.innerHTML='<div style="background:#FBF2EC;border:1px solid rgba(184,106,66,0.2);border-radius:14px;padding:14px 16px;margin-top:4px;"><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#B86A42;margin-bottom:6px;">✦ Recipe ready to save</div><div style="font-family:Fraunces,serif;font-style:italic;font-size:18px;color:#1A1510;margin-bottom:6px;">'+(parsed.name||'Untitled recipe')+'</div><div style="font-size:12px;color:#5C4E3C;line-height:1.5;margin-bottom:12px;">'+(parsed.desc||'')+'</div><button onclick="adoptDraft(currentDraft)" style="width:100%;padding:12px;border-radius:10px;border:none;background:#B86A42;color:white;font-family:Outfit,sans-serif;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 3px 10px rgba(184,106,66,0.3);">Save to library →</button></div>';
+    if(msgs){msgs.appendChild(card);msgs.scrollTop=99999;}
+  }catch(e){
+    console.warn('aiSaveLastAsRecipe:',e.message);
+    if(loaderEl)loaderEl.innerHTML='<span style="color:var(--ruby);">Could not convert: '+e.message+'</span>';
+    else showToast('Save failed: '+e.message);
+  }
 }
 // voiceRec declared above
 
