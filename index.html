@@ -1401,6 +1401,15 @@ body {
   .login-right { display: block; min-height: auto; padding: 0; background: transparent; width: 100%; }
   .login-desc { display: none; }
   .login-logo-mobile { display: block; width: 160px; height: auto; margin: 0 auto 24px; }
+
+  /* iOS: prevent auto-zoom on input focus — minimum 16px font-size */
+  input, textarea, select { font-size: 16px !important; }
+
+  /* iOS: topbar respects the notch (safe-area-inset-top) */
+  .topbar-shell { top: calc(env(safe-area-inset-top, 0px) + 12px) !important; }
+
+  /* Body padding-top so tab content doesn't hide under the floating topbar */
+  body { padding-top: env(safe-area-inset-top, 0px); }
 }
 
 /* ═══════════════════════════════════════════════════════
