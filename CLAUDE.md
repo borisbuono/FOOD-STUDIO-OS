@@ -195,3 +195,5 @@ Do not push to production or write to Supabase without confirmation.
 - [ ] Siri-style voice: persistent voice mode on Today tab
 - [ ] Onboarding: fill CONFIG and run Stage 1 for Taller
 - [ ] Supabase: migrate to production (currently using anon open policies)
+
+<!-- 2026-05-03: cowork direct-push pipeline verified -->
