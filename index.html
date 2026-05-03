@@ -2092,6 +2092,7 @@ let helpHistory=[];
 let voiceRec=false,recognizer=null,voiceText='';
 let ctxPending={R:0,AREA:'boh',ZONE:'Hot Station'};
 let todayPhase=null,activeWorkflows=[];
+let SUPABASE_BRIEFINGS=[];let sbBriefingsLoaded=false;
 
 function getCov(){return parseInt(document.getElementById('cov-hidden')?.value||document.getElementById('mep-cov')?.value||40);}
 function getPhase(){const h=new Date().getHours();if(h>=5&&h<12)return'opening';if(h>=22||h<5)return'closing';return'service';}
@@ -2156,6 +2157,7 @@ function initApp(){
     renderTab();
     // ── Supabase: load live recipes in background ──
     loadSupabaseRecipes();
+    loadSupabaseBriefings();
     // ── Supabase connection test ──
     if (db) {
       db.from('restaurants').select('name').then(({ data, error }) => {
@@ -2805,8 +2807,9 @@ function buildCtxZones(){
   if(!ctxPending.ZONE&&zones.length)ctxPending.ZONE=zones[0];
 }
 function applyCtx(){
+  sbBriefingsLoaded=false;SUPABASE_BRIEFINGS=[];
   const prevR=R;
-  R=ctxPending.R;AREA=ctxPending.AREA;ZONE=ctxPending.ZONE||ZONES[R][AREA][0]||'';
+  R=ctxPending.R;loadSupabaseBriefings();AREA=ctxPending.AREA;ZONE=ctxPending.ZONE||ZONES[R][AREA][0]||'';
   document.getElementById('tb-rest').textContent=R===0?'Taller':'Bistro Mondo';
   document.getElementById('tb-zone').textContent=ZONE;
   saveSession();
@@ -3505,6 +3508,21 @@ async function loadSupabaseRecipes(){
     sbRecipesLoaded=true;
     if(added>0&&currentTab==='production'&&(prodTab==='recipes'||prodTab==='mep'))renderTab();
   }catch(e){console.warn('Supabase recipes:',e.message);}
+}
+
+async function loadSupabaseBriefings(){
+  if(sbBriefingsLoaded)return;
+  try{
+    const today=new Date().toISOString().slice(0,10);
+    const restSlug=R===0?'taller':'bistro-mondo';
+    const restaurants=await sbFetch(`restaurants?slug=eq.${restSlug}&select=id`);
+    if(!restaurants.length)return;
+    const restId=restaurants[0].id;
+    const briefings=await sbFetch(`briefings?restaurant_id=eq.${restId}&service_date=eq.${today}&order=created_at.desc&limit=10`);
+    SUPABASE_BRIEFINGS=briefings;
+    sbBriefingsLoaded=true;
+    if(currentTab==='briefing'||(currentTab==='today'&&todaySubTab==='brief'))renderTab();
+  }catch(e){console.warn('Supabase briefings:',e.message);}
 }
 
 let MENU=[
@@ -4525,6 +4543,53 @@ function renderPreBriefing(rest,covers,specials,lowMargin,allergenDishes,mepPct,
       </div>
       <div class="brief-body">${generatedBriefing}</div>
     </div>`;
+  }
+
+  // ── LIVE briefings from Supabase (operator-pushed via Cowork) ──
+  if(typeof SUPABASE_BRIEFINGS!=='undefined'&&SUPABASE_BRIEFINGS.length){
+    SUPABASE_BRIEFINGS.forEach(b=>{
+      const sc=b.structured_content||{};
+      const created=new Date(b.created_at).toLocaleString('en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
+      const hasStructured=sc.pizza_del_dia||sc.pasta_del_dia||(Array.isArray(sc.fish_of_day)&&sc.fish_of_day.length)||(Array.isArray(sc.para_pujar)&&sc.para_pujar.length)||(Array.isArray(sc.cocktails)&&sc.cocktails.length)||sc.postre||(Array.isArray(sc.ice_creams)&&sc.ice_creams.length)||(Array.isArray(sc.juices)&&sc.juices.length)||(Array.isArray(sc.no_tenemos)&&sc.no_tenemos.length);
+      html+=`<div class="brief-card" style="border-left:3px solid var(--ember);">
+        <div class="brief-head">
+          <div class="brief-type">Operator briefing · ${b.briefing_type||'pre-service'}</div>
+          <div class="brief-title">${rest} · live</div>
+          <div class="brief-meta">posted ${created}</div>
+        </div>
+        <div class="brief-body">`;
+      if(sc.pizza_del_dia)html+=`<div class="brief-section">Pizza del día</div><div class="brief-item"><div class="brief-bullet gold"></div><div class="brief-text">${sc.pizza_del_dia}</div></div>`;
+      if(sc.pasta_del_dia)html+=`<div class="brief-section">Pasta del día</div><div class="brief-item"><div class="brief-bullet gold"></div><div class="brief-text">${sc.pasta_del_dia}</div></div>`;
+      if(Array.isArray(sc.fish_of_day)&&sc.fish_of_day.length){
+        html+=`<div class="brief-section">Fish of the day</div>`;
+        sc.fish_of_day.forEach(f=>{html+=`<div class="brief-item"><div class="brief-bullet"></div><div class="brief-text">${f}</div></div>`;});
+      }
+      if(Array.isArray(sc.para_pujar)&&sc.para_pujar.length){
+        html+=`<div class="brief-section">Para pujar</div>`;
+        sc.para_pujar.forEach(p=>{html+=`<div class="brief-item"><div class="brief-bullet gold"></div><div class="brief-text">${p}</div></div>`;});
+      }
+      if(Array.isArray(sc.cocktails)&&sc.cocktails.length){
+        html+=`<div class="brief-section">Cocktails del día</div>`;
+        sc.cocktails.forEach(c=>{html+=`<div class="brief-item"><div class="brief-bullet"></div><div class="brief-text">${c}</div></div>`;});
+      }
+      if(sc.postre)html+=`<div class="brief-section">Postre</div><div class="brief-item"><div class="brief-bullet"></div><div class="brief-text">${sc.postre}</div></div>`;
+      if(Array.isArray(sc.ice_creams)&&sc.ice_creams.length){
+        html+=`<div class="brief-section">Ice creams</div>`;
+        sc.ice_creams.forEach(i=>{html+=`<div class="brief-item"><div class="brief-bullet"></div><div class="brief-text">${i}</div></div>`;});
+      }
+      if(Array.isArray(sc.juices)&&sc.juices.length){
+        html+=`<div class="brief-section">Juices</div>`;
+        sc.juices.forEach(j=>{html+=`<div class="brief-item"><div class="brief-bullet"></div><div class="brief-text">${j}</div></div>`;});
+      }
+      if(Array.isArray(sc.no_tenemos)&&sc.no_tenemos.length){
+        html+=`<div class="brief-section">No tenemos</div>`;
+        sc.no_tenemos.forEach(n=>{html+=`<div class="brief-item"><div class="brief-bullet red"></div><div class="brief-text">${n}</div></div>`;});
+      }
+      if(!hasStructured&&b.content){
+        html+=`<div class="brief-text" style="white-space:pre-wrap;line-height:1.6;">${b.content.replace(/[<>]/g,c=>c==='<'?'&lt;':'&gt;')}</div>`;
+      }
+      html+=`</div></div>`;
+    });
   }
 
   // Manual briefing builder
