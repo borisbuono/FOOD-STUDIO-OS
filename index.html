@@ -14,18 +14,18 @@
   --sage: #4A7B6A;
   --fern: #5A8A78;
   --mist: #A8C5B8;
-  --cream: #1A1510;
+  --cream: #1F2916;
   --cream-warm: #5C4E3C;
   --parchment: #9B8E7E;
-  --ember: #B86A42;
-  --ember-pale: rgba(184,106,66,0.10);
+  --ember: #4E6332;
+  --ember-pale: rgba(78,99,50,0.10);
   --ruby: #A03838;
   --ruby-pale: rgba(160,56,56,0.09);
   --gold: #A8893A;
   --white: #FFFFFF;
   --glass: rgba(0,0,0,0.03);
   --glass-border: rgba(0,0,0,0.08);
-  --text-primary: #1A1510;
+  --text-primary: #1F2916;
   --text-secondary: #5C4E3C;
   --text-tertiary: #9B8E7E;
   --border: rgba(0,0,0,0.07);
@@ -55,7 +55,7 @@ body {
   display: flex; align-items: flex-end; gap: 3px; height: 44px; margin-bottom: 10px;
 }
 .login-brand span {
-  background: #B86A42; border-radius: 3px; display: block;
+  background: #4E6332; border-radius: 3px; display: block;
 }
 .login-brand span:nth-child(1) { width: 6px; height: 22px; }
 .login-brand span:nth-child(2) { width: 9px; height: 38px; }
@@ -83,7 +83,7 @@ body {
   outline: none; margin-bottom: 14px; transition: border-color 0.2s;
 }
 .lf-input::placeholder { color: #C8C0B8; }
-.lf-input:focus { border-color: #B86A42; }
+.lf-input:focus { border-color: #4E6332; }
 .lf-roles { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin-bottom: 14px; }
 .lf-role {
   padding: 11px 8px; border-radius: 11px; border: 1px solid rgba(0,0,0,0.1);
@@ -92,7 +92,7 @@ body {
   cursor: pointer; text-align: center; transition: all 0.18s; line-height: 1.4;
 }
 .lf-role.sel {
-  background: #B86A42; color: white; border-color: #B86A42; font-weight: 600;
+  background: #4E6332; color: white; border-color: #4E6332; font-weight: 600;
 }
 .lf-rest { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin-bottom: 14px; }
 .lf-rest-btn {
@@ -117,7 +117,7 @@ body {
 .lf-lang.sel { background: var(--glass); color: var(--text-primary); border-color: rgba(255,255,255,0.18); }
 .lf-btn {
   width: 100%; padding: 15px; border-radius: 12px; border: none;
-  background: #B86A42; color: white;
+  background: #4E6332; color: white;
   font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer;
   transition: all 0.2s; letter-spacing: 0.02em;
 }
@@ -135,7 +135,7 @@ body {
   width: 100%; padding: 13px 15px; border-radius: 12px;
   border: 1px solid rgba(0,0,0,0.12); background: #FFFFFF;
   display: flex; align-items: center; justify-content: center; gap: 10px;
-  font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 500; color: #1A1510;
+  font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 500; color: #1F2916;
   cursor: pointer; transition: all 0.18s; margin-bottom: 0;
 }
 .lf-google-btn:hover { background: #F7F5F1; border-color: rgba(0,0,0,0.18); }
@@ -194,7 +194,7 @@ body {
 .tb-mark span:nth-child(1) { width: 3px; height: 12px; }
 .tb-mark span:nth-child(2) { width: 5px; height: 18px; }
 .tb-mark span:nth-child(3) { width: 3px; height: 9px; }
-.tb-title { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #1A1510; }
+.tb-title { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #1F2916; }
 .tb-logo { height: 28px; width: auto; display: block; }
 .login-logo { width: 220px; max-width: 60%; height: auto; display: block; margin: 0 auto 14px; }
 .tb-right { display: flex; align-items: center; gap: 8px; }
@@ -261,7 +261,7 @@ body {
 /* ─── PHASE TABS ─── */
 .phase-tabs{display:flex;gap:6px;margin-bottom:14px;}
 .phase-tab{flex:1;padding:8px 4px;border-radius:11px;border:1.5px solid rgba(0,0,0,.08);background:transparent;color:var(--text-secondary);font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .18s;-webkit-tap-highlight-color:transparent;}
-.phase-tab.active{border-color:var(--ember);background:#FBF2EC;color:var(--ember);}
+.phase-tab.active{border-color:var(--ember);background:#F5F2E6;color:var(--ember);}
 /* Today sub-tabs */
 .today-subtabs{display:flex;gap:0;margin-bottom:14px;background:var(--ink-mid);border-radius:11px;padding:3px;}
 .today-stab{flex:1;padding:7px 8px;border-radius:9px;border:none;background:transparent;color:var(--text-tertiary);font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .18s;-webkit-tap-highlight-color:transparent;}
@@ -284,7 +284,7 @@ body {
 .bi-dot.green{background:#3A7D5C;}
 .bi-labour{display:flex;justify-content:space-between;align-items:center;padding:10px 13px;background:var(--ink-mid);border-radius:11px;margin-bottom:7px;font-size:12px;color:var(--text-secondary);}
 .bi-shift{display:flex;align-items:center;gap:10px;padding:9px 13px;background:#fff;border-radius:12px;margin-bottom:6px;border:1px solid var(--glass-border);}
-.brief-gen-btn{width:100%;padding:12px;border-radius:12px;border:1.5px dashed rgba(184,106,66,.35);background:transparent;color:var(--ember);font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.brief-gen-btn{width:100%;padding:12px;border-radius:12px;border:1.5px dashed rgba(78,99,50,.35);background:transparent;color:var(--ember);font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;-webkit-tap-highlight-color:transparent;}
 .brief-inline-card{background:#fff;border:1px solid var(--ember);border-radius:14px;padding:14px;margin-bottom:14px;font-size:13px;color:var(--text-primary);line-height:1.6;}
 .brief-inline-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
 .brief-inline-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--ember);}
@@ -314,7 +314,7 @@ body {
 .cc-skill-card{background:#fff;border:1px solid var(--glass-border);border-radius:12px;padding:12px 14px;margin-bottom:7px;}
 .cc-skill-head{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
 .cc-skill-cat{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:3px 8px;border-radius:6px;}
-.cc-skill-cat.brand{background:#FBF2EC;color:var(--ember);}
+.cc-skill-cat.brand{background:#F5F2E6;color:var(--ember);}
 .cc-skill-cat.kitchen{background:#E8F5F0;color:#4A7B6A;}
 .cc-skill-cat.ops{background:#EEF2F8;color:#2A5F7A;}
 .cc-skill-cat.finance{background:#F5F0FB;color:#6B4E8A;}
@@ -345,9 +345,9 @@ body {
 .brief-chip.mep.ok{background:#EFF9F3;color:var(--fern);}
 .brief-strip-btn{flex-shrink:0;padding:6px 12px;border-radius:12px;border:none;background:var(--ember);color:#fff;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;-webkit-tap-highlight-color:transparent;}
 /* ─── WORKFLOW CARDS ─── */
-.wf-card{background:#fff;border:1px solid rgba(184,106,66,.2);border-left:3px solid var(--ember);border-radius:14px;margin-bottom:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04);}
+.wf-card{background:#fff;border:1px solid rgba(78,99,50,.2);border-left:3px solid var(--ember);border-radius:14px;margin-bottom:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04);}
 .wf-head{display:flex;align-items:center;gap:10px;padding:12px 14px 8px;}
-.wf-icon{width:34px;height:34px;border-radius:10px;background:#FBF2EC;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.wf-icon{width:34px;height:34px;border-radius:10px;background:#F5F2E6;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
 .wf-info{flex:1;min-width:0;}
 .wf-name{font-size:14px;font-weight:600;color:var(--text-primary);}
 .wf-stepmeta{font-size:10px;color:var(--text-tertiary);font-family:'DM Mono',monospace;margin-top:1px;}
@@ -488,11 +488,11 @@ body {
 .msh-right{display:flex;align-items:center;gap:6px}
 .msh-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
 .msh-dot.cold{background:#5A8A78}.msh-dot.hot{background:#C4783A}.msh-dot.pizza{background:#B8963A}.msh-dot.dessert{background:#8B6FAA}.msh-dot.breakfast{background:#6AAFCC}
-.msh-title{font-size:13px;font-weight:600;color:#1A1510}
+.msh-title{font-size:13px;font-weight:600;color:#1F2916}
 .msh-count{font-size:11px;color:#9B8E7E;font-family:'DM Mono',monospace}
-.msh-add{font-size:11px;font-weight:600;padding:3px 9px;border-radius:7px;border:1px solid rgba(184,106,66,.3);background:#FBF2EC;color:#B86A42;cursor:pointer;font-family:'Outfit',sans-serif}
+.msh-add{font-size:11px;font-weight:600;padding:3px 9px;border-radius:7px;border:1px solid rgba(78,99,50,.3);background:#F5F2E6;color:#4E6332;cursor:pointer;font-family:'Outfit',sans-serif}
 .menu-sec-body{border-top:1px solid rgba(0,0,0,.07)}
-.dish-name{font-size:14px;font-weight:500;color:#1A1510}
+.dish-name{font-size:14px;font-weight:500;color:#1F2916}
 .dish-meta{font-size:11px;color:#9B8E7E;font-family:'DM Mono',monospace;margin-top:2px}
 .dish-training{max-height:0;overflow:hidden;transition:max-height .3s ease;background:#FAFAF8}
 .dish-training.open{max-height:500px;border-top:1px solid rgba(0,0,0,.06)}
@@ -501,25 +501,25 @@ body {
 .dt-allergen-row{display:flex;flex-wrap:wrap;gap:5px;padding:0 16px 10px}
 .dt-allergen{font-size:11px;padding:3px 8px;border-radius:6px;background:rgba(160,56,56,.1);color:#A03838}
 .dt-recipe-link{display:flex;align-items:center;gap:8px;padding:8px 16px 10px;cursor:pointer}
-.dt-recipe-icon{font-size:16px}.dt-recipe-text{font-size:12px;color:#B86A42;flex:1}.dt-recipe-arrow{font-size:12px;color:#B86A42}
+.dt-recipe-icon{font-size:16px}.dt-recipe-text{font-size:12px;color:#4E6332;flex:1}.dt-recipe-arrow{font-size:12px;color:#4E6332}
 .dt-video{display:flex;align-items:center;gap:12px;padding:10px 16px 14px;cursor:pointer}
 .dt-video-icon{width:36px;height:36px;border-radius:10px;background:rgba(0,0,0,.06);display:flex;align-items:center;justify-content:center;font-size:14px;color:#9B8E7E;flex-shrink:0}
-.dt-video-text{font-size:13px;font-weight:500;color:#1A1510}.dt-video-sub{font-size:11px;color:#9B8E7E;margin-top:1px}
+.dt-video-text{font-size:13px;font-weight:500;color:#1F2916}.dt-video-sub{font-size:11px;color:#9B8E7E;margin-top:1px}
 /* ─── MENU PREVIEW ─── */
 .menu-preview-card{background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:14px;margin-bottom:12px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04)}
 .menu-preview-head{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.menu-preview-title{font-size:13px;font-weight:600;color:#1A1510}
-.menu-preview-badge{font-size:11px;font-weight:600;color:#B86A42;padding:4px 10px;border-radius:8px;background:#FBF2EC}
+.menu-preview-title{font-size:13px;font-weight:600;color:#1F2916}
+.menu-preview-badge{font-size:11px;font-weight:600;color:#4E6332;padding:4px 10px;border-radius:8px;background:#F5F2E6}
 .menu-preview-body{max-height:0;overflow:hidden;transition:max-height .4s ease}
 .menu-preview-body.open{max-height:1200px}
 .menu-print{padding:20px 16px}
-.menu-print-rest{font-family:'Fraunces',serif;font-style:italic;font-size:22px;color:#1A1510;margin-bottom:3px}
+.menu-print-rest{font-family:'Fraunces',serif;font-style:italic;font-size:22px;color:#1F2916;margin-bottom:3px}
 .menu-print-sub{font-size:11px;color:#9B8E7E;font-family:'DM Mono',monospace;margin-bottom:16px;text-transform:uppercase;letter-spacing:.08em}
 .menu-print-section{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#9B8E7E;margin:12px 0 6px}
 .menu-print-dish{display:flex;align-items:baseline;gap:6px;margin-bottom:5px}
-.menu-print-name{font-size:13px;color:#1A1510;flex:1}
+.menu-print-name{font-size:13px;color:#1F2916;flex:1}
 .menu-print-dots{flex:1;border-bottom:1px dotted rgba(0,0,0,.15);margin:0 4px}
-.menu-print-price{font-size:13px;font-family:'DM Mono',monospace;color:#1A1510;font-weight:600}
+.menu-print-price{font-size:13px;font-family:'DM Mono',monospace;color:#1F2916;font-weight:600}
 .menu-print-desc{font-size:11px;color:#9B8E7E;margin-bottom:8px;font-style:italic}
 
 /* ─── RECIPE CARD ─── */
@@ -780,7 +780,7 @@ body {
   font-weight: 500; cursor: pointer; white-space: nowrap;
   border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.18s;
 }
-.ntab.active { color: #B86A42; border-bottom-color: #B86A42; font-weight: 600; }
+.ntab.active { color: #4E6332; border-bottom-color: #4E6332; font-weight: 600; }
 
 /* ─── SIGN OFF ─── */
 .signoff-row {
@@ -1007,19 +1007,19 @@ body {
   padding: 14px 16px; cursor: pointer; user-select: none;
 }
 .menu-preview-head:active { background: #F7F5F1; }
-.menu-preview-title { font-size: 13px; font-weight: 600; color: #1A1510; }
-.menu-preview-badge { font-size: 10px; background: #FBF2EC; color: #B86A42; padding: 3px 9px; border-radius: 8px; font-weight: 600; }
+.menu-preview-title { font-size: 13px; font-weight: 600; color: #1F2916; }
+.menu-preview-badge { font-size: 10px; background: #F5F2E6; color: #4E6332; padding: 3px 9px; border-radius: 8px; font-weight: 600; }
 .menu-preview-body { border-top: 1px solid rgba(0,0,0,0.07); padding: 16px; display: none; }
 .menu-preview-body.open { display: block; }
 .menu-print { background: #FAFAF8; border: 1px solid rgba(0,0,0,0.07); border-radius: 12px; padding: 20px 18px; }
-.menu-print-rest { font-family: 'Fraunces', serif; font-style: italic; font-size: 20px; font-weight: 400; color: #1A1510; text-align: center; margin-bottom: 4px; }
+.menu-print-rest { font-family: 'Fraunces', serif; font-style: italic; font-size: 20px; font-weight: 400; color: #1F2916; text-align: center; margin-bottom: 4px; }
 .menu-print-sub { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #9B8E7E; text-align: center; margin-bottom: 16px; }
-.menu-print-section { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #B86A42; margin: 14px 0 8px; }
+.menu-print-section { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #4E6332; margin: 14px 0 8px; }
 .menu-print-section:first-child { margin-top: 0; }
 .menu-print-dish { display: flex; align-items: baseline; margin-bottom: 7px; gap: 6px; }
-.menu-print-name { font-size: 13px; font-weight: 500; color: #1A1510; flex: 1; }
+.menu-print-name { font-size: 13px; font-weight: 500; color: #1F2916; flex: 1; }
 .menu-print-dots { flex: 1; border-bottom: 1px dotted rgba(0,0,0,0.15); min-width: 20px; }
-.menu-print-price { font-size: 13px; font-weight: 600; color: #1A1510; flex-shrink: 0; font-family: 'DM Mono', monospace; }
+.menu-print-price { font-size: 13px; font-weight: 600; color: #1F2916; flex-shrink: 0; font-family: 'DM Mono', monospace; }
 .menu-print-desc { font-size: 11px; color: #9B8E7E; margin: -4px 0 6px; line-height: 1.5; }
 
 /* ── DISH TRAINING LAYER ── */
@@ -1033,91 +1033,91 @@ body {
 .dt-recipe-link { display: flex; align-items: center; gap: 8px; background: #FFFFFF; border: 1px solid rgba(0,0,0,0.09); border-radius: 10px; padding: 10px 12px; cursor: pointer; margin-bottom: 8px; }
 .dt-recipe-link:active { background: #F0EDE8; }
 .dt-recipe-icon { font-size: 16px; flex-shrink: 0; }
-.dt-recipe-text { font-size: 12px; font-weight: 600; color: #1A1510; flex: 1; }
+.dt-recipe-text { font-size: 12px; font-weight: 600; color: #1F2916; flex: 1; }
 .dt-recipe-arrow { font-size: 12px; color: #C8C0B8; }
 .dt-video { display: flex; align-items: center; gap: 8px; background: #FFFFFF; border: 1px solid rgba(0,0,0,0.09); border-radius: 10px; padding: 10px 12px; cursor: pointer; }
 .dt-video:active { background: #F0EDE8; }
-.dt-video-icon { width: 32px; height: 32px; background: #B86A42; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
-.dt-video-text { font-size: 12px; font-weight: 600; color: #1A1510; flex: 1; }
+.dt-video-icon { width: 32px; height: 32px; background: #4E6332; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+.dt-video-text { font-size: 12px; font-weight: 600; color: #1F2916; flex: 1; }
 .dt-video-sub { font-size: 10px; color: #9B8E7E; margin-top: 1px; }
-.dt-toggle { background: none; border: none; color: #B86A42; font-size: 11px; font-weight: 600; font-family: 'Outfit', sans-serif; cursor: pointer; padding: 2px 0; }
+.dt-toggle { background: none; border: none; color: #4E6332; font-size: 11px; font-weight: 600; font-family: 'Outfit', sans-serif; cursor: pointer; padding: 2px 0; }
 
 /* ── ORDERING UPGRADE ── */
 .ord-ai-bar { display: flex; align-items: center; gap: 8px; background: #FFFFFF; border: 1.5px solid rgba(0,0,0,0.1); border-radius: 14px; padding: 11px 11px 11px 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 14px; }
-.ord-ai-bar:focus-within { border-color: #B86A42; }
-.ord-ai-input { flex: 1; border: none; background: transparent; outline: none; font-family: 'Outfit', sans-serif; font-size: 14px; color: #1A1510; }
+.ord-ai-bar:focus-within { border-color: #4E6332; }
+.ord-ai-input { flex: 1; border: none; background: transparent; outline: none; font-family: 'Outfit', sans-serif; font-size: 14px; color: #1F2916; }
 .ord-ai-input::placeholder { color: #C8C0B8; }
-.ord-ai-btn { padding: 9px 14px; border-radius: 10px; border: none; background: #B86A42; color: white; font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 600; cursor: pointer; flex-shrink: 0; }
+.ord-ai-btn { padding: 9px 14px; border-radius: 10px; border: none; background: #4E6332; color: white; font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 600; cursor: pointer; flex-shrink: 0; }
 .provider-card { background: #FFFFFF; border: 1px solid rgba(0,0,0,0.07); border-radius: 14px; margin-bottom: 8px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
 .provider-head { display: flex; align-items: center; padding: 14px 16px; gap: 12px; cursor: pointer; }
 .provider-head:active { background: #F7F5F1; }
 .provider-logo { width: 40px; height: 40px; border-radius: 10px; background: #F7F5F1; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
 .provider-info { flex: 1; }
-.provider-name { font-size: 14px; font-weight: 600; color: #1A1510; }
+.provider-name { font-size: 14px; font-weight: 600; color: #1F2916; }
 .provider-meta { font-size: 11px; color: #9B8E7E; font-family: 'DM Mono', monospace; margin-top: 1px; }
 .provider-copy { padding: 8px 13px; border-radius: 9px; border: none; background: #EFF9F3; color: #3A7D5C; font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 600; cursor: pointer; flex-shrink: 0; }
 .provider-body { display: none; border-top: 1px solid rgba(0,0,0,0.06); }
 .provider-card.open .provider-body { display: block; }
 .ord-item-row { display: flex; align-items: center; padding: 11px 16px; border-bottom: 1px solid rgba(0,0,0,0.05); gap: 10px; }
 .ord-item-row:last-child { border-bottom: none; }
-.ord-item-name { flex: 1; font-size: 13px; color: #1A1510; }
+.ord-item-name { flex: 1; font-size: 13px; color: #1F2916; }
 .ord-item-qty { font-family: 'DM Mono', monospace; font-size: 14px; font-weight: 600; color: #4A7B6A; }
 .ord-item-unit { font-size: 11px; color: #9B8E7E; margin-left: 3px; }
 .ord-item-price { font-size: 12px; color: #9B8E7E; font-family: 'DM Mono', monospace; margin-left: 8px; flex-shrink: 0; }
-.special-offer-badge { background: linear-gradient(135deg, #FBF2EC, #FEF8F5); border: 1px solid rgba(184,106,66,0.2); border-radius: 10px; padding: 10px 14px; margin: 8px 16px; display: flex; align-items: center; gap: 8px; }
+.special-offer-badge { background: linear-gradient(135deg, #F5F2E6, #FEF8F5); border: 1px solid rgba(78,99,50,0.2); border-radius: 10px; padding: 10px 14px; margin: 8px 16px; display: flex; align-items: center; gap: 8px; }
 .sob-icon { font-size: 16px; flex-shrink: 0; }
-.sob-text { font-size: 12px; color: #B86A42; font-weight: 500; flex: 1; }
-.sob-tag { font-size: 9px; font-weight: 700; background: #B86A42; color: white; padding: 2px 7px; border-radius: 6px; flex-shrink: 0; }
+.sob-text { font-size: 12px; color: #4E6332; font-weight: 500; flex: 1; }
+.sob-tag { font-size: 9px; font-weight: 700; background: #4E6332; color: white; padding: 2px 7px; border-radius: 6px; flex-shrink: 0; }
 
 /* ── EVENTS MODULE ── */
 .event-card { background:#FFFFFF;border:1px solid rgba(0,0,0,0.07);border-radius:16px;margin-bottom:10px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.04); }
 .event-status { font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 9px;border-radius:6px; }
 .event-status.proposal { background:#EEF5F2;color:#4A7B6A; }
-.event-status.confirmed { background:#FBF2EC;color:#B86A42; }
+.event-status.confirmed { background:#F5F2E6;color:#4E6332; }
 .event-status.complete { background:#F0EDE8;color:#9B8E7E; }
 .event-head { padding:16px;display:flex;align-items:flex-start;justify-content:space-between;gap:10px; }
-.event-name { font-size:16px;font-weight:600;color:#1A1510;margin-bottom:3px; }
+.event-name { font-size:16px;font-weight:600;color:#1F2916;margin-bottom:3px; }
 .event-meta { font-size:12px;color:#9B8E7E;font-family:'DM Mono',monospace; }
 .event-body { border-top:1px solid rgba(0,0,0,0.06);padding:14px 16px; }
 .event-section { font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#C8C0B8;margin-bottom:8px;margin-top:12px; }
 .event-section:first-child { margin-top:0; }
 .event-dish-row { display:flex;align-items:center;padding:8px 0;border-bottom:1px solid rgba(0,0,0,0.05);gap:10px; }
 .event-dish-row:last-child { border-bottom:none; }
-.event-dish-name { flex:1;font-size:13px;font-weight:500;color:#1A1510; }
+.event-dish-name { flex:1;font-size:13px;font-weight:500;color:#1F2916; }
 .event-dish-qty { font-family:'DM Mono',monospace;font-size:12px;color:#4A7B6A; }
 .event-dish-price { font-family:'DM Mono',monospace;font-size:12px;color:#9B8E7E;margin-left:8px; }
 .event-totals { background:#F7F5F1;border-radius:12px;padding:14px;margin-top:12px; }
 .event-total-row { display:flex;justify-content:space-between;align-items:center;padding:4px 0; }
 .event-total-label { font-size:12px;color:#9B8E7E; }
-.event-total-val { font-family:'DM Mono',monospace;font-size:14px;font-weight:600;color:#1A1510; }
-.event-total-val.highlight { color:#B86A42; }
+.event-total-val { font-family:'DM Mono',monospace;font-size:14px;font-weight:600;color:#1F2916; }
+.event-total-val.highlight { color:#4E6332; }
 .event-wa-btn { width:100%;padding:13px;border:none;background:#25D366;color:white;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;margin-top:12px;border-radius:11px; }
 .event-form { background:#FFFFFF;border:1px solid rgba(0,0,0,0.07);border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,0.04); }
 .ef-label { font-size:10px;font-weight:700;letter-spacing:0.09em;text-transform:uppercase;color:#9B8E7E;margin-bottom:6px;display:block;margin-top:12px; }
 .ef-label:first-child { margin-top:0; }
-.ef-input { width:100%;padding:11px 13px;border-radius:10px;border:1px solid rgba(0,0,0,0.1);background:#F7F5F1;font-family:'Outfit',sans-serif;font-size:14px;color:#1A1510;outline:none; }
-.ef-input:focus { border-color:#B86A42; }
+.ef-input { width:100%;padding:11px 13px;border-radius:10px;border:1px solid rgba(0,0,0,0.1);background:#F7F5F1;font-family:'Outfit',sans-serif;font-size:14px;color:#1F2916;outline:none; }
+.ef-input:focus { border-color:#4E6332; }
 .ef-input::placeholder { color:#C8C0B8; }
-.ef-btn { width:100%;padding:13px;border-radius:12px;border:none;background:#B86A42;color:white;font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;cursor:pointer;margin-top:14px; }
+.ef-btn { width:100%;padding:13px;border-radius:12px;border:none;background:#4E6332;color:white;font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;cursor:pointer;margin-top:14px; }
 
 /* ── SCHEDULE MODULE ── */
 .schedule-week { display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-bottom:14px;padding-bottom:2px; }
 .schedule-week::-webkit-scrollbar { display:none; }
 .day-pill { flex-shrink:0;padding:8px 14px;border-radius:20px;border:1px solid rgba(0,0,0,0.09);background:white;font-family:'Outfit',sans-serif;font-size:12px;font-weight:500;color:#9B8E7E;cursor:pointer;text-align:center;transition:all 0.18s; }
-.day-pill.active { background:#B86A42;color:white;border-color:#B86A42; }
+.day-pill.active { background:#4E6332;color:white;border-color:#4E6332; }
 .day-pill .day-n { font-size:16px;font-weight:700;display:block;line-height:1.2; }
 .day-pill .day-l { font-size:9px;letter-spacing:0.06em;text-transform:uppercase; }
 .shift-slot { background:#FFFFFF;border:1px solid rgba(0,0,0,0.07);border-radius:13px;margin-bottom:7px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.04); }
 .shift-slot-row { display:flex;align-items:center;padding:13px 15px;gap:10px; }
 .shift-av { width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:white;flex-shrink:0; }
 .shift-slot-info { flex:1; }
-.shift-slot-name { font-size:14px;font-weight:600;color:#1A1510; }
+.shift-slot-name { font-size:14px;font-weight:600;color:#1F2916; }
 .shift-slot-meta { font-size:11px;color:#9B8E7E;font-family:'DM Mono',monospace;margin-top:1px; }
 .shift-slot-time { font-family:'DM Mono',monospace;font-size:13px;font-weight:600;color:#4A7B6A;flex-shrink:0; }
 .labour-bar { background:#FFFFFF;border:1px solid rgba(0,0,0,0.07);border-radius:13px;padding:14px 15px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,0.04); }
 .labour-row { display:flex;justify-content:space-between;align-items:center;margin-bottom:6px; }
 .labour-label { font-size:12px;color:#9B8E7E; }
-.labour-val { font-family:'DM Mono',monospace;font-size:14px;font-weight:600;color:#1A1510; }
+.labour-val { font-family:'DM Mono',monospace;font-size:14px;font-weight:600;color:#1F2916; }
 .labour-pct { font-family:'DM Mono',monospace;font-size:12px; }
 .labour-prog { height:6px;background:#F0EDE8;border-radius:3px;overflow:hidden;margin-top:8px; }
 .labour-prog-fill { height:100%;border-radius:3px;transition:width 0.4s; }
@@ -1127,10 +1127,10 @@ body {
 .cook-recipe-sel { background:#FFFFFF;border:1px solid rgba(0,0,0,0.07);border-radius:13px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,0.04); }
 .cook-recipe-row { display:flex;align-items:center;padding:14px 15px;gap:10px;cursor:pointer; }
 .cook-recipe-row:active { background:#F7F5F1; }
-.cook-recipe-name { flex:1;font-size:14px;font-weight:600;color:#1A1510; }
+.cook-recipe-name { flex:1;font-size:14px;font-weight:600;color:#1F2916; }
 .cook-recipe-meta { font-size:11px;color:#9B8E7E;font-family:'DM Mono',monospace; }
 .cook-active { background:#FFFFFF;border-radius:16px;overflow:hidden; }
-.cook-header { background:#B86A42;padding:20px 20px 16px;color:white; }
+.cook-header { background:#4E6332;padding:20px 20px 16px;color:white; }
 .cook-recipe-title { font-family:'Fraunces',serif;font-style:italic;font-size:28px;font-weight:300;margin-bottom:4px; }
 .cook-portions-row { display:flex;align-items:center;gap:10px;margin-top:10px; }
 .cook-portions-label { font-size:12px;opacity:0.7; }
@@ -1138,34 +1138,34 @@ body {
 .cook-portions-val { font-family:'DM Mono',monospace;font-size:20px;font-weight:600;min-width:40px;text-align:center; }
 .cook-step { padding:24px 20px;border-bottom:1px solid rgba(0,0,0,0.06); }
 .cook-step-num { font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#C8C0B8;margin-bottom:8px; }
-.cook-step-text { font-size:22px;font-weight:500;color:#1A1510;line-height:1.5; }
-.cook-step-timer { display:flex;align-items:center;gap:10px;margin-top:16px;background:#FBF2EC;border-radius:12px;padding:12px 14px; }
+.cook-step-text { font-size:22px;font-weight:500;color:#1F2916;line-height:1.5; }
+.cook-step-timer { display:flex;align-items:center;gap:10px;margin-top:16px;background:#F5F2E6;border-radius:12px;padding:12px 14px; }
 .cook-timer-icon { font-size:20px; }
-.cook-timer-text { flex:1;font-size:14px;font-weight:600;color:#B86A42; }
-.cook-timer-start { padding:8px 14px;border-radius:8px;border:none;background:#B86A42;color:white;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer; }
+.cook-timer-text { flex:1;font-size:14px;font-weight:600;color:#4E6332; }
+.cook-timer-start { padding:8px 14px;border-radius:8px;border:none;background:#4E6332;color:white;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer; }
 .cook-nav { display:flex;gap:10px;padding:16px 20px;background:#F7F5F1; }
 .cook-nav-btn { flex:1;padding:16px;border-radius:14px;border:none;font-family:'Outfit',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:all 0.18s; }
 .cook-nav-btn.prev { background:#FFFFFF;color:#9B8E7E;border:1px solid rgba(0,0,0,0.1); }
-.cook-nav-btn.next { background:#B86A42;color:white;box-shadow:0 4px 14px rgba(184,106,66,0.3); }
+.cook-nav-btn.next { background:#4E6332;color:white;box-shadow:0 4px 14px rgba(78,99,50,0.3); }
 .cook-ingredients { padding:16px 20px; }
 .cook-ing-row { display:flex;align-items:center;padding:10px 0;border-bottom:1px solid rgba(0,0,0,0.05); }
 .cook-ing-row:last-child { border-bottom:none; }
-.cook-ing-name { flex:1;font-size:15px;color:#1A1510; }
-.cook-ing-qty { font-family:'DM Mono',monospace;font-size:16px;font-weight:600;color:#B86A42; }
+.cook-ing-name { flex:1;font-size:15px;color:#1F2916; }
+.cook-ing-qty { font-family:'DM Mono',monospace;font-size:16px;font-weight:600;color:#4E6332; }
 .cook-ing-unit { font-size:13px;color:#9B8E7E;margin-left:5px; }
 
 /* ── REPRICING TOOL ── */
 .reprice-card { background:#FFFFFF;border:1px solid rgba(0,0,0,0.07);border-radius:14px;margin-bottom:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.04); }
 .reprice-head { display:flex;align-items:center;padding:13px 15px;gap:10px; }
-.reprice-name { flex:1;font-size:14px;font-weight:600;color:#1A1510; }
-.reprice-current { font-family:'DM Mono',monospace;font-size:14px;font-weight:600;color:#1A1510;flex-shrink:0; }
+.reprice-name { flex:1;font-size:14px;font-weight:600;color:#1F2916; }
+.reprice-current { font-family:'DM Mono',monospace;font-size:14px;font-weight:600;color:#1F2916;flex-shrink:0; }
 .reprice-mg { font-family:'DM Mono',monospace;font-size:12px;flex-shrink:0;margin-left:6px; }
 .reprice-body { border-top:1px solid rgba(0,0,0,0.06);padding:12px 15px; }
 .reprice-row { display:flex;align-items:center;gap:10px;margin-bottom:8px; }
 .reprice-row:last-child { margin-bottom:0; }
 .reprice-row-label { font-size:12px;color:#9B8E7E;flex:1; }
-.reprice-input { width:80px;padding:7px 10px;border-radius:8px;border:1px solid rgba(0,0,0,0.1);background:#F7F5F1;font-family:'DM Mono',monospace;font-size:14px;color:#1A1510;text-align:right;outline:none; }
-.reprice-input:focus { border-color:#B86A42; }
+.reprice-input { width:80px;padding:7px 10px;border-radius:8px;border:1px solid rgba(0,0,0,0.1);background:#F7F5F1;font-family:'DM Mono',monospace;font-size:14px;color:#1F2916;text-align:right;outline:none; }
+.reprice-input:focus { border-color:#4E6332; }
 .reprice-suggested { font-family:'DM Mono',monospace;font-size:13px;color:#4A7B6A;font-weight:600; }
 
 .bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:rgba(255,255,255,.95);backdrop-filter:blur(20px);border-top:1px solid rgba(0,0,0,.07);display:flex;align-items:stretch;padding-bottom:env(safe-area-inset-bottom,0px);z-index:85;height:60px}
@@ -1173,12 +1173,12 @@ body {
 .bnav-tab:active{background:rgba(0,0,0,.03)}
 .bic{font-size:20px;line-height:1;transition:transform .15s}
 .blb{font-family:"Outfit",sans-serif;font-size:9px;font-weight:500;letter-spacing:.04em;color:#C8C0B8;text-transform:uppercase}
-.bnav-tab.active .blb{color:#B86A42}
+.bnav-tab.active .blb{color:#4E6332}
 .bnav-tab.active .bic{transform:scale(1.15)}
 .fab-wrap{position:fixed;bottom:calc(60px + env(safe-area-inset-bottom,0px) - 20px);left:50%;transform:translateX(-50%);z-index:87}
-.fab-ring{position:absolute;inset:-6px;border-radius:50%;border:2px solid rgba(184,106,66,.2);animation:fabP 3s ease-in-out infinite;pointer-events:none}
+.fab-ring{position:absolute;inset:-6px;border-radius:50%;border:2px solid rgba(78,99,50,.2);animation:fabP 3s ease-in-out infinite;pointer-events:none}
 @keyframes fabP{0%,100%{transform:scale(1);opacity:.7}50%{transform:scale(1.12);opacity:.2}}
-.fab{width:60px;height:60px;border-radius:50%;border:none;background:#B86A42;box-shadow:0 6px 24px rgba(184,106,66,.4);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;gap:2px;transition:transform .18s;position:relative;z-index:1}
+.fab{width:60px;height:60px;border-radius:50%;border:none;background:#4E6332;box-shadow:0 6px 24px rgba(78,99,50,.4);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;gap:2px;transition:transform .18s;position:relative;z-index:1}
 .fab:active{transform:scale(.92)}
 .more-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.2);z-index:92;display:none;backdrop-filter:blur(4px)}
 .more-backdrop.show{display:block}
@@ -1198,19 +1198,19 @@ body {
 .bnav-tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;background:transparent;border:none;cursor:pointer;padding:0 4px;gap:0;-webkit-tap-highlight-color:transparent;position:relative}
 .bic{display:none}
 .blb{font-size:11px;font-weight:500;color:#B8AFA8;text-transform:uppercase;letter-spacing:.07em;font-family:Outfit,sans-serif;transition:color .15s}
-.bnav-tab.active .blb{color:#1A1510;font-weight:700}
-.bnav-tab.active::after{content:'';position:absolute;top:0;left:25%;width:50%;height:2px;background:#B86A42;border-radius:0 0 2px 2px}
+.bnav-tab.active .blb{color:#1F2916;font-weight:700}
+.bnav-tab.active::after{content:'';position:absolute;top:0;left:25%;width:50%;height:2px;background:#4E6332;border-radius:0 0 2px 2px}
 /* AI round button */
 .ai-fab-right{
   position:fixed;
   bottom:calc(56px + env(safe-area-inset-bottom,0px) + 16px);
   right:16px;
   width:48px;height:48px;border-radius:50%;border:none;
-  background:#B86A42;
+  background:#4E6332;
   color:#fff;font-size:20px;line-height:1;
   display:flex;align-items:center;justify-content:center;
   cursor:pointer;z-index:88;
-  box-shadow:0 4px 16px rgba(184,106,66,.4);
+  box-shadow:0 4px 16px rgba(78,99,50,.4);
   transition:transform .15s;
   -webkit-tap-highlight-color:transparent;
   font-family:'Outfit',sans-serif;font-weight:300;letter-spacing:0;
@@ -1231,11 +1231,11 @@ body {
 #ai-overlay.open{transform:translateY(0);pointer-events:all}
 .ai-ov-header{padding:calc(env(safe-area-inset-top,16px) + 36px) 20px 16px;text-align:center;flex-shrink:0;position:relative}
 .ai-ov-close{position:absolute;top:calc(env(safe-area-inset-top,16px) + 8px);left:16px;width:44px;height:44px;border-radius:50%;background:#F7F5F1;border:1px solid rgba(0,0,0,.07);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:#9B8E7E}
-.ai-ov-title{font-family:'Cormorant',serif;font-style:italic;font-size:26px;font-weight:300;color:#1a1510;margin-bottom:4px}
+.ai-ov-title{font-family:'Cormorant',serif;font-style:italic;font-size:26px;font-weight:300;color:#1F2916;margin-bottom:4px}
 .ai-ov-sub{font-size:13px;color:#9B8E7E}
 .ai-ov-msgs{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:12px 20px;display:flex;flex-direction:column;gap:10px}
-.ai-msg-user{background:#B86A42;color:#fff;border-radius:16px 16px 4px 16px;padding:12px 16px;font-size:15px;line-height:1.55;align-self:flex-end;max-width:86%}
-.ai-msg-ai{background:#F7F5F1;color:#1a1510;border-radius:16px 16px 16px 4px;padding:12px 16px;font-size:15px;line-height:1.55;align-self:flex-start;max-width:86%;border:1px solid rgba(0,0,0,.07)}
+.ai-msg-user{background:#4E6332;color:#fff;border-radius:16px 16px 4px 16px;padding:12px 16px;font-size:15px;line-height:1.55;align-self:flex-end;max-width:86%}
+.ai-msg-ai{background:#F7F5F1;color:#1F2916;border-radius:16px 16px 16px 4px;padding:12px 16px;font-size:15px;line-height:1.55;align-self:flex-start;max-width:86%;border:1px solid rgba(0,0,0,.07)}
 .ai-ov-chips{display:grid;grid-template-columns:1fr 1fr;gap:7px;padding:12px 20px 0;flex-shrink:0}
 .ai-ov-chip{padding:12px 10px;border-radius:12px;border:1px solid rgba(0,0,0,.1);background:#fff;color:#5C4E3C;font-family:'Outfit',sans-serif;font-size:12px;font-weight:500;cursor:pointer;text-align:left;display:flex;align-items:center;gap:8px}
 .ai-ov-chip:active{background:#F7F5F1}
@@ -1245,10 +1245,10 @@ body {
 .ai-ov-mic.recording{background:#FBF0F0;box-shadow:0 0 0 8px rgba(160,56,56,.1)}
 .ai-ov-mic-hint{text-align:center;font-size:10px;font-weight:600;letter-spacing:.08em;color:#C8C0B8;margin-bottom:12px;text-transform:uppercase}
 .ai-ov-text-row{display:flex;gap:8px;align-items:center;background:#fff;border:1.5px solid rgba(0,0,0,.11);border-radius:16px;padding:10px 10px 10px 16px}
-.ai-ov-text-row:focus-within{border-color:#B86A42}
-.ai-ov-input{flex:1;border:none;background:transparent;outline:none;font-family:'Outfit',sans-serif;font-size:15px;color:#1a1510}
+.ai-ov-text-row:focus-within{border-color:#4E6332}
+.ai-ov-input{flex:1;border:none;background:transparent;outline:none;font-family:'Outfit',sans-serif;font-size:15px;color:#1F2916}
 .ai-ov-input::placeholder{color:#C8C0B8}
-.ai-ov-send{width:40px;height:40px;border-radius:12px;border:none;background:#B86A42;color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ai-ov-send{width:40px;height:40px;border-radius:12px;border:none;background:#4E6332;color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
 
 /* ── Validation error states ── */
 .field-error{border-color:#C0392B !important;background:#FDF5F5 !important;}
@@ -1271,18 +1271,18 @@ body {
   #login {
     display: flex; flex-direction: row; align-items: stretch; justify-content: center;
     min-height: 100dvh; padding: 0;
-    background: #1a1510;
+    background: #1F2916;
     max-width: 100%; margin: 0;
   }
   .login-left {
     display: flex; flex-direction: column; justify-content: center;
     flex: 1; max-width: 480px; padding: 64px 56px;
-    background: linear-gradient(145deg,#2a1f16 0%,#1a1510 100%);
+    background: linear-gradient(145deg,#2D3B22 0%,#1F2916 100%);
     min-height: 100dvh;
   }
   .login-brand { margin-bottom: 24px; }
   .login-name { font-size: 16px; letter-spacing: 0.18em; color: #fff; margin-bottom: 8px; }
-  .login-tagline { font-size: 22px; color: #B86A42; margin-bottom: 20px; }
+  .login-tagline { font-size: 22px; color: #4E6332; margin-bottom: 20px; }
   .login-desc {
     display: block; font-size: 14px; color: #9B8E7E; line-height: 1.7;
     max-width: 320px;
@@ -1339,7 +1339,7 @@ body {
     -webkit-tap-highlight-color: transparent;
   }
   .dnav-item:hover { background: rgba(0,0,0,.04); }
-  .dnav-item.active { background: #FBF0EC; color: #B86A42; font-weight: 600; }
+  .dnav-item.active { background: #FBF0EC; color: #4E6332; font-weight: 600; }
   .dnav-ic { font-size: 16px; line-height: 1; flex-shrink: 0; }
   .dnav-lbl { flex: 1; }
   .dnav-divider { height: 1px; background: rgba(0,0,0,.07); margin: 10px 4px; }
@@ -1347,7 +1347,7 @@ body {
   .dnav-ai {
     display: flex; align-items: center; justify-content: center; gap: 8px;
     padding: 12px; border-radius: 12px; border: none;
-    background: #B86A42; color: #fff; cursor: pointer;
+    background: #4E6332; color: #fff; cursor: pointer;
     font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 700;
     letter-spacing: .04em; margin-top: 8px; transition: opacity .15s;
   }
@@ -1803,7 +1803,7 @@ body {
 <!-- ─── LOGIN ─── -->
 <div id="login">
   <div class="login-left">
-    <img src="assets/food_studio_vertical_480.png" alt="Food Studio" class="login-logo">
+    <img src="assets/food_studio_vertical_white_480.png" alt="Food Studio" class="login-logo">
     <div class="login-tagline">The operating system for your kitchen</div>
     <div class="login-desc">Manage your team, menu, recipes,<br>suppliers and service — in one place.</div>
   </div>
@@ -2186,7 +2186,7 @@ function initApp(){
   } catch(err) {
     console.error('[initApp] crashed:', err);
     var app = document.getElementById('app');
-    if (app) app.innerHTML = '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:60vh;gap:16px;padding:32px;text-align:center"><div style="font-size:40px">⚠️</div><div style="font-family:Outfit,sans-serif;font-size:18px;font-weight:600;color:#1a1510">Something went wrong</div><div style="font-size:13px;color:#9B8E7E;line-height:1.6">The app failed to load.<br>Please refresh the page.</div><button onclick="location.reload()" style="margin-top:8px;padding:12px 24px;border-radius:12px;border:none;background:#B86A42;color:#fff;font-family:Outfit,sans-serif;font-size:14px;font-weight:600;cursor:pointer;">Refresh</button></div>';
+    if (app) app.innerHTML = '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:60vh;gap:16px;padding:32px;text-align:center"><div style="font-size:40px">⚠️</div><div style="font-family:Outfit,sans-serif;font-size:18px;font-weight:600;color:#1F2916">Something went wrong</div><div style="font-size:13px;color:#9B8E7E;line-height:1.6">The app failed to load.<br>Please refresh the page.</div><button onclick="location.reload()" style="margin-top:8px;padding:12px 24px;border-radius:12px;border:none;background:#4E6332;color:#fff;font-family:Outfit,sans-serif;font-size:14px;font-weight:600;cursor:pointer;">Refresh</button></div>';
   }
 }
 
@@ -2384,8 +2384,8 @@ function renderMenu(){
   const sNames={cold:'Cold',hot:'Hot',pizza:'Pizza & Fryer',dessert:'Desserts',breakfast:'Breakfast'};
   const restName=R===0?'Taller':'Bistro Mondo';
   let html=`<div style="display:flex;gap:7px;margin-bottom:14px;">
-    <button onclick="R=0;menuSectionOpen={};renderTab()" style="flex:1;padding:10px;border-radius:11px;border:1.5px solid ${R===0?'#B86A42':'rgba(0,0,0,0.1)'};background:${R===0?'#FBF2EC':'white'};color:${R===0?'#B86A42':'#9B8E7E'};font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;">Taller</button>
-    <button onclick="R=1;menuSectionOpen={};renderTab()" style="flex:1;padding:10px;border-radius:11px;border:1.5px solid ${R===1?'#B86A42':'rgba(0,0,0,0.1)'};background:${R===1?'#FBF2EC':'white'};color:${R===1?'#B86A42':'#9B8E7E'};font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;">Bistro Mondo</button>
+    <button onclick="R=0;menuSectionOpen={};renderTab()" style="flex:1;padding:10px;border-radius:11px;border:1.5px solid ${R===0?'#4E6332':'rgba(0,0,0,0.1)'};background:${R===0?'#F5F2E6':'white'};color:${R===0?'#4E6332':'#9B8E7E'};font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;">Taller</button>
+    <button onclick="R=1;menuSectionOpen={};renderTab()" style="flex:1;padding:10px;border-radius:11px;border:1.5px solid ${R===1?'#4E6332':'rgba(0,0,0,0.1)'};background:${R===1?'#F5F2E6':'white'};color:${R===1?'#4E6332':'#9B8E7E'};font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;">Bistro Mondo</button>
   </div>`;
   const previewKey='preview_'+R;
   const previewOpen=!!menuSectionOpen[previewKey];
@@ -2393,7 +2393,7 @@ function renderMenu(){
   secs.forEach(sec=>{const dishes=MENU[R].filter(d=>d.section===sec&&!d.off);if(!dishes.length)return;html+=`<div class="menu-print-section">${sNames[sec]}</div>`;dishes.forEach(d=>{html+=`<div class="menu-print-dish"><span class="menu-print-name">${d.name}</span><span class="menu-print-dots"></span><span class="menu-print-price">€${d.price||'–'}</span></div>`;if(d.desc)html+=`<div class="menu-print-desc">${d.desc}</div>`;});});
   html+=`</div></div></div>`;
   const special=MENU[R].find(d=>d.special&&!d.off);
-  if(special){html+=`<div style="background:#FBF2EC;border:1px solid rgba(184,106,66,0.2);border-radius:14px;padding:13px 16px;margin-bottom:12px;display:flex;align-items:center;gap:10px;"><span style="font-size:20px;">⭐</span><div style="flex:1"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#B86A42;margin-bottom:2px;">Today's special</div><div style="font-size:14px;font-weight:500;color:#1A1510;">${special.name} · €${special.price}</div></div><button onclick="clearSpecial()" style="background:#B86A42;color:white;border:none;border-radius:8px;padding:7px 12px;font-size:11px;font-weight:600;cursor:pointer;">Clear</button></div>`;}
+  if(special){html+=`<div style="background:#F5F2E6;border:1px solid rgba(78,99,50,0.2);border-radius:14px;padding:13px 16px;margin-bottom:12px;display:flex;align-items:center;gap:10px;"><span style="font-size:20px;">⭐</span><div style="flex:1"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#4E6332;margin-bottom:2px;">Today's special</div><div style="font-size:14px;font-weight:500;color:#1F2916;">${special.name} · €${special.price}</div></div><button onclick="clearSpecial()" style="background:#4E6332;color:white;border:none;border-radius:8px;padding:7px 12px;font-size:11px;font-weight:600;cursor:pointer;">Clear</button></div>`;}
   secs.forEach(sec=>{
     const dishes=MENU[R].filter(d=>d.section===sec);
     const isOpen=!!menuSectionOpen[''+R+'_'+sec];
@@ -2407,7 +2407,7 @@ function renderMenu(){
         const trainingOpen=!!menuSectionOpen[trainingKey];
         const rec=RECIPES.find(r=>r.id===d.recipeId);
         const allergenNames=rec?rec.allergens.map(a=>{const al=ALLERGENS.find(x=>x.id===a);return al?al.icon+' '+al.label:'';}).filter(Boolean):[];
-        const off86Lbl=d.off?'Restore':'86';const trainingLbl=trainingOpen?'▴ Hide':'▾ Training';const priceLbl=d.price?'€'+d.price:'–';const mgHtml=mg!==null?('<span style="font-family:DM Mono,monospace;font-size:11px;color:'+mgColor+';">'+mg+'%</span>'):'';const allergenHtml=allergenNames.length?('<div class="dt-section">Allergens</div><div class="dt-allergen-row">'+allergenNames.map(function(a){return'<span class="dt-allergen">'+a+'</span>';}).join('')+'</div>'):'';const recHtml=rec?('<div class="dt-section">Recipe</div><div class="dt-recipe-link"><span class="dt-recipe-icon">📋</span><span class="dt-recipe-text">'+rec.name+' — '+rec.portions+' portions base</span><span class="dt-recipe-arrow">→</span></div>'):'';const descHtml=rec?rec.desc:(d.desc||'No description yet.');html+='<div class="dish-row'+(d.off?' off':'')+'"><div style="flex:1"><div class="dish-name">'+d.name+(d.special?' ⭐':'')+'</div><div class="dish-meta">'+(d.cost?'Cost €'+d.cost.toFixed(2):'')+( rec?' · Recipe linked':'')+'</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0;"><span style="font-family:DM Mono,monospace;font-size:15px;font-weight:600;color:#1A1510;">'+priceLbl+'</span>'+mgHtml+'<div style="display:flex;gap:5px;align-items:center;margin-top:2px;"><button style="background:none;border:none;color:#B86A42;font-size:11px;font-weight:600;font-family:Outfit,sans-serif;cursor:pointer;" onclick="menuSectionOpen[\"'+trainingKey+'\"]=!menuSectionOpen[\"'+trainingKey+'\"];renderTab();">'+trainingLbl+'</button><button style="font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;border:none;cursor:pointer;background:#FBF0F0;color:#A03838;" onclick="toggle86(\"'+d.id+'\")">'+off86Lbl+'</button></div></div></div><div class="dish-training'+(trainingOpen?' open':'')+'"><div class="dt-section">Description & technique</div><div class="dt-desc">'+descHtml+'</div>'+allergenHtml+recHtml+'<div class="dt-section">Staff training</div><div class="dt-video"><div class="dt-video-icon">▶</div><div><div class="dt-video-text">Add training video</div><div class="dt-video-sub">Tap to link a video for this dish</div></div></div></div>';
+        const off86Lbl=d.off?'Restore':'86';const trainingLbl=trainingOpen?'▴ Hide':'▾ Training';const priceLbl=d.price?'€'+d.price:'–';const mgHtml=mg!==null?('<span style="font-family:DM Mono,monospace;font-size:11px;color:'+mgColor+';">'+mg+'%</span>'):'';const allergenHtml=allergenNames.length?('<div class="dt-section">Allergens</div><div class="dt-allergen-row">'+allergenNames.map(function(a){return'<span class="dt-allergen">'+a+'</span>';}).join('')+'</div>'):'';const recHtml=rec?('<div class="dt-section">Recipe</div><div class="dt-recipe-link"><span class="dt-recipe-icon">📋</span><span class="dt-recipe-text">'+rec.name+' — '+rec.portions+' portions base</span><span class="dt-recipe-arrow">→</span></div>'):'';const descHtml=rec?rec.desc:(d.desc||'No description yet.');html+='<div class="dish-row'+(d.off?' off':'')+'"><div style="flex:1"><div class="dish-name">'+d.name+(d.special?' ⭐':'')+'</div><div class="dish-meta">'+(d.cost?'Cost €'+d.cost.toFixed(2):'')+( rec?' · Recipe linked':'')+'</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0;"><span style="font-family:DM Mono,monospace;font-size:15px;font-weight:600;color:#1F2916;">'+priceLbl+'</span>'+mgHtml+'<div style="display:flex;gap:5px;align-items:center;margin-top:2px;"><button style="background:none;border:none;color:#4E6332;font-size:11px;font-weight:600;font-family:Outfit,sans-serif;cursor:pointer;" onclick="menuSectionOpen[\"'+trainingKey+'\"]=!menuSectionOpen[\"'+trainingKey+'\"];renderTab();">'+trainingLbl+'</button><button style="font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;border:none;cursor:pointer;background:#FBF0F0;color:#A03838;" onclick="toggle86(\"'+d.id+'\")">'+off86Lbl+'</button></div></div></div><div class="dish-training'+(trainingOpen?' open':'')+'"><div class="dt-section">Description & technique</div><div class="dt-desc">'+descHtml+'</div>'+allergenHtml+recHtml+'<div class="dt-section">Staff training</div><div class="dt-video"><div class="dt-video-icon">▶</div><div><div class="dt-video-text">Add training video</div><div class="dt-video-sub">Tap to link a video for this dish</div></div></div></div>';
       });
       if(!dishes.length)html+=`<div style="padding:14px 16px;font-size:13px;color:#C8C0B8;">No dishes yet — tap + Add</div>`;
       html+=`</div>`;
@@ -2483,7 +2483,7 @@ function renderOrdering(){
   <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;background:#FFFFFF;border:1px solid rgba(0,0,0,0.07);border-radius:14px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.04);">
     <span style="font-size:12px;color:#9B8E7E;font-weight:500;flex-shrink:0;">Covers today</span>
     <input type="number" id="ord-cov" value="${covers}" min="1" max="300" style="flex:1;border:none;background:transparent;font-family:'DM Mono',monospace;font-size:18px;color:#4A7B6A;font-weight:600;text-align:center;outline:none;max-width:70px;">
-    <button onclick="genOrders()" style="padding:9px 14px;border-radius:9px;border:none;background:#B86A42;color:white;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;">Generate</button>
+    <button onclick="genOrders()" style="padding:9px 14px;border-radius:9px;border:none;background:#4E6332;color:white;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;">Generate</button>
   </div>
   <div id="ai-order-result" style="margin-bottom:10px;"></div>
   <div id="ord-results">
@@ -2545,14 +2545,14 @@ async function handleOrderAI(){
   await new Promise(r=>setTimeout(r,600));
   if(result){
     if(matched){
-      result.innerHTML=`<div style="background:#EFF9F3;border:1px solid rgba(58,125,92,0.2);border-radius:12px;padding:14px 16px;margin-bottom:10px;"><div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#3A7D5C;margin-bottom:6px;">✓ Order ready</div><div style="font-size:15px;font-weight:600;color:#1A1510;margin-bottom:4px;">${qty} ${unit} ${matched.product.name}</div><div style="font-size:12px;color:#9B8E7E;">Via ${matched.provider.name} · €${(qty*matched.product.price).toFixed(2)}</div><button onclick="copyText('• ${matched.product.name}: ${qty} ${unit}','${matched.provider.name}')" style="margin-top:10px;width:100%;padding:10px;border-radius:9px;border:none;background:#3A7D5C;color:white;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;">📋 Copy to WhatsApp</button></div>`;
+      result.innerHTML=`<div style="background:#EFF9F3;border:1px solid rgba(58,125,92,0.2);border-radius:12px;padding:14px 16px;margin-bottom:10px;"><div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#3A7D5C;margin-bottom:6px;">✓ Order ready</div><div style="font-size:15px;font-weight:600;color:#1F2916;margin-bottom:4px;">${qty} ${unit} ${matched.product.name}</div><div style="font-size:12px;color:#9B8E7E;">Via ${matched.provider.name} · €${(qty*matched.product.price).toFixed(2)}</div><button onclick="copyText('• ${matched.product.name}: ${qty} ${unit}','${matched.provider.name}')" style="margin-top:10px;width:100%;padding:10px;border-radius:9px;border:none;background:#3A7D5C;color:white;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;">📋 Copy to WhatsApp</button></div>`;
     } else {
       // Send to AI
       try{
         const resp=await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:200,system:'You are a restaurant ordering assistant. Parse this order request and respond with a practical, concise answer in 1-2 sentences. Restaurant: '+(R===0?'Taller':'Bistro Mondo')+'. Covers: '+getCov()+'.',messages:[{role:'user',content:q}]})});
         const data=await resp.json();
         const reply=data.content?.[0]?.text||'Could not process.';
-        result.innerHTML=`<div style="background:#F7F5F1;border-radius:12px;padding:12px 14px;font-size:13px;color:#1A1510;line-height:1.6;">${reply}</div>`;
+        result.innerHTML=`<div style="background:#F7F5F1;border-radius:12px;padding:12px 14px;font-size:13px;color:#1F2916;line-height:1.6;">${reply}</div>`;
       }catch(e){
     console.error("[catch] Error:", e);result.innerHTML=`<div style="background:#F7F5F1;border-radius:12px;padding:12px 14px;font-size:13px;color:#9B8E7E;">Could not connect.</div>`;}
     }
@@ -2627,7 +2627,7 @@ function renderRecipes(){
     const mg=r.menuPrice?Math.round((1-r.costPerPortion/r.menuPrice)*100):null;
     const mgColor=mg===null?'var(--text-tertiary)':mg>60?'#5A8A78':mg>40?'#C4783A':'#A83232';
     const restLabel=r.rest==='taller'?'Taller':r.rest==='bistro'||r.rest==='bistro_mondo'?'Bistro Mondo':'Holdings';
-    const restBg   =r.rest==='both'?'rgba(184,106,66,0.12)':r.rest==='taller'?'rgba(74,123,106,0.1)':'rgba(42,95,122,0.1)';
+    const restBg   =r.rest==='both'?'rgba(78,99,50,0.12)':r.rest==='taller'?'rgba(74,123,106,0.1)':'rgba(42,95,122,0.1)';
     const restClr  =r.rest==='both'?'var(--ember)':r.rest==='taller'?'#3A6B5A':'#2A5F7A';
     html+=`<div class="rec-card" onclick="showRecipeDetail('${r.id}')">
       <div class="rc-row">
@@ -2794,7 +2794,7 @@ function showRecipeDraft(r){
     <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px;">${allergenTags}</div>
     <div class="ai-draft-ings">${r.ingredients.map(i=>`${i.qty} ${i.unit} — ${i.name}`).join('<br>')}</div>
     <div class="ai-draft-actions">
-        if(el){el.id='';el.innerHTML='<div style="background:#FBF2EC;border-radius:14px;padding:14px 16px;"><div style="font-style:italic;font-size:18px;color:#1A1510;margin-bottom:6px;">'+parsed.name+'</div><div style="font-size:13px;color:#5C4E3C;margin-bottom:10px;">'+parsed.desc+'</div><button onclick="showDraft()" style="width:100%;padding:12px;border-radius:10px;border:none;background:#B86A42;color:white;font-size:13px;font-weight:600;cursor:pointer;">Review & save recipe</button></div>';}
+        if(el){el.id='';el.innerHTML='<div style="background:#F5F2E6;border-radius:14px;padding:14px 16px;"><div style="font-style:italic;font-size:18px;color:#1F2916;margin-bottom:6px;">'+parsed.name+'</div><div style="font-size:13px;color:#5C4E3C;margin-bottom:10px;">'+parsed.desc+'</div><button onclick="showDraft()" style="width:100%;padding:12px;border-radius:10px;border:none;background:#4E6332;color:white;font-size:13px;font-weight:600;cursor:pointer;">Review & save recipe</button></div>';}
       <button class="det-btn secondary" style="flex:1;" onclick="renderTab()">Discard</button>
     </div>
   </div>`+renderRecipes();
@@ -3118,7 +3118,7 @@ let selectedEventId = null;
 function renderEvents(){
   let html = `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
     <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#9B8E7E;">${EVENTS.length} events</div>
-    <button onclick="toggleEventForm()" style="padding:8px 14px;border-radius:10px;border:none;background:#B86A42;color:white;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;">+ New event</button>
+    <button onclick="toggleEventForm()" style="padding:8px 14px;border-radius:10px;border:none;background:#4E6332;color:white;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;">+ New event</button>
   </div>`;
 
   if(eventFormOpen){ html += renderEventForm(); }
@@ -3167,7 +3167,7 @@ function renderEvents(){
 
 function renderEventForm(){
   return `<div class="event-form">
-    <div style="font-size:14px;font-weight:600;color:#1A1510;margin-bottom:14px;">New event proposal</div>
+    <div style="font-size:14px;font-weight:600;color:#1F2916;margin-bottom:14px;">New event proposal</div>
     <span class="ef-label">Event name</span>
     <input class="ef-input" id="ef-name" placeholder="e.g. Private dinner — Family Martinez">
     <span class="ef-label">Date</span>
@@ -3249,7 +3249,7 @@ Proposed by Food Studio — ${now.getDate()}/${now.getMonth()+1}/${now.getFullYe
 
 let selectedDay = new Date().getDay();
 const WEEK_SHIFTS = [
-  {name:'Boris', role:'Owner', color:'#B86A42', schedule:[{day:1,zone:'Hot Station',start:'10:00',end:'22:00'},{day:2,zone:'Hot Station',start:'10:00',end:'22:00'},{day:3,zone:'Hot Station',start:'10:00',end:'22:00'},{day:5,zone:'Hot Station',start:'10:00',end:'22:00'},{day:6,zone:'Hot Station',start:'10:00',end:'22:00'}]},
+  {name:'Boris', role:'Owner', color:'#4E6332', schedule:[{day:1,zone:'Hot Station',start:'10:00',end:'22:00'},{day:2,zone:'Hot Station',start:'10:00',end:'22:00'},{day:3,zone:'Hot Station',start:'10:00',end:'22:00'},{day:5,zone:'Hot Station',start:'10:00',end:'22:00'},{day:6,zone:'Hot Station',start:'10:00',end:'22:00'}]},
   {name:'Carlos', role:'Chef', color:'#C4783A', schedule:[{day:1,zone:'Hot Station',start:'08:00',end:'16:00'},{day:2,zone:'Hot Station',start:'08:00',end:'16:00'},{day:3,zone:'Hot Station',start:'08:00',end:'16:00'},{day:4,zone:'Hot Station',start:'08:00',end:'16:00'},{day:5,zone:'Hot Station',start:'08:00',end:'16:00'}]},
   {name:'Ana', role:'Chef', color:'#5A8A78', schedule:[{day:1,zone:'Cold Station',start:'08:00',end:'16:00'},{day:2,zone:'Cold Station',start:'08:00',end:'16:00'},{day:3,zone:'Cold Station',start:'08:00',end:'16:00'},{day:4,zone:'Cold Station',start:'08:00',end:'16:00'},{day:6,zone:'Cold Station',start:'08:00',end:'16:00'}]},
   {name:'Miguel', role:'Worker', color:'#2A5F7A', schedule:[{day:2,zone:'Pizzeria',start:'12:00',end:'22:00'},{day:3,zone:'Pizzeria',start:'12:00',end:'22:00'},{day:4,zone:'Pizzeria',start:'12:00',end:'22:00'},{day:5,zone:'Pizzeria',start:'12:00',end:'22:00'},{day:6,zone:'Pizzeria',start:'12:00',end:'22:00'}]},
@@ -3314,7 +3314,7 @@ function renderSchedule(){
   }
 
   // AI schedule suggestion
-  html += `<div style="margin-top:14px;"><button onclick="quickQ('Suggest staffing for ${covers} covers on ${days[selectedDay]}')" style="width:100%;padding:12px;border-radius:12px;border:1.5px dashed rgba(0,0,0,0.1);background:transparent;color:#B86A42;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;">✦ Ask AI to optimise schedule</button></div>`;
+  html += `<div style="margin-top:14px;"><button onclick="quickQ('Suggest staffing for ${covers} covers on ${days[selectedDay]}')" style="width:100%;padding:12px;border-radius:12px;border:1.5px dashed rgba(0,0,0,0.1);background:transparent;color:#4E6332;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;">✦ Ask AI to optimise schedule</button></div>`;
 
   return html;
 }
@@ -3367,10 +3367,10 @@ function renderCookMode(){
     html += `<div class="cook-recipe-sel">
       <div class="cook-recipe-row" onclick="startCookMode('${r.id}')">
         <div style="flex:1"><div class="cook-recipe-name">${r.name}</div><div class="cook-recipe-meta">${r.portions} portions base · ${(RECIPE_STEPS[r.id]||[]).length} steps</div></div>
-        <span style="color:#B86A42;font-size:20px;">▶</span>
+        <span style="color:#4E6332;font-size:20px;">▶</span>
       </div>
       <div style="padding:0 12px 12px;display:flex;gap:8px;">
-        <button onclick="event.stopPropagation();wfStart('${r.id}')" style="flex:1;padding:9px 12px;border-radius:10px;border:none;background:${alreadyRunning?'#E8F5F0':'#FBF2EC'};color:${alreadyRunning?'#4A7B6A':'#B86A42'};font-family:Outfit,sans-serif;font-size:12px;font-weight:600;cursor:pointer;-webkit-tap-highlight-color:transparent;">
+        <button onclick="event.stopPropagation();wfStart('${r.id}')" style="flex:1;padding:9px 12px;border-radius:10px;border:none;background:${alreadyRunning?'#E8F5F0':'#F5F2E6'};color:${alreadyRunning?'#4A7B6A':'#4E6332'};font-family:Outfit,sans-serif;font-size:12px;font-weight:600;cursor:pointer;-webkit-tap-highlight-color:transparent;">
           ${alreadyRunning ? '✓ Running on Today' : '📌 Pin to Today'}
         </button>
       </div>
@@ -3412,7 +3412,7 @@ function renderCookActive(){
   // Step progress dots
   html += `<div style="display:flex;gap:6px;padding:14px 20px;align-items:center;">`;
   steps.forEach((_,i) => {
-    html += `<div style="height:4px;flex:1;border-radius:2px;background:${i<=cookStep?'#B86A42':'#F0EDE8'};transition:all 0.3s;cursor:pointer;" onclick="cookStep=${i};renderTab()"></div>`;
+    html += `<div style="height:4px;flex:1;border-radius:2px;background:${i<=cookStep?'#4E6332':'#F0EDE8'};transition:all 0.3s;cursor:pointer;" onclick="cookStep=${i};renderTab()"></div>`;
   });
   html += `<span style="font-size:11px;font-weight:600;color:#9B8E7E;margin-left:8px;white-space:nowrap;">${cookStep+1}/${steps.length}</span></div>`;
 
@@ -3482,7 +3482,7 @@ function startCookTimer(seconds){
 function renderRepricingTool(){
   const dishes = MENU[R].filter(d => d.cost && d.price && !d.off);
   const target = 65; // target margin %
-  let html = `<div class="sect-label" style="margin-top:18px;">Menu repricing tool <span style="color:#B86A42;font-size:10px;">Target: ${target}% margin</span></div>`;
+  let html = `<div class="sect-label" style="margin-top:18px;">Menu repricing tool <span style="color:#4E6332;font-size:10px;">Target: ${target}% margin</span></div>`;
   dishes.forEach(d => {
     const mg = Math.round((1 - d.cost/d.price)*100);
     const mgColor = mg > 65 ? '#4A7B6A' : mg > 45 ? '#A8893A' : '#A03838';
@@ -3961,7 +3961,7 @@ function renderCCEntities(entities,rels){
   // Find roots (no parent)
   const hasParent=new Set(rels.map(r=>r.child_id));
   const roots=entities.filter(e=>!hasParent.has(e.id));
-  const typeColor={holding:'#B86A42',venue:'#4A7B6A',client:'#2A5F7A',partner:'#6B4E8A',supplier:'#A8893A'};
+  const typeColor={holding:'#4E6332',venue:'#4A7B6A',client:'#2A5F7A',partner:'#6B4E8A',supplier:'#A8893A'};
   function renderNode(id,depth){
     const e=entities.find(x=>x.id===id);if(!e)return'';
     const kids=(children[id]||[]);
@@ -4103,7 +4103,7 @@ function renderSkills(){
 
   if(!filtered.length)return`<div style="text-align:center;padding:40px;color:var(--text-tertiary);font-size:13px;">No skills available for your role.</div>`;
 
-  const catColors={brand:'#B86A42',kitchen:'#4A7B6A',operations:'#2A5F7A',finance:'#6B4E8A'};
+  const catColors={brand:'#4E6332',kitchen:'#4A7B6A',operations:'#2A5F7A',finance:'#6B4E8A'};
   const catLabel={brand:'Brand',kitchen:'Kitchen',operations:'Operations',finance:'Finance'};
 
   let html=`<div style="font-size:11px;color:var(--text-tertiary);margin-bottom:16px;">Your role: <strong style="color:var(--text-secondary);text-transform:capitalize;">${USER.role}</strong> · ${filtered.length} skill${filtered.length!==1?'s':''} available</div>`;
@@ -5157,7 +5157,7 @@ ${lastReply}`;
     // Open the save card directly — same UI as the auto-detected path
     const card=document.createElement('div');
     card.className='ai-msg-ai';
-    card.innerHTML='<div style="background:#FBF2EC;border:1px solid rgba(184,106,66,0.2);border-radius:14px;padding:14px 16px;margin-top:4px;"><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#B86A42;margin-bottom:6px;">✦ Recipe ready to save</div><div style="font-family:Fraunces,serif;font-style:italic;font-size:18px;color:#1A1510;margin-bottom:6px;">'+(parsed.name||'Untitled recipe')+'</div><div style="font-size:12px;color:#5C4E3C;line-height:1.5;margin-bottom:12px;">'+(parsed.desc||'')+'</div><button onclick="adoptDraft(currentDraft)" style="width:100%;padding:12px;border-radius:10px;border:none;background:#B86A42;color:white;font-family:Outfit,sans-serif;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 3px 10px rgba(184,106,66,0.3);">Save to library →</button></div>';
+    card.innerHTML='<div style="background:#F5F2E6;border:1px solid rgba(78,99,50,0.2);border-radius:14px;padding:14px 16px;margin-top:4px;"><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#4E6332;margin-bottom:6px;">✦ Recipe ready to save</div><div style="font-family:Fraunces,serif;font-style:italic;font-size:18px;color:#1F2916;margin-bottom:6px;">'+(parsed.name||'Untitled recipe')+'</div><div style="font-size:12px;color:#5C4E3C;line-height:1.5;margin-bottom:12px;">'+(parsed.desc||'')+'</div><button onclick="adoptDraft(currentDraft)" style="width:100%;padding:12px;border-radius:10px;border:none;background:#4E6332;color:white;font-family:Outfit,sans-serif;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 3px 10px rgba(78,99,50,0.3);">Save to library →</button></div>';
     if(msgs){msgs.appendChild(card);msgs.scrollTop=99999;}
   }catch(e){
     console.warn('aiSaveLastAsRecipe:',e.message);
@@ -5203,7 +5203,7 @@ function toggleVoice() {
 
     recognizer.onstart = function() {
       voiceRec = true;
-      if (mic) { mic.textContent = '⏹'; mic.style.background = '#FBF0EC'; mic.style.boxShadow = '0 0 0 8px rgba(184,106,66,0.1)'; }
+      if (mic) { mic.textContent = '⏹'; mic.style.background = '#FBF0EC'; mic.style.boxShadow = '0 0 0 8px rgba(78,99,50,0.1)'; }
       if (hint) hint.textContent = 'LISTENING...';
       if (status) status.textContent = 'Listening — speak now';
     };
@@ -5273,7 +5273,7 @@ async function sendAI_unused() {
 
   // Show user message
   if (msgs) {
-    msgs.innerHTML += '<div style="display:flex;justify-content:flex-end;margin-bottom:4px;"><div style="max-width:80%;background:#B86A42;color:white;border-radius:18px 18px 4px 18px;padding:13px 16px;font-size:15px;line-height:1.5;font-family:Outfit,sans-serif;">' + q + '</div></div>';
+    msgs.innerHTML += '<div style="display:flex;justify-content:flex-end;margin-bottom:4px;"><div style="max-width:80%;background:#4E6332;color:white;border-radius:18px 18px 4px 18px;padding:13px 16px;font-size:15px;line-height:1.5;font-family:Outfit,sans-serif;">' + q + '</div></div>';
     msgs.innerHTML += '<div id="ai-loading" style="max-width:80%;"><div style="background:#F5F3F0;border-radius:18px 18px 18px 4px;padding:13px 16px;font-size:15px;color:#9B8E7E;font-family:Outfit,sans-serif;">Thinking...</div></div>';
     msgs.scrollTop = 99999;
   }
@@ -5335,13 +5335,13 @@ async function sendAI_unused() {
     if (recipeMatch) {
       try {
         currentDraft = JSON.parse(recipeMatch[1].trim());
-        if (el) { el.id = ''; el.innerHTML = '<div style="background:#FBF2EC;border:1px solid rgba(184,106,66,0.2);border-radius:18px 18px 18px 4px;padding:14px 16px;"><div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#B86A42;margin-bottom:6px;">✦ Recipe drafted</div><div style="font-family:Fraunces,serif;font-style:italic;font-size:20px;font-weight:300;color:#1A1510;margin-bottom:8px;">' + currentDraft.name + '</div><div style="font-size:13px;color:#5C4E3C;line-height:1.6;margin-bottom:12px;">' + currentDraft.desc + '</div><button onclick="showDraft()" style="width:100%;padding:13px;border-radius:12px;border:none;background:#B86A42;color:white;font-family:Outfit,sans-serif;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 3px 12px rgba(184,106,66,0.3);">Review & save recipe →</button></div>'; }
+        if (el) { el.id = ''; el.innerHTML = '<div style="background:#F5F2E6;border:1px solid rgba(78,99,50,0.2);border-radius:18px 18px 18px 4px;padding:14px 16px;"><div style="font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#4E6332;margin-bottom:6px;">✦ Recipe drafted</div><div style="font-family:Fraunces,serif;font-style:italic;font-size:20px;font-weight:300;color:#1F2916;margin-bottom:8px;">' + currentDraft.name + '</div><div style="font-size:13px;color:#5C4E3C;line-height:1.6;margin-bottom:12px;">' + currentDraft.desc + '</div><button onclick="showDraft()" style="width:100%;padding:13px;border-radius:12px;border:none;background:#4E6332;color:white;font-family:Outfit,sans-serif;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 3px 12px rgba(78,99,50,0.3);">Review & save recipe →</button></div>'; }
       } catch(e) {
     console.error("[catch] Error:", e);
-        if (el) { el.id = ''; el.innerHTML = '<div style="background:#F5F3F0;border-radius:18px 18px 18px 4px;padding:13px 16px;font-size:15px;color:#1A1510;line-height:1.6;">' + reply + '</div>'; }
+        if (el) { el.id = ''; el.innerHTML = '<div style="background:#F5F3F0;border-radius:18px 18px 18px 4px;padding:13px 16px;font-size:15px;color:#1F2916;line-height:1.6;">' + reply + '</div>'; }
       }
     } else {
-      if (el) { el.id = ''; el.innerHTML = '<div style="background:#F5F3F0;border-radius:18px 18px 18px 4px;padding:13px 16px;font-size:15px;color:#1A1510;line-height:1.6;font-family:Outfit,sans-serif;">' + reply + '</div>'; }
+      if (el) { el.id = ''; el.innerHTML = '<div style="background:#F5F3F0;border-radius:18px 18px 18px 4px;padding:13px 16px;font-size:15px;color:#1F2916;line-height:1.6;font-family:Outfit,sans-serif;">' + reply + '</div>'; }
     }
 
     if (status) status.textContent = 'Done — ask me anything else';
@@ -5539,8 +5539,8 @@ async function sendAIOv(){
         currentDraft=JSON.parse(recipeMatch[1].trim());
         if(el){
           el.id='';
-          var explHtml=explanation?'<div style="font-size:13.5px;color:#1A1510;line-height:1.7;margin-bottom:10px;white-space:pre-wrap;">'+explanation.replace(/[<>]/g,function(c){return c==='<'?'&lt;':'&gt;';})+'</div>':'';
-          el.innerHTML=explHtml+'<div style="background:#FBF2EC;border:1px solid rgba(184,106,66,0.2);border-radius:14px;padding:14px 16px;margin-top:4px;"><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#B86A42;margin-bottom:6px;">✦ Recipe ready to save</div><div style="font-family:Fraunces,serif;font-style:italic;font-size:18px;color:#1A1510;margin-bottom:6px;">'+currentDraft.name+'</div><div style="font-size:12px;color:#5C4E3C;line-height:1.5;margin-bottom:12px;">'+(currentDraft.desc||'')+'</div><button onclick="adoptDraft(currentDraft)" style="width:100%;padding:12px;border-radius:10px;border:none;background:#B86A42;color:white;font-family:Outfit,sans-serif;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 3px 10px rgba(184,106,66,0.3);">Save to library →</button></div>';
+          var explHtml=explanation?'<div style="font-size:13.5px;color:#1F2916;line-height:1.7;margin-bottom:10px;white-space:pre-wrap;">'+explanation.replace(/[<>]/g,function(c){return c==='<'?'&lt;':'&gt;';})+'</div>':'';
+          el.innerHTML=explHtml+'<div style="background:#F5F2E6;border:1px solid rgba(78,99,50,0.2);border-radius:14px;padding:14px 16px;margin-top:4px;"><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#4E6332;margin-bottom:6px;">✦ Recipe ready to save</div><div style="font-family:Fraunces,serif;font-style:italic;font-size:18px;color:#1F2916;margin-bottom:6px;">'+currentDraft.name+'</div><div style="font-size:12px;color:#5C4E3C;line-height:1.5;margin-bottom:12px;">'+(currentDraft.desc||'')+'</div><button onclick="adoptDraft(currentDraft)" style="width:100%;padding:12px;border-radius:10px;border:none;background:#4E6332;color:white;font-family:Outfit,sans-serif;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 3px 10px rgba(78,99,50,0.3);">Save to library →</button></div>';
         }
       }catch(parseErr){
         if(el){el.id='';el.innerHTML='<div style="font-size:13.5px;line-height:1.7;white-space:pre-wrap;">'+reply.replace(/[<>]/g,function(c){return c==='<'?'&lt;':'&gt;';})+'</div>';}
@@ -5613,7 +5613,7 @@ function showInlineToastError(msg) {
       <button class="ai-ov-mic" id="ai-ov-mic" onclick="toggleVoice()"><svg width="14" height="18" viewBox="0 0 14 18" fill="none"><rect x="4" y="0" width="6" height="11" rx="3" fill="currentColor"/><path d="M1 8c0 3.314 2.686 6 6 6s6-2.686 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/><line x1="7" y1="14" x2="7" y2="17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="4" y1="17" x2="10" y2="17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></button>
     </div>
     <div class="ai-ov-mic-hint" id="ai-ov-hint">HOLD ✦ OR TAP MIC TO SPEAK</div>
-    <div id="ai-status" style="text-align:center;font-size:11px;color:#B86A42;min-height:16px;margin-bottom:4px"></div>
+    <div id="ai-status" style="text-align:center;font-size:11px;color:#4E6332;min-height:16px;margin-bottom:4px"></div>
     <div class="ai-ov-text-row">
       <input class="ai-ov-input" id="ai-ov-input" placeholder="Or type here..." autocomplete="off" autocorrect="off" autocapitalize="off" onkeydown="if(event.key==='Enter')sendAIOv()">
       <button class="ai-ov-send" onclick="sendAIOv()">↑</button>
@@ -5625,14 +5625,14 @@ function showInlineToastError(msg) {
 <div id="recipe-draft-modal" onclick="handleDraftOverlayClick(event)" style="position:fixed;inset:0;max-width:480px;margin:0 auto;background:rgba(0,0,0,0.3);backdrop-filter:blur(8px);z-index:300;display:flex;align-items:flex-end;opacity:0;pointer-events:none;transition:opacity 0.25s;">
   <div id="recipe-draft-sheet" style="background:white;border-radius:24px 24px 0 0;width:100%;padding:24px 24px 44px;transform:translateY(100%);transition:transform 0.35s cubic-bezier(0.34,1.2,0.64,1);max-height:88vh;overflow-y:auto;">
     <div style="width:36px;height:4px;background:rgba(0,0,0,0.1);border-radius:2px;margin:0 auto 20px;"></div>
-    <div style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#B86A42;margin-bottom:8px;">✦ AI Recipe Draft</div>
-    <div id="draft-name" style="font-family:'Fraunces',serif;font-style:italic;font-size:30px;font-weight:300;color:#1A1510;line-height:1.1;margin-bottom:8px;"></div>
+    <div style="font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#4E6332;margin-bottom:8px;">✦ AI Recipe Draft</div>
+    <div id="draft-name" style="font-family:'Fraunces',serif;font-style:italic;font-size:30px;font-weight:300;color:#1F2916;line-height:1.1;margin-bottom:8px;"></div>
     <div id="draft-desc" style="font-size:14px;color:#5C4E3C;line-height:1.7;margin-bottom:16px;"></div>
     <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(0,0,0,0.35);margin-bottom:10px;">Ingredients</div>
     <div id="draft-ings" style="font-size:13px;color:#5C4E3C;line-height:2.2;font-family:'DM Mono',monospace;background:#F7F5F1;border-radius:12px;padding:14px 16px;margin-bottom:16px;"></div>
     <div id="draft-allergens" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;"></div>
     <div style="display:flex;gap:8px;">
-      <button id="draft-save-btn" onclick="saveDraft()" style="flex:2;padding:16px;border-radius:14px;border:none;background:#B86A42;color:white;font-family:'Outfit',sans-serif;font-size:15px;font-weight:600;cursor:pointer;box-shadow:0 4px 16px rgba(184,106,66,0.3);">Save to catalogue</button>
+      <button id="draft-save-btn" onclick="saveDraft()" style="flex:2;padding:16px;border-radius:14px;border:none;background:#4E6332;color:white;font-family:'Outfit',sans-serif;font-size:15px;font-weight:600;cursor:pointer;box-shadow:0 4px 16px rgba(78,99,50,0.3);">Save to catalogue</button>
       <button onclick="closeDraft()" style="flex:1;padding:16px;border-radius:14px;border:1px solid rgba(0,0,0,0.1);background:transparent;color:#9B8E7E;font-family:'Outfit',sans-serif;font-size:14px;cursor:pointer;">Discard</button>
     </div>
   </div>
