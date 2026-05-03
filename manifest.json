@@ -28,5 +28,17 @@
       "purpose": "maskable"
     }
   ],
-  "id": "https://foodstudio.ai/"
+  "id": "https://foodstudio.ai/",
+  "display_override": [
+    "standalone",
+    "minimal-ui"
+  ],
+  "categories": [
+    "business",
+    "productivity",
+    "food"
+  ],
+  "lang": "en",
+  "dir": "ltr",
+  "prefer_related_applications": false
 }
