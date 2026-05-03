@@ -94,14 +94,20 @@ body {
 .lf-role.sel {
   background: #B86A42; color: white; border-color: #B86A42; font-weight: 600;
 }
-.lf-zone-wrap { display: none; margin-bottom: 14px; }
-.lf-zone-wrap.show { display: block; }
-.lf-zone {
-  width: 100%; padding: 12px 15px; border-radius: 12px;
-  border: 1px solid rgba(0,0,0,0.1); background: #FFFFFF;
-  font-family: 'Outfit', sans-serif; font-size: 14px; color: var(--text-primary); outline: none;
+.lf-rest { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin-bottom: 14px; }
+.lf-rest-btn {
+  padding: 13px 8px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.1);
+  background: #FFFFFF; color: var(--text-primary);
+  font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.18s;
 }
-.lf-zone option { background: #FFFFFF; color: #1A1510; }
+.lf-rest-btn.sel { background: var(--ember); color: #fff; border-color: var(--ember); }
+.lf-areas { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 7px; margin-bottom: 14px; }
+.lf-area-btn {
+  padding: 13px 6px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.1);
+  background: #FFFFFF; color: var(--text-primary);
+  font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.18s;
+}
+.lf-area-btn.sel { background: var(--ember); color: #fff; border-color: var(--ember); }
 .lf-langs { display: flex; gap: 7px; margin-bottom: 20px; }
 .lf-lang {
   flex: 1; padding: 9px; border-radius: 10px; border: 1px solid var(--glass-border);
@@ -1814,19 +1820,19 @@ body {
       <button class="lf-role" data-r="owner" onclick="selR(this)">🔑 Owner</button>
     </div>
     <span class="inline-err" id="l-role-err"></span>
-    <div class="lf-zone-wrap" id="lz-wrap">
-      <span class="lf-label">Your zone</span>
-      <select class="lf-zone" id="l-zone">
-        <option value="">Select...</option>
-        <option value="Hot Station">Hot Station</option>
-        <option value="Cold Station">Cold Station</option>
-        <option value="Kitchen">Kitchen</option>
-        <option value="Pizzeria">Pizzeria</option>
-        <option value="Prep Kitchen">Prep Kitchen</option>
-        <option value="Terrace">Terrace</option>
-        <option value="Garden">Garden</option>
-      </select>
+    <span class="lf-label">Restaurant</span>
+    <div class="lf-rest" id="lf-rest">
+      <button class="lf-rest-btn" data-rv="0" onclick="selRest(this)">Taller</button>
+      <button class="lf-rest-btn" data-rv="1" onclick="selRest(this)">Bistro Mondo</button>
     </div>
+    <span class="inline-err" id="l-rest-err"></span>
+    <span class="lf-label">Area</span>
+    <div class="lf-areas" id="lf-areas">
+      <button class="lf-area-btn" data-av="boh" onclick="selArea(this)">🔥 Back of House</button>
+      <button class="lf-area-btn" data-av="foh" onclick="selArea(this)">🍽️ Front of House</button>
+      <button class="lf-area-btn" data-av="admin" onclick="selArea(this)">📋 Admin</button>
+    </div>
+    <span class="inline-err" id="l-area-err"></span>
     <span class="lf-label">Language</span>
     <div class="lf-langs">
       <button class="lf-lang sel" data-l="en" onclick="selL(this)">🇬🇧 English</button>
@@ -2086,7 +2092,7 @@ const ZONE_COLORS={cold:'#5A8A78',hot:'#C4783A',pizza:'#B8963A',dessert:'#8B6FAA
 const ZONES={0:{boh:['Hot Station','Cold Station'],foh:['All FOH'],admin:['Administration']},1:{boh:['Kitchen','Pizzeria','Prep Kitchen'],foh:['Terrace','Garden'],admin:['Administration']}};
 
 // ══ STATE ══
-let USER={name:'',role:'owner',lang:'en',zone:''},selRV='',selLV='en';
+let USER={name:'',role:'owner',lang:'en',zone:''},selRV='',selLV='en',selRestV=null,selAreaV='';
 let R=0,AREA='boh',ZONE='Hot Station';
 let currentTab='today',recEditId=null,menuAddSec='hot',prodTab='mep',todaySubTab='day';
 let taskState={},cleanState={},mepState={},dishOpen={},menuSectionOpen={};
@@ -2122,19 +2128,22 @@ function wfComplete(idx){const name=activeWorkflows[idx]?.recipeName||'';activeW
 function wfClose(idx){activeWorkflows.splice(idx,1);saveState();renderTab();}
 
 // ══ LOGIN ══
-function selR(el){document.querySelectorAll('.lf-role').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');selRV=el.dataset.r;document.getElementById('lz-wrap').classList.toggle('show',['worker','chef','maitre'].includes(selRV));}
+function selR(el){document.querySelectorAll('.lf-role').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');selRV=el.dataset.r;}
 function selL(el){document.querySelectorAll('.lf-lang').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');selLV=el.dataset.l;}
+function selRest(el){document.querySelectorAll('.lf-rest-btn').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');selRestV=parseInt(el.dataset.rv);}
+function selArea(el){document.querySelectorAll('.lf-area-btn').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');selAreaV=el.dataset.av;}
 function doLogin(){
   const name=document.getElementById('l-name').value.trim();
   if(!name){showFieldError('l-name','l-name-err','Please enter your name');showLoginError('Please enter your name');return;}
   if(!selRV){showFieldError('lf-roles','l-role-err','Please select a role');showLoginError('Please select a role');return;}
-  const zone=document.getElementById('l-zone').value||'Hot Station';
+  if(selRestV===null||selRestV===undefined){showFieldError('lf-rest','l-rest-err','Please pick a restaurant');showLoginError('Please pick a restaurant');return;}
+  if(!selAreaV){showFieldError('lf-areas','l-area-err','Please pick an area');showLoginError('Please pick an area');return;}
   const prev=USER; // preserve Google fields if present
-  USER={name,role:selRV,lang:selLV,zone};
+  R=selRestV; AREA=selAreaV;
+  const zonesForArea=ZONES[R]?.[AREA]||[];
+  ZONE=zonesForArea[0]||'';
+  USER={name,role:selRV,lang:selLV,zone:ZONE};
   if(prev._googleId){USER._googleId=prev._googleId;USER._googleEmail=prev._googleEmail;USER._googlePicture=prev._googlePicture;}
-  if(selRV==='maitre'){AREA='foh';ZONE=zone||'All FOH';}
-  else if(['worker','chef'].includes(selRV)){AREA='boh';ZONE=zone||'Hot Station';}
-  else{AREA='boh';ZONE='Hot Station';}
   saveSession();
   loadState(); // restore today's operational state if any
   document.getElementById('login').style.display='none';
