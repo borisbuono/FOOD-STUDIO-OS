@@ -2507,7 +2507,7 @@ function renderToday(){
     if(canMgr){html+=`<div class="signoff-row mgr">
       <div class="so-icon" style="font-size:11px;font-weight:700;color:var(--ember);">MGR</div>
       <div class="so-info"><div class="so-title">Manager approval</div><div class="so-sub">${ms?'Approved':'Awaiting worker sign-off'}</div></div>
-      <button class="so-btn${ms?' signed':''}" id="mgr-btn" onclick="openModal('m-pin')" ${ws&&!ms?'':'disabled'}>${ms?'✓ Approved':'Approve'}</button>
+      <button class="so-btn${ms?' signed':''}" id="mgr-btn" onclick="openMgrApproval()" ${ws&&!ms?'':'disabled'}>${ms?'✓ Approved':'Approve'}</button>
     </div>`;}
   } else {
     if(canMgr||clSigned[R]){html+=`<div class="signoff-row mgr"><div class="so-icon" style="font-size:11px;font-weight:700;color:var(--ember);">LOCK</div><div class="so-info"><div class="so-title">Close-down sign-off</div><div class="so-sub">Manager confirms zone secured</div></div><button class="so-btn${clSigned[R]?' signed':''}" onclick="openModal('m-close-pin')">${clSigned[R]?'✓ Closed':'Sign off'}</button></div>`;}
@@ -3456,7 +3456,92 @@ async function pushUrgent(){
     }
   }catch(e){console.warn('urgent_tasks insert:',e.message);}
 }
-function doWorkerSO(){wSigned[R]=true;saveState({wSigned});renderTab();}
+
+// ── SIGN-OFF SUMMARY (F7 — show what you're signing/approving) ────
+function buildSignoffSummary(){
+  const phase=getTodayPhase();
+  const phaseLabel=phase==='opening'?'Opening':phase==='closing'?'Closing':'Service';
+  const openTasks=getZT('opening');
+  const closeTasks=getZT('closing');
+  const allUrgent=Object.entries(taskUrgent).filter(([k,v])=>v).map(([k,v])=>({...v,_urg:true}));
+  const phaseTasks=phase==='closing'?[...allUrgent,...closeTasks]:[...allUrgent,...openTasks];
+  const done=[],open=[],urgentDone=[];
+  phaseTasks.forEach(t=>{
+    const k=t._urg?'urg_'+t.id:(phase==='closing'?clKey(t.id):stKey(t.id));
+    const isDone=!!taskState[k];
+    if(t._urg){if(isDone)urgentDone.push(t);else open.push(t);}
+    else{if(isDone)done.push(t);else open.push(t);}
+  });
+  // MEP for service phase
+  let mepInfo='';
+  if(phase==='service'){
+    const mepZoneData=MEP[R]?.[ZONE]||[];
+    const mepTotal=mepZoneData.reduce((a,d)=>a+d.components.length,0);
+    const mepDone=mepZoneData.reduce((a,d)=>a+d.components.filter(c=>mepState[`${R}_${ZONE}_${d.dish}_${c.name}`]).length,0);
+    if(mepTotal>0)mepInfo=`<div style="margin:14px 0 6px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-tertiary);">MEP STATUS</div><div style="font-size:13px;color:var(--text-secondary);">${mepDone} of ${mepTotal} components ready (${mepTotal>0?Math.round(mepDone/mepTotal*100):0}%)</div>`;
+  }
+  let h=`<div style="margin-bottom:14px;font-size:12px;color:var(--text-tertiary);line-height:1.5;">${phaseLabel} · ${ZONE} · ${R===0?'Taller':'Bistro Mondo'} · ${new Date().toLocaleDateString()}</div>`;
+  if(done.length){
+    h+=`<div style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#3B6D11;margin-bottom:6px;">Completed (${done.length})</div>`;
+    h+=`<ul style="margin:0 0 14px;padding:0;list-style:none;font-size:13px;color:var(--text-primary);line-height:1.7;">`;
+    done.forEach(t=>{h+=`<li style="display:flex;gap:8px;"><span style="color:#3B6D11;flex-shrink:0;">✓</span><span>${t.name}${t.sub?` <span style="color:var(--text-tertiary);font-size:11px;">— ${t.sub}</span>`:''}</span></li>`;});
+    h+=`</ul>`;
+  }
+  if(urgentDone.length){
+    h+=`<div style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#3B6D11;margin-bottom:6px;">Urgent resolved (${urgentDone.length})</div>`;
+    h+=`<ul style="margin:0 0 14px;padding:0;list-style:none;font-size:13px;color:var(--text-primary);line-height:1.7;">`;
+    urgentDone.forEach(t=>{h+=`<li style="display:flex;gap:8px;"><span style="color:#3B6D11;flex-shrink:0;">✓</span><span>${t.name}</span></li>`;});
+    h+=`</ul>`;
+  }
+  if(open.length){
+    h+=`<div style="font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#A03838;margin-bottom:6px;">Still open (${open.length})</div>`;
+    h+=`<ul style="margin:0 0 14px;padding:0;list-style:none;font-size:13px;color:var(--text-primary);line-height:1.7;">`;
+    open.forEach(t=>{h+=`<li style="display:flex;gap:8px;"><span style="color:#A03838;flex-shrink:0;">○</span><span>${t.name}${t.sub?` <span style="color:var(--text-tertiary);font-size:11px;">— ${t.sub}</span>`:''}${t._urg?` <span style="background:#FBF0F0;color:#A03838;padding:1px 6px;border-radius:4px;font-size:9px;font-weight:700;letter-spacing:.04em;">URGENT</span>`:''}</span></li>`;});
+    h+=`</ul>`;
+  }
+  if(!done.length&&!open.length&&!urgentDone.length){
+    h+=`<div style="text-align:center;padding:20px;font-size:13px;color:var(--text-tertiary);font-style:italic;">No tasks recorded for this phase yet.</div>`;
+  }
+  h+=mepInfo;
+  return {html:h,doneCount:done.length+urgentDone.length,openCount:open.length};
+}
+function openWorkerSignoff(){
+  const s=buildSignoffSummary();
+  document.getElementById('wso-summary').innerHTML=s.html;
+  document.getElementById('wso-confirm-text').textContent=s.openCount>0?`Confirm sign-off (${s.openCount} task${s.openCount===1?'':'s'} still open)`:`Confirm sign-off`;
+  openModal('m-worker-signoff');
+}
+function confirmWorkerSignoff(){
+  wSigned[R]=true;
+  saveState({wSigned});
+  closeModal('m-worker-signoff');
+  showToast(`✓ ${USER.name.split(' ')[0]} signed off ${getTodayPhase()}`);
+  renderTab();
+}
+function openMgrApproval(){
+  const s=buildSignoffSummary();
+  let header=`<div style="background:#F5F2E6;padding:10px 12px;border-radius:8px;margin-bottom:14px;font-size:12px;color:var(--text-secondary);line-height:1.5;">Worker signed off this phase. Review the attestation below before approving.</div>`;
+  document.getElementById('mgr-summary').innerHTML=header+s.html;
+  document.getElementById('mgr-confirm-text').textContent=s.openCount>0?`Approve anyway (${s.openCount} open)`:`Approve`;
+  openModal('m-mgr-approve');
+}
+function confirmMgrApproval(){
+  mSigned[R]=true;
+  saveState({mSigned});
+  closeModal('m-mgr-approve');
+  showToast(`✓ ${USER.name.split(' ')[0]} approved ${getTodayPhase()}`);
+  renderTab();
+}
+function rejectMgrApproval(){
+  // Manager reverses worker sign-off — sends task list back open for fixes
+  wSigned[R]=false;
+  saveState({wSigned});
+  closeModal('m-mgr-approve');
+  showToast('Sign-off returned for fixes');
+  renderTab();
+}
+
+function doWorkerSO(){openWorkerSignoff();}
 function confirmPin(){const p=document.getElementById('pin-val').value.trim();if(p!=='1234'){showFieldError('pin-val','pin-val-err','Incorrect PIN');return;}mSigned[R]=true;closeModal('m-pin');document.getElementById('pin-val').value='';saveState({mSigned});renderTab();}
 function confirmClosePin(){const p=document.getElementById('close-pin-val').value.trim();if(p!=='1234'){showFieldError('close-pin-val','close-pin-val-err','Incorrect PIN');return;}clSigned[R]=true;closeModal('m-close-pin');document.getElementById('close-pin-val').value='';saveState({clSigned});renderTab();}
 
@@ -6076,6 +6161,29 @@ function showInlineToastError(msg) {
     </div>
     <button class="mb" onclick="saveTeamMember()">Save</button>
     <button class="mb sec" onclick="closeModal('m-team-edit')">Cancel</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="m-worker-signoff" onclick="if(event.target===this)closeModal('m-worker-signoff')">
+  <div class="modal-sheet" style="max-height:85vh;overflow-y:auto;">
+    <div class="mh"></div>
+    <div class="mt">You're signing off</div>
+    <div class="ms">Confirm what you completed this phase. Your name + timestamp will be recorded.</div>
+    <div id="wso-summary" style="background:#F7F5F1;border-radius:12px;padding:14px;margin-bottom:14px;"></div>
+    <button class="mb" onclick="confirmWorkerSignoff()" id="wso-confirm-text">Confirm sign-off</button>
+    <button class="mb sec" onclick="closeModal('m-worker-signoff')">Cancel</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="m-mgr-approve" onclick="if(event.target===this)closeModal('m-mgr-approve')">
+  <div class="modal-sheet" style="max-height:85vh;overflow-y:auto;">
+    <div class="mh"></div>
+    <div class="mt">Manager approval</div>
+    <div class="ms">Review the worker's attestation. You can approve, return for fixes, or cancel.</div>
+    <div id="mgr-summary" style="background:#F7F5F1;border-radius:12px;padding:14px;margin-bottom:14px;"></div>
+    <button class="mb" onclick="confirmMgrApproval()" id="mgr-confirm-text">Approve</button>
+    <button class="mb sec" onclick="rejectMgrApproval()" style="background:#FBF0F0;color:#A03838;border-color:#FBF0F0;">Return for fixes</button>
+    <button class="mb sec" onclick="closeModal('m-mgr-approve')">Cancel</button>
   </div>
 </div>
 
