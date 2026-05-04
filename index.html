@@ -1369,7 +1369,7 @@ body {
     -webkit-tap-highlight-color: transparent;
   }
   .dnav-item:hover { background: rgba(0,0,0,.04); }
-  .dnav-item.active { background: #FBF0EC; color: #4E6332; font-weight: 600; }
+  .dnav-item.active { background: #EAF3DE; color: #1F3D2F; font-weight: 600; }
   .dnav-ic { font-size: 16px; line-height: 1; flex-shrink: 0; }
   .dnav-lbl { flex: 1; }
   .dnav-divider { height: 1px; background: rgba(0,0,0,.07); margin: 10px 4px; }
@@ -5315,7 +5315,7 @@ function toggleVoice() {
 
     recognizer.onstart = function() {
       voiceRec = true;
-      if (mic) { mic.textContent = '⏹'; mic.style.background = '#FBF0EC'; mic.style.boxShadow = '0 0 0 8px rgba(78,99,50,0.1)'; }
+      if (mic) { mic.textContent = '⏹'; mic.style.background = '#EAF3DE'; mic.style.boxShadow = '0 0 0 8px rgba(78,99,50,0.20)'; }
       if (hint) hint.textContent = 'LISTENING...';
       if (status) status.textContent = 'Listening — speak now';
     };
