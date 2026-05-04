@@ -138,6 +138,10 @@ body {
   font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.18s;
 }
 .lf-area-btn.sel { background: var(--ember); color: #fff; border-color: var(--ember); }
+body.oauth-active .lf-manual-block { display: none !important; }
+body.oauth-active .lf-google-primary-hint { display: block; font-size: 12px; color: var(--text-tertiary); text-align: center; margin: 18px 0 12px; line-height: 1.5; }
+body.oauth-active .lf-divider { display: none; }
+body:not(.oauth-active) .lf-google-primary-hint { display: none; }
 .lf-langs { display: flex; gap: 7px; margin-bottom: 20px; }
 .lf-lang {
   flex: 1; padding: 9px; border-radius: 10px; border: 1px solid var(--glass-border);
@@ -1862,6 +1866,7 @@ body {
     <span class="lf-label">Your name</span>
     <input class="lf-input" id="l-name" placeholder="Name..." autocomplete="name" oninput="clearFieldError('l-name','l-name-err')">
     <span class="inline-err" id="l-name-err"></span>
+    <div class="lf-manual-block">
     <span class="lf-label">Role</span>
     <div class="lf-roles">
       <button class="lf-role" data-r="worker" onclick="selR(this)">👷 Worker</button>
@@ -1891,6 +1896,8 @@ body {
     </div>
     <div class="login-err" id="login-global-err"></div>
     <button class="lf-btn" onclick="doLogin()">Enter</button>
+    </div><!-- /.lf-manual-block -->
+    <div class="lf-google-primary-hint">Sign in with your Google account.<br>Your role and venue are assigned by your operator.</div>
     <div id="lf-google-wrap">
       <div class="lf-divider"><span>or</span></div>
       <button class="lf-google-btn" onclick="triggerGoogleLogin()">
@@ -3160,6 +3167,8 @@ function initGoogleSignIn(attempt){
     }
     return;
   }
+  // OAuth is configured — make Google sign-in the primary surface, hide manual pickers
+  document.body.classList.add('oauth-active');
   if(typeof google === 'undefined' || !google?.accounts?.id){
     if(attempt < 10) setTimeout(()=>initGoogleSignIn(attempt+1), 400);
     return;
