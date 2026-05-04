@@ -281,6 +281,14 @@ body {
 
 /* ─── TODAY COMPACT HEADER ─── */
 .today-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;}
+.clock-strip { display:flex; flex-direction:column; align-items:flex-end; gap:1px; padding:7px 12px; border-radius:11px; border:1.5px solid rgba(0,0,0,0.08); background:transparent; cursor:pointer; transition:all .18s; -webkit-tap-highlight-color:transparent; user-select:none; }
+.clock-strip:hover { background:#F5F2E6; border-color:#4E6332; }
+.clock-strip.on { background:#EAF3DE; border-color:#4E6332; }
+.clock-state { font-family:'DM Mono',monospace; font-size:10px; font-weight:700; letter-spacing:.06em; color:#4E6332; }
+.clock-strip:not(.on) .clock-state { color:#9B8E7E; }
+.clock-since { font-size:10px; color:var(--text-tertiary); font-weight:500; }
+.clock-strip.on .clock-since { color:#1F3D2F; }
+
 .today-date{font-size:11px;color:var(--text-tertiary);font-family:'DM Mono',monospace;font-weight:500;margin-top:3px;white-space:nowrap;}
 .stat-strip{display:flex;align-items:center;gap:0;margin-bottom:14px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:14px;box-shadow:0 1px 4px rgba(0,0,0,.04);overflow:hidden;}
 .ss-item{display:flex;flex-direction:column;align-items:center;flex:1;padding:10px 8px;}
@@ -2146,6 +2154,74 @@ let ctxPending={R:0,AREA:'boh',ZONE:'Hot Station'};
 let todayPhase=null,activeWorkflows=[];
 let SUPABASE_BRIEFINGS=[];let sbBriefingsLoaded=false;
 let SUPABASE_URGENT_TASKS=[];let sbUrgentLoaded=false;
+// ── CLOCK-IN / OUT (Spanish Registro de jornada compliance) ──────
+let CLOCK_EVENTS=[];let clockLoaded=false;
+async function computeEventHash(prev, payload){
+  const data = new TextEncoder().encode((prev||'')+'|'+JSON.stringify(payload));
+  const buf = await crypto.subtle.digest('SHA-256', data);
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+async function loadClockEvents(){
+  if(clockLoaded||!USER.name)return;
+  try{
+    const today=new Date().toISOString().slice(0,10);
+    const rows=await sbFetch(`clock_events?worker_name=eq.${encodeURIComponent(USER.name)}&shift_date=eq.${today}&order=event_time.asc`);
+    CLOCK_EVENTS=rows;clockLoaded=true;
+    if(currentTab==='today')renderTab();
+  }catch(e){console.warn('clock load:',e.message);}
+}
+function lastClockEvent(){return CLOCK_EVENTS[CLOCK_EVENTS.length-1];}
+function clockState(){const l=lastClockEvent();return l?l.event_type:'out';}
+function clockedSinceText(){
+  const last=lastClockEvent();if(!last||last.event_type!=='in')return '';
+  const start=new Date(last.event_time);const now=new Date();
+  const mins=Math.floor((now-start)/60000);
+  const h=Math.floor(mins/60),m=mins%60;
+  return h>0?`${h}h ${m}m`:`${m}m`;
+}
+async function clockToggle(){
+  if(!USER.name){showToast('Log in first');return;}
+  const next=clockState()==='out'?'in':'out';
+  const now=new Date();
+  const today=now.toISOString().slice(0,10);
+  const prev=lastClockEvent();
+  // Lookup restaurant_id once
+  let restId=null;try{const restSlug=R===0?'taller':'bistro-mondo';const rs=await sbFetch(`restaurants?slug=eq.${restSlug}&select=id`);if(rs.length)restId=rs[0].id;}catch(e){}
+  const payload={
+    event_type:next,
+    event_time:now.toISOString(),
+    shift_date:today,
+    worker_name:USER.name,
+    worker_role:USER.role,
+    restaurant_id:restId,
+    device_label:'web · '+(navigator.userAgentData?.platform||navigator.platform||'unknown')
+  };
+  const prevHash=prev?.event_hash||null;
+  const hash=await computeEventHash(prevHash, payload);
+  payload.prev_hash=prevHash;payload.event_hash=hash;
+  // Optimistic
+  CLOCK_EVENTS.push({...payload,id:'tmp-'+Date.now()});
+  renderTab();
+  try{
+    const r=await fetch(`${SUPABASE_URL}/rest/v1/clock_events`,{
+      method:'POST',
+      headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json',Prefer:'return=representation'},
+      body:JSON.stringify(payload)
+    });
+    if(r.ok){
+      const arr=await r.json();const saved=arr[0]||arr;
+      const idx=CLOCK_EVENTS.findIndex(c=>c.id?.toString().startsWith?.('tmp-'));
+      if(idx>=0)CLOCK_EVENTS[idx]=saved;
+      showToast(next==='in'?'✓ Clocked in':'✓ Clocked out');
+      renderTab();
+    } else {
+      CLOCK_EVENTS.pop();showToast('Clock failed — try again');renderTab();
+    }
+  }catch(e){
+    CLOCK_EVENTS.pop();showToast('Clock failed: '+e.message);renderTab();
+  }
+}
+
 
 function getCov(){return parseInt(document.getElementById('cov-hidden')?.value||document.getElementById('mep-cov')?.value||40);}
 function getPhase(){const h=new Date().getHours();if(h>=5&&h<12)return'opening';if(h>=22||h<5)return'closing';return'service';}
@@ -2215,6 +2291,7 @@ function initApp(){
     loadSupabaseRecipes();
     loadSupabaseBriefings();
     loadSupabaseUrgentTasks();
+    loadClockEvents();
     // ── Supabase connection test ──
     if (db) {
       db.from('restaurants').select('name').then(({ data, error }) => {
@@ -2285,6 +2362,10 @@ function renderToday(){
         <div style="font-size:13px;font-weight:600;color:var(--text-primary);">${USER.name.split(' ')[0]} · ${ZONE}</div>
         <div style="font-size:11px;color:var(--text-tertiary);">${days[now.getDay()]} ${now.getDate()} ${months[now.getMonth()]} · ${R===0?'Taller':'Bistro Mondo'}</div>
       </div>
+      ${(()=>{ const cs=clockState(); const since=clockedSinceText(); return `<div class="clock-strip ${cs==='in'?'on':''}" onclick="clockToggle()" title="Spanish Registro de jornada — chained timestamps for compliance">
+        <div class="clock-state">${cs==='in'?'CLOCKED IN':'CLOCK IN'}</div>
+        <div class="clock-since">${cs==='in'?(since+' · tap to clock out'):'Tap to start your shift'}</div>
+      </div>`; })()}
     </div>
     <div class="stat-strip">
       <div class="ss-item"><span class="ss-n">${covers}</span><span class="ss-l">Covers</span></div>
@@ -2937,8 +3018,9 @@ function buildCtxZones(){
 function applyCtx(){
   sbBriefingsLoaded=false;SUPABASE_BRIEFINGS=[];
   sbUrgentLoaded=false;SUPABASE_URGENT_TASKS=[];
+  clockLoaded=false;CLOCK_EVENTS=[];
   const prevR=R;
-  R=ctxPending.R;loadSupabaseBriefings();loadSupabaseUrgentTasks();AREA=ctxPending.AREA;ZONE=ctxPending.ZONE||ZONES[R][AREA][0]||'';
+  R=ctxPending.R;loadSupabaseBriefings();loadSupabaseUrgentTasks();loadClockEvents();AREA=ctxPending.AREA;ZONE=ctxPending.ZONE||ZONES[R][AREA][0]||'';
   document.getElementById('tb-rest').textContent=R===0?'Taller':'Bistro Mondo';
   document.getElementById('tb-zone').textContent=ZONE;
   saveSession();
