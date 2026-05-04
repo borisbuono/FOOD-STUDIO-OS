@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="google-client-id" content="">
 <title>Food Studio</title>
 
 <!-- PWA + iOS Add-to-Home-Screen -->
@@ -1890,7 +1891,7 @@ body {
     </div>
     <div class="login-err" id="login-global-err"></div>
     <button class="lf-btn" onclick="doLogin()">Enter</button>
-    <div id="lf-google-wrap" style="display:none;">
+    <div id="lf-google-wrap">
       <div class="lf-divider"><span>or</span></div>
       <button class="lf-google-btn" onclick="triggerGoogleLogin()">
         <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z"/><path fill="#FBBC05" d="M3.964 10.707c-.18-.54-.282-1.117-.282-1.707s.102-1.167.282-1.707V4.961H.957C.347 6.175 0 7.55 0 9s.348 2.825.957 4.039l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.961L3.964 7.293C4.672 5.166 6.656 3.58 9 3.58z"/></svg>
@@ -2287,6 +2288,8 @@ function initApp(){
     if(ctxLbl)ctxLbl.textContent=USER.name+(USER._googleEmail?' ('+USER._googleEmail+')':'');
     initShiftSync();
     renderTab();
+    // Populate team-edit restaurant dropdown
+    (async()=>{try{const rs=await sbFetch('restaurants?select=id,name,slug&order=name.asc');const sel=document.getElementById('tm-rest');if(sel&&rs){rs.forEach(r=>{const o=document.createElement('option');o.value=r.id;o.textContent=r.name;sel.appendChild(o);});}}catch(e){}})();
     // ── Supabase: load live recipes in background ──
     loadSupabaseRecipes();
     loadSupabaseBriefings();
@@ -2322,6 +2325,7 @@ function switchTab(tab,el){
 
 function renderTab(){
   const c=document.getElementById('tab-content');
+  if(currentTab==='team'&&!teamLoaded){loadTeamMembers();}
   if(currentTab==='today')c.innerHTML=renderToday();
   else if(currentTab==='menu')c.innerHTML=renderMenu();
   else if(currentTab==='mep')c.innerHTML=renderMEP();
@@ -2337,6 +2341,7 @@ function renderTab(){
   else if(currentTab==='skills')c.innerHTML=renderSkills();
   else if(currentTab==='onboarding')c.innerHTML=renderOnboarding();
   else if(currentTab==='integrations')c.innerHTML=renderIntegrations();
+  else if(currentTab==='team')c.innerHTML=renderTeam();
 }
 
 // ══ TODAY ══
@@ -3147,13 +3152,18 @@ function initGoogleSignIn(attempt){
   attempt=attempt||0;
   const clientId = GOOGLE_CLIENT_ID ||
     document.querySelector('meta[name="google-client-id"]')?.content || '';
-  if(!clientId) return; // not configured — Google button stays hidden
+  if(!clientId){
+    // Operator hasn't configured OAuth yet — show setup hint instead of button
+    const wrap = document.getElementById('lf-google-wrap');
+    if(wrap){
+      wrap.innerHTML = '<div class="lf-divider"><span>or</span></div><div style="font-size:11px;color:#9B8E7E;text-align:center;padding:10px;line-height:1.5;">Google sign-in pending operator setup.<br>Use the form above for now.</div>';
+    }
+    return;
+  }
   if(typeof google === 'undefined' || !google?.accounts?.id){
     if(attempt < 10) setTimeout(()=>initGoogleSignIn(attempt+1), 400);
     return;
   }
-  const wrap = document.getElementById('lf-google-wrap');
-  if(wrap) wrap.style.display = '';
   google.accounts.id.initialize({
     client_id: clientId,
     callback: handleGoogleCredential,
@@ -3174,38 +3184,196 @@ function triggerGoogleLogin(){
     }
   });
 }
-function handleGoogleCredential(response){
+async function handleGoogleCredential(response){
   try{
     const parts=response.credential.split('.');
     const payload=JSON.parse(atob(parts[1].replace(/-/g,'+').replace(/_/g,'/')));
     const name=payload.name||payload.email?.split('@')[0]||'';
-    const email=payload.email||'';
+    const email=(payload.email||'').toLowerCase();
     const picture=payload.picture||'';
-    // Store Google identity on USER for display purposes
+
     USER._googleId=payload.sub;
     USER._googleEmail=email;
     USER._googlePicture=picture;
-    // Pre-fill name field
-    const nameInput=document.getElementById('l-name');
-    if(nameInput&&!nameInput.value)nameInput.value=name;
-    // Show Google-signed indicator
-    const signed=document.getElementById('lf-google-signed');
-    const init=document.getElementById('lf-g-init');
-    const nameLbl=document.getElementById('lf-g-name');
-    if(signed){signed.style.display='flex';}
-    if(init){
-      if(picture){init.innerHTML=`<img class="g-av" src="${picture}" alt="avatar">`;}
-      else{init.textContent=name.charAt(0).toUpperCase();}
+
+    // ── Lookup team_members by verified Google email ─────────────────
+    let teamRow=null;
+    try{
+      const rows=await sbFetch(`team_members?email=eq.${encodeURIComponent(email)}&status=in.(invited,active)&order=created_at.asc&limit=1`);
+      if(rows&&rows.length)teamRow=rows[0];
+    }catch(e){console.warn('team_members lookup:',e.message);}
+
+    if(!teamRow){
+      // Email NOT in any operator's invited list — block with explainer
+      showLoginError(`Your email (${email}) hasn't been invited to a Food Studio team yet. Ask your manager to add you, or sign in with a different account.`);
+      const signed=document.getElementById('lf-google-signed');
+      if(signed)signed.style.display='none';
+      const wrap=document.getElementById('lf-google-wrap');
+      if(wrap)wrap.style.display='';
+      return;
     }
-    if(nameLbl)nameLbl.textContent=name+' (Google)';
-    document.getElementById('lf-google-wrap').style.display='none';
-    showToast('Google account connected — choose your role');
+
+    // ── Auto-provision login from team_members row ──────────────────
+    USER.name=teamRow.name||name;
+    USER.role=teamRow.default_role||'worker';
+    USER.lang=teamRow.language||'es';
+    USER._teamMemberId=teamRow.id;
+    USER._operatorEntityId=teamRow.operator_entity_id;
+
+    // Resolve restaurant + area + zone from team_members defaults
+    if(teamRow.default_restaurant_id){
+      try{
+        const rs=await sbFetch(`restaurants?id=eq.${teamRow.default_restaurant_id}&select=slug,name`);
+        if(rs&&rs.length){
+          R = rs[0].slug==='taller'?0:1;
+        }
+      }catch(e){}
+    }
+    AREA=teamRow.default_area||(['worker','chef'].includes(USER.role)?'boh':USER.role==='maitre'?'foh':'admin');
+    const zonesForArea=ZONES[R]?.[AREA]||[];
+    ZONE=zonesForArea[0]||'';
+    USER.zone=ZONE;
+
+    // Fire-and-forget: mark first/last login in team_members
+    try{
+      const now=new Date().toISOString();
+      const patch={last_login_at:now,status:'active'};
+      if(!teamRow.first_login_at)patch.first_login_at=now;
+      if(picture)patch.google_picture_url=picture;
+      fetch(`${SUPABASE_URL}/rest/v1/team_members?id=eq.${teamRow.id}`,{
+        method:'PATCH',
+        headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json','Prefer':'return=minimal'},
+        body:JSON.stringify(patch)
+      }).catch(()=>{});
+    }catch(e){}
+
+    saveSession();
+    loadState();
+    showToast(`Welcome, ${USER.name.split(' ')[0]}`);
+    document.getElementById('login').style.display='none';
+    document.getElementById('app').classList.add('visible');
+    initApp();
   }catch(e){showLoginError('Google sign-in failed: '+e.message);}
 }
 function clearGoogleLogin(){
   USER._googleId=null;USER._googleEmail=null;USER._googlePicture=null;
   document.getElementById('lf-google-signed').style.display='none';
   document.getElementById('lf-google-wrap').style.display='';
+}
+
+
+// ══ TEAM MANAGEMENT (Owner/Manager only) ══════════════════════════
+let TEAM_MEMBERS=[];let teamLoaded=false;let teamEditId=null;
+async function loadTeamMembers(){
+  if(teamLoaded)return;
+  if(!['owner','manager'].includes(USER.role))return;
+  try{
+    const opId=USER._operatorEntityId;
+    let path='team_members?order=created_at.asc';
+    if(opId)path+=`&operator_entity_id=eq.${opId}`;
+    const rows=await sbFetch(path);
+    TEAM_MEMBERS=rows||[];teamLoaded=true;
+    if(currentTab==='team')renderTab();
+  }catch(e){console.warn('team load:',e.message);}
+}
+function renderTeam(){
+  if(!['owner','manager'].includes(USER.role)){
+    return `<div style="text-align:center;padding:48px 20px;color:var(--text-tertiary);font-size:14px;">Team management is available to Owner and Manager roles only.</div>`;
+  }
+  if(!teamLoaded){loadTeamMembers();return `<div style="text-align:center;padding:48px;color:var(--text-tertiary);">Loading team…</div>`;}
+  const statusColor={invited:'#A8893A',active:'#3B6D11',suspended:'#A03838',removed:'#9B8E7E'};
+  const statusBg={invited:'#FBF3E8',active:'#EAF3DE',suspended:'#FBF0F0',removed:'#F0EDE8'};
+  let html=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+    <div style="font-size:13px;color:var(--text-tertiary);">${TEAM_MEMBERS.length} ${TEAM_MEMBERS.length===1?'member':'members'}</div>
+    <button onclick="openTeamInvite()" style="padding:9px 14px;border-radius:10px;border:none;background:#4E6332;color:#fff;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;">+ Invite member</button>
+  </div>`;
+  if(TEAM_MEMBERS.length===0){
+    html+=`<div style="text-align:center;padding:48px 20px;">
+      <div style="font-family:'Fraunces',serif;font-style:italic;font-size:18px;color:var(--text-secondary);margin-bottom:6px;">No team members yet.</div>
+      <div style="font-size:13px;color:var(--text-tertiary);line-height:1.5;">Tap <strong style="color:#4E6332;">+ Invite member</strong> to add the first one.</div>
+    </div>`;
+    return html;
+  }
+  TEAM_MEMBERS.forEach(m=>{
+    const initials=(m.name||m.email).split(' ').map(s=>s[0]||'').join('').slice(0,2).toUpperCase();
+    const sc=statusColor[m.status]||'#9B8E7E';
+    const sbg=statusBg[m.status]||'#F0EDE8';
+    const restName=m.default_restaurant_id?(m.default_restaurant_id===null?'':'…'):'';
+    const lastSeen=m.last_login_at?new Date(m.last_login_at).toLocaleDateString():'never';
+    html+=`<div onclick="openTeamEdit('${m.id}')" style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:#fff;border:1px solid rgba(0,0,0,0.06);border-radius:12px;margin-bottom:8px;cursor:pointer;">
+      ${m.google_picture_url?`<img src="${m.google_picture_url}" alt="" style="width:36px;height:36px;border-radius:50%;flex-shrink:0;">`:`<div style="width:36px;height:36px;border-radius:50%;background:#5A8A78;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:13px;flex-shrink:0;">${initials}</div>`}
+      <div style="flex:1;min-width:0;">
+        <div style="font-weight:600;font-size:14px;color:var(--text-primary);">${m.name||m.email}</div>
+        <div style="font-size:11px;color:var(--text-tertiary);text-overflow:ellipsis;overflow:hidden;white-space:nowrap;">${m.email} · ${m.default_role}${m.default_area?' · '+m.default_area.toUpperCase():''}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0;">
+        <span style="font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:5px;background:${sbg};color:${sc};">${m.status}</span>
+        <span style="font-size:10px;color:var(--text-tertiary);">last: ${lastSeen}</span>
+      </div>
+    </div>`;
+  });
+  return html;
+}
+function openTeamInvite(){
+  teamEditId=null;
+  document.getElementById('tm-title').textContent='Invite team member';
+  ['tm-email','tm-name'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('tm-role').value='worker';
+  document.getElementById('tm-rest').value='';
+  document.getElementById('tm-area').value='boh';
+  document.getElementById('tm-lang').value='es';
+  document.getElementById('tm-status-row').style.display='none';
+  openModal('m-team-edit');
+}
+function openTeamEdit(id){
+  const m=TEAM_MEMBERS.find(x=>x.id===id);if(!m)return;
+  teamEditId=id;
+  document.getElementById('tm-title').textContent='Edit member';
+  document.getElementById('tm-email').value=m.email;document.getElementById('tm-email').setAttribute('readonly','readonly');
+  document.getElementById('tm-name').value=m.name||'';
+  document.getElementById('tm-role').value=m.default_role;
+  document.getElementById('tm-rest').value=m.default_restaurant_id||'';
+  document.getElementById('tm-area').value=m.default_area||'boh';
+  document.getElementById('tm-lang').value=m.language||'es';
+  document.getElementById('tm-status').value=m.status;
+  document.getElementById('tm-status-row').style.display='';
+  openModal('m-team-edit');
+}
+async function saveTeamMember(){
+  const email=document.getElementById('tm-email').value.trim().toLowerCase();
+  const name=document.getElementById('tm-name').value.trim();
+  if(!email||!name){showToast('Email and name required');return;}
+  const payload={
+    email,name,
+    default_role:document.getElementById('tm-role').value,
+    default_restaurant_id:document.getElementById('tm-rest').value||null,
+    default_area:document.getElementById('tm-area').value,
+    language:document.getElementById('tm-lang').value,
+    operator_entity_id:USER._operatorEntityId||null,
+  };
+  if(teamEditId){
+    payload.status=document.getElementById('tm-status').value;
+    try{
+      const r=await fetch(`${SUPABASE_URL}/rest/v1/team_members?id=eq.${teamEditId}`,{
+        method:'PATCH',
+        headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json','Prefer':'return=representation'},
+        body:JSON.stringify(payload)
+      });
+      if(r.ok){const arr=await r.json();const idx=TEAM_MEMBERS.findIndex(x=>x.id===teamEditId);if(idx>=0&&arr[0])TEAM_MEMBERS[idx]=arr[0];closeModal('m-team-edit');showToast('Updated');renderTab();}
+      else{showToast('Update failed');}
+    }catch(e){showToast('Update failed: '+e.message);}
+  }else{
+    payload.status='invited';
+    try{
+      const r=await fetch(`${SUPABASE_URL}/rest/v1/team_members`,{
+        method:'POST',
+        headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json','Prefer':'return=representation'},
+        body:JSON.stringify(payload)
+      });
+      if(r.ok){const arr=await r.json();if(arr[0])TEAM_MEMBERS.push(arr[0]);closeModal('m-team-edit');showToast(`Invited ${name}`);renderTab();}
+      else{const err=await r.text();showToast('Invite failed: '+err.slice(0,80));}
+    }catch(e){showToast('Invite failed: '+e.message);}
+  }
 }
 
 // ── Auto-login from saved session ──
@@ -5850,9 +6018,55 @@ function showInlineToastError(msg) {
     <button class="more-btn" onclick="switchTab('events',null);closeMore()"><span class="more-lbl">Events</span></button>
     <button class="more-btn" onclick="switchTab('schedule',null);closeMore()"><span class="more-lbl">Schedule</span></button>
     <button class="more-btn" onclick="switchTab('skills',null);closeMore()"><span class="more-lbl">Skills</span></button>
+    <button class="more-btn mgr-only" onclick="switchTab('team',null);closeMore()" style="display:none"><span class="more-lbl">Team</span></button>
     <button class="more-btn mgr-only" onclick="switchTab('command',null);closeMore()" style="display:none"><span class="more-lbl">Command</span></button>
     <button class="more-btn mgr-only" onclick="switchTab('integrations',null);closeMore()" style="display:none"><span class="more-lbl">Integrations</span></button>
     <button class="more-btn mgr-only" onclick="switchTab('onboarding',null);closeMore()" style="display:none"><span class="more-lbl">Onboard</span></button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="m-team-edit" onclick="if(event.target===this)closeModal('m-team-edit')">
+  <div class="modal-sheet">
+    <div class="mh"></div>
+    <div class="mt" id="tm-title">Invite team member</div>
+    <span class="mfl">Email</span>
+    <input class="mi" id="tm-email" type="email" placeholder="name@example.com">
+    <span class="mfl">Name</span>
+    <input class="mi" id="tm-name" placeholder="Full name">
+    <span class="mfl">Role</span>
+    <select class="mi" id="tm-role">
+      <option value="worker">Worker</option>
+      <option value="chef">Chef</option>
+      <option value="maitre">Maître</option>
+      <option value="manager">Manager</option>
+      <option value="owner">Owner</option>
+    </select>
+    <span class="mfl">Restaurant</span>
+    <select class="mi" id="tm-rest">
+      <option value="">— any —</option>
+    </select>
+    <span class="mfl">Area</span>
+    <select class="mi" id="tm-area">
+      <option value="boh">Back of House</option>
+      <option value="foh">Front of House</option>
+      <option value="admin">Admin</option>
+    </select>
+    <span class="mfl">Language</span>
+    <select class="mi" id="tm-lang">
+      <option value="es">Español</option>
+      <option value="en">English</option>
+    </select>
+    <div id="tm-status-row" style="display:none;">
+      <span class="mfl">Status</span>
+      <select class="mi" id="tm-status">
+        <option value="invited">Invited</option>
+        <option value="active">Active</option>
+        <option value="suspended">Suspended</option>
+        <option value="removed">Removed</option>
+      </select>
+    </div>
+    <button class="mb" onclick="saveTeamMember()">Save</button>
+    <button class="mb sec" onclick="closeModal('m-team-edit')">Cancel</button>
   </div>
 </div>
 
