@@ -1425,6 +1425,11 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
   body { padding-top: env(safe-area-inset-top, 0px); }
 }
 
+
+/* F12 — strip generic emoji icons throughout. Brand decision 2026-05-04. */
+.dnav-ic, .cl-icon, .dt-recipe-icon, .dt-video-icon { display: none !important; }
+.dnav-lbl { padding-left: 4px; }
+
 /* ═══════════════════════════════════════════════════════
    SKILLS MODULE
 ════════════════════════════════════════════════════════ */
@@ -1869,11 +1874,11 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
     <div class="lf-manual-block">
     <span class="lf-label">Role</span>
     <div class="lf-roles">
-      <button class="lf-role" data-r="worker" onclick="selR(this)">👷 Worker</button>
-      <button class="lf-role" data-r="chef" onclick="selR(this)">👨‍🍳 Chef</button>
-      <button class="lf-role" data-r="maitre" onclick="selR(this)">🤵 Maître</button>
-      <button class="lf-role" data-r="manager" onclick="selR(this)">📋 Manager</button>
-      <button class="lf-role" data-r="owner" onclick="selR(this)">🔑 Owner</button>
+      <button class="lf-role" data-r="worker" onclick="selR(this)">Worker</button>
+      <button class="lf-role" data-r="chef" onclick="selR(this)">Chef</button>
+      <button class="lf-role" data-r="maitre" onclick="selR(this)">Maître</button>
+      <button class="lf-role" data-r="manager" onclick="selR(this)">Manager</button>
+      <button class="lf-role" data-r="owner" onclick="selR(this)">Owner</button>
     </div>
     <span class="inline-err" id="l-role-err"></span>
     <span class="lf-label">Restaurant</span>
@@ -1884,9 +1889,9 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
     <span class="inline-err" id="l-rest-err"></span>
     <span class="lf-label">Area</span>
     <div class="lf-areas" id="lf-areas">
-      <button class="lf-area-btn" data-av="boh" onclick="selArea(this)">🔥 Back of House</button>
-      <button class="lf-area-btn" data-av="foh" onclick="selArea(this)">🍽️ Front of House</button>
-      <button class="lf-area-btn" data-av="admin" onclick="selArea(this)">📋 Admin</button>
+      <button class="lf-area-btn" data-av="boh" onclick="selArea(this)">Back of House</button>
+      <button class="lf-area-btn" data-av="foh" onclick="selArea(this)">Front of House</button>
+      <button class="lf-area-btn" data-av="admin" onclick="selArea(this)">Admin</button>
     </div>
     <span class="inline-err" id="l-area-err"></span>
     <span class="lf-label">Language</span>
@@ -2544,7 +2549,7 @@ function renderMenu(){
         const trainingOpen=!!menuSectionOpen[trainingKey];
         const rec=RECIPES.find(r=>r.id===d.recipeId);
         const allergenNames=rec?rec.allergens.map(a=>{const al=ALLERGENS.find(x=>x.id===a);return al?al.icon+' '+al.label:'';}).filter(Boolean):[];
-        const off86Lbl=d.off?'Restore':'86';const trainingLbl=trainingOpen?'▴ Hide':'▾ Training';const priceLbl=d.price?'€'+d.price:'–';const mgHtml=mg!==null?('<span style="font-family:DM Mono,monospace;font-size:11px;color:'+mgColor+';">'+mg+'%</span>'):'';const allergenHtml=allergenNames.length?('<div class="dt-section">Allergens</div><div class="dt-allergen-row">'+allergenNames.map(function(a){return'<span class="dt-allergen">'+a+'</span>';}).join('')+'</div>'):'';const recHtml=rec?('<div class="dt-section">Recipe</div><div class="dt-recipe-link"><span class="dt-recipe-icon">📋</span><span class="dt-recipe-text">'+rec.name+' — '+rec.portions+' portions base</span><span class="dt-recipe-arrow">→</span></div>'):'';const descHtml=rec?rec.desc:(d.desc||'No description yet.');html+='<div class="dish-row'+(d.off?' off':'')+'"><div style="flex:1"><div class="dish-name">'+d.name+(d.special?' ⭐':'')+'</div><div class="dish-meta">'+(d.cost?'Cost €'+d.cost.toFixed(2):'')+( rec?' · Recipe linked':'')+'</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0;"><span style="font-family:DM Mono,monospace;font-size:15px;font-weight:600;color:#1F2916;">'+priceLbl+'</span>'+mgHtml+'<div style="display:flex;gap:5px;align-items:center;margin-top:2px;"><button style="background:none;border:none;color:#4E6332;font-size:11px;font-weight:600;font-family:Outfit,sans-serif;cursor:pointer;" onclick="menuSectionOpen[\"'+trainingKey+'\"]=!menuSectionOpen[\"'+trainingKey+'\"];renderTab();">'+trainingLbl+'</button><button style="font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;border:none;cursor:pointer;background:#FBF0F0;color:#A03838;" onclick="toggle86(\"'+d.id+'\")">'+off86Lbl+'</button></div></div></div><div class="dish-training'+(trainingOpen?' open':'')+'"><div class="dt-section">Description & technique</div><div class="dt-desc">'+descHtml+'</div>'+allergenHtml+recHtml+'<div class="dt-section">Staff training</div><div class="dt-video"><div class="dt-video-icon">▶</div><div><div class="dt-video-text">Add training video</div><div class="dt-video-sub">Tap to link a video for this dish</div></div></div></div>';
+        const off86Lbl=d.off?'Restore':'86';const trainingLbl=trainingOpen?'▴ Hide':'▾ Training';const priceLbl=d.price?'€'+d.price:'–';const mgHtml=mg!==null?('<span style="font-family:DM Mono,monospace;font-size:11px;color:'+mgColor+';">'+mg+'%</span>'):'';const allergenHtml=allergenNames.length?('<div class="dt-section">Allergens</div><div class="dt-allergen-row">'+allergenNames.map(function(a){return'<span class="dt-allergen">'+a+'</span>';}).join('')+'</div>'):'';const recHtml=rec?('<div class="dt-section">Recipe</div><div class="dt-recipe-link"><span class="dt-recipe-icon">📋</span><span class="dt-recipe-text">'+rec.name+' — '+rec.portions+' portions base</span><span class="dt-recipe-arrow">→</span></div>'):'';const descHtml=rec?rec.desc:(d.desc||'No description yet.');html+='<div class="dish-row'+(d.off?' off':'')+'"><div style="flex:1"><div class="dish-name">'+d.name+(d.special?' (special)':'')+'</div><div class="dish-meta">'+(d.cost?'Cost €'+d.cost.toFixed(2):'')+( rec?' · Recipe linked':'')+'</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0;"><span style="font-family:DM Mono,monospace;font-size:15px;font-weight:600;color:#1F2916;">'+priceLbl+'</span>'+mgHtml+'<div style="display:flex;gap:5px;align-items:center;margin-top:2px;"><button style="background:none;border:none;color:#4E6332;font-size:11px;font-weight:600;font-family:Outfit,sans-serif;cursor:pointer;" onclick="menuSectionOpen[\"'+trainingKey+'\"]=!menuSectionOpen[\"'+trainingKey+'\"];renderTab();">'+trainingLbl+'</button><button style="font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;border:none;cursor:pointer;background:#FBF0F0;color:#A03838;" onclick="toggle86(\"'+d.id+'\")">'+off86Lbl+'</button></div></div></div><div class="dish-training'+(trainingOpen?' open':'')+'"><div class="dt-section">Description & technique</div><div class="dt-desc">'+descHtml+'</div>'+allergenHtml+recHtml+'<div class="dt-section">Staff training</div><div class="dt-video"><div class="dt-video-icon">▶</div><div><div class="dt-video-text">Add training video</div><div class="dt-video-sub">Tap to link a video for this dish</div></div></div></div>';
       });
       if(!dishes.length)html+=`<div style="padding:14px 16px;font-size:13px;color:#C8C0B8;">No dishes yet — tap + Add</div>`;
       html+=`</div>`;
@@ -2642,7 +2647,7 @@ function renderProviders(){
       <div class="provider-head" onclick="dishOpen['prov_${pi}']=!dishOpen['prov_${pi}'];renderTab()">
         <div class="provider-logo">${p.icon}</div>
         <div class="provider-info"><div class="provider-name">${p.name}</div><div class="provider-meta">${p.category} · ${p.products.length} products · ${p.delivery}</div></div>
-        <button class="provider-copy" onclick="event.stopPropagation();copyProviderOrder(${pi})">📋 Order</button>
+        <button class="provider-copy" onclick="event.stopPropagation();copyProviderOrder(${pi})">Order</button>
       </div>
       ${isOpen?renderProviderBody(p,pi):''}
     </div>`;
@@ -2657,7 +2662,7 @@ function renderProviderBody(p,pi){
   p.products.forEach(prod=>{
     html+=`<div class="ord-item-row"><span class="ord-item-name">${prod.name}</span><span style="font-size:11px;color:#C8C0B8;margin-right:auto;padding-left:8px;">${prod.unit}</span><span class="ord-item-price">€${prod.price}/${prod.unit}</span></div>`;
   });
-  html+=`<button onclick="copyProviderOrder(${pi})" style="width:100%;padding:11px;border:none;background:#EFF9F3;color:#3A7D5C;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;border-top:1px solid rgba(0,0,0,0.05);">📋 Copy order for WhatsApp</button>`;
+  html+=`<button onclick="copyProviderOrder(${pi})" style="width:100%;padding:11px;border:none;background:#EFF9F3;color:#3A7D5C;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;border-top:1px solid rgba(0,0,0,0.05);">Copy order for WhatsApp</button>`;
   html+='</div>';
   return html;
 }
@@ -2685,7 +2690,7 @@ async function handleOrderAI(){
   await new Promise(r=>setTimeout(r,600));
   if(result){
     if(matched){
-      result.innerHTML=`<div style="background:#EFF9F3;border:1px solid rgba(58,125,92,0.2);border-radius:12px;padding:14px 16px;margin-bottom:10px;"><div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#3A7D5C;margin-bottom:6px;">✓ Order ready</div><div style="font-size:15px;font-weight:600;color:#1F2916;margin-bottom:4px;">${qty} ${unit} ${matched.product.name}</div><div style="font-size:12px;color:#9B8E7E;">Via ${matched.provider.name} · €${(qty*matched.product.price).toFixed(2)}</div><button onclick="copyText('• ${matched.product.name}: ${qty} ${unit}','${matched.provider.name}')" style="margin-top:10px;width:100%;padding:10px;border-radius:9px;border:none;background:#3A7D5C;color:white;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;">📋 Copy to WhatsApp</button></div>`;
+      result.innerHTML=`<div style="background:#EFF9F3;border:1px solid rgba(58,125,92,0.2);border-radius:12px;padding:14px 16px;margin-bottom:10px;"><div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#3A7D5C;margin-bottom:6px;">✓ Order ready</div><div style="font-size:15px;font-weight:600;color:#1F2916;margin-bottom:4px;">${qty} ${unit} ${matched.product.name}</div><div style="font-size:12px;color:#9B8E7E;">Via ${matched.provider.name} · €${(qty*matched.product.price).toFixed(2)}</div><button onclick="copyText('• ${matched.product.name}: ${qty} ${unit}','${matched.provider.name}')" style="margin-top:10px;width:100%;padding:10px;border-radius:9px;border:none;background:#3A7D5C;color:white;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;">Copy to WhatsApp</button></div>`;
     } else {
       // Send to AI
       try{
@@ -2712,11 +2717,11 @@ function genOrders(){
     html+=`<div class="supplier-card sup-card open" style="margin-bottom:10px;">
       <div class="sup-head" onclick="this.parentElement.classList.toggle('open')">
         <div><div class="sup-name">${sup}</div><div class="sup-meta">${list.length} items · ${covers} covers</div></div>
-        <button class="sup-copy" onclick="event.stopPropagation();copyText(\`${waText.replace(/`/g,"'")}\`,'${sup}')">📋 Copy</button>
+        <button class="sup-copy" onclick="event.stopPropagation();copyText(\`${waText.replace(/`/g,"'")}\`,'${sup}')">Copy</button>
       </div>
       <div class="sup-body">
         ${list.map(i=>`<div class="ord-item"><span class="ord-name">${i.name}</span><span class="ord-qty">${i.qty}</span><span class="ord-unit">${i.unit}</span></div>`).join('')}
-        <button onclick="copyText(\`${waText.replace(/`/g,"'")}\`,'${sup}')" style="width:100%;padding:11px;border:none;background:rgba(90,138,120,0.1);color:var(--fern);font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;border-top:1px solid var(--border);">📋 Copy for WhatsApp</button>
+        <button onclick="copyText(\`${waText.replace(/`/g,"'")}\`,'${sup}')" style="width:100%;padding:11px;border:none;background:rgba(90,138,120,0.1);color:var(--fern);font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;border-top:1px solid var(--border);">Copy for WhatsApp</button>
       </div>
     </div>`;
   });
