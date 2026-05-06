@@ -765,6 +765,19 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
 .comp-qty { font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 600; color: var(--fern); flex-shrink: 0; min-width: 58px; text-align: right; }
 .comp-qty.hi { color: var(--ember); }
 
+/* ─── MEP Upgrades (F18-F22) ─── */
+.mep-photo { width: 36px; height: 36px; border-radius: 8px; background: var(--ember-pale); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 13px; color: var(--ember); flex-shrink: 0; overflow: hidden; }
+.mep-photo img { width: 100%; height: 100%; object-fit: cover; }
+.mep-head-badge { position: absolute; top: 10px; right: 12px; padding: 4px 9px; border-radius: 8px; font-size: 9px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; }
+.mep-head-badge.urgent { background: var(--ruby); color: white; }
+.mep-head-badge.today { background: var(--gold); color: white; }
+.mep-head-badge.prep { background: var(--glass); color: var(--text-tertiary); }
+.mep-time-est { font-size: 11px; color: var(--text-tertiary); font-family: 'DM Mono', monospace; margin-top: 3px; }
+.mep-service-note { font-size: 10px; color: var(--text-tertiary); font-style: italic; margin-top: 2px; }
+.mep-reorder-btn { background: transparent; border: none; cursor: pointer; opacity: 0.5; padding: 4px 6px; font-size: 13px; color: var(--text-secondary); transition: opacity 0.15s; }
+.mep-reorder-btn:hover { opacity: 1; }
+.mep-reorder-btn:active { opacity: 0.7; }
+
 /* ─── CLEANING ─── */
 .clean-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
 .cl-tile {
@@ -950,6 +963,18 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
 .ii:focus { border-color: var(--ember); }
 .irm { background: transparent; border: none; color: var(--text-tertiary); font-size: 16px; cursor: pointer; }
 .add-ing { width: 100%; padding: 10px; border-radius: 10px; border: 1px dashed var(--glass-border); background: transparent; color: var(--text-tertiary); font-family: 'Outfit', sans-serif; font-size: 12px; cursor: pointer; margin-top: 3px; }
+
+/* ─── FENCE REASON MODAL ─── */
+.ms-sub { font-size: 14px; opacity: 0.7; margin: 8px 0 16px; line-height: 1.4; }
+.reason-options { display: flex; flex-direction: column; gap: 8px; margin: 12px 0 16px; }
+.reason-opt {
+  padding: 12px 14px; text-align: left; background: var(--glass);
+  border: 1px solid var(--glass-border); border-radius: 10px; cursor: pointer;
+  font-size: 14px; font-family: 'Outfit', sans-serif; font-weight: 500;
+  color: var(--text-primary); transition: all 0.18s;
+}
+.reason-opt:active { background: var(--glass-border); }
+.reason-opt:hover { background: rgba(184,106,66,0.1); border-color: var(--ember); }
 
 /* ─── AI RECIPE DRAFT ─── */
 .ai-draft-card {
@@ -1191,6 +1216,12 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
 .sob-icon { font-size: 16px; flex-shrink: 0; }
 .sob-text { font-size: 12px; color: #4E6332; font-weight: 500; flex: 1; }
 .sob-tag { font-size: 9px; font-weight: 700; background: #4E6332; color: white; padding: 2px 7px; border-radius: 6px; flex-shrink: 0; }
+.orders-subtabs { display: flex; gap: 8px; margin-bottom: 14px; padding: 0 4px; flex-wrap: wrap; }
+.ost-pill { padding: 8px 14px; border-radius: 18px; border: 1px solid var(--border); background: transparent; font-size: 13px; font-weight: 500; cursor: pointer; font-family: 'Outfit', sans-serif; color: var(--text-secondary); transition: all 0.2s; }
+.ost-pill:active { opacity: 0.8; }
+.ost-pill.active { background: #4E6332; color: white; border-color: #4E6332; }
+.iv-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; gap: 10px; }
+.iv-empty, .rv-empty { padding: 32px 18px; text-align: center; opacity: 0.65; font-style: italic; font-size: 14px; color: var(--text-tertiary); }
 
 /* ── EVENTS MODULE ── */
 .event-card { background:#FFFFFF;border:1px solid rgba(0,0,0,0.07);border-radius:16px;margin-bottom:10px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.04); }
@@ -1986,9 +2017,31 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
 
 /* ══ Menu Types Filter (F54) ══ */
 .menu-types { display: flex; gap: 8px; margin-bottom: 14px; overflow-x: auto; padding-bottom: 4px; }
+.menu-mode-pills { display: flex; gap: 8px; margin-bottom: 12px; padding: 0 4px; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
 .mt-pill { padding: 8px 14px; border: 1.5px solid var(--border); background: var(--bg); color: var(--text-secondary); border-radius: 20px; font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: all 0.2s; }
 .mt-pill:hover { border-color: var(--text-secondary); }
 .mt-pill.active { background: var(--ember); color: white; border-color: var(--ember); }
+
+/* ══ Menu Library ══ */
+.menu-library { padding: 0 4px; }
+.ml-header { margin-bottom: 16px; }
+.ml-title { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 600; color: var(--text-primary); }
+.ml-sub { font-size: 13px; opacity: 0.7; margin-top: 4px; color: var(--text-secondary); }
+.ml-section { margin-bottom: 24px; }
+.ml-section-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.6; margin-bottom: 10px; color: var(--text-tertiary); }
+.ml-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; }
+.ml-card { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; background: var(--ink-mid); transition: transform 0.15s, box-shadow 0.15s; }
+.ml-card:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.08); }
+.ml-thumb { width: 100%; aspect-ratio: 3/4; background-size: cover; background-position: center; background-color: rgba(0,0,0,0.04); }
+.ml-meta { padding: 10px 12px; }
+.ml-card-title { font-size: 13px; font-weight: 500; line-height: 1.3; color: var(--text-primary); }
+.ml-card-sub { font-size: 11px; opacity: 0.6; margin-top: 4px; color: var(--text-secondary); }
+.ml-actions { display: flex; gap: 6px; margin-top: 10px; }
+.ml-btn { flex: 1; text-align: center; padding: 6px 10px; font-size: 12px; border-radius: 6px; border: 1px solid var(--border); text-decoration: none; color: var(--text-secondary); background: var(--bg); cursor: pointer; font-family: 'Outfit', sans-serif; font-weight: 500; transition: all 0.2s; }
+.ml-btn:hover { opacity: 0.8; }
+.ml-btn.primary { background: var(--ember); color: white; border-color: var(--ember); }
+.ml-btn.primary:hover { opacity: 0.9; }
+.ml-footer { margin-top: 24px; padding: 14px; background: var(--ink-mid); border-left: 3px solid var(--gold); border-radius: 6px; font-size: 13px; line-height: 1.5; color: var(--text-secondary); }
 
 /* ══ Print Styles (F11) ══ */
 @media print {
@@ -2315,12 +2368,42 @@ const ROLE_COLORS={worker:'#8AA350',chef:'#4E6332',maitre:'#5A8A78',manager:'#1F
 const ZONE_COLORS={cold:'#5A8A78',hot:'#4E6332',pizza:'#3B6D11',dessert:'#8AA350',breakfast:'#6FA17F'};
 const ZONES={0:{boh:['Hot Station','Cold Station'],foh:['All FOH'],admin:['Administration']},1:{boh:['Kitchen','Pizzeria','Prep Kitchen'],foh:['Terrace','Garden'],admin:['Administration']}};
 
+// ══ MENU LIBRARY ══ (Canva design inventory)
+const MENU_LIBRARY = [
+  { id: 'DAHHSDqmolQ', title: 'Menu Mondo — current (horizontal)', restaurant: 'mondo', kind: 'food', updated: '2026-03-22', pages: 5,
+    thumbnail: 'https://design.canva.ai/Tq0urs6_xXsGPWz', view_url: 'https://www.canva.com/d/435bf7-rRDq0zLh', edit_url: 'https://www.canva.com/d/koOuyyLkQND9FvV' },
+  { id: 'DAG-4Dz3z4E', title: 'Menu ridotto — March 2026', restaurant: 'mondo', kind: 'food', updated: '2026-03-19', pages: 4,
+    thumbnail: 'https://design.canva.ai/qVsc7-jPElLgrfQ', view_url: 'https://www.canva.com/d/uFSwsfK0z5yLmjZ', edit_url: 'https://www.canva.com/d/Ihg1D5Gyx2P7Stz' },
+  { id: 'DAG-VBZPk-A', title: 'Menu horizontal — Jan 2026', restaurant: 'mondo', kind: 'food', updated: '2026-02-01', pages: 4,
+    thumbnail: 'https://design.canva.ai/i9OLoP7ROmolJTw', view_url: 'https://www.canva.com/d/wXSgFkWFig-Ejlr', edit_url: 'https://www.canva.com/d/Y7_29ekgqBVXolC' },
+  { id: 'DAG5gebwR5Y', title: 'New menu — Jan 13 2026', restaurant: 'mondo', kind: 'food', updated: '2026-02-13', pages: 6,
+    thumbnail: 'https://design.canva.ai/fZxZ18tZ705b9G4', view_url: 'https://www.canva.com/d/KTkZ--MFPCV-nzL', edit_url: 'https://www.canva.com/d/GVRneQtvIKmVGPh' },
+  { id: 'DAG6GB0mVBw', title: 'Menu horizontal — Nov 29', restaurant: 'mondo', kind: 'food', updated: '2025-12-28', pages: 4,
+    thumbnail: 'https://design.canva.ai/y0dabbwzxBA2KBt', view_url: 'https://www.canva.com/d/yD2_tNwL9foOIz0', edit_url: 'https://www.canva.com/d/1Hx8y-g58T8AHd2' },
+  { id: 'DAG1IZEuHUA', title: 'Menu BM 2025 — archive', restaurant: 'mondo', kind: 'food', updated: '2025-12-13', pages: 6,
+    thumbnail: 'https://design.canva.ai/tV4qg68lrtQkGYP', view_url: 'https://www.canva.com/d/vcBw8uCCUF802su', edit_url: 'https://www.canva.com/d/znZuDTyBdVRDkFm' },
+  { id: 'DAG6A7YVQEI', title: 'Wine list (Mondo)', restaurant: 'mondo', kind: 'wine', updated: '2025-11-23', pages: 4,
+    thumbnail: 'https://design.canva.ai/L2Z_oBmZ4bEtFWe', view_url: 'https://www.canva.com/d/oMr8LAMayGYOFvG', edit_url: 'https://www.canva.com/d/hjQzLjZLpE4opZc' },
+  { id: 'DAG-sZIOh14', title: 'Cuenta — receipt template 2026', restaurant: 'mondo', kind: 'system', updated: '2026-02-01', pages: 1,
+    thumbnail: 'https://design.canva.ai/VnZzHW3LOgu9m4p', view_url: 'https://www.canva.com/d/RZC-EqiwsJBRKhc', edit_url: 'https://www.canva.com/d/6v3ZMToHqmaiK3q' },
+  { id: 'DAG7esySLdU', title: 'Christmas menu 2025', restaurant: 'mondo', kind: 'event', updated: '2025-12-14', pages: 2,
+    thumbnail: 'https://design.canva.ai/EZxntzFwaOCyQwn', view_url: 'https://www.canva.com/d/MeJxuqO51qEBDAk', edit_url: 'https://www.canva.com/d/qcL5QBkgUt67_6a' },
+  { id: 'DAG7fO_MF58', title: 'New Year\'s Eve 2025', restaurant: 'mondo', kind: 'event', updated: '2025-12-14', pages: 2,
+    thumbnail: 'https://design.canva.ai/2uORiNNn-enfiOY', view_url: 'https://www.canva.com/d/75PEhotE7MNUmQE', edit_url: 'https://www.canva.com/d/O3c-BnKAJ0aEu3X' },
+  { id: 'DAG7fRi4X9o', title: 'December at Ibiza Food Studio', restaurant: 'taller', kind: 'event', updated: '2025-12-14', pages: 2,
+    thumbnail: 'https://design.canva.ai/AfsUkHuA0FTYji_', view_url: 'https://www.canva.com/d/DajkISWDKDBHtin', edit_url: 'https://www.canva.com/d/dufztPg7B8N7aW6' },
+  { id: 'DAG7rxe2y34', title: 'December Events', restaurant: 'taller', kind: 'event', updated: '2025-12-14', pages: 1,
+    thumbnail: 'https://design.canva.ai/xdkAPsHyxIrxrxZ', view_url: 'https://www.canva.com/d/3mP1bsbrUCam-ig', edit_url: 'https://www.canva.com/d/c6k1yXQaU_x_Uy1' }
+];
+
 // ══ STATE ══
 let USER={name:'',role:'owner',lang:'en',zone:''},selRV='',selLV='en',selRestV=null,selAreaV='';
 let R=0,AREA='boh',ZONE='Hot Station';
 let currentTab='today',recEditId=null,menuAddSec='hot',prodTab='mep',todaySubTab='day';
 let currentMenuType='all';
+let menuViewMode='active'; // 'active' | 'library'
 let ordersSearchQuery='';
+let currentOrdersView='catalogue';
 let taskState={},cleanState={},mepState={},dishOpen={},menuSectionOpen={};
 let taskPriority={},taskUrgent={};
 let wSigned=[false,false],mSigned=[false,false],clSigned=[false,false];
@@ -2358,14 +2441,79 @@ function clockedSinceText(){
   const h=Math.floor(mins/60),m=mins%60;
   return h>0?`${h}h ${m}m`:`${m}m`;
 }
+// Haversine: compute distance in meters between two lat/lng pairs
+function haversineDistance(lat1, lon1, lat2, lon2) {
+  const R = 6371000; // Earth radius in meters
+  const toRad = d => d * Math.PI / 180;
+  const dLat = toRad(lat2 - lat1), dLon = toRad(lon2 - lon1);
+  const a = Math.sin(dLat/2)**2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon/2)**2;
+  return 2 * R * Math.asin(Math.sqrt(a));
+}
+// Global to hold pending clock while fence reason is being entered
+let _pendingFenceClock = null;
+
 async function clockToggle(){
   if(!USER.name){showToast('Log in first');return;}
   const next=clockState()==='out'?'in':'out';
   const now=new Date();
   const today=now.toISOString().slice(0,10);
   const prev=lastClockEvent();
-  // Lookup restaurant_id once
-  let restId=null;try{const restSlug=R===0?'taller':'bistro-mondo';const rs=await sbFetch(`restaurants?slug=eq.${restSlug}&select=id`);if(rs.length)restId=rs[0].id;}catch(e){}
+  // Lookup restaurant_id and coordinates
+  let restId=null, restLat=null, restLng=null, restName=null, fenceRadius=100;
+  try{
+    const restSlug=R===0?'taller':'bistro-mondo';
+    const rs=await sbFetch(`restaurants?slug=eq.${restSlug}&select=id,name,latitude,longitude,fence_radius_m`);
+    if(rs.length){
+      restId=rs[0].id;
+      restLat=rs[0].latitude;
+      restLng=rs[0].longitude;
+      restName=rs[0].name;
+      if(rs[0].fence_radius_m)fenceRadius=rs[0].fence_radius_m;
+    }
+  }catch(e){}
+
+  // Attempt geolocation check
+  if(restLat!==null && restLng!==null && navigator.geolocation){
+    navigator.geolocation.getCurrentPosition(
+      (pos)=>{
+        const userLat=pos.coords.latitude;
+        const userLng=pos.coords.longitude;
+        const distM=haversineDistance(userLat,userLng,restLat,restLng);
+        // If outside fence, show reason modal before proceeding
+        if(distM>fenceRadius){
+          _pendingFenceClock={
+            event_type:next,
+            event_time:now.toISOString(),
+            shift_date:today,
+            worker_name:USER.name,
+            worker_role:USER.role,
+            restaurant_id:restId,
+            device_label:'web · '+(navigator.userAgentData?.platform||navigator.platform||'unknown'),
+            distance_m:distM
+          };
+          // Populate modal with distance info
+          document.getElementById('fence-dist').textContent=Math.round(distM);
+          document.getElementById('fence-rest').textContent=restName||'venue';
+          document.getElementById('fence-reason-text').value='';
+          openModal('m-fence-reason');
+          return;
+        }
+        // Inside fence — proceed normally
+        proceedWithClockIn(next, restId, now, prev, today);
+      },
+      (err)=>{
+        // Geolocation failed — proceed without fence check
+        console.warn('Geolocation error:', err.message);
+        proceedWithClockIn(next, restId, now, prev, today);
+      }
+    );
+  } else {
+    // No geolocation or no restaurant coordinates — proceed normally
+    proceedWithClockIn(next, restId, now, prev, today);
+  }
+}
+
+async function proceedWithClockIn(next, restId, now, prev, today){
   const payload={
     event_type:next,
     event_time:now.toISOString(),
@@ -2398,6 +2546,34 @@ async function clockToggle(){
     }
   }catch(e){
     CLOCK_EVENTS.pop();showToast('Clock failed: '+e.message);renderTab();
+  }
+}
+
+async function submitFenceReason(reasonCode){
+  const detail=document.getElementById('fence-reason-text').value.trim();
+  if(!_pendingFenceClock){closeModal('m-fence-reason');return;}
+  // Persist the clock event with fence-reason metadata stored in metadata column (JSONB)
+  const evt={..._pendingFenceClock};
+  evt.metadata={
+    geo_outside_fence:true,
+    fence_distance_m:Math.round(_pendingFenceClock.distance_m||0),
+    fence_reason:reasonCode,
+    fence_reason_detail:detail
+  };
+  delete evt.distance_m; // remove transient field
+  // Use existing clock_events write path
+  try{
+    await fetch(`${SUPABASE_URL}/rest/v1/clock_events`,{
+      method:'POST',
+      headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json',Prefer:'return=representation'},
+      body:JSON.stringify(evt)
+    });
+    showToast('Clocked in (outside fence — flagged for review)');
+    closeModal('m-fence-reason');
+    _pendingFenceClock=null;
+    renderTab();
+  }catch(e){
+    showToast('Clock-in failed: '+e.message);
   }
 }
 
@@ -2784,12 +2960,20 @@ function renderToday(){
 
 // ══ MENU ══
 function renderMenu(){
+  // Branch based on menu view mode
+  if(menuViewMode==='library') return renderMenuLibrary();
+
   const secs=['cold','hot','pizza','dessert','breakfast','wine'];
   const sNames={cold:'Cold',hot:'Hot',pizza:'Pizza & Fryer',dessert:'Desserts',breakfast:'Breakfast',wine:'Wine'};
   const restName=R===0?'Taller':'Bistro Mondo';
   let html=`<div style="display:flex;gap:7px;margin-bottom:14px;">
     <button onclick="R=0;menuSectionOpen={};renderTab()" style="flex:1;padding:10px;border-radius:11px;border:1.5px solid ${R===0?'#4E6332':'rgba(0,0,0,0.1)'};background:${R===0?'#F5F2E6':'white'};color:${R===0?'#4E6332':'#9B8E7E'};font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;">Taller</button>
     <button onclick="R=1;menuSectionOpen={};renderTab()" style="flex:1;padding:10px;border-radius:11px;border:1.5px solid ${R===1?'#4E6332':'rgba(0,0,0,0.1)'};background:${R===1?'#F5F2E6':'white'};color:${R===1?'#4E6332':'#9B8E7E'};font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;">Bistro Mondo</button>
+  </div>`;
+  // Menu mode pills (Active vs Library)
+  html+=`<div class="menu-mode-pills">
+    <button class="mt-pill ${menuViewMode==='active'?'active':''}" onclick="setMenuViewMode('active')">Active menu</button>
+    <button class="mt-pill ${menuViewMode==='library'?'active':''}" onclick="setMenuViewMode('library')">Library</button>
   </div>`;
   html+=`<div class="menu-types"><button class="mt-pill ${currentMenuType==='all'?'active':''}" onclick="setMenuType('all')">All</button><button class="mt-pill ${currentMenuType==='breakfast'?'active':''}" onclick="setMenuType('breakfast')">Breakfast</button><button class="mt-pill ${currentMenuType==='lunch'?'active':''}" onclick="setMenuType('lunch')">Lunch</button><button class="mt-pill ${currentMenuType==='dinner'?'active':''}" onclick="setMenuType('dinner')">Dinner</button><button class="mt-pill ${currentMenuType==='specials'?'active':''}" onclick="setMenuType('specials')">Specials</button></div>`;
   html+=`<button class="menu-print-btn" onclick="printMenu()" style="width:100%;padding:10px;margin-bottom:12px;border:1.5px solid var(--border);background:var(--bg);color:var(--text-primary);border-radius:11px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;">🖨️ Print menu</button>`;
@@ -2857,6 +3041,58 @@ function setMenuType(type){
   renderTab();
 }
 
+// ══ Menu View Mode (Active vs Library) ══
+function setMenuViewMode(m){
+  menuViewMode=m;
+  renderTab();
+}
+
+// ══ Render Menu Library ══
+function renderMenuLibrary(){
+  const restSlug=R===0?'taller':'mondo';
+  const restName=R===0?'Taller':'Bistro Mondo';
+  const items=MENU_LIBRARY.filter(m=>m.restaurant===restSlug);
+  const byKind={};
+  items.forEach(m=>{(byKind[m.kind]=byKind[m.kind]||[]).push(m);});
+  const kindLabels={food:'Food menus',wine:'Wine & beverage',event:'Events & seasonal',system:'Templates & receipts'};
+
+  let html=`<div class="menu-mode-pills">
+    <button class="mt-pill ${menuViewMode==='active'?'active':''}" onclick="setMenuViewMode('active')">Active menu</button>
+    <button class="mt-pill ${menuViewMode==='library'?'active':''}" onclick="setMenuViewMode('library')">Library (${items.length})</button>
+  </div>`;
+
+  html+=`<div class="menu-library">
+    <div class="ml-header">
+      <div class="ml-title">Menu library</div>
+      <div class="ml-sub">All ${items.length} menus from Canva for ${restName}. Click to open in Canva, print, or share.</div>
+    </div>`;
+
+  for(const kind of ['food','wine','event','system']){
+    if(!byKind[kind]||!byKind[kind].length)continue;
+    html+=`<div class="ml-section"><div class="ml-section-label">${kindLabels[kind]||kind}</div><div class="ml-grid">`;
+    for(const m of byKind[kind]){
+      html+=`<div class="ml-card">
+        <div class="ml-thumb" style="background-image:url('${m.thumbnail}')"></div>
+        <div class="ml-meta">
+          <div class="ml-card-title">${m.title}</div>
+          <div class="ml-card-sub">${m.pages} page${m.pages>1?'s':''} · ${m.updated}</div>
+          <div class="ml-actions">
+            <a class="ml-btn primary" href="${m.view_url}" target="_blank" rel="noopener">View</a>
+            <a class="ml-btn" href="${m.edit_url}" target="_blank" rel="noopener">Edit</a>
+          </div>
+        </div>
+      </div>`;
+    }
+    html+=`</div></div>`;
+  }
+
+  html+=`<div class="ml-footer">
+    <strong>Live sync from Canva — coming next sprint.</strong>
+    Today this is a snapshot of your designs (pulled May 2026). When live sync ships, the OS will refresh the list automatically and let you export PDFs in one click.
+  </div></div>`;
+  return html;
+}
+
 // ══ F11: Print Menu ══
 function printMenu(){
   document.body.classList.add('printing-menu');
@@ -2890,15 +3126,32 @@ function renderMEP(){
     <div style="font-family:'Fraunces',serif;font-style:italic;font-size:18px;color:var(--text-secondary);margin-bottom:6px;">No mise en place set for ${ZONE}.</div>
     <div style="font-size:13px;color:var(--text-tertiary);line-height:1.5;">Switch zone above, or ask a manager to add MEP for this station.</div>
   </div>`;}
-  zoneMEP.forEach(dish=>{
+  zoneMEP.forEach((dish,idx)=>{
     const dk=`${R}_${ZONE}_${dish.dish}`;const isOpen=!!dishOpen[dk];
     const comps=dish.components||[];const compDone=comps.filter(c=>mepState[`${R}_${ZONE}_${dish.dish}_${c.name}`]).length;
     const pct=comps.length?compDone/comps.length:0;
     const r2=14;const circ=2*Math.PI*r2;const dash=circ*pct;const gap=circ-dash;
-    html+=`<div class="mep-dish${isOpen?' open':''}">
-      <div class="mep-head" onclick="dishOpen['${dk}']=!dishOpen['${dk}'];renderTab()">
+    const urgency=dish.priority||'TODAY';const badgeClass=urgency==='URGENT'?'urgent':urgency==='PREP'?'prep':'today';
+    const estMin=dish.est_minutes||25;
+    const photoInit=dish.dish.substring(0,2).toUpperCase();
+    const serviceNote=dish.service_note||'';
+    html+=`<div class="mep-dish${isOpen?' open':''}" style="position:relative;">
+      <div class="mep-head" onclick="dishOpen['${dk}']=!dishOpen['${dk}'];renderTab()" style="position:relative;">
+        <div class="mep-photo">${dish.photo_url?`<img src="${dish.photo_url}" alt="${dish.dish}">`:photoInit}</div>
         <div class="mep-ring"><svg width="32" height="32" style="transform:rotate(-90deg)"><circle fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="3" cx="16" cy="16" r="${r2}"/><circle fill="none" stroke="${pct===1?'#5A8A78':'#C4783A'}" stroke-width="3" stroke-linecap="round" cx="16" cy="16" r="${r2}" stroke-dasharray="${dash.toFixed(1)} ${gap.toFixed(1)}"/></svg><div class="mep-ring-n">${compDone}/${comps.length}</div></div>
-        <div class="mep-info"><div class="mep-dish-name">${dish.dish}</div><div class="mep-dish-meta">${comps.length} components · ${Math.round(pct*100)}% done</div></div>
+        <div class="mep-info" style="flex:1;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:2px;">
+            <div class="mep-dish-name">${dish.dish}</div>
+            <span class="mep-time-est">~${estMin} min</span>
+          </div>
+          <div class="mep-dish-meta">${comps.length} components · ${Math.round(pct*100)}% done</div>
+          ${serviceNote?`<div class="mep-service-note">${serviceNote}</div>`:''}
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px;align-items:center;margin-right:8px;">
+          <button class="mep-reorder-btn" onclick="event.stopPropagation();moveMepItem(${idx},-1)" title="Move up">▲</button>
+          <button class="mep-reorder-btn" onclick="event.stopPropagation();moveMepItem(${idx},1)" title="Move down">▼</button>
+        </div>
+        <div class="mep-head-badge ${badgeClass}">${urgency}</div>
         <div class="mep-arr">▾</div>
       </div>
       <div class="mep-comps">`;
@@ -2913,27 +3166,53 @@ function renderMEP(){
   return html;
 }
 
+function moveMepItem(idx,dir){
+  const zoneMEP=MEP[R]?.[ZONE];
+  if(!zoneMEP)return;
+  const j=idx+dir;
+  if(j<0||j>=zoneMEP.length)return;
+  [zoneMEP[idx],zoneMEP[j]]=[zoneMEP[j],zoneMEP[idx]];
+  renderTab();
+}
+
 // ══ ORDERING ══
+function setOrdersView(view){
+  currentOrdersView=view;
+  renderTab();
+}
+
 function renderOrdering(){
   const covers=getCov();
-  let html=`
-  <div class="ord-ai-bar">
-    <input class="ord-ai-input" id="ord-ai-input" placeholder="e.g. Order 10kg carrots from Mercado..." onkeydown="if(event.key==='Enter')handleOrderAI()">
-    <button class="ord-ai-btn" onclick="handleOrderAI()">↑ Order</button>
-  </div>
-  <div id="order-results" style="margin-bottom:12px"></div>
-  <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;background:#FFFFFF;border:1px solid rgba(0,0,0,0.07);border-radius:14px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.04);">
-    <span style="font-size:12px;color:#9B8E7E;font-weight:500;flex-shrink:0;">Covers today</span>
-    <input type="number" id="ord-cov" value="${covers}" min="1" max="300" style="flex:1;border:none;background:transparent;font-family:'DM Mono',monospace;font-size:18px;color:#4A7B6A;font-weight:600;text-align:center;outline:none;max-width:70px;">
-    <button onclick="genOrders()" style="padding:9px 14px;border-radius:9px;border:none;background:#4E6332;color:white;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;">Generate</button>
-  </div>
-  <div id="ai-order-result" style="margin-bottom:10px;"></div>
-  <div id="ord-results">
-    <div style="text-align:center;padding:30px;color:#C8C0B8;font-size:13px;">Tap Generate to build supplier orders, or ask the AI above.</div>
-  </div>
-  <input type="text" placeholder="Search products, suppliers — gambas, aceite, panadería…" value="" oninput="ordersSearchQuery=this.value;renderTab()" style="width:100%;padding:11px 14px;margin-bottom:12px;border:1px solid rgba(0,0,0,0.08);border-radius:12px;font-family:'Outfit',sans-serif;font-size:13px;background:#FFFFFF;box-shadow:0 1px 3px rgba(0,0,0,0.03);"><div class="sect-label" style="margin-top:4px;">Provider catalogue</div>
-  ${renderProviders()}`;
-  return html;
+  if(currentOrdersView==='catalogue'){
+    let html=`
+    <div class="orders-subtabs">
+      <button class="ost-pill active" data-orders-view="catalogue" onclick="setOrdersView('catalogue')">Catalogue</button>
+      <button class="ost-pill" data-orders-view="inventory" onclick="setOrdersView('inventory')">Inventory</button>
+      <button class="ost-pill" data-orders-view="receiving" onclick="setOrdersView('receiving')">Receiving</button>
+    </div>
+    <div class="ord-ai-bar">
+      <input class="ord-ai-input" id="ord-ai-input" placeholder="e.g. Order 10kg carrots from Mercado..." onkeydown="if(event.key==='Enter')handleOrderAI()">
+      <button class="ord-ai-btn" onclick="handleOrderAI()">↑ Order</button>
+    </div>
+    <div id="order-results" style="margin-bottom:12px"></div>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;background:#FFFFFF;border:1px solid rgba(0,0,0,0.07);border-radius:14px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,0.04);">
+      <span style="font-size:12px;color:#9B8E7E;font-weight:500;flex-shrink:0;">Covers today</span>
+      <input type="number" id="ord-cov" value="${covers}" min="1" max="300" style="flex:1;border:none;background:transparent;font-family:'DM Mono',monospace;font-size:18px;color:#4A7B6A;font-weight:600;text-align:center;outline:none;max-width:70px;">
+      <button onclick="genOrders()" style="padding:9px 14px;border-radius:9px;border:none;background:#4E6332;color:white;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;">Generate</button>
+    </div>
+    <div id="ai-order-result" style="margin-bottom:10px;"></div>
+    <div id="ord-results">
+      <div style="text-align:center;padding:30px;color:#C8C0B8;font-size:13px;">Tap Generate to build supplier orders, or ask the AI above.</div>
+    </div>
+    <input type="text" placeholder="Search products, suppliers — gambas, aceite, panadería…" value="" oninput="ordersSearchQuery=this.value;renderTab()" style="width:100%;padding:11px 14px;margin-bottom:12px;border:1px solid rgba(0,0,0,0.08);border-radius:12px;font-family:'Outfit',sans-serif;font-size:13px;background:#FFFFFF;box-shadow:0 1px 3px rgba(0,0,0,0.03);"><div class="sect-label" style="margin-top:4px;">Provider catalogue</div>
+    ${renderProviders()}`;
+    return html;
+  }else if(currentOrdersView==='inventory'){
+    return renderInventory();
+  }else if(currentOrdersView==='receiving'){
+    return renderReceiving();
+  }
+  return '';
 }
 
 function renderProviders(){
@@ -3038,6 +3317,42 @@ function genOrders(){
 function getSup(n){const lc=n.toLowerCase();if(lc.includes('trufa'))return 'Trufa Supplier';if(lc.includes('ostra')||lc.includes('marisco')||lc.includes('gambas')||lc.includes('langostino')||lc.includes('pulpo')||lc.includes('calamar'))return 'Fish & Seafood — Peixateria';if(lc.includes('pollo')||lc.includes('muslo')||lc.includes('pechuga')||lc.includes('alitas'))return 'Meat — Carnicería';if(lc.includes('flour')||lc.includes('harina')||lc.includes('caputo')||lc.includes('arroz')||lc.includes('pasta'))return 'Dry Goods — Makro';if(lc.includes('mozzarella')||lc.includes('burrata')||lc.includes('parmisan')||lc.includes('leche')||lc.includes('nata')||lc.includes('mantequilla'))return 'Dairy — Lácteos';if(lc.includes('tomate')||lc.includes('aubergine')||lc.includes('coliflor')||lc.includes('zanahoria')||lc.includes('daikon')||lc.includes('pepino')||lc.includes('limón')||lc.includes('piña')||lc.includes('mango'))return 'Fresh Produce — Mercado';return 'General — Makro';}
 function buildWA(sup,items,covers){const now=new Date();const date=`${now.getDate()}/${now.getMonth()+1}/${now.getFullYear()}`;return `*Food Studio Order — ${R===0?'Taller':'Bistro Mondo'}*\n${date} · ${covers} covers\n\n${items.map(i=>`• ${i.name}: *${i.qty} ${i.unit}*`).join('\n')}\n\nGracias`;}
 function copyText(text,sup){navigator.clipboard?.writeText(text).then(()=>showToast(`${sup} order copied!`)).catch(()=>{const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);showToast('Copied!');});}
+
+function renderInventory(){
+  let html=`
+  <div class="orders-subtabs">
+    <button class="ost-pill" data-orders-view="catalogue" onclick="setOrdersView('catalogue')">Catalogue</button>
+    <button class="ost-pill active" data-orders-view="inventory" onclick="setOrdersView('inventory')">Inventory</button>
+    <button class="ost-pill" data-orders-view="receiving" onclick="setOrdersView('receiving')">Receiving</button>
+  </div>
+  <div class="iv-header">
+    <h3 style="margin:0;font-size:18px;font-weight:600;color:var(--text-primary);">Inventory</h3>
+    <button class="cta" onclick="openAddInventoryItem()" style="padding:9px 14px;border-radius:9px;border:none;background:#4E6332;color:white;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;">+ Add item</button>
+  </div>
+  <div class="iv-empty">Inventory tracking starts here. Add items you have on hand to track stock levels and trigger reorder alerts.</div>
+  `;
+  return html;
+}
+
+function openAddInventoryItem(){
+  showToast('Inventory management coming in next sprint');
+}
+
+function renderReceiving(){
+  let html=`
+  <div class="orders-subtabs">
+    <button class="ost-pill" data-orders-view="catalogue" onclick="setOrdersView('catalogue')">Catalogue</button>
+    <button class="ost-pill" data-orders-view="inventory" onclick="setOrdersView('inventory')">Inventory</button>
+    <button class="ost-pill active" data-orders-view="receiving" onclick="setOrdersView('receiving')">Receiving</button>
+  </div>
+  <div style="margin-bottom:16px;">
+    <h3 style="margin:0 0 8px 0;font-size:18px;font-weight:600;color:var(--text-primary);">Receiving Log</h3>
+    <p style="margin:0;font-size:13px;color:var(--text-tertiary);">Track incoming orders and delivery notes.</p>
+  </div>
+  <div class="rv-empty">No incoming orders to receive. Orders will appear here when they are marked as sent.</div>
+  `;
+  return html;
+}
 
 // ══ RECIPES ══
 function renderRecipes(){
@@ -6763,6 +7078,23 @@ function showInlineToastError(msg) {
   </div>
 </div>
 
+<!-- Fence reason modal: shown when worker is outside GPS fence -->
+<div class="modal-overlay" id="m-fence-reason" onclick="if(event.target===this)closeModal('m-fence-reason')">
+  <div class="modal-sheet">
+    <div class="mh"></div>
+    <div class="mt">Outside venue fence</div>
+    <div class="ms-sub">You're <span id="fence-dist">—</span>m from <span id="fence-rest">venue</span>. Why are you clocking in here?</div>
+    <div class="reason-options">
+      <button class="reason-opt" onclick="submitFenceReason('outside_fence_testing')">Testing the system</button>
+      <button class="reason-opt" onclick="submitFenceReason('offsite_event')">Offsite event / catering</button>
+      <button class="reason-opt" onclick="submitFenceReason('working_remotely')">Working remotely (admin)</button>
+      <button class="reason-opt" onclick="submitFenceReason('travel_between_venues')">Travel between venues</button>
+      <button class="reason-opt" onclick="submitFenceReason('other')">Other (type below)</button>
+    </div>
+    <textarea class="mi" id="fence-reason-text" placeholder="Optional details" rows="2"></textarea>
+    <button class="mb sec" onclick="closeModal('m-fence-reason')">Cancel</button>
+  </div>
+</div>
 
 <script>
 let saCurrentEvent = null;
