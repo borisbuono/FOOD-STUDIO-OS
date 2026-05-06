@@ -3703,69 +3703,68 @@ function renderFeedbackStep(step) {
     bar.forEach(b => b.style.width = ((step+1)/3 * 100) + '%');
   }, 50);
 
-  switch (step) {
-    case 0: return \`
-      <div class="fb-question">
-        <h2 class="fb-q-title">How was tonight?</h2>
-        <p class="fb-q-sub">Tap a number — 1 means "would never come back", 5 means "I'll be back next week".</p>
-        <div class="fb-rating">
-          \${[1,2,3,4,5].map(n => \`
-            <button class="fb-star \${_fbData.rating===n?'selected':''}" onclick="setFbRating(\${n})">\${n}</button>
-          \`).join('')}
-        </div>
-        <div class="fb-rating-labels">
-          <span>Would not return</span>
-          <span>Would recommend</span>
-        </div>
-      </div>\`;
-    case 1: return \`
-      <div class="fb-question">
-        <h2 class="fb-q-title">What stood out tonight?</h2>
-        <p class="fb-q-sub">Pick all that apply. Be honest — we want to repeat what worked.</p>
-        <div class="fb-tags">
-          \${[
-            { id: 'food', icon: '◐', label: 'The food' },
-            { id: 'service', icon: '◑', label: 'The service' },
-            { id: 'wine', icon: '◒', label: 'The wines' },
-            { id: 'ambience', icon: '◓', label: 'The ambience' },
-            { id: 'value', icon: '◔', label: 'Value for money' },
-            { id: 'special', icon: '◕', label: 'A specific dish' },
-            { id: 'pace', icon: '◖', label: 'The pacing' },
-            { id: 'allergen', icon: '◗', label: 'Allergen care' }
-          ].map(t => \`
-            <button class="fb-tag \${(_fbData.tags||[]).includes(t.id)?'selected':''}" onclick="toggleFbTag('\${t.id}')">
-              <span class="fb-tag-icon">\${t.icon}</span>
-              <span>\${t.label}</span>
-            </button>
-          \`).join('')}
-        </div>
-        <div class="fb-actions">
-          <button class="cta-sec" onclick="fbBack()">Back</button>
-          <button class="cta primary" onclick="fbNext()">Continue →</button>
-        </div>
-      </div>\`;
-    case 2: return \`
-      <div class="fb-question">
-        <h2 class="fb-q-title">Anything specific to share?</h2>
-        <p class="fb-q-sub">A name to thank, a dish to praise, or something we should fix. Optional.</p>
-        <textarea id="fb-comment" class="fb-textarea" rows="5" placeholder="\${_fbData.rating >= 4 ? 'What made tonight memorable?' : 'What can we do better?'}"></textarea>
-        <input id="fb-contact" class="fb-input" type="text" placeholder="Your name + email (optional, only if you'd like a personal reply)">
-        <div class="fb-actions">
-          <button class="cta-sec" onclick="fbBack()">Back</button>
-          <button class="cta primary" onclick="submitFeedback()">Send to the chef →</button>
-        </div>
-      </div>\`;
-    case 99: return \`
-      <div class="fb-confirm">
-        <div class="fb-check">\${_fbData.rating >= 4 ? '✓' : '◉'}</div>
-        <h2 class="fb-q-title">Thank you\${_fbData.rating >= 4 ? '!' : '.'}</h2>
-        <p class="fb-confirm-msg">\${
-          _fbData.rating >= 4
-            ? 'Your feedback is in the chef\\'s inbox. We loved having you — please come back soon.'
-            : 'We\\'re sorry tonight didn\\'t meet your standard. Boris reads every comment personally and will reflect on what you shared.'
-        }</p>
-        <p class="fb-confirm-note">— \${_fbData.venue_slug.replace(/-/g, ' ')}</p>
-      </div>\`;
+  if (step === 0) {
+    const stars = [1,2,3,4,5].map(n =>
+      '<button class="fb-star ' + (_fbData.rating===n?'selected':'') + '" onclick="setFbRating(' + n + ')">' + n + '</button>'
+    ).join('');
+    return '<div class="fb-question">' +
+      '<h2 class="fb-q-title">How was tonight?</h2>' +
+      '<p class="fb-q-sub">Tap a number — 1 means "would never come back", 5 means "I\'ll be back next week".</p>' +
+      '<div class="fb-rating">' + stars + '</div>' +
+      '<div class="fb-rating-labels"><span>Would not return</span><span>Would recommend</span></div>' +
+      '</div>';
+  }
+  if (step === 1) {
+    const tags = [
+      { id: 'food', icon: '◐', label: 'The food' },
+      { id: 'service', icon: '◑', label: 'The service' },
+      { id: 'wine', icon: '◒', label: 'The wines' },
+      { id: 'ambience', icon: '◓', label: 'The ambience' },
+      { id: 'value', icon: '◔', label: 'Value for money' },
+      { id: 'special', icon: '◕', label: 'A specific dish' },
+      { id: 'pace', icon: '◖', label: 'The pacing' },
+      { id: 'allergen', icon: '◗', label: 'Allergen care' }
+    ];
+    const tagsHtml = tags.map(t =>
+      '<button class="fb-tag ' + ((_fbData.tags||[]).includes(t.id)?'selected':'') + '" onclick="toggleFbTag(\'' + t.id + '\')">' +
+      '<span class="fb-tag-icon">' + t.icon + '</span>' +
+      '<span>' + t.label + '</span>' +
+      '</button>'
+    ).join('');
+    return '<div class="fb-question">' +
+      '<h2 class="fb-q-title">What stood out tonight?</h2>' +
+      '<p class="fb-q-sub">Pick all that apply. Be honest — we want to repeat what worked.</p>' +
+      '<div class="fb-tags">' + tagsHtml + '</div>' +
+      '<div class="fb-actions">' +
+      '<button class="cta-sec" onclick="fbBack()">Back</button>' +
+      '<button class="cta primary" onclick="fbNext()">Continue →</button>' +
+      '</div></div>';
+  }
+  if (step === 2) {
+    const placeholder = _fbData.rating >= 4 ? 'What made tonight memorable?' : 'What can we do better?';
+    return '<div class="fb-question">' +
+      '<h2 class="fb-q-title">Anything specific to share?</h2>' +
+      '<p class="fb-q-sub">A name to thank, a dish to praise, or something we should fix. Optional.</p>' +
+      '<textarea id="fb-comment" class="fb-textarea" rows="5" placeholder="' + placeholder + '"></textarea>' +
+      '<input id="fb-contact" class="fb-input" type="text" placeholder="Your name + email (optional, only if you\'d like a personal reply)">' +
+      '<div class="fb-actions">' +
+      '<button class="cta-sec" onclick="fbBack()">Back</button>' +
+      '<button class="cta primary" onclick="submitFeedback()">Send to the chef →</button>' +
+      '</div></div>';
+  }
+  if (step === 99) {
+    const check = _fbData.rating >= 4 ? '✓' : '◉';
+    const punct = _fbData.rating >= 4 ? '!' : '.';
+    const msg = _fbData.rating >= 4
+      ? 'Your feedback is in the chef\'s inbox. We loved having you — please come back soon.'
+      : 'We\'re sorry tonight didn\'t meet your standard. Boris reads every comment personally and will reflect on what you shared.';
+    const venue = (_fbData.venue_slug || '').replace(/-/g, ' ');
+    return '<div class="fb-confirm">' +
+      '<div class="fb-check">' + check + '</div>' +
+      '<h2 class="fb-q-title">Thank you' + punct + '</h2>' +
+      '<p class="fb-confirm-msg">' + msg + '</p>' +
+      '<p class="fb-confirm-note">— ' + venue + '</p>' +
+      '</div>';
   }
   return '';
 }
@@ -3806,7 +3805,7 @@ async function submitFeedback() {
 
   let restId = null;
   try {
-    const r = await fetch(\`\${supaUrl}/rest/v1/restaurants?slug=eq.\${encodeURIComponent(_fbData.venue_slug)}&select=id,operator_entity_id&limit=1\`, {
+    const r = await fetch(supaUrl + '/rest/v1/restaurants?slug=eq.' + encodeURIComponent(_fbData.venue_slug) + '&select=id,operator_entity_id&limit=1', {
       headers: { apikey: supaKey, Authorization: 'Bearer ' + supaKey }
     });
     const data = await r.json();
@@ -3815,11 +3814,11 @@ async function submitFeedback() {
   } catch(e) {}
 
   const ratingEmoji = ['', '😞', '😐', '🙂', '😊', '🤩'][_fbData.rating || 0] || '';
-  const subject = \`Guest feedback · \${_fbData.rating || '?'}/5 \${ratingEmoji}\${_fbData.tags?.length ? ' · ' + _fbData.tags.join(', ') : ''}\`;
-  const body = \`RATING: \${_fbData.rating || '?'} / 5\\n\\nWHAT STOOD OUT: \${(_fbData.tags||[]).join(', ') || '(none specified)'}\\n\\nCOMMENT: \${_fbData.comment || '(none)'}\\n\\nCONTACT: \${_fbData.contact || '(anonymous)'}\\n\\nSubmitted: \${new Date().toISOString()}\`;
+  const subject = 'Guest feedback · ' + (_fbData.rating || '?') + '/5 ' + ratingEmoji + (_fbData.tags && _fbData.tags.length ? ' · ' + _fbData.tags.join(', ') : '');
+  const body = 'RATING: ' + (_fbData.rating || '?') + ' / 5\n\nWHAT STOOD OUT: ' + ((_fbData.tags||[]).join(', ') || '(none specified)') + '\n\nCOMMENT: ' + (_fbData.comment || '(none)') + '\n\nCONTACT: ' + (_fbData.contact || '(anonymous)') + '\n\nSubmitted: ' + new Date().toISOString();
 
   try {
-    await fetch(\`\${supaUrl}/rest/v1/inbox_items\`, {
+    await fetch(supaUrl + '/rest/v1/inbox_items', {
       method: 'POST',
       headers: { apikey: supaKey, Authorization: 'Bearer ' + supaKey, 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -4461,7 +4460,7 @@ _onboardStep=0;_onboardData={operator_entity_id:USER._operatorEntityId||'d1ee19b
 const html=`<div class="modal-overlay" id="m-onboard" onclick="if(event.target===this)closeModal('m-onboard')"><div class="modal-sheet onboard-sheet"><div class="mh"></div><div class="ob-header"><div class="ob-eyebrow">Add a new venue</div><div class="ob-title" id="ob-title">Let's get your new venue set up.</div><div class="ob-progress"><div class="ob-progress-bar" id="ob-progress" style="width:16%"></div></div></div><div class="ob-body" id="ob-body">${renderOnboardStep(0)}</div></div></div>`;
 let el=document.getElementById('m-onboard');if(el)el.outerHTML=html;else document.body.insertAdjacentHTML('beforeend',html);setTimeout(()=>document.getElementById('m-onboard').classList.add('open'),10);}
 function renderOnboardStep(step){const total=6;setTimeout(()=>{const bar=document.getElementById('ob-progress');if(bar)bar.style.width=Math.round(((step+1)/total)*100)+'%';const t=document.getElementById('ob-title');if(t)t.textContent=['Let\'s get your new venue set up.','About the venue.','Where exactly is it?','Brand identity.','Invite your first team member.','Ready to launch?'][step]||'';},50);
-switch(step){case 0:return`<div class="ob-step"><p class="ob-explainer">This wizard sets up a new venue in your Food Studio operating system. It takes about 2 minutes. You can edit anything later.</p><ul class="ob-checklist"><li>Venue name + city</li><li>GPS coordinates (for clock-in fence)</li><li>Brand identity (primary color, tagline)</li><li>First team invite</li></ul><button class="cta" onclick="onboardNext()">Get started →</button></div>`;case 1:return`<div class="ob-step"><label class="ob-field">Venue name<input type="text" id="ob-name" class="mi" value="${escapeHtml(_onboardData.name||'')}" placeholder="e.g. Bistro Capri"></label><label class="ob-field">URL slug<input type="text" id="ob-slug" class="mi" value="${escapeHtml(_onboardData.slug||'')}" placeholder="bistro-capri"></label><label class="ob-field">City<input type="text" id="ob-city" class="mi" value="${escapeHtml(_onboardData.city||'')}" placeholder="Capri, Italy"></label><label class="ob-field">Address<input type="text" id="ob-address" class="mi" value="${escapeHtml(_onboardData.address||'')}" placeholder="Via Vittorio Emanuele 12"></label><div class="ob-actions"><button class="cta-sec" onclick="onboardBack()">Back</button><button class="cta" onclick="onboardCaptureAndNext(['ob-name|name','ob-slug|slug','ob-city|city','ob-address|address'])">Continue →</button></div></div>`;case 2:return`<div class="ob-step"><p class="ob-explainer">GPS coordinates anchor the clock-in fence so your team can punch in only when they're physically at the venue.</p><label class="ob-field">Latitude<input type="number" step="0.000001" id="ob-lat" class="mi" value="${_onboardData.lat||''}" placeholder="38.987654"></label><label class="ob-field">Longitude<input type="number" step="0.000001" id="ob-lng" class="mi" value="${_onboardData.lng||''}" placeholder="1.234567"></label><label class="ob-field">Fence radius (meters)<input type="number" id="ob-radius" class="mi" value="${_onboardData.fence_radius_m||100}" placeholder="100"></label><div class="ob-hint">Tip: open Maps, drop a pin on your venue, copy the lat/lng from the URL. Or use 100m as a sensible default.</div><div class="ob-actions"><button class="cta-sec" onclick="onboardBack()">Back</button><button class="cta" onclick="onboardCaptureAndNext(['ob-lat|lat','ob-lng|lng','ob-radius|fence_radius_m'])">Continue →</button></div></div>`;case 3:return`<div class="ob-step"><label class="ob-field">Primary brand color<div class="ob-color-row"><input type="color" id="ob-color" class="mi-color" value="${_onboardData.primary_color||'#B86A42'}"><input type="text" id="ob-color-text" class="mi" value="${_onboardData.primary_color||'#B86A42'}" oninput="document.getElementById('ob-color').value=this.value"></div></label><label class="ob-field">Tagline (optional)<input type="text" id="ob-tagline" class="mi" value="${escapeHtml(_onboardData.tagline||'')}" placeholder="e.g. Mediterranean cuisine, daily catch"></label><label class="ob-field">Cuisine description (optional)<textarea id="ob-cuisine" class="mi" rows="3" placeholder="2-3 sentences your team can use when describing the venue to guests">${escapeHtml(_onboardData.cuisine_desc||'')}</textarea></label><div class="ob-actions"><button class="cta-sec" onclick="onboardBack()">Back</button><button class="cta" onclick="onboardCaptureAndNext(['ob-color|primary_color','ob-tagline|tagline','ob-cuisine|cuisine_desc'])">Continue →</button></div></div>`;case 4:return`<div class="ob-step"><p class="ob-explainer">Invite your first manager. They'll get an email with a sign-in link and full access to manage the venue.</p><label class="ob-field">Manager name<input type="text" id="ob-mgr-name" class="mi" value="${escapeHtml(_onboardData.mgr_name||'')}" placeholder="Their full name"></label><label class="ob-field">Manager email<input type="email" id="ob-mgr-email" class="mi" value="${escapeHtml(_onboardData.mgr_email||'')}" placeholder="manager@yourvenue.com"></label><div class="ob-hint">You can invite more team members from the Team tab once the venue is live.</div><div class="ob-actions"><button class="cta-sec" onclick="onboardBack()">Back</button><button class="cta-sec" onclick="onboardSkipMgr()">Skip for now</button><button class="cta" onclick="onboardCaptureAndNext(['ob-mgr-name|mgr_name','ob-mgr-email|mgr_email'])">Continue →</button></div></div>`;case 5:return`<div class="ob-step"><p class="ob-explainer">Quick review before we create everything.</p><div class="ob-summary"><div class="ob-sum-row"><span>Venue</span><strong>${escapeHtml(_onboardData.name||'?')}</strong></div><div class="ob-sum-row"><span>City</span><strong>${escapeHtml(_onboardData.city||'?')}</strong></div><div class="ob-sum-row"><span>Address</span><strong>${escapeHtml(_onboardData.address||'—')}</strong></div><div class="ob-sum-row"><span>GPS</span><strong>${_onboardData.lat||'?'}, ${_onboardData.lng||'?'} · ${_onboardData.fence_radius_m||100}m fence</strong></div><div class="ob-sum-row"><span>Brand</span><strong style="color:${_onboardData.primary_color||'#B86A42'}">${_onboardData.primary_color||'?'}</strong></div><div class="ob-sum-row"><span>Tagline</span><strong>${escapeHtml(_onboardData.tagline||'—')}</strong></div><div class="ob-sum-row"><span>First manager</span><strong>${_onboardData.mgr_name?escapeHtml(_onboardData.mgr_name)+' · '+escapeHtml(_onboardData.mgr_email):'Skipped'}</strong></div></div><div class="ob-actions"><button class="cta-sec" onclick="onboardBack()">Back</button><button class="cta" onclick="onboardCommit()">Create venue</button></div></div>`;case 99:return`<div class="ob-step ob-success"><div class="ob-check">✓</div><h2>${escapeHtml(_onboardData.name||'Venue')} is live!</h2><p>Your new venue is set up and ready. Switch into it from the topbar restaurant selector to start configuring its menu, cleaning plans, and team.</p><button class="cta" onclick="closeModal('m-onboard');location.reload()">Open it →</button></div>`;}}return'';}
+switch(step){case 0:return`<div class="ob-step"><p class="ob-explainer">This wizard sets up a new venue in your Food Studio operating system. It takes about 2 minutes. You can edit anything later.</p><ul class="ob-checklist"><li>Venue name + city</li><li>GPS coordinates (for clock-in fence)</li><li>Brand identity (primary color, tagline)</li><li>First team invite</li></ul><button class="cta" onclick="onboardNext()">Get started →</button></div>`;case 1:return`<div class="ob-step"><label class="ob-field">Venue name<input type="text" id="ob-name" class="mi" value="${escapeHtml(_onboardData.name||'')}" placeholder="e.g. Bistro Capri"></label><label class="ob-field">URL slug<input type="text" id="ob-slug" class="mi" value="${escapeHtml(_onboardData.slug||'')}" placeholder="bistro-capri"></label><label class="ob-field">City<input type="text" id="ob-city" class="mi" value="${escapeHtml(_onboardData.city||'')}" placeholder="Capri, Italy"></label><label class="ob-field">Address<input type="text" id="ob-address" class="mi" value="${escapeHtml(_onboardData.address||'')}" placeholder="Via Vittorio Emanuele 12"></label><div class="ob-actions"><button class="cta-sec" onclick="onboardBack()">Back</button><button class="cta" onclick="onboardCaptureAndNext(['ob-name|name','ob-slug|slug','ob-city|city','ob-address|address'])">Continue →</button></div></div>`;case 2:return`<div class="ob-step"><p class="ob-explainer">GPS coordinates anchor the clock-in fence so your team can punch in only when they're physically at the venue.</p><label class="ob-field">Latitude<input type="number" step="0.000001" id="ob-lat" class="mi" value="${_onboardData.lat||''}" placeholder="38.987654"></label><label class="ob-field">Longitude<input type="number" step="0.000001" id="ob-lng" class="mi" value="${_onboardData.lng||''}" placeholder="1.234567"></label><label class="ob-field">Fence radius (meters)<input type="number" id="ob-radius" class="mi" value="${_onboardData.fence_radius_m||100}" placeholder="100"></label><div class="ob-hint">Tip: open Maps, drop a pin on your venue, copy the lat/lng from the URL. Or use 100m as a sensible default.</div><div class="ob-actions"><button class="cta-sec" onclick="onboardBack()">Back</button><button class="cta" onclick="onboardCaptureAndNext(['ob-lat|lat','ob-lng|lng','ob-radius|fence_radius_m'])">Continue →</button></div></div>`;case 3:return`<div class="ob-step"><label class="ob-field">Primary brand color<div class="ob-color-row"><input type="color" id="ob-color" class="mi-color" value="${_onboardData.primary_color||'#B86A42'}"><input type="text" id="ob-color-text" class="mi" value="${_onboardData.primary_color||'#B86A42'}" oninput="document.getElementById('ob-color').value=this.value"></div></label><label class="ob-field">Tagline (optional)<input type="text" id="ob-tagline" class="mi" value="${escapeHtml(_onboardData.tagline||'')}" placeholder="e.g. Mediterranean cuisine, daily catch"></label><label class="ob-field">Cuisine description (optional)<textarea id="ob-cuisine" class="mi" rows="3" placeholder="2-3 sentences your team can use when describing the venue to guests">${escapeHtml(_onboardData.cuisine_desc||'')}</textarea></label><div class="ob-actions"><button class="cta-sec" onclick="onboardBack()">Back</button><button class="cta" onclick="onboardCaptureAndNext(['ob-color|primary_color','ob-tagline|tagline','ob-cuisine|cuisine_desc'])">Continue →</button></div></div>`;case 4:return`<div class="ob-step"><p class="ob-explainer">Invite your first manager. They'll get an email with a sign-in link and full access to manage the venue.</p><label class="ob-field">Manager name<input type="text" id="ob-mgr-name" class="mi" value="${escapeHtml(_onboardData.mgr_name||'')}" placeholder="Their full name"></label><label class="ob-field">Manager email<input type="email" id="ob-mgr-email" class="mi" value="${escapeHtml(_onboardData.mgr_email||'')}" placeholder="manager@yourvenue.com"></label><div class="ob-hint">You can invite more team members from the Team tab once the venue is live.</div><div class="ob-actions"><button class="cta-sec" onclick="onboardBack()">Back</button><button class="cta-sec" onclick="onboardSkipMgr()">Skip for now</button><button class="cta" onclick="onboardCaptureAndNext(['ob-mgr-name|mgr_name','ob-mgr-email|mgr_email'])">Continue →</button></div></div>`;case 5:return`<div class="ob-step"><p class="ob-explainer">Quick review before we create everything.</p><div class="ob-summary"><div class="ob-sum-row"><span>Venue</span><strong>${escapeHtml(_onboardData.name||'?')}</strong></div><div class="ob-sum-row"><span>City</span><strong>${escapeHtml(_onboardData.city||'?')}</strong></div><div class="ob-sum-row"><span>Address</span><strong>${escapeHtml(_onboardData.address||'—')}</strong></div><div class="ob-sum-row"><span>GPS</span><strong>${_onboardData.lat||'?'}, ${_onboardData.lng||'?'} · ${_onboardData.fence_radius_m||100}m fence</strong></div><div class="ob-sum-row"><span>Brand</span><strong style="color:${_onboardData.primary_color||'#B86A42'}">${_onboardData.primary_color||'?'}</strong></div><div class="ob-sum-row"><span>Tagline</span><strong>${escapeHtml(_onboardData.tagline||'—')}</strong></div><div class="ob-sum-row"><span>First manager</span><strong>${_onboardData.mgr_name?escapeHtml(_onboardData.mgr_name)+' · '+escapeHtml(_onboardData.mgr_email):'Skipped'}</strong></div></div><div class="ob-actions"><button class="cta-sec" onclick="onboardBack()">Back</button><button class="cta" onclick="onboardCommit()">Create venue</button></div></div>`;case 99:return`<div class="ob-step ob-success"><div class="ob-check">✓</div><h2>${escapeHtml(_onboardData.name||'Venue')} is live!</h2><p>Your new venue is set up and ready. Switch into it from the topbar restaurant selector to start configuring its menu, cleaning plans, and team.</p><button class="cta" onclick="closeModal('m-onboard');location.reload()">Open it →</button></div>`;}return'';}
 function onboardNext(){_onboardStep++;document.getElementById('ob-body').innerHTML=renderOnboardStep(_onboardStep);}
 function onboardBack(){if(_onboardStep>0){_onboardStep--;document.getElementById('ob-body').innerHTML=renderOnboardStep(_onboardStep);}}
 function onboardSkipMgr(){_onboardData.mgr_name='';_onboardData.mgr_email='';onboardNext();}
@@ -6656,15 +6655,15 @@ function renderReceiving(){
       <input id="rv-invoice-ref" class="mi" type="text" placeholder="Delivery note / invoice ref">
       <div class="rv-lines">
         <div class="rv-lines-label">Items expected vs received</div>
-        ${_newDelivery.expected.map((line, i) => \`
+        ${_newDelivery.expected.map((line, i) => `
           <div class="rv-line">
-            <input class="mi rv-item-name" placeholder="Item (e.g. Trufa fresca)" value="\${escapeHtml(line.name||'')}" oninput="updateDeliveryLine(\${i}, 'name', this.value)">
-            <input class="mi rv-qty" type="number" step="0.01" placeholder="Expected" value="\${line.expected_qty||''}" oninput="updateDeliveryLine(\${i}, 'expected_qty', this.value)">
-            <input class="mi rv-qty" type="number" step="0.01" placeholder="Received" value="\${line.received_qty||''}" oninput="updateDeliveryLine(\${i}, 'received_qty', this.value)">
-            <input class="mi rv-unit" placeholder="g/kg/L" value="\${escapeHtml(line.unit||'')}" oninput="updateDeliveryLine(\${i}, 'unit', this.value)">
-            <button class="rv-line-rm" onclick="removeDeliveryLine(\${i})">×</button>
+            <input class="mi rv-item-name" placeholder="Item (e.g. Trufa fresca)" value="${escapeHtml(line.name||'')}" oninput="updateDeliveryLine(${i}, 'name', this.value)">
+            <input class="mi rv-qty" type="number" step="0.01" placeholder="Expected" value="${line.expected_qty||''}" oninput="updateDeliveryLine(${i}, 'expected_qty', this.value)">
+            <input class="mi rv-qty" type="number" step="0.01" placeholder="Received" value="${line.received_qty||''}" oninput="updateDeliveryLine(${i}, 'received_qty', this.value)">
+            <input class="mi rv-unit" placeholder="g/kg/L" value="${escapeHtml(line.unit||'')}" oninput="updateDeliveryLine(${i}, 'unit', this.value)">
+            <button class="rv-line-rm" onclick="removeDeliveryLine(${i})">×</button>
           </div>
-        \`).join('')}
+        `).join('')}
         <button class="cta-sec" onclick="addDeliveryLine()">+ Add line</button>
       </div>
       <div class="rv-actions">
@@ -9751,7 +9750,7 @@ async function generateEODReport(){
       <h2>End-of-day note</h2>
       <div class="eod-narrative">
         Tomorrow morning, the OS will deliver a Gemini-generated digest at 06:00 UTC summarising overnight highlights, today's wins, risks for the week, and three specific actions to prioritise.
-        ${totalCovers > 0 || events.length > 0 ? '' : ' (Today\\'s data is light — that\\'s expected on slow days or before the OS has full POS sync.)'}
+        ${totalCovers > 0 || events.length > 0 ? '' : ' (Today\'s data is light — that\'s expected on slow days or before the OS has full POS sync.)'}
       </div>
     </div>
 
@@ -11590,6 +11589,7 @@ function showInlineToastError(msg) {
   t.style.background = '#C0392B';
   t.classList.add('show');
   setTimeout(function(){ t.classList.remove('show'); t.style.background = ''; }, 2800);
+}
 }
 </script>
 
