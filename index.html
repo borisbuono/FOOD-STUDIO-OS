@@ -879,6 +879,99 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
 }
 .qchip:active { background: var(--glass); color: var(--text-primary); }
 
+/* ─── CMD+K COMMAND PALETTE ─── */
+.cmdk-overlay {
+  position: fixed; inset: 0; z-index: 9999;
+  background: rgba(0,0,0,0.45); backdrop-filter: blur(6px);
+  display: none; align-items: flex-start; justify-content: center;
+  padding: 12vh 16px 0;
+  animation: cmdk-fade 0.12s ease-out;
+}
+.cmdk-overlay.open { display: flex; }
+@keyframes cmdk-fade { from { opacity: 0 } to { opacity: 1 } }
+.cmdk-modal {
+  width: 100%; max-width: 640px;
+  background: var(--bg, #FFFFFF); color: var(--text-primary, #1F2916);
+  border-radius: 14px;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.4);
+  border: 1px solid var(--border, rgba(0,0,0,0.1));
+  overflow: hidden;
+  font-family: var(--font-sans, Outfit, system-ui, sans-serif);
+}
+.cmdk-input-wrap {
+  display: flex; align-items: center; gap: 12px;
+  padding: 16px 18px; border-bottom: 1px solid var(--border, rgba(0,0,0,0.06));
+}
+.cmdk-icon { color: var(--ember, #4E6332); font-size: 18px; opacity: 0.8; }
+.cmdk-input {
+  flex: 1; border: 0; outline: 0; background: transparent;
+  font-size: 17px; font-family: inherit; color: inherit;
+}
+.cmdk-input::placeholder { opacity: 0.45; }
+.cmdk-hint {
+  font-size: 11px; opacity: 0.5; padding: 2px 8px;
+  border-radius: 4px; background: var(--glass);
+  text-transform: uppercase; letter-spacing: 0.05em;
+}
+.cmdk-results {
+  max-height: 60vh; overflow-y: auto;
+  padding: 6px 0;
+}
+.cmdk-section { padding: 6px 0; }
+.cmdk-section-label {
+  padding: 6px 18px; font-size: 11px; text-transform: uppercase;
+  letter-spacing: 0.08em; opacity: 0.5;
+}
+.cmdk-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 18px; cursor: pointer;
+  transition: background 0.08s;
+}
+.cmdk-row:hover, .cmdk-row.active {
+  background: var(--glass);
+}
+.cmdk-row.active { box-shadow: inset 3px 0 0 var(--ember, #4E6332); }
+.cmdk-row-icon {
+  width: 28px; height: 28px; flex-shrink: 0;
+  border-radius: 6px; display: flex; align-items: center; justify-content: center;
+  background: var(--glass);
+  font-size: 13px; font-weight: 600; color: var(--ember, #4E6332);
+}
+.cmdk-row-body { flex: 1; min-width: 0; }
+.cmdk-row-title { font-size: 14px; font-weight: 500; line-height: 1.2; }
+.cmdk-row-sub { font-size: 12px; opacity: 0.6; margin-top: 2px; }
+.cmdk-row-tag {
+  font-size: 10px; opacity: 0.55;
+  padding: 2px 7px; border-radius: 8px;
+  background: var(--glass);
+  text-transform: uppercase; letter-spacing: 0.05em;
+}
+.cmdk-empty {
+  padding: 28px 18px; text-align: center; opacity: 0.55; font-style: italic;
+}
+.cmdk-foot {
+  padding: 8px 18px;
+  border-top: 1px solid var(--border, rgba(0,0,0,0.06));
+  font-size: 11px; opacity: 0.55;
+  display: flex; justify-content: space-between;
+}
+.cmdk-foot kbd {
+  display: inline-block; padding: 1px 5px; border-radius: 3px;
+  background: var(--glass);
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 10px; margin: 0 2px;
+}
+.cmdk-trigger {
+  display: inline-flex; gap: 4px; align-items: center;
+  padding: 4px 10px; border-radius: 8px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass);
+  color: var(--text-secondary, #5C4E3C);
+  font-size: 12px; font-family: var(--font-mono, ui-monospace, monospace);
+  cursor: pointer; opacity: 0.75;
+}
+.cmdk-trigger:hover { opacity: 1; border-color: var(--ember, #4E6332); }
+
 /* ─── NAV TABS ─── */
 .nav-tabs {
   display: flex; overflow-x: auto; scrollbar-width: none;
@@ -2142,6 +2235,9 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
       <img src="assets/food_studio_horizontal_600.png" alt="Food Studio" class="tb-logo" height="32">
     </div>
     <div class="tb-right">
+      <button class="cmdk-trigger" onclick="openCmdK()" title="Search anything (⌘K)">
+        <span>⌘</span><span>K</span>
+      </button>
       <div class="tb-context" onclick="openCtxModal()" id="tb-ctx">
         <div class="tb-av" id="tb-av">?</div>
         <div>
@@ -7027,6 +7123,21 @@ function showInlineToastError(msg) {
     <div style="display:flex;gap:8px;">
       <button id="draft-save-btn" onclick="saveDraft()" style="flex:2;padding:16px;border-radius:14px;border:none;background:#4E6332;color:white;font-family:'Outfit',sans-serif;font-size:15px;font-weight:600;cursor:pointer;box-shadow:0 4px 16px rgba(78,99,50,0.3);">Save to catalogue</button>
       <button onclick="closeDraft()" style="flex:1;padding:16px;border-radius:14px;border:1px solid rgba(0,0,0,0.1);background:transparent;color:#9B8E7E;font-family:'Outfit',sans-serif;font-size:14px;cursor:pointer;">Discard</button>
+
+<!-- CMD+K COMMAND PALETTE MODAL -->
+<div id="cmdk-overlay" class="cmdk-overlay" onclick="if(event.target===this)closeCmdK()">
+  <div class="cmdk-modal" role="dialog" aria-label="Command palette">
+    <div class="cmdk-input-wrap">
+      <span class="cmdk-icon">⌘</span>
+      <input id="cmdk-input" class="cmdk-input" type="text" placeholder="Search recipes, dishes, suppliers, events, inbox… or type an action" autocomplete="off">
+      <span class="cmdk-hint">esc</span>
+    </div>
+    <div id="cmdk-results" class="cmdk-results"></div>
+    <div class="cmdk-foot">
+      <span><kbd>↑</kbd><kbd>↓</kbd> to move · <kbd>↵</kbd> to open · <kbd>esc</kbd> to close</span>
+    </div>
+  </div>
+</div>
     </div>
   </div>
 </div>
@@ -7288,6 +7399,217 @@ function saEditAndRedraft() {
 
 initTheme();
 saLoadTemplates();
+
+// ==== Cmd+K command palette ====
+let cmdkOpen = false;
+let cmdkSelectedIdx = 0;
+let cmdkLastResults = [];
+
+function openCmdK() {
+  cmdkOpen = true;
+  cmdkSelectedIdx = 0;
+  document.getElementById('cmdk-overlay').classList.add('open');
+  const input = document.getElementById('cmdk-input');
+  input.value = '';
+  input.focus();
+  renderCmdKResults('');
+}
+function closeCmdK() {
+  cmdkOpen = false;
+  document.getElementById('cmdk-overlay').classList.remove('open');
+}
+
+function cmdkSearch(query) {
+  const q = (query || '').toLowerCase().trim();
+  const results = [];
+
+  // Quick actions — always visible (filtered by query)
+  const actions = [
+    { type:'action', icon:'✦', title:'Draft a sales proposal', sub:'Sales Assistant', fn:()=>switchTab('events',null), keywords:'proposal sales event draft' },
+    { type:'action', icon:'☼', title:'Open today\'s view', sub:'Dashboard', fn:()=>switchTab('today',null), keywords:'today dashboard home' },
+    { type:'action', icon:'☑', title:'Sign off cleaning', sub:'Cleaning · HACCP', fn:()=>switchTab('cleaning',null), keywords:'cleaning haccp signoff libro azul' },
+    { type:'action', icon:'∎', title:'Start Cook Mode', sub:'Recipes · workflow', fn:()=>switchTab('cookmode',null), keywords:'cook mode recipe workflow' },
+    { type:'action', icon:'☰', title:'Open Inbox', sub:'Messages · agents', fn:()=>switchTab('inbox',null), keywords:'inbox messages' },
+    { type:'action', icon:'⌚', title:'Clock in / out', sub:'Time tracking', fn:()=>{ if (typeof clockToggle === 'function') clockToggle(); }, keywords:'clock in out time' },
+    { type:'action', icon:'☾', title:'Toggle dark mode', sub:'Theme', fn:()=>{ const cur=document.documentElement.getAttribute('data-theme'); applyTheme(cur==='dark'?'light':'dark'); }, keywords:'dark light theme mode' },
+    { type:'action', icon:'⌖', title:'Open Menu Library', sub:'All Canva designs', fn:()=>{ menuViewMode='library'; switchTab('menu',null); }, keywords:'menu library canva designs' },
+  ];
+  for (const a of actions) {
+    if (!q || a.title.toLowerCase().includes(q) || a.keywords.includes(q)) results.push(a);
+  }
+
+  // Recipes
+  if (typeof RECIPES !== 'undefined' && Array.isArray(RECIPES)) {
+    for (const r of RECIPES) {
+      const name = (r.name || '').toLowerCase();
+      if (q && !name.includes(q) && !(r.section||'').toLowerCase().includes(q)) continue;
+      results.push({
+        type:'recipe', icon: (r.name||'?').slice(0,2).toUpperCase(),
+        title: r.name, sub: `Recipe · ${r.section||''}`,
+        fn: () => { if (typeof showRecipeDetail==='function') showRecipeDetail(r.id); else switchTab('recipes',null); },
+        tag:'Recipe'
+      });
+      if (results.length > 50) break;
+    }
+  }
+
+  // Menu items (incl. wines)
+  if (typeof MENU !== 'undefined' && MENU[R]) {
+    for (const m of (MENU[R] || [])) {
+      const name = (m.name || '').toLowerCase();
+      if (q && !name.includes(q) && !(m.section||'').toLowerCase().includes(q)) continue;
+      results.push({
+        type: m.section==='wine' ? 'wine' : 'menuitem',
+        icon: m.section==='wine' ? '⊕' : '◆',
+        title: m.name,
+        sub: `${m.section==='wine'?'Wine':'Menu'} · €${m.price||'-'}`,
+        fn: () => {
+          if (m.section==='wine' && typeof openWineDetail==='function') openWineDetail(m.id);
+          else switchTab('menu',null);
+        },
+        tag: m.section==='wine'?'Wine':'Menu'
+      });
+      if (results.length > 80) break;
+    }
+  }
+
+  // Sales events
+  if (typeof SALES_EVENTS !== 'undefined' && Array.isArray(SALES_EVENTS)) {
+    for (const ev of SALES_EVENTS) {
+      const t = (ev.title || '').toLowerCase();
+      if (q && !t.includes(q) && !(ev.event_type||'').toLowerCase().includes(q)) continue;
+      results.push({
+        type:'event', icon:'☆',
+        title: ev.title, sub: `Event · ${ev.event_date||''} · ${ev.guests_count||0} pax · ${ev.status}`,
+        fn: () => switchTab('events', null),
+        tag:'Event'
+      });
+    }
+  }
+
+  // Suppliers
+  if (typeof PROVIDERS !== 'undefined' && Array.isArray(PROVIDERS)) {
+    for (const p of PROVIDERS) {
+      const n = (p.name || '').toLowerCase();
+      if (q && !n.includes(q) && !(p.category||'').toLowerCase().includes(q)) continue;
+      results.push({
+        type:'supplier', icon: (p.name||'?').slice(0,2).toUpperCase(),
+        title: p.name, sub: `Supplier · ${p.category||''}`,
+        fn: () => switchTab('ordering', null),
+        tag:'Supplier'
+      });
+    }
+  }
+
+  // Inbox items (if loaded)
+  if (typeof INBOX_ITEMS !== 'undefined' && Array.isArray(INBOX_ITEMS)) {
+    for (const i of INBOX_ITEMS) {
+      const s = (i.subject || '').toLowerCase();
+      if (q && !s.includes(q) && !(i.sender_name||'').toLowerCase().includes(q)) continue;
+      results.push({
+        type:'inbox', icon:'☰',
+        title: i.subject || '(no subject)', sub: `Inbox · ${i.sender_name||i.sender||'?'} · ${i.priority||''}`,
+        fn: () => switchTab('inbox', null),
+        tag:'Inbox'
+      });
+      if (results.length > 120) break;
+    }
+  }
+
+  return results.slice(0, 50);
+}
+
+function renderCmdKResults(query) {
+  const results = cmdkSearch(query);
+  cmdkLastResults = results;
+  cmdkSelectedIdx = 0;
+  const root = document.getElementById('cmdk-results');
+  if (!results.length) {
+    root.innerHTML = `<div class="cmdk-empty">No results. Try a recipe name, supplier, event, or "draft proposal".</div>`;
+    return;
+  }
+  // Group by type for nicer rendering
+  const groups = {};
+  for (const r of results) (groups[r.type] = groups[r.type] || []).push(r);
+  const order = ['action','recipe','menuitem','wine','event','supplier','inbox'];
+  const labels = {action:'Quick actions', recipe:'Recipes', menuitem:'Menu', wine:'Wines', event:'Events', supplier:'Suppliers', inbox:'Inbox'};
+  let html = '';
+  let globalIdx = 0;
+  for (const t of order) {
+    if (!groups[t]) continue;
+    html += `<div class="cmdk-section"><div class="cmdk-section-label">${labels[t]||t}</div>`;
+    for (const r of groups[t]) {
+      html += `<div class="cmdk-row" data-idx="${globalIdx}" onclick="runCmdKResult(${globalIdx})">
+        <div class="cmdk-row-icon">${r.icon||''}</div>
+        <div class="cmdk-row-body">
+          <div class="cmdk-row-title">${escapeHtml(r.title)}</div>
+          <div class="cmdk-row-sub">${escapeHtml(r.sub||'')}</div>
+        </div>
+        ${r.tag ? `<div class="cmdk-row-tag">${r.tag}</div>` : ''}
+      </div>`;
+      globalIdx++;
+    }
+    html += `</div>`;
+  }
+  root.innerHTML = html;
+  // Reorder cmdkLastResults to match render order so keyboard nav works
+  const flat = [];
+  for (const t of order) if (groups[t]) for (const r of groups[t]) flat.push(r);
+  cmdkLastResults = flat;
+  highlightCmdKRow();
+}
+
+function runCmdKResult(idx) {
+  const r = cmdkLastResults[idx];
+  if (!r) return;
+  closeCmdK();
+  setTimeout(() => { try { r.fn(); } catch(e) { console.warn('cmdk action:', e); } }, 50);
+}
+
+function highlightCmdKRow() {
+  const rows = document.querySelectorAll('.cmdk-row');
+  rows.forEach((el, i) => {
+    if (i === cmdkSelectedIdx) {
+      el.classList.add('active');
+      el.scrollIntoView({ block: 'nearest' });
+    } else {
+      el.classList.remove('active');
+    }
+  });
+}
+
+function escapeHtml(s) { return String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+// Wire keyboard
+document.addEventListener('keydown', (e) => {
+  // Open
+  if ((e.metaKey || e.ctrlKey) && (e.key === 'k' || e.key === 'K')) {
+    e.preventDefault();
+    if (cmdkOpen) closeCmdK(); else openCmdK();
+    return;
+  }
+  if (!cmdkOpen) return;
+  // Esc
+  if (e.key === 'Escape') { e.preventDefault(); closeCmdK(); return; }
+  // Arrows
+  if (e.key === 'ArrowDown') { e.preventDefault(); cmdkSelectedIdx = Math.min(cmdkLastResults.length-1, cmdkSelectedIdx+1); highlightCmdKRow(); return; }
+  if (e.key === 'ArrowUp')   { e.preventDefault(); cmdkSelectedIdx = Math.max(0, cmdkSelectedIdx-1); highlightCmdKRow(); return; }
+  if (e.key === 'Enter')     { e.preventDefault(); runCmdKResult(cmdkSelectedIdx); return; }
+});
+
+// Wire input typing
+document.addEventListener('DOMContentLoaded', () => {
+  const input = document.getElementById('cmdk-input');
+  if (input) input.addEventListener('input', (e) => renderCmdKResults(e.target.value));
+});
+// Fallback wiring in case DOMContentLoaded already fired
+setTimeout(() => {
+  const input = document.getElementById('cmdk-input');
+  if (input && !input._cmdkWired) {
+    input._cmdkWired = true;
+    input.addEventListener('input', (e) => renderCmdKResults(e.target.value));
+  }
+}, 1000);
 </script>
 
 </body>
