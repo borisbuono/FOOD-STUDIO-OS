@@ -62,6 +62,38 @@ if ('serviceWorker' in navigator) {
   --bg: #FFFFFF;
   --surface-2: #F7F5F1;
 }
+[data-theme="dark"] {
+  --ink: #F5EDE3;
+  --ink-mid: #E8DDD4;
+  --ink-soft: #2A2018;
+  --cream: #F5EDE3;
+  --cream-warm: #BAA995;
+  --parchment: #BAA995;
+  --text-primary: #F5EDE3;
+  --text-secondary: #BAA995;
+  --text-tertiary: #8B7B6B;
+  --border: rgba(255,255,255,0.1);
+  --glass: rgba(255,255,255,0.04);
+  --glass-border: rgba(255,255,255,0.1);
+  --bg: #1A1510;
+  --surface-2: #2A2018;
+}
+[data-theme="light"] {
+  --ink: #FFFFFF;
+  --ink-mid: #FFFFFF;
+  --ink-soft: #F7F5F1;
+  --cream: #1F2916;
+  --cream-warm: #5C4E3C;
+  --parchment: #9B8E7E;
+  --text-primary: #1F2916;
+  --text-secondary: #5C4E3C;
+  --text-tertiary: #9B8E7E;
+  --border: rgba(0,0,0,0.07);
+  --glass: rgba(0,0,0,0.03);
+  --glass-border: rgba(0,0,0,0.08);
+  --bg: #FFFFFF;
+  --surface-2: #F7F5F1;
+}
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 html, body { height: 100%; overscroll-behavior: none; }
 body {
@@ -1267,6 +1299,10 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
 .more-btn{display:flex;align-items:center;justify-content:center;padding:14px 8px;border-radius:12px;border:1px solid rgba(0,0,0,.06);background:#F7F5F1;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .more-btn:active{background:#F0EDE8;transform:scale(.97)}
 .more-lbl{font-size:12px;font-weight:600;color:#5C4E3C;font-family:Outfit,sans-serif}
+.theme-toggle-btn{flex:1;padding:10px 8px;border-radius:10px;border:1px solid rgba(0,0,0,.08);background:var(--surface-2);color:var(--text-secondary);font-family:Outfit,sans-serif;font-size:12px;font-weight:500;cursor:pointer;transition:all .18s;display:flex;align-items:center;justify-content:center}
+.theme-toggle-btn:active{transform:scale(.96);opacity:.8}
+[data-theme="dark"] .theme-toggle-btn{background:var(--surface-2);color:var(--text-secondary);border-color:rgba(255,255,255,.1)}
+.theme-toggle-btn[data-theme-btn="light"][data-theme="light"],.theme-toggle-btn[data-theme-btn="dark"][data-theme="dark"],.theme-toggle-btn[data-theme-btn="auto"][data-theme="auto"]{background:var(--ember);color:#fff;border-color:var(--ember);font-weight:600}
 .more-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.15);z-index:92;display:none;backdrop-filter:blur(2px)}
 .more-backdrop.show{display:block}
 
@@ -1405,6 +1441,9 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
 
   /* ── Hide mobile-only elements ── */
   .bottom-nav, .fab-wrap, .more-backdrop, .more-menu, .ai-fab-right { display: none !important; }
+
+  /* ── Fix content area width on desktop (F30) ── */
+  .dash-scroll { max-width: 100%; width: 100%; padding: 28px 48px calc(40px + env(safe-area-inset-bottom,0px)); }
 }
 
 /* Mobile: hide desktop sidebar */
@@ -2191,6 +2230,7 @@ const ZONES={0:{boh:['Hot Station','Cold Station'],foh:['All FOH'],admin:['Admin
 let USER={name:'',role:'owner',lang:'en',zone:''},selRV='',selLV='en',selRestV=null,selAreaV='';
 let R=0,AREA='boh',ZONE='Hot Station';
 let currentTab='today',recEditId=null,menuAddSec='hot',prodTab='mep',todaySubTab='day';
+let ordersSearchQuery='';
 let taskState={},cleanState={},mepState={},dishOpen={},menuSectionOpen={};
 let taskPriority={},taskUrgent={};
 let wSigned=[false,false],mSigned=[false,false],clSigned=[false,false];
@@ -2583,7 +2623,7 @@ function renderMenu(){
         const trainingOpen=!!menuSectionOpen[trainingKey];
         const rec=RECIPES.find(r=>r.id===d.recipeId);
         const allergenNames=rec?rec.allergens.map(a=>{const al=ALLERGENS.find(x=>x.id===a);return al?al.icon+' '+al.label:'';}).filter(Boolean):[];
-        const off86Lbl=d.off?'Restore':'86';const trainingLbl=trainingOpen?'▴ Hide':'▾ Training';const priceLbl=d.price?'€'+d.price:'–';const mgHtml=mg!==null?('<span style="font-family:DM Mono,monospace;font-size:11px;color:'+mgColor+';">'+mg+'%</span>'):'';const allergenHtml=allergenNames.length?('<div class="dt-section">Allergens</div><div class="dt-allergen-row">'+allergenNames.map(function(a){return'<span class="dt-allergen">'+a+'</span>';}).join('')+'</div>'):'';const recHtml=rec?('<div class="dt-section">Recipe</div><div class="dt-recipe-link"><span class="dt-recipe-icon">📋</span><span class="dt-recipe-text">'+rec.name+' — '+rec.portions+' portions base</span><span class="dt-recipe-arrow">→</span></div>'):'';const descHtml=rec?rec.desc:(d.desc||'No description yet.');html+='<div class="dish-row'+(d.off?' off':'')+'"><div style="flex:1"><div class="dish-name">'+d.name+(d.special?' (special)':'')+'</div><div class="dish-meta">'+(d.cost?'Cost €'+d.cost.toFixed(2):'')+( rec?' · Recipe linked':'')+'</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0;"><span style="font-family:DM Mono,monospace;font-size:15px;font-weight:600;color:#1F2916;">'+priceLbl+'</span>'+mgHtml+'<div style="display:flex;gap:5px;align-items:center;margin-top:2px;"><button style="background:none;border:none;color:#4E6332;font-size:11px;font-weight:600;font-family:Outfit,sans-serif;cursor:pointer;" onclick="menuSectionOpen[\"'+trainingKey+'\"]=!menuSectionOpen[\"'+trainingKey+'\"];renderTab();">'+trainingLbl+'</button><button style="font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;border:none;cursor:pointer;background:#FBF0F0;color:#A03838;" onclick="toggle86(\"'+d.id+'\")">'+off86Lbl+'</button></div></div></div><div class="dish-training'+(trainingOpen?' open':'')+'"><div class="dt-section">Description & technique</div><div class="dt-desc">'+descHtml+'</div>'+allergenHtml+recHtml+'<div class="dt-section">Staff training</div><div class="dt-video"><div class="dt-video-icon">▶</div><div><div class="dt-video-text">Add training video</div><div class="dt-video-sub">Tap to link a video for this dish</div></div></div></div>';
+        const off86Lbl=d.off?'Restore':'86';const trainingLbl=trainingOpen?'▴ Hide':'▾ Training';const priceLbl=d.price?'€'+d.price:'–';const mgHtml=mg!==null?('<span style="font-family:DM Mono,monospace;font-size:11px;color:'+mgColor+';">'+mg+'%</span>'):'';const allergenHtml=allergenNames.length?('<div class="dt-section">Allergens</div><div class="dt-allergen-row">'+allergenNames.map(function(a){return'<span class="dt-allergen">'+a+'</span>';}).join('')+'</div>'):'';const recHtml=rec?('<div class="dt-section">Recipe</div><div class="dt-recipe-link" onclick="showRecipeDetail(\''+rec.id+'\')"><span class="dt-recipe-icon">📋</span><span class="dt-recipe-text">'+rec.name+' — '+rec.portions+' portions base</span><span class="dt-recipe-arrow">→</span></div>'):'';const descHtml=rec?rec.desc:(d.desc||'No description yet.');html+='<div class="dish-row'+(d.off?' off':'')+'"><div style="flex:1"><div class="dish-name">'+d.name+(d.special?' (special)':'')+'</div><div class="dish-meta">'+(d.cost?'Cost €'+d.cost.toFixed(2):'')+( rec?' · Recipe linked':'')+'</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0;"><span style="font-family:DM Mono,monospace;font-size:15px;font-weight:600;color:#1F2916;">'+priceLbl+'</span>'+mgHtml+'<div style="display:flex;gap:5px;align-items:center;margin-top:2px;"><button style="background:none;border:none;color:#4E6332;font-size:11px;font-weight:600;font-family:Outfit,sans-serif;cursor:pointer;" onclick="menuSectionOpen[\"'+trainingKey+'\"]=!menuSectionOpen[\"'+trainingKey+'\"];renderTab();">'+trainingLbl+'</button><button style="font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;border:none;cursor:pointer;background:#FBF0F0;color:#A03838;" onclick="toggle86(\"'+d.id+'\")">'+off86Lbl+'</button></div></div></div><div class="dish-training'+(trainingOpen?' open':'')+'"><div class="dt-section">Description & technique</div><div class="dt-desc">'+descHtml+'</div>'+allergenHtml+recHtml+'<div class="dt-section">Staff training</div><div class="dt-video"><div class="dt-video-icon">▶</div><div><div class="dt-video-text">Add training video</div><div class="dt-video-sub">Tap to link a video for this dish</div></div></div></div>';
       });
       if(!dishes.length)html+=`<div style="padding:14px 16px;font-size:13px;color:#C8C0B8;">No dishes yet — tap + Add</div>`;
       html+=`</div>`;
@@ -2668,24 +2708,35 @@ function renderOrdering(){
   <div id="ord-results">
     <div style="text-align:center;padding:30px;color:#C8C0B8;font-size:13px;">Tap Generate to build supplier orders, or ask the AI above.</div>
   </div>
-  <div class="sect-label" style="margin-top:4px;">Provider catalogue</div>
+  <input type="text" placeholder="Search products, suppliers — gambas, aceite, panadería…" value="" oninput="ordersSearchQuery=this.value;renderTab()" style="width:100%;padding:11px 14px;margin-bottom:12px;border:1px solid rgba(0,0,0,0.08);border-radius:12px;font-family:'Outfit',sans-serif;font-size:13px;background:#FFFFFF;box-shadow:0 1px 3px rgba(0,0,0,0.03);"><div class="sect-label" style="margin-top:4px;">Provider catalogue</div>
   ${renderProviders()}`;
   return html;
 }
 
 function renderProviders(){
   let html='';
-  PROVIDERS.forEach((p,pi)=>{
-    const isOpen=!!dishOpen['prov_'+pi];
-    html+=`<div class="provider-card${isOpen?' open':''}">
-      <div class="provider-head" onclick="dishOpen['prov_${pi}']=!dishOpen['prov_${pi}'];renderTab()">
-        <div class="provider-logo">${p.icon}</div>
-        <div class="provider-info"><div class="provider-name">${p.name}</div><div class="provider-meta">${p.category} · ${p.products.length} products · ${p.delivery}</div></div>
-        <button class="provider-copy" onclick="event.stopPropagation();copyProviderOrder(${pi})">Order</button>
-      </div>
-      ${isOpen?renderProviderBody(p,pi):''}
-    </div>`;
+  const q=(ordersSearchQuery||'').toLowerCase().trim();
+  const filteredProviders=PROVIDERS.filter(p=>{
+    if(!q)return true;
+    if(p.name.toLowerCase().includes(q)||p.category.toLowerCase().includes(q))return true;
+    return p.products.some(pr=>pr.name.toLowerCase().includes(q));
   });
+  if(q&&filteredProviders.length===0){
+    html='<div style="text-align:center;padding:30px;color:#C8C0B8;font-size:13px;">No providers or products match "'+q+'"</div>';
+  }else{
+    filteredProviders.forEach((p,i)=>{
+      const pi=PROVIDERS.indexOf(p);
+      const isOpen=!!dishOpen['prov_'+pi];
+      html+=`<div class="provider-card${isOpen?' open':''}">
+        <div class="provider-head" onclick="dishOpen['prov_${pi}']=!dishOpen['prov_${pi}'];renderTab()">
+          <div class="provider-logo">${p.icon}</div>
+          <div class="provider-info"><div class="provider-name">${p.name}</div><div class="provider-meta">${p.category} · ${p.products.length} products · ${p.delivery}</div></div>
+          <button class="provider-copy" onclick="event.stopPropagation();copyProviderOrder(${pi})">Order</button>
+        </div>
+        ${isOpen?renderProviderBody(p,pi):''}
+      </div>`;
+    });
+  }
   return html;
 }
 
@@ -2798,7 +2849,8 @@ function renderRecipes(){
       return `<button onclick="recFilter='${f}';renderTab()" style="flex-shrink:0;padding:5px 11px;border-radius:14px;border:1px solid var(--glass-border);background:${isActive?'var(--ember)':'transparent'};color:${isActive?'white':'var(--text-tertiary)'};font-family:'Outfit',sans-serif;font-size:11px;cursor:pointer;white-space:nowrap;">${label}</button>`;
     }).join('')}
   </div>
-  ${sbCount>0?`<div style="font-size:11px;color:var(--text-tertiary);margin-bottom:10px;padding:7px 10px;background:#F7F5F1;border-radius:8px;">Holdings library: ${bothCount} shared recipe${bothCount!==1?'s':''} loaded from database</div>`:''}`;
+  ${sbCount>0?`<div style="font-size:11px;color:var(--text-tertiary);margin-bottom:10px;padding:7px 10px;background:#F7F5F1;border-radius:8px;">Holdings library: ${bothCount} shared recipe${bothCount!==1?'s':''} loaded from database</div>`:''}
+  <button onclick="switchTab('cookmode', null)" style="width:100%;margin-bottom:12px;padding:13px;border-radius:12px;border:none;background:var(--ember);color:white;font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;cursor:pointer;">▶ Start Cook Mode</button>`;
 
   if(!filtered.length)return html+`<div style="text-align:center;padding:48px 20px;">
     <div style="font-family:'Fraunces',serif;font-style:italic;font-size:18px;color:var(--text-secondary);margin-bottom:6px;">Nothing matched.</div>
@@ -3136,6 +3188,35 @@ function doSignOut(){
   try{localStorage.removeItem('fs_session');localStorage.removeItem('fs_state');}catch(e){}
   if(shiftChannel&&db){try{db.removeChannel(shiftChannel);}catch(e){}}
   location.reload();
+}
+
+// ══ THEME ══
+function applyTheme(theme){
+  let actual=theme;
+  if(theme==='auto'){
+    actual=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+  }
+  document.documentElement.setAttribute('data-theme',actual);
+  localStorage.setItem('fs_theme_pref',theme);
+  updateThemeButtonStates(theme);
+  if(window.USER&&window.USER.id&&window.sb){
+    window.sb.from('user_profiles').update({theme_preference:theme}).eq('id',USER.id).then(()=>{},()=>{});
+  }
+}
+function updateThemeButtonStates(theme){
+  document.querySelectorAll('[data-theme-btn]').forEach(btn=>{
+    btn.style.background=btn.getAttribute('data-theme-btn')===theme?'var(--ember)':'var(--surface-2)';
+    btn.style.color=btn.getAttribute('data-theme-btn')===theme?'#fff':'var(--text-secondary)';
+    btn.style.borderColor=btn.getAttribute('data-theme-btn')===theme?'var(--ember)':'rgba(0,0,0,.08)';
+    btn.style.fontWeight=btn.getAttribute('data-theme-btn')===theme?'600':'500';
+  });
+}
+function initTheme(){
+  const savedTheme=localStorage.getItem('fs_theme_pref')||'auto';
+  applyTheme(savedTheme);
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{
+    if(localStorage.getItem('fs_theme_pref')==='auto')applyTheme('auto');
+  });
 }
 
 // ══ REALTIME SYNC ══
@@ -6189,6 +6270,14 @@ function showInlineToastError(msg) {
     <button class="more-btn mgr-only" onclick="switchTab('integrations',null);closeMore()" style="display:none"><span class="more-lbl">Integrations</span></button>
     <button class="more-btn mgr-only" onclick="switchTab('onboarding',null);closeMore()" style="display:none"><span class="more-lbl">Onboard</span></button>
   </div>
+  <div style="border-top:1px solid var(--border);margin-top:12px;padding-top:12px;">
+    <div style="font-size:12px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;padding:0 8px;">Theme</div>
+    <div style="display:flex;gap:6px;padding:0 8px;">
+      <button class="theme-toggle-btn" data-theme-btn="light" onclick="applyTheme('light')"><span>☀️ Light</span></button>
+      <button class="theme-toggle-btn" data-theme-btn="dark" onclick="applyTheme('dark')"><span>🌙 Dark</span></button>
+      <button class="theme-toggle-btn" data-theme-btn="auto" onclick="applyTheme('auto')"><span>⚙ Auto</span></button>
+    </div>
+  </div>
 </div>
 
 <div class="modal-overlay" id="m-team-edit" onclick="if(event.target===this)closeModal('m-team-edit')">
@@ -6398,6 +6487,7 @@ function saEditAndRedraft() {
   document.getElementById('saInput').select();
 }
 
+initTheme();
 saLoadTemplates();
 </script>
 
