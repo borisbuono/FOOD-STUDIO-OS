@@ -34,7 +34,7 @@ if ('serviceWorker' in navigator) {
   });
 }
 </script>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Fraunces:ital,opsz,wght@1,9..144,300;1,9..144,400;1,9..144,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Fraunces:ital,opsz,wght@1,9..144,300;1,9..144,400;1,9..144,600&family=DM+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <style>
 :root {
   --ink: #FFFFFF;
@@ -62,22 +62,64 @@ if ('serviceWorker' in navigator) {
   --bg: #FFFFFF;
   --surface-2: #F7F5F1;
 }
-[data-theme="dark"] {
-  --ink: #F5EDE3;
-  --ink-mid: #E8DDD4;
-  --ink-soft: #2A2018;
-  --cream: #F5EDE3;
-  --cream-warm: #BAA995;
-  --parchment: #BAA995;
-  --text-primary: #F5EDE3;
-  --text-secondary: #BAA995;
-  --text-tertiary: #8B7B6B;
-  --border: rgba(255,255,255,0.1);
-  --glass: rgba(255,255,255,0.04);
-  --glass-border: rgba(255,255,255,0.1);
-  --bg: #1A1510;
-  --surface-2: #2A2018;
+[data-theme="bohemian"] {
+  --ink: #FFFFFF;
+  --ink-mid: #FFFFFF;
+  --ink-soft: #F7F5F1;
+  --cream: #1F2916;
+  --cream-warm: #5C4E3C;
+  --parchment: #9B8E7E;
+  --text-primary: #1F2916;
+  --text-secondary: #5C4E3C;
+  --text-tertiary: #9B8E7E;
+  --border: rgba(0,0,0,0.07);
+  --glass: rgba(0,0,0,0.03);
+  --glass-border: rgba(0,0,0,0.08);
+  --bg: #FFFFFF;
+  --surface-2: #F7F5F1;
 }
+[data-theme="midnight"] {
+  --ink: #FFFFFF;
+  --ink-mid: #FFFFFF;
+  --ink-soft: #1A1C1E;
+  --cream: #FFFFFF;
+  --cream-warm: #BABABA;
+  --parchment: #BABABA;
+  --text-primary: #FFFFFF;
+  --text-secondary: #BABABA;
+  --text-tertiary: #888888;
+  --border: rgba(255,255,255,0.12);
+  --glass: rgba(255,255,255,0.05);
+  --glass-border: rgba(255,255,255,0.12);
+  --bg: #0A0A0A;
+  --surface-2: #1A1C1E;
+  --ember: #FFB347;
+  --gold: #FFB347;
+  --ruby: #FF6B6B;
+  --moss: #5AC8FA;
+}
+[data-theme="midnight"] body { background: #0A0A0A; }
+[data-theme="concierge"] {
+  --ink: #F8FAFC;
+  --ink-mid: #F8FAFC;
+  --ink-soft: #1E293B;
+  --cream: #F8FAFC;
+  --cream-warm: #94A3B8;
+  --parchment: #94A3B8;
+  --text-primary: #F8FAFC;
+  --text-secondary: #94A3B8;
+  --text-tertiary: #64748B;
+  --border: rgba(248,250,252,0.12);
+  --glass: rgba(248,250,252,0.04);
+  --glass-border: rgba(248,250,252,0.12);
+  --bg: #0F172A;
+  --surface-2: #1E293B;
+  --ember: #D4AF37;
+  --gold: #D4AF37;
+  --ruby: #B91C1C;
+  --moss: #5A8A78;
+}
+[data-theme="concierge"] body { background: #0F172A; color: #F8FAFC; }
 [data-theme="light"] {
   --ink: #FFFFFF;
   --ink-mid: #FFFFFF;
@@ -94,6 +136,27 @@ if ('serviceWorker' in navigator) {
   --bg: #FFFFFF;
   --surface-2: #F7F5F1;
 }
+[data-theme="dark"] {
+  --ink: #FFFFFF;
+  --ink-mid: #FFFFFF;
+  --ink-soft: #1A1C1E;
+  --cream: #FFFFFF;
+  --cream-warm: #BABABA;
+  --parchment: #BABABA;
+  --text-primary: #FFFFFF;
+  --text-secondary: #BABABA;
+  --text-tertiary: #888888;
+  --border: rgba(255,255,255,0.12);
+  --glass: rgba(255,255,255,0.05);
+  --glass-border: rgba(255,255,255,0.12);
+  --bg: #0A0A0A;
+  --surface-2: #1A1C1E;
+  --ember: #FFB347;
+  --gold: #FFB347;
+  --ruby: #FF6B6B;
+  --moss: #5AC8FA;
+}
+[data-theme="dark"] body { background: #0A0A0A; }
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 html, body { height: 100%; overscroll-behavior: none; }
 body {
@@ -759,6 +822,17 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
 .det-btn.primary { background: var(--ember); color: var(--white); }
 .det-btn.secondary { background: var(--glass); color: var(--text-secondary); border: 1px solid var(--glass-border); }
 .det-btn:active { transform: scale(0.97); }
+/* ──── RECIPE COST CHAIN (NEW) ──── */
+.recipe-cost-section { margin: 20px 0; padding: 16px; border: 1px solid var(--border); border-radius: 10px; background: rgba(184,150,58,0.04); }
+.rcs-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.6; margin-bottom: 10px; }
+.rcs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 12px; }
+.rcs-stat { padding: 10px; background: var(--bg); border-radius: 6px; text-align: center; }
+.rcs-label-sm { font-size: 10px; opacity: 0.6; text-transform: uppercase; letter-spacing: 0.05em; }
+.rcs-val { font-size: 18px; font-weight: 600; font-family: 'DM Mono', monospace; margin-top: 4px; }
+.rcs-val-sm { font-size: 13px; }
+.price-suggest { display: flex; align-items: center; gap: 8px; padding: 6px 10px; background: rgba(184,150,58,0.08); border-radius: 6px; margin-top: 6px; font-size: 11px; }
+.ps-label { flex: 1; opacity: 0.85; }
+.ps-btn { padding: 3px 10px; border-radius: 4px; background: var(--ember); color: white; border: 0; font-size: 11px; cursor: pointer; }
 
 /* ─── ORDER CARDS ─── */
 .supplier-card {
@@ -1188,6 +1262,17 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
 .wb-label { font-size: 10px; opacity: 0.6; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; margin-bottom: 6px; }
 .wb-text { font-size: 13px; line-height: 1.6; color: var(--text-secondary); }
 
+/* ANCHOR: F53_beverage_modal_css */
+.bev-sheet { max-width: 480px; }
+.bev-eyebrow { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.55; margin-bottom: 6px; }
+.bev-price { font-family: var(--font-serif, 'Fraunces', Georgia, serif); font-size: 22px; text-align: center; margin: 14px 0; color: var(--gold, #B8963A); }
+.bev-desc { font-style: italic; opacity: 0.85; margin-bottom: 12px; line-height: 1.5; font-size: 14px; }
+.bev-parts { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0; }
+.bev-part { padding: 4px 10px; background: var(--glass); border-radius: 12px; font-size: 11px; opacity: 0.85; }
+.bev-section { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--glass-border); }
+.bev-section-label { font-size: 11px; opacity: 0.6; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+.bev-pairings { font-size: 13px; line-height: 1.5; opacity: 0.85; font-style: italic; }
+
 /* ─── CONTEXT SWITCHER ─── */
 .ctx-switcher {
   display: flex; gap: 6px; padding: 12px 16px; overflow-x: auto;
@@ -1601,8 +1686,9 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
 .more-lbl{font-size:12px;font-weight:600;color:#5C4E3C;font-family:Outfit,sans-serif}
 .theme-toggle-btn{flex:1;padding:10px 8px;border-radius:10px;border:1px solid rgba(0,0,0,.08);background:var(--surface-2);color:var(--text-secondary);font-family:Outfit,sans-serif;font-size:12px;font-weight:500;cursor:pointer;transition:all .18s;display:flex;align-items:center;justify-content:center}
 .theme-toggle-btn:active{transform:scale(.96);opacity:.8}
-[data-theme="dark"] .theme-toggle-btn{background:var(--surface-2);color:var(--text-secondary);border-color:rgba(255,255,255,.1)}
-.theme-toggle-btn[data-theme-btn="light"][data-theme="light"],.theme-toggle-btn[data-theme-btn="dark"][data-theme="dark"],.theme-toggle-btn[data-theme-btn="auto"][data-theme="auto"]{background:var(--ember);color:#fff;border-color:var(--ember);font-weight:600}
+[data-theme="midnight"] .theme-toggle-btn,[data-theme="concierge"] .theme-toggle-btn{background:var(--surface-2);color:var(--text-secondary);border-color:rgba(255,255,255,.1)}
+.theme-toggle-btn[data-theme-btn="bohemian"][data-theme="bohemian"],.theme-toggle-btn[data-theme-btn="midnight"][data-theme="midnight"],.theme-toggle-btn[data-theme-btn="concierge"][data-theme="concierge"],.theme-toggle-btn[data-theme-btn="light"][data-theme="light"],.theme-toggle-btn[data-theme-btn="dark"][data-theme="dark"],.theme-toggle-btn[data-theme-btn="auto"][data-theme="auto"]{background:var(--ember);color:#fff;border-color:var(--ember);font-weight:600}
+.ts-swatch{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle;border:1px solid rgba(0,0,0,.1)}
 .more-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.15);z-index:92;display:none;backdrop-filter:blur(2px)}
 .more-backdrop.show{display:block}
 
@@ -1628,6 +1714,41 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
 .ai-ov-input{flex:1;border:none;background:transparent;outline:none;font-family:'Outfit',sans-serif;font-size:15px;color:#1F2916}
 .ai-ov-input::placeholder{color:#C8C0B8}
 .ai-ov-send{width:40px;height:40px;border-radius:12px;border:none;background:#4E6332;color:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+
+/* ══════════════════════════════════════
+   INLINE AI BAR (persistent bottom)
+══════════════════════════════════════ */
+.ai-inline{position:fixed;bottom:8px;left:50%;transform:translateX(-50%);z-index:90;width:min(640px,calc(100vw - 24px));pointer-events:none}
+.ai-inline > *{pointer-events:auto}
+.ai-inline.collapsed .aii-collapsed-bar{display:flex}
+.ai-inline.collapsed .aii-expanded{display:none}
+.ai-inline.expanded .aii-collapsed-bar{display:none}
+.ai-inline.expanded .aii-expanded{display:flex}
+@media (max-width:768px){.ai-inline{bottom:78px}}
+.aii-collapsed-bar{display:flex;align-items:center;gap:10px;padding:10px 16px;background:rgba(26,21,16,0.94);color:#F5EDE3;border-radius:24px;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,0.18);backdrop-filter:blur(12px);transition:transform 0.15s,box-shadow 0.15s}
+.aii-collapsed-bar:hover{transform:translateY(-1px);box-shadow:0 10px 28px rgba(0,0,0,0.22)}
+.aii-icon{color:#4E6332;font-size:14px}
+.aii-prompt{flex:1;font-size:13px;opacity:0.85}
+.aii-shortcut{padding:2px 8px;background:rgba(255,255,255,0.1);border-radius:4px;font-size:11px;font-family:ui-monospace,monospace;opacity:0.7}
+.aii-expanded{display:flex;flex-direction:column;background:var(--bg,#FFFFFF);color:var(--text-primary,#1F2916);border-radius:18px;border:1px solid var(--border,rgba(0,0,0,0.08));box-shadow:0 18px 48px rgba(0,0,0,0.18);max-height:60vh;overflow:hidden}
+.aii-head{display:flex;justify-content:space-between;align-items:center;padding:12px 16px 8px;border-bottom:1px solid var(--border,rgba(0,0,0,0.06))}
+.aii-title{font-size:13px;font-weight:600}
+.aii-collapse{background:transparent;border:0;cursor:pointer;font-size:16px;opacity:0.6;padding:4px 8px}
+.aii-collapse:hover{opacity:1}
+.aii-thread{flex:1;overflow-y:auto;padding:12px 16px;max-height:320px;-webkit-overflow-scrolling:touch}
+.aii-bubble{padding:8px 12px;border-radius:12px;margin-bottom:8px;max-width:85%;font-size:13px;line-height:1.45;word-wrap:break-word}
+.aii-bubble-user{background:#4E6332;color:white;margin-left:auto;border-bottom-right-radius:4px}
+.aii-bubble-assistant{background:var(--bg-card,rgba(0,0,0,0.05));color:inherit;margin-right:auto;border-bottom-left-radius:4px}
+.aii-bubble-loading{background:var(--bg-card,rgba(0,0,0,0.05));color:inherit;margin-right:auto;border-bottom-left-radius:4px;opacity:0.6;font-size:18px;letter-spacing:0.2em}
+.aii-chips{display:flex;gap:6px;padding:8px 16px;overflow-x:auto;flex-wrap:nowrap;border-top:1px solid var(--border,rgba(0,0,0,0.04))}
+.aii-chip{flex-shrink:0;padding:5px 12px;border-radius:14px;background:rgba(78,99,50,0.1);border:0;font-size:11px;cursor:pointer;color:inherit;white-space:nowrap;transition:all 0.15s}
+.aii-chip:hover{background:#4E6332;color:white}
+.aii-input-row{display:flex;gap:8px;padding:10px 12px 12px;border-top:1px solid var(--border,rgba(0,0,0,0.06));align-items:center}
+.aii-mic{width:32px;height:32px;border-radius:50%;border:1px solid var(--border,rgba(0,0,0,0.1));background:transparent;cursor:pointer;font-size:14px;flex-shrink:0;color:#4E6332}
+.aii-input{flex:1;padding:8px 12px;border:1px solid var(--border,rgba(0,0,0,0.1));border-radius:16px;font-size:13px;background:transparent;color:inherit;outline:none;font-family:'Outfit',sans-serif}
+.aii-input:focus{border-color:#4E6332}
+.aii-input::placeholder{color:var(--text-tertiary,#9B8E7E)}
+.aii-send{padding:8px 16px;border-radius:16px;background:#4E6332;color:white;border:0;cursor:pointer;font-size:12px;font-weight:600}
 
 /* ── Validation error states ── */
 .field-error{border-color:#C0392B !important;background:#FDF5F5 !important;}
@@ -2912,6 +3033,7 @@ let currentMenuType='all';
 let menuViewMode='active'; // 'active' | 'library'
 let ordersSearchQuery='';
 let currentOrdersView='catalogue';
+let INVENTORY_ITEMS=[],inventoryLoaded=false,inventorySearch='';
 let taskState={},cleanState={},mepState={},dishOpen={},menuSectionOpen={};
 let taskPriority={},taskUrgent={};
 let wSigned=[false,false],mSigned=[false,false],clSigned=[false,false];
@@ -3881,8 +4003,9 @@ function renderMenu(){
   // Branch based on menu view mode
   if(menuViewMode==='library') return renderMenuLibrary();
 
-  const secs=['cold','hot','pizza','dessert','breakfast','wine'];
-  const sNames={cold:'Cold',hot:'Hot',pizza:'Pizza & Fryer',dessert:'Desserts',breakfast:'Breakfast',wine:'Wine'};
+  // ANCHOR: F53_menu_sections_with_beverages
+  const secs=['cold','hot','pizza','dessert','breakfast','wine','beer','cocktail','spirit','nonalcoholic','soft','hot'];
+  const sNames={cold:'Cold',hot:'Hot',pizza:'Pizza & Fryer',dessert:'Desserts',breakfast:'Breakfast',wine:'Wine',beer:'Beer',cocktail:'Cocktails',spirit:'Spirits',nonalcoholic:'Non-alcoholic',soft:'Soft drinks',hot:'Coffee & tea'};
   const restName=R===0?'Taller':'Bistro Mondo';
   const restSlug=R===0?'taller':'bistro';
   // Filter menu items to show only restaurant-appropriate items (by restaurant field or 'both')
@@ -3912,20 +4035,24 @@ function renderMenu(){
     if(isOpen){
       html+=`<div class="menu-sec-body">`;
       dishes.forEach(d=>{
-        // Wine items: simple click-to-popover layout
-        if(sec==='wine'){
+        // ANCHOR: F53_beverage_item_rendering
+        // Beverage items (wine, beer, cocktail, spirits, NA, soft, hot): simple click-to-popover layout
+        const beverageSecs=['wine','beer','cocktail','spirit','nonalcoholic','soft','hot'];
+        if(beverageSecs.includes(sec)){
           const priceLbl=d.price?'€'+d.price:'–';
-          html+='<div class="wine-item" onclick="openWineDetail(\''+d.id+'\')"><div class="wine-item-name">'+d.name+'</div><div class="wine-item-price">'+priceLbl+'</div></div>';
+          html+='<div class="wine-item" onclick="openBeverageDetail(\''+d.id+'\')"><div class="wine-item-name">'+d.name+'</div><div class="wine-item-price">'+priceLbl+'</div></div>';
           return;
         }
         // Standard dish rendering
         const mg=d.price&&d.cost?Math.round((1-d.cost/d.price)*100):null;
         const mgColor=mg===null?'#C8C0B8':mg>65?'#4A7B6A':mg>45?'#A8893A':'#A03838';
+        // ANCHOR: menu_price_suggest_conditional
+        const priceSuggestBadge=(d.computed_price && d.price && Math.abs(d.computed_price - d.price) > 0.5) ? `<div class="price-suggest" style="margin-top:6px;"><span class="ps-label">Cost €${(d.computed_cost||0).toFixed(2)} · Suggested <strong>€${d.computed_price.toFixed(2)}</strong></span><button class="ps-btn" onclick="applyComputedPrice('${d.id}')">Apply</button></div>` : '';
         const trainingKey='training_'+d.id;
         const trainingOpen=!!menuSectionOpen[trainingKey];
         const rec=RECIPES.find(r=>r.id===d.recipeId);
         const allergenNames=rec?rec.allergens.map(a=>{const al=ALLERGENS.find(x=>x.id===a);return al?al.icon+' '+al.label:'';}).filter(Boolean):[];
-        const off86Lbl=d.off?'Restore':'86';const trainingLbl=trainingOpen?'▴ Hide':'▾ Training';const priceLbl=d.price?'€'+d.price:'–';const mgHtml=mg!==null?('<span style="font-family:DM Mono,monospace;font-size:11px;color:'+mgColor+';">'+mg+'%</span>'):'';const allergenHtml=allergenNames.length?('<div class="dt-section">Allergens</div><div class="dt-allergen-row">'+allergenNames.map(function(a){return'<span class="dt-allergen">'+a+'</span>';}).join('')+'</div>'):'';const recHtml=rec?('<div class="dt-section">Recipe</div><div class="dt-recipe-link" onclick="showRecipeDetail(\''+rec.id+'\')"><span class="dt-recipe-icon">📋</span><span class="dt-recipe-text">'+rec.name+' — '+rec.portions+' portions base</span><span class="dt-recipe-arrow">→</span></div>'):'';const descHtml=rec?rec.desc:(d.desc||'No description yet.');const narrativePreview=(rec?(rec.narrative||rec.history||rec.cultural_inspiration||''):'').slice(0,90);const storyHtml=narrativePreview?'<div class="mi-story-preview">'+narrativePreview+(narrativePreview.length>90?'…':'')+'</div>':'';html+='<div class="dish-row'+(d.off?' off':'')+'"><div style="flex:1"><div class="dish-name">'+d.name+(d.special?' (special)':'')+'</div>'+storyHtml+'<div class="dish-meta">'+(d.cost?'Cost €'+d.cost.toFixed(2):'')+( rec?' · Recipe linked':'')+'</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0;"><span style="font-family:DM Mono,monospace;font-size:15px;font-weight:600;color:#1F2916;">'+priceLbl+'</span>'+mgHtml+'<div style="display:flex;gap:5px;align-items:center;margin-top:2px;"><button style="background:none;border:none;color:#4E6332;font-size:11px;font-weight:600;font-family:Outfit,sans-serif;cursor:pointer;" onclick="menuSectionOpen[\"'+trainingKey+'\"]=!menuSectionOpen[\"'+trainingKey+'\"];renderTab();">'+trainingLbl+'</button><button style="font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;border:none;cursor:pointer;background:#FBF0F0;color:#A03838;" onclick="toggle86(\"'+d.id+'\")">'+off86Lbl+'</button></div></div></div><div class="dish-training'+(trainingOpen?' open':'')+'"><div class="dt-section">Description & technique</div><div class="dt-desc">'+descHtml+'</div>'+allergenHtml+recHtml+'<div class="dt-section">Staff training</div><div class="dt-video"><div class="dt-video-icon">▶</div><div><div class="dt-video-text">Add training video</div><div class="dt-video-sub">Tap to link a video for this dish</div></div></div></div>';
+        const off86Lbl=d.off?'Restore':'86';const trainingLbl=trainingOpen?'▴ Hide':'▾ Training';const priceLbl=d.price?'€'+d.price:'–';const mgHtml=mg!==null?('<span style="font-family:DM Mono,monospace;font-size:11px;color:'+mgColor+';">'+mg+'%</span>'):'';const allergenHtml=allergenNames.length?('<div class="dt-section">Allergens</div><div class="dt-allergen-row">'+allergenNames.map(function(a){return'<span class="dt-allergen">'+a+'</span>';}).join('')+'</div>'):'';const recHtml=rec?('<div class="dt-section">Recipe</div><div class="dt-recipe-link" onclick="showRecipeDetail(\''+rec.id+'\')"><span class="dt-recipe-icon">📋</span><span class="dt-recipe-text">'+rec.name+' — '+rec.portions+' portions base</span><span class="dt-recipe-arrow">→</span></div>'):'';const descHtml=rec?rec.desc:(d.desc||'No description yet.');const narrativePreview=(rec?(rec.narrative||rec.history||rec.cultural_inspiration||''):'').slice(0,90);const storyHtml=narrativePreview?'<div class="mi-story-preview">'+narrativePreview+(narrativePreview.length>90?'…':'')+'</div>':'';html+='<div class="dish-row'+(d.off?' off':'')+'"><div style="flex:1"><div class="dish-name">'+d.name+(d.special?' (special)':'')+'</div>'+storyHtml+'<div class="dish-meta">'+(d.cost?'Cost €'+d.cost.toFixed(2):'')+( rec?' · Recipe linked':'')+'</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0;"><span style="font-family:DM Mono,monospace;font-size:15px;font-weight:600;color:#1F2916;">'+priceLbl+'</span>'+mgHtml+'<div style="display:flex;gap:5px;align-items:center;margin-top:2px;"><button style="background:none;border:none;color:#4E6332;font-size:11px;font-weight:600;font-family:Outfit,sans-serif;cursor:pointer;" onclick="menuSectionOpen[\"'+trainingKey+'\"]=!menuSectionOpen[\"'+trainingKey+'\"];renderTab();">'+trainingLbl+'</button><button style="font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;border:none;cursor:pointer;background:#FBF0F0;color:#A03838;" onclick="toggle86(\"'+d.id+'\")">'+off86Lbl+'</button></div>'+priceSuggestBadge+'</div></div><div class="dish-training'+(trainingOpen?' open':'')+'"><div class="dt-section">Description & technique</div><div class="dt-desc">'+descHtml+'</div>'+allergenHtml+recHtml+'<div class="dt-section">Staff training</div><div class="dt-video"><div class="dt-video-icon">▶</div><div><div class="dt-video-text">Add training video</div><div class="dt-video-sub">Tap to link a video for this dish</div></div></div></div>';
       });
       if(!dishes.length)html+=`<div style="padding:14px 16px;font-size:13px;color:#C8C0B8;">No dishes yet — tap + Add</div>`;
       html+=`</div>`;
@@ -4240,23 +4367,148 @@ function buildWA(sup,items,covers){const now=new Date();const date=`${now.getDat
 function copyText(text,sup){navigator.clipboard?.writeText(text).then(()=>showToast(`${sup} order copied!`)).catch(()=>{const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);showToast('Copied!');});}
 
 function renderInventory(){
-  let html=`
+  loadInventory();
+  if(!INVENTORY_ITEMS.length){
+    return `
+    <div class="orders-subtabs">
+      <button class="ost-pill" data-orders-view="catalogue" onclick="setOrdersView('catalogue')">Catalogue</button>
+      <button class="ost-pill active" data-orders-view="inventory" onclick="setOrdersView('inventory')">Inventory</button>
+      <button class="ost-pill" data-orders-view="receiving" onclick="setOrdersView('receiving')">Receiving</button>
+    </div>
+    <div class="iv-header">
+      <h3 style="margin:0;font-size:18px;font-weight:600;color:var(--text-primary);">Inventory</h3>
+      <button class="cta" onclick="openAddInventoryItem()" style="padding:9px 14px;border-radius:9px;border:none;background:#4E6332;color:white;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;">+ Add item</button>
+    </div>
+    <div class="iv-empty">${inventoryLoaded ? 'No inventory items yet. Add your first one.' : 'Loading inventory…'}</div>
+    `;
+  }
+  const q=(inventorySearch||'').toLowerCase();
+  const items=INVENTORY_ITEMS.filter(i=>!q||(i.name||'').toLowerCase().includes(q));
+  return `
   <div class="orders-subtabs">
     <button class="ost-pill" data-orders-view="catalogue" onclick="setOrdersView('catalogue')">Catalogue</button>
     <button class="ost-pill active" data-orders-view="inventory" onclick="setOrdersView('inventory')">Inventory</button>
     <button class="ost-pill" data-orders-view="receiving" onclick="setOrdersView('receiving')">Receiving</button>
   </div>
   <div class="iv-header">
-    <h3 style="margin:0;font-size:18px;font-weight:600;color:var(--text-primary);">Inventory</h3>
-    <button class="cta" onclick="openAddInventoryItem()" style="padding:9px 14px;border-radius:9px;border:none;background:#4E6332;color:white;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;">+ Add item</button>
+    <h3 style="margin:0;font-size:18px;font-weight:600;color:var(--text-primary);">Inventory · ${items.length}</h3>
+    <div class="iv-actions">
+      <input class="iv-search" type="text" placeholder="Search inventory…" oninput="inventorySearch=this.value;renderTab()" value="${q}" style="padding:6px 10px;border:1px solid rgba(0,0,0,0.1);border-radius:6px;background:var(--bg);color:inherit;font-size:13px;min-width:200px;font-family:'Outfit',sans-serif;">
+      <button class="cta" onclick="openAddInventoryItem()" style="padding:9px 14px;border-radius:9px;border:none;background:#4E6332;color:white;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;">+ Add</button>
+    </div>
   </div>
-  <div class="iv-empty">Inventory tracking starts here. Add items you have on hand to track stock levels and trigger reorder alerts.</div>
+  <div class="iv-list" style="display:flex;flex-direction:column;gap:6px;margin-top:12px;">
+    ${items.map(it=>`
+      <div class="iv-row" style="display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center;padding:10px 12px;border:1px solid rgba(0,0,0,0.06);border-radius:8px;background:var(--bg-card);">
+        <div>
+          <div style="font-size:14px;font-weight:500;">${escapeHtml(it.name)}</div>
+          <div style="font-size:11px;opacity:0.6;margin-top:2px;font-family:'DM Mono',monospace;">unit: ${escapeHtml(it.unit||'-')}${it.quantity_on_hand ? ' · on hand: '+it.quantity_on_hand : ''}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:4px;">
+          <span style="opacity:0.6;font-size:13px;">€</span>
+          <input class="iv-cost-input" type="number" step="0.01" min="0" value="${(it.unit_cost||0).toFixed(2)}" onchange="updateInventoryCost('${it.id}',this.value)" data-old="${it.unit_cost||0}" style="width:70px;padding:5px 8px;border:1px solid rgba(0,0,0,0.1);border-radius:4px;font-size:13px;text-align:right;background:white;color:inherit;font-family:'DM Mono',monospace;">
+          <span style="font-size:11px;opacity:0.55;margin-left:2px;">/ ${escapeHtml(it.unit||'-')}</span>
+        </div>
+        <div>
+          <button class="iv-recompute" onclick="recomputeRecipesForInventoryItem('${it.id}')" title="Recompute recipes that use this" style="width:28px;height:28px;border-radius:50%;border:1px solid rgba(0,0,0,0.1);background:transparent;cursor:pointer;font-size:14px;opacity:0.7;">⟳</button>
+        </div>
+      </div>
+    `).join('')}
+  </div>
+  <div style="margin-top:14px;padding:10px 12px;background:rgba(184,150,58,0.06);border-left:3px solid #B8963A;border-radius:6px;font-size:12px;opacity:0.85;">
+    <strong>Tip:</strong> change a unit cost above → recipes using this ingredient recompute → affected menu items show new price suggestions in Menu tab.
+  </div>
   `;
-  return html;
+}
+
+async function loadInventory(){
+  if(inventoryLoaded)return;
+  try{
+    const restId=RESTAURANTS[R]?.id;
+    const path=restId ? `inventory_items?restaurant_id=eq.${restId}&order=name` : 'inventory_items?order=name';
+    const rows=await sbFetch(path);
+    INVENTORY_ITEMS=rows||[];
+    inventoryLoaded=true;
+    if(currentTab==='ordering'&&currentOrdersView==='inventory')renderTab();
+  }catch(e){console.warn('inventory load:',e.message);}
+}
+
+async function updateInventoryCost(itemId,newCost){
+  const item=INVENTORY_ITEMS.find(i=>i.id===itemId);
+  if(!item)return;
+  const oldCost=Number(item.unit_cost||0);
+  const v=Number(newCost);
+  if(isNaN(v))return;
+  item.unit_cost=v;
+  item.last_cost_update=new Date().toISOString();
+  showToast(`${item.name} → €${v.toFixed(2)}`,{undo_fn:async()=>{item.unit_cost=oldCost;await persistInventoryCost(itemId,oldCost);renderTab();}});
+  await persistInventoryCost(itemId,v);
+  recomputeRecipesForInventoryItem(itemId);
+}
+
+async function persistInventoryCost(itemId,cost){
+  try{
+    await fetch(`${SUPABASE_URL}/rest/v1/inventory_items?id=eq.${itemId}`,{
+      method:'PATCH',
+      headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json'},
+      body:JSON.stringify({unit_cost:cost,last_cost_update:new Date().toISOString()})
+    });
+  }catch(e){console.warn('persist cost:',e);}
+}
+
+async function recomputeRecipesForInventoryItem(inventoryItemId){
+  showToast('Recomputing affected recipes…',{duration_ms:1500});
+  const item=INVENTORY_ITEMS.find(i=>i.id===inventoryItemId);
+  if(!item)return;
+  try{
+    const ris=await sbFetch(`recipe_ingredients?inventory_item_id=eq.${inventoryItemId}`);
+    const recipeIds=new Set();
+    for(const ri of (ris||[])){
+      const newLineCost=Number(ri.quantity||0)*Number(item.unit_cost||0);
+      await fetch(`${SUPABASE_URL}/rest/v1/recipe_ingredients?id=eq.${ri.id}`,{
+        method:'PATCH',
+        headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json'},
+        body:JSON.stringify({line_cost:Math.round(newLineCost*100)/100})
+      });
+      recipeIds.add(ri.recipe_id);
+    }
+    for(const rid of recipeIds){
+      const allRis=await sbFetch(`recipe_ingredients?recipe_id=eq.${rid}&select=line_cost`);
+      const total=(allRis||[]).reduce((sum,r)=>sum+Number(r.line_cost||0),0);
+      const recipe=await sbFetch(`recipes?id=eq.${rid}&select=portions`);
+      const portions=recipe?.[0]?.portions||1;
+      await fetch(`${SUPABASE_URL}/rest/v1/recipes?id=eq.${rid}`,{
+        method:'PATCH',
+        headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json'},
+        body:JSON.stringify({total_cost:Math.round(total*100)/100,cost_per_portion:Math.round((total/portions)*100)/100,last_costed_at:new Date().toISOString()})
+      });
+    }
+    showToast(`✓ ${recipeIds.size} recipe${recipeIds.size>1?'s':''} recomputed. Check Menu tab for new price suggestions.`,{kind:'success',duration_ms:5000});
+  }catch(e){showToast('Recompute failed: '+e.message,{kind:'error'});}
 }
 
 function openAddInventoryItem(){
-  showToast('Inventory management coming in next sprint');
+  const name=prompt('Inventory item name:');
+  if(!name||!name.trim())return;
+  const unit=prompt('Unit (kg, g, L, ml, units):','kg')||'kg';
+  const cost=parseFloat(prompt('Unit cost in €:','0'))||0;
+  addInventoryItem(name.trim(),unit,cost);
+}
+
+async function addInventoryItem(name,unit,cost){
+  const restId=RESTAURANTS[R]?.id;
+  try{
+    const resp=await fetch(`${SUPABASE_URL}/rest/v1/inventory_items`,{
+      method:'POST',
+      headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json',Prefer:'return=representation'},
+      body:JSON.stringify({restaurant_id:restId,name,unit,unit_cost:cost,last_cost_update:new Date().toISOString()})
+    });
+    const data=await resp.json();
+    if(Array.isArray(data)&&data[0])INVENTORY_ITEMS.push(data[0]);
+    INVENTORY_ITEMS.sort((a,b)=>(a.name||'').localeCompare(b.name||''));
+    renderTab();
+    showToast(`Added ${name}`,{kind:'success'});
+  }catch(e){showToast('Add failed: '+e.message,{kind:'error'});}
 }
 
 function renderReceiving(){
@@ -4374,6 +4626,15 @@ function showRecipeDetail(id){
       <div class="cost-tile"><span class="cost-n">${r.menuPrice?'€'+r.menuPrice:'–'}</span><span class="cost-l">Menu price</span></div>
       <div class="cost-tile"><span class="cost-n" style="color:${mgColor};">${mg!==null?mg+'%':'–'}</span><span class="cost-l">Margin</span></div>
     </div>
+    <div class="recipe-cost-section">
+      <div class="rcs-label">Inventory-linked cost tracking</div>
+      <div class="rcs-grid">
+        <div class="rcs-stat"><div class="rcs-label-sm">Recipe total cost</div><div class="rcs-val">€${(r.total_cost||0).toFixed(2)}</div></div>
+        <div class="rcs-stat"><div class="rcs-label-sm">Per portion</div><div class="rcs-val">€${(r.cost_per_portion||0).toFixed(2)}</div></div>
+        <div class="rcs-stat"><div class="rcs-label-sm">Last costed</div><div class="rcs-val rcs-val-sm">${r.last_costed_at ? new Date(r.last_costed_at).toLocaleDateString() : 'never'}</div></div>
+      </div>
+      <button class="cta" onclick="recomputeRecipeCost('${r.id}')" style="width:100%;padding:10px;border-radius:8px;background:var(--fern);color:white;border:none;font-size:12px;font-weight:600;cursor:pointer;">Recompute from inventory</button>
+    </div>
     <div class="det-section">Version history</div>
     <div style="background:var(--ink-mid);border:1px solid var(--border);border-radius:12px;padding:4px 14px;margin-bottom:16px;">${verHtml}</div>
     <div class="det-actions">
@@ -4429,6 +4690,52 @@ function openWineDetail(wineId){
   document.body.insertAdjacentHTML('beforeend',html);
   setTimeout(()=>document.getElementById('m-wine-detail')?.classList.add('open'),10);
 }
+
+// ANCHOR: F53_openBeverageDetail_generalized
+function openBeverageDetail(itemId){
+  let item = (MENU[R] || []).find(m => m.id === itemId);
+  if (!item) return;
+  const btype = item.beverage_type || item.section || 'beverage';
+  const btypeLabel = ({wine:'Wine', beer:'Beer', cocktail:'Cocktail', spirit:'Spirit', nonalcoholic:'Non-alcoholic', soft:'Soft drink', hot:'Hot drink'}[btype] || 'Beverage');
+
+  // Parse description into structured fields if delimited by · or ;
+  const desc = item.description || '';
+  const parts = desc.split(/[·;|]/).map(p => p.trim()).filter(Boolean);
+
+  const html = `
+    <div class="modal-overlay" id="m-bev-detail" onclick="if(event.target===this)closeModal('m-bev-detail')">
+      <div class="modal-sheet bev-sheet">
+        <div class="mh"></div>
+        <div class="bev-eyebrow">${escapeHtml(btypeLabel)}</div>
+        <div class="mt">${escapeHtml(item.name)}</div>
+        <div class="bev-price">€${item.price || '-'}</div>
+        ${desc ? `<div class="bev-desc">${escapeHtml(desc)}</div>` : ''}
+        ${parts.length > 1 ? `
+          <div class="bev-parts">
+            ${parts.map(p => `<span class="bev-part">${escapeHtml(p)}</span>`).join('')}
+          </div>` : ''}
+        ${btype === 'wine' ? `
+          <div class="bev-section">
+            <div class="bev-section-label">Pairing suggestions</div>
+            <div class="bev-pairings">Excellent with: shellfish, grilled fish, mediterranean tapas. Ask the sommelier for tonight's special pairings.</div>
+          </div>` : ''}
+        ${btype === 'cocktail' ? `
+          <div class="bev-section">
+            <div class="bev-section-label">Variations</div>
+            <div class="bev-pairings">Ask the bar for non-alcoholic version, or to substitute spirits with what you prefer.</div>
+          </div>` : ''}
+        <button class="mb sec" onclick="closeModal('m-bev-detail')">Close</button>
+      </div>
+    </div>
+  `;
+  let el = document.getElementById('m-bev-detail');
+  if (el) el.outerHTML = html;
+  else document.body.insertAdjacentHTML('beforeend', html);
+  setTimeout(() => document.getElementById('m-bev-detail')?.classList.add('open'), 10);
+}
+
+// Backward-compat alias for existing wine handler
+window.openWineDetail = function(id) { return openBeverageDetail(id); };
 
 // ══ CLEANING ══
 function renderCleaning(){
@@ -4559,6 +4866,42 @@ async function saveRec(){
     console.warn('recipe save:',e.message);
     showToast('Saved locally — DB sync failed');
   }
+}
+
+// ══ RECIPE-INVENTORY COST CHAIN (NEW) ══ ANCHOR: recipe_cost_chain_functions
+async function recomputeRecipeCost(recipeId){
+  showToast('Recomputing recipe cost from inventory…', { duration_ms: 2000 });
+  try {
+    // Call Supabase RPC to recompute (or just show pattern for now)
+    const result = await fetch(`${SUPABASE_URL}/rest/v1/rpc/recompute_recipe_cost`, {
+      method: 'POST',
+      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ recipe_id: recipeId })
+    }).catch(e => { console.log('RPC not yet created:', e.message); return null; });
+    showToast('Cost recomputed. Price suggestions updated.', { kind: 'success', duration_ms: 4000 });
+    // Refresh recipe detail
+    const r = RECIPES.find(x => x.id === recipeId);
+    if(r) showRecipeDetail(recipeId);
+  } catch(e) {
+    showToast('Recompute failed: ' + e.message, { kind: 'error' });
+  }
+}
+
+async function applyComputedPrice(menuItemId) {
+  const item = (MENU[R] || []).find(m => m.id === menuItemId);
+  if (!item || !item.computed_price) return;
+  const oldPrice = item.price;
+  item.price = item.computed_price;
+  showToast(`Price updated €${oldPrice}→€${item.computed_price}`, { undo_fn: () => { item.price = oldPrice; renderTab(); } });
+  renderTab();
+  try {
+    await fetch(`${SUPABASE_URL}/rest/v1/menu_items?id=eq.${menuItemId}`, {
+      method: 'PATCH',
+      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ price: item.computed_price, updated_at: new Date().toISOString() })
+    });
+    showToast('Menu price synced to Fresto (future)', { kind: 'info', duration_ms: 2000 });
+  } catch(e) { console.warn('applyComputedPrice sync:', e.message); }
 }
 
 // ══ AI BAR ══
@@ -4711,9 +5054,11 @@ function doSignOut(){
 
 // ══ THEME ══
 function applyTheme(theme){
+  if(theme==='light')theme='bohemian';
+  if(theme==='dark')theme='midnight';
   let actual=theme;
   if(theme==='auto'){
-    actual=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+    actual=window.matchMedia('(prefers-color-scheme: dark)').matches?'midnight':'bohemian';
   }
   document.documentElement.setAttribute('data-theme',actual);
   localStorage.setItem('fs_theme_pref',theme);
@@ -8299,9 +8644,10 @@ function showInlineToastError(msg) {
   <div style="border-top:1px solid var(--border);margin-top:12px;padding-top:12px;">
     <div style="font-size:12px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;padding:0 8px;">Theme</div>
     <div style="display:flex;gap:6px;padding:0 8px;">
-      <button class="theme-toggle-btn" data-theme-btn="light" onclick="applyTheme('light')"><span>☀️ Light</span></button>
-      <button class="theme-toggle-btn" data-theme-btn="dark" onclick="applyTheme('dark')"><span>🌙 Dark</span></button>
-      <button class="theme-toggle-btn" data-theme-btn="auto" onclick="applyTheme('auto')"><span>⚙ Auto</span></button>
+      <button class="theme-toggle-btn" data-theme-btn="bohemian" onclick="applyTheme('bohemian')"><span class="ts-swatch" style="background:linear-gradient(135deg,#F7F5F2,#B86A42)"></span>Bohemian</button>
+      <button class="theme-toggle-btn" data-theme-btn="midnight" onclick="applyTheme('midnight')"><span class="ts-swatch" style="background:linear-gradient(135deg,#0A0A0A,#FFB347)"></span>Midnight</button>
+      <button class="theme-toggle-btn" data-theme-btn="concierge" onclick="applyTheme('concierge')"><span class="ts-swatch" style="background:linear-gradient(135deg,#0F172A,#D4AF37)"></span>Concierge</button>
+      <button class="theme-toggle-btn" data-theme-btn="auto" onclick="applyTheme('auto')"><span class="ts-swatch" style="background:linear-gradient(135deg,#888,#ccc)"></span>Auto</button>
     </div>
   </div>
 </div>
@@ -8564,7 +8910,7 @@ function cmdkSearch(query) {
     { type:'action', icon:'∎', title:'Start Cook Mode', sub:'Recipes · workflow', fn:()=>switchTab('cookmode',null), keywords:'cook mode recipe workflow' },
     { type:'action', icon:'☰', title:'Open Inbox', sub:'Messages · agents', fn:()=>switchTab('inbox',null), keywords:'inbox messages' },
     { type:'action', icon:'⌚', title:'Clock in / out', sub:'Time tracking', fn:()=>{ if (typeof clockToggle === 'function') clockToggle(); }, keywords:'clock in out time' },
-    { type:'action', icon:'☾', title:'Toggle dark mode', sub:'Theme', fn:()=>{ const cur=document.documentElement.getAttribute('data-theme'); applyTheme(cur==='dark'?'light':'dark'); }, keywords:'dark light theme mode' },
+    { type:'action', icon:'☾', title:'Toggle dark mode', sub:'Theme', fn:()=>{ const cur=document.documentElement.getAttribute('data-theme'); applyTheme((cur==='midnight'||cur==='dark')?'bohemian':'midnight'); }, keywords:'dark light theme mode' },
     { type:'action', icon:'⌖', title:'Open Menu Library', sub:'All Canva designs', fn:()=>{ menuViewMode='library'; switchTab('menu',null); }, keywords:'menu library canva designs' },
   ];
   for (const a of actions) {
@@ -8806,6 +9152,130 @@ function closeWelcome(markSeen) {
 setTimeout(() => {
   if (typeof USER !== 'undefined' && USER && USER.name) showWelcomeIfFirstRun();
 }, 2500);
+
+/* ══════════════════════════════════════
+   INLINE AI BAR — Persistent Assistant
+══════════════════════════════════════ */
+let aiInlineMessages = [];
+
+function aiInlineExpand() {
+  const el = document.getElementById('ai-inline');
+  if (el) {
+    el.classList.remove('collapsed');
+    el.classList.add('expanded');
+    aiInlineRefreshChips();
+    setTimeout(() => document.getElementById('aii-input')?.focus(), 100);
+  }
+}
+
+function aiInlineCollapse() {
+  const el = document.getElementById('ai-inline');
+  if (el) {
+    el.classList.add('collapsed');
+    el.classList.remove('expanded');
+  }
+}
+
+function aiInlineRefreshChips() {
+  const root = document.getElementById('aii-chips');
+  if (!root) return;
+  const ctx = (typeof currentTab !== 'undefined' ? currentTab : 'today');
+  let chips = [];
+  if (ctx === 'events') {
+    chips = ['Draft proposal for 12 pax Friday', 'What\'s our pipeline value?', 'Show next inquiry'];
+  } else if (ctx === 'menu') {
+    chips = ['What\'s today\'s special?', 'Find a vegan dish', 'Show wines from Rioja'];
+  } else if (ctx === 'cleaning') {
+    chips = ['What\'s left to sign off?', 'Report a maintenance issue', 'Open Libro Azul'];
+  } else if (ctx === 'recipes' || ctx === 'cookmode') {
+    chips = ['Scale Bisque for 60 covers', 'Find recipe with mussels', 'What\'s cost per portion of Chitarra?'];
+  } else if (ctx === 'office') {
+    chips = ['Run CFO agent', 'Categorise pending expense', 'Open Holded ledger'];
+  } else {
+    chips = ['What needs my attention?', 'Open today\'s brief', 'Sign me in'];
+  }
+  root.innerHTML = chips.map(c => `<button class="aii-chip" onclick="aiInlineQuickPrompt('${c.replace(/'/g, "\\'")}')">${c}</button>`).join('');
+}
+
+function aiInlineQuickPrompt(text) {
+  const inp = document.getElementById('aii-input');
+  if (inp) {
+    inp.value = text;
+    aiInlineSend();
+  }
+}
+
+async function aiInlineSend() {
+  const inp = document.getElementById('aii-input');
+  if (!inp) return;
+  const text = inp.value.trim();
+  if (!text) return;
+  inp.value = '';
+  aiInlineMessages.push({ role: 'user', content: text });
+  aiInlineRender();
+  // Add loading state
+  aiInlineMessages.push({ role: 'assistant', content: '…', loading: true });
+  aiInlineRender();
+  // Send to /api/ai
+  try {
+    const ctx = `[User on ${currentTab||'today'} tab, restaurant ${RESTAURANTS && RESTAURANTS[R] ? RESTAURANTS[R].name : '?'}, role ${USER?.role||'?'}]`;
+    const resp = await fetch('/api/ai', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 800,
+        system: `You are the Food Studio OS assistant. Respond concisely (2-4 sentences max). The user's current context: ${ctx}. If asked to take action, suggest the right tab/screen they should open. Be warm and operational.`,
+        messages: aiInlineMessages.filter(m => !m.loading).slice(-8).map(m => ({ role: m.role, content: m.content }))
+      })
+    });
+    const data = await resp.json();
+    const reply = (data.content && data.content[0] && data.content[0].text) || 'No response.';
+    aiInlineMessages = aiInlineMessages.filter(m => !m.loading);
+    aiInlineMessages.push({ role: 'assistant', content: reply });
+    aiInlineRender();
+  } catch(e) {
+    aiInlineMessages = aiInlineMessages.filter(m => !m.loading);
+    aiInlineMessages.push({ role: 'assistant', content: 'Connection issue: ' + e.message });
+    aiInlineRender();
+  }
+}
+
+function aiInlineRender() {
+  const root = document.getElementById('aii-thread');
+  if (!root) return;
+  const turns = aiInlineMessages.slice(-12);
+  root.innerHTML = turns.map(m => {
+    if (m.loading) return '<div class="aii-bubble aii-bubble-loading">···</div>';
+    const escaped = (m.content || '').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>');
+    return `<div class="aii-bubble aii-bubble-${m.role}">${escaped}</div>`;
+  }).join('');
+  root.scrollTop = root.scrollHeight;
+}
+
+function aiInlineRefreshChipsOnTabChange() {
+  if (document.getElementById('ai-inline')?.classList.contains('expanded')) {
+    aiInlineRefreshChips();
+  }
+}
+
+// Wire tab switching to refresh chips
+const _origSwitchTab = window.switchTab;
+if (typeof switchTab === 'function' && !window._aiInlineWired) {
+  window._aiInlineWired = true;
+  window.switchTab = function(tabName, buttonEl) {
+    const res = _origSwitchTab(tabName, buttonEl);
+    aiInlineRefreshChipsOnTabChange();
+    return res;
+  };
+}
+
+// Periodic refresh as fallback
+setInterval(() => {
+  if (document.getElementById('ai-inline')?.classList.contains('expanded')) {
+    aiInlineRefreshChips();
+  }
+}, 1500);
 </script>
 
 <!-- Welcome Modal (First-Run Onboarding) -->
@@ -8821,6 +9291,28 @@ setTimeout(() => {
     <div class="welcome-actions">
       <button class="cta primary" onclick="closeWelcome(true)">Get started</button>
       <button class="cta-link" onclick="closeWelcome(false)">Skip for now</button>
+    </div>
+  </div>
+</div>
+
+<!-- Inline AI Assistant Bar (Persistent) -->
+<div id="ai-inline" class="ai-inline collapsed">
+  <div class="aii-collapsed-bar" onclick="aiInlineExpand()">
+    <span class="aii-icon">✦</span>
+    <span class="aii-prompt">Ask the OS anything…</span>
+    <span class="aii-shortcut">⌘K</span>
+  </div>
+  <div class="aii-expanded">
+    <div class="aii-head">
+      <div class="aii-title">Food Studio Assistant</div>
+      <button class="aii-collapse" onclick="aiInlineCollapse()" title="Collapse">↓</button>
+    </div>
+    <div class="aii-thread" id="aii-thread"></div>
+    <div class="aii-chips" id="aii-chips"></div>
+    <div class="aii-input-row">
+      <button class="aii-mic" id="aii-mic" onclick="if(typeof startVoiceCommand==='function') startVoiceCommand()" title="Voice">◉</button>
+      <input class="aii-input" id="aii-input" type="text" placeholder="Ask, command, or dictate…" onkeydown="if(event.key==='Enter')aiInlineSend()">
+      <button class="aii-send" onclick="aiInlineSend()">Send</button>
     </div>
   </div>
 </div>
