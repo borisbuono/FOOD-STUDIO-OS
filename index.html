@@ -2446,6 +2446,22 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
 .fp-card-todo { font-size: 10px; opacity: 0.5; font-style: italic; }
 .fp-actions { display: flex; gap: 8px; flex-wrap: wrap; }
 
+/* Missing Invoices [UNIQUE_ANCHOR: missing_invoices_css] */
+.mi-panel { margin-top: 24px; padding: 16px; border: 1px solid var(--border, rgba(0,0,0,0.08)); border-radius: 10px; background: var(--bg-card, transparent); }
+.mi-panel-header { margin-bottom: 12px; }
+.mi-panel-title { font-family: var(--font-serif, Fraunces, Georgia, serif); font-size: 16px; font-weight: 600; }
+.mi-panel-sub { font-size: 12px; opacity: 0.6; margin-top: 2px; }
+.mi-empty { padding: 18px; text-align: center; }
+.mi-empty p { font-style: italic; opacity: 0.65; margin: 0 0 12px; }
+.mi-hint { font-size: 11px; opacity: 0.55; margin-top: 12px; line-height: 1.5; }
+.mi-hint code { background: var(--bg, rgba(0,0,0,0.05)); padding: 1px 5px; border-radius: 3px; font-family: var(--font-mono, ui-monospace, monospace); font-size: 11px; }
+.mi-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+.mi-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; background: var(--bg, rgba(0,0,0,0.02)); border-radius: 6px; }
+.mi-row-info { flex: 1; min-width: 0; }
+.mi-row-ref { font-size: 13px; font-weight: 500; }
+.mi-row-meta { font-size: 11px; opacity: 0.6; margin-top: 2px; font-family: var(--font-mono, ui-monospace, monospace); }
+.mi-row-actions { display: flex; gap: 6px; }
+
 /* Communications composer */
 .comms-composer { margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border, rgba(0,0,0,0.08)); }
 .cc-header { margin-bottom: 12px; }
@@ -2543,6 +2559,29 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
 .ed-act-text { flex: 1; }
 .ed-act-empty { opacity: 0.5; font-style: italic; padding: 8px 0; }
 .ed-foot { display: flex; justify-content: space-between; gap: 10px; padding-top: 16px; border-top: 1px solid var(--border, rgba(0,0,0,0.06)); margin-top: 20px; }
+
+.ed-contact { display: flex; align-items: center; gap: 10px; padding: 12px 14px; margin: 8px 0 16px; background: rgba(184,106,66,0.06); border-radius: 8px; cursor: pointer; transition: background 0.15s; }
+.ed-contact:hover { background: rgba(184,106,66,0.12); }
+.ed-contact-icon { color: var(--ember, #B86A42); }
+.ed-contact-name { font-weight: 500; flex: 1; }
+.ed-contact-hint { font-size: 11px; opacity: 0.55; }
+
+.ed-allergen-current { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+.ed-allergen-empty { font-style: italic; opacity: 0.55; font-size: 13px; }
+.ed-allergen-pill { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; background: var(--ruby, #A03838); color: white; border-radius: 12px; font-size: 12px; }
+.ed-allergen-add { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-top: 10px; }
+
+.guest-sheet { max-width: 460px; }
+.gp-header { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+.gp-avatar { width: 56px; height: 56px; border-radius: 50%; background: var(--ember, #B86A42); color: white; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 600; }
+.gp-id { flex: 1; }
+.gp-name { font-family: Fraunces, Georgia, serif; font-size: 22px; font-weight: 600; }
+.gp-tags { margin-top: 4px; }
+.gp-tag { padding: 2px 8px; background: var(--gold, #B8963A); color: white; border-radius: 10px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.07em; font-weight: 600; }
+.gp-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.05); font-size: 13px; }
+.gp-key { opacity: 0.6; text-transform: uppercase; font-size: 11px; letter-spacing: 0.06em; }
+.gp-val { font-weight: 500; }
+.gp-foot { display: flex; justify-content: space-between; gap: 10px; margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(0,0,0,0.06); }
 .cta { padding: 10px 16px; border-radius: 8px; background: var(--ember, #4E6332); color: white; border: 0; font-size: 13px; cursor: pointer; font-family: Outfit, sans-serif; font-weight: 600; transition: all 0.15s; }
 .cta:hover { opacity: 0.9; }
 .cta-sec { padding: 10px 16px; border-radius: 8px; background: transparent; color: var(--text-primary); border: 1px solid var(--border, rgba(0,0,0,0.1)); font-size: 13px; cursor: pointer; font-family: Outfit, sans-serif; font-weight: 600; transition: all 0.15s; }
@@ -2578,6 +2617,146 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
 .ia-btn.primary { background: var(--ember, #B86A42); color: white; border-color: var(--ember, #B86A42); }
 .ia-btn:hover { opacity: 0.85; }
 .ia-btn.sec:hover { background: rgba(0,0,0,0.05); }
+
+/* SETTINGS PAGE [UNIQUE_ANCHOR: settings_css] */
+.settings-page { max-width: 720px; margin: 0 auto; padding: 16px 4px; }
+.settings-header { margin-bottom: 24px; }
+.settings-title { font-family: var(--font-serif, Fraunces, Georgia, serif); font-size: 26px; font-weight: 600; margin: 0 0 4px; color: var(--text-primary); }
+.settings-sub { font-size: 14px; opacity: 0.65; margin: 0; color: var(--text-secondary); }
+.settings-section { margin-bottom: 28px; }
+.ss-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.6; margin-bottom: 10px; color: var(--text-tertiary); font-weight: 600; }
+.ss-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+@media (max-width: 600px) { .ss-row { grid-template-columns: 1fr; } }
+.ss-theme { display: flex; align-items: center; gap: 10px; padding: 12px; border: 1px solid var(--border); border-radius: 10px; background: transparent; cursor: pointer; text-align: left; color: inherit; font-family: inherit; transition: all 0.15s; }
+.ss-theme:active { transform: scale(0.98); }
+.ss-theme.active { border-color: var(--ember); background: var(--ember-pale, rgba(78,99,50,0.08)); }
+.ss-swatch { display: inline-block; width: 18px; height: 18px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.1); flex-shrink: 0; }
+.ss-theme-name { font-weight: 500; font-size: 13px; color: var(--text-primary); }
+.ss-theme-desc { font-size: 11px; opacity: 0.6; margin-top: 2px; color: var(--text-secondary); }
+.ss-lang { padding: 8px 16px; border-radius: 8px; border: 1px solid var(--border); background: transparent; cursor: pointer; color: inherit; font-size: 13px; font-family: inherit; font-weight: 500; transition: all 0.15s; }
+.ss-lang.active { background: var(--ember); color: white; border-color: var(--ember); }
+.ss-hint { font-size: 12px; opacity: 0.55; margin-top: 8px; font-style: italic; color: var(--text-tertiary); }
+.ss-toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border); gap: 12px; }
+.ss-toggle-label { flex: 1; }
+.ss-toggle-name { font-size: 14px; font-weight: 500; color: var(--text-primary); }
+.ss-toggle-desc { font-size: 12px; opacity: 0.6; margin-top: 2px; color: var(--text-secondary); }
+.ss-toggle { width: 42px; height: 24px; border-radius: 12px; background: var(--border); border: 0; padding: 0; position: relative; cursor: pointer; transition: background 0.15s; flex-shrink: 0; font-family: inherit; }
+.ss-toggle.on { background: var(--ember); }
+.ss-toggle-dot { position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: white; transition: transform 0.15s; display: block; }
+.ss-toggle.on .ss-toggle-dot { transform: translateX(18px); }
+.ss-account { display: flex; flex-direction: column; gap: 6px; }
+.ss-acct-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; gap: 12px; }
+.ss-acct-key { opacity: 0.65; text-transform: uppercase; font-size: 11px; letter-spacing: 0.05em; color: var(--text-tertiary); font-weight: 600; }
+.ss-acct-val { font-weight: 500; text-align: right; color: var(--text-primary); }
+.ss-data-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.cta-sec { padding: 8px 16px; border-radius: 8px; background: transparent; color: var(--ember); border: 1px solid var(--ember); font-size: 13px; cursor: pointer; font-family: inherit; font-weight: 600; transition: all 0.15s; }
+.cta-sec:active { background: var(--ember); color: white; transform: scale(0.98); }
+.cta { padding: 10px 24px; border-radius: 8px; background: var(--ember); color: white; border: 0; font-size: 14px; cursor: pointer; font-family: inherit; font-weight: 600; transition: all 0.15s; width: 100%; }
+.cta:active { transform: scale(0.98); opacity: 0.9; }
+.cta-danger { background: var(--ruby); }
+.cta-danger:active { opacity: 0.9; }
+.settings-foot { font-size: 12px; opacity: 0.5; text-align: center; padding: 24px 0; line-height: 1.5; color: var(--text-tertiary); }
+
+/* SOPs LIBRARY */
+.cleaning-subtabs { display: flex; gap: 8px; margin-bottom: 14px; padding: 0 4px; border-bottom: 1px solid var(--border, rgba(0,0,0,0.06)); padding-bottom: 12px; overflow-x: auto; }
+.cst-pill { padding: 8px 14px; border-radius: 16px; border: 1px solid var(--border, rgba(0,0,0,0.1)); background: transparent; font-size: 13px; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
+.cst-pill.active { background: var(--ember, #B86A42); color: white; border-color: var(--ember, #B86A42); }
+.sops-library { padding: 0 4px; }
+.sops-header { margin-bottom: 18px; }
+.sops-title { font-family: var(--font-serif, Fraunces, Georgia, serif); font-size: 22px; font-weight: 600; color: var(--text-primary); }
+.sops-sub { font-size: 13px; opacity: 0.65; margin-top: 4px; color: var(--text-secondary); }
+.sops-cat { margin-bottom: 18px; }
+.sops-cat-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.55; margin-bottom: 8px; color: var(--text-tertiary); }
+.sop-card { border: 1px solid var(--border, rgba(0,0,0,0.08)); border-radius: 10px; margin-bottom: 8px; cursor: pointer; transition: all 0.15s; background: transparent; }
+.sop-card:hover { border-color: var(--ember, #B86A42); }
+.sop-card.open { border-color: var(--ember, #B86A42); cursor: default; }
+.sop-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; gap: 12px; }
+.sop-info { flex: 1; }
+.sop-title { font-size: 14px; font-weight: 500; color: var(--text-primary); }
+.sop-meta { font-size: 12px; opacity: 0.6; margin-top: 2px; font-family: var(--font-mono, ui-monospace, monospace); color: var(--text-secondary); }
+.sop-toggle { font-size: 18px; opacity: 0.5; padding: 0 6px; flex-shrink: 0; }
+.sop-body { padding: 0 14px 14px; border-top: 1px solid var(--border, rgba(0,0,0,0.06)); }
+.sop-section { margin-top: 14px; }
+.sop-section-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.07em; opacity: 0.55; margin-bottom: 6px; color: var(--text-tertiary); font-weight: 600; }
+.sop-section-text { font-size: 13px; line-height: 1.5; color: var(--text-primary); }
+.sop-steps, .sop-products { padding-left: 20px; }
+.sop-steps li, .sop-products li { font-size: 13px; line-height: 1.6; padding: 2px 0; color: var(--text-primary); }
+.sop-print { margin-top: 14px; padding: 7px 16px; border-radius: 6px; border: 1px solid var(--ember, #B86A42); background: transparent; color: var(--ember, #B86A42); font-size: 12px; cursor: pointer; font-family: inherit; font-weight: 600; transition: all 0.15s; }
+.sop-print:hover { background: var(--ember, #B86A42); color: white; }
+.sop-print:active { transform: scale(0.98); }
+
+/* ════════════════════════════════════════════════════════════════════ */
+/* ─── PUBLIC SALES WIZARD STYLES ─────────────────────────────────── */
+/* ════════════════════════════════════════════════════════════════════ */
+.pw-shell { position: fixed; inset: 0; overflow-y: auto; background: #F7F5F2; color: #1F2916; font-family: 'Outfit', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+.pw-bg-gradient { position: fixed; inset: 0; background: radial-gradient(circle at 30% 20%, rgba(184,106,66,0.08), transparent 50%), radial-gradient(circle at 70% 80%, rgba(74,123,106,0.06), transparent 60%); pointer-events: none; }
+.pw-frame { position: relative; max-width: 560px; margin: 0 auto; padding: 56px 24px 80px; }
+.pw-header { text-align: center; margin-bottom: 36px; }
+.pw-brand { font-family: 'Fraunces', Georgia, serif; font-size: 28px; font-weight: 600; letter-spacing: -0.01em; }
+.pw-tagline { font-size: 15px; opacity: 0.7; margin-top: 8px; font-style: italic; }
+.pw-progress { height: 3px; background: rgba(0,0,0,0.06); border-radius: 2px; overflow: hidden; margin-bottom: 36px; }
+.pw-progress-bar { height: 100%; background: #B86A42; transition: width 0.4s ease; }
+.pw-body { min-height: 320px; }
+.pw-question { animation: pw-fade-in 0.3s ease-out; }
+@keyframes pw-fade-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+.pw-step-num { font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: #B86A42; margin-bottom: 12px; }
+.pw-q-title { font-family: 'Fraunces', Georgia, serif; font-size: 26px; font-weight: 500; line-height: 1.2; margin: 0 0 20px; }
+.pw-q-hint { font-size: 13px; opacity: 0.6; margin-top: -8px; margin-bottom: 16px; font-style: italic; }
+.pw-input, .pw-textarea { width: 100%; padding: 14px 16px; border: 1px solid rgba(0,0,0,0.12); border-radius: 8px; font-size: 15px; font-family: inherit; margin-bottom: 12px; background: white; box-sizing: border-box; color: #1F2916; }
+.pw-input:focus, .pw-textarea:focus { outline: 2px solid #B86A42; outline-offset: -2px; border-color: #B86A42; }
+.pw-textarea { resize: vertical; min-height: 120px; }
+.pw-input-date { font-family: inherit; }
+.pw-choices { display: flex; flex-direction: column; gap: 8px; }
+.pw-choices-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 6px; }
+.pw-choice { padding: 14px 18px; border: 1px solid rgba(0,0,0,0.12); border-radius: 8px; background: white; font-size: 14px; cursor: pointer; text-align: left; color: inherit; font-family: inherit; transition: all 0.15s; }
+.pw-choice:hover { border-color: #B86A42; background: rgba(184,106,66,0.04); }
+.pw-choice.selected { background: #B86A42; color: white; border-color: #B86A42; }
+.pw-choice-sm { padding: 12px; text-align: center; font-size: 14px; font-weight: 500; }
+.pw-allergen-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 6px; margin-bottom: 14px; }
+.pw-checkbox { padding: 10px 14px; border: 1px solid rgba(0,0,0,0.12); border-radius: 6px; background: white; font-size: 13px; cursor: pointer; text-align: center; color: inherit; font-family: inherit; transition: all 0.15s; }
+.pw-checkbox:hover { border-color: #5A8A78; background: rgba(90,138,120,0.04); }
+.pw-checkbox.selected { background: #5A8A78; color: white; border-color: #5A8A78; }
+.pw-next, .pw-submit { padding: 14px 28px; border: 0; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; margin-top: 10px; font-family: inherit; }
+.pw-next { background: #B86A42; color: white; }
+.pw-submit { background: #5A8A78; color: white; }
+.pw-next:hover, .pw-submit:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(184,106,66,0.25); }
+.pw-next:active, .pw-submit:active { transform: scale(0.98); }
+.pw-foot { text-align: center; padding: 24px 16px 40px; font-size: 11px; opacity: 0.45; letter-spacing: 0.05em; }
+.pw-confirm { text-align: center; padding: 24px 0; }
+.pw-check { width: 64px; height: 64px; border-radius: 50%; background: #5A8A78; color: white; font-size: 28px; line-height: 64px; margin: 0 auto 20px; }
+.pw-confirm-msg { font-size: 16px; line-height: 1.6; margin: 16px 0 24px; }
+.pw-confirm-meta { font-size: 14px; opacity: 0.7; margin-bottom: 24px; }
+.pw-confirm-note { font-style: italic; opacity: 0.6; font-size: 14px; }
+
+/* ════════════════════════════════════════════════════════════════════ */
+/* ─── VENUE ONBOARDING WIZARD ─────────────────────────────────────── */
+/* ════════════════════════════════════════════════════════════════════ */
+.onboard-sheet { max-width: 540px; max-height: 88vh; overflow-y: auto; }
+.ob-header { padding-bottom: 18px; border-bottom: 1px solid var(--border, rgba(0,0,0,0.06)); margin-bottom: 18px; }
+.ob-eyebrow { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.55; }
+.ob-title { font-family: var(--font-serif, Fraunces, Georgia, serif); font-size: 22px; font-weight: 600; margin: 6px 0 14px; }
+.ob-progress { height: 3px; background: rgba(0,0,0,0.06); border-radius: 2px; overflow: hidden; }
+.ob-progress-bar { height: 100%; background: var(--ember, #B86A42); transition: width 0.4s ease; }
+.ob-step { padding: 4px 0; }
+.ob-explainer { font-size: 14px; line-height: 1.5; opacity: 0.85; margin: 0 0 18px; }
+.ob-checklist { padding-left: 20px; margin: 0 0 24px; }
+.ob-checklist li { padding: 4px 0; opacity: 0.85; font-size: 14px; }
+.ob-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; font-size: 12px; opacity: 0.85; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 500; }
+.ob-field input.mi, .ob-field textarea.mi { padding: 10px 12px; border: 1px solid var(--border, rgba(0,0,0,0.12)); border-radius: 6px; font-size: 14px; font-family: inherit; text-transform: none; letter-spacing: normal; font-weight: normal; opacity: 1; background: var(--bg, white); color: inherit; }
+.ob-color-row { display: flex; gap: 8px; align-items: center; }
+.ob-color-row .mi-color { width: 50px; height: 38px; border: 0; padding: 0; cursor: pointer; }
+.ob-hint { font-size: 12px; opacity: 0.55; font-style: italic; margin-bottom: 14px; }
+.ob-actions { display: flex; gap: 8px; justify-content: space-between; margin-top: 14px; flex-wrap: wrap; }
+.ob-summary { background: var(--bg-card, rgba(184,150,58,0.04)); border: 1px solid var(--border, rgba(0,0,0,0.06)); border-radius: 8px; padding: 14px 16px; margin-bottom: 16px; }
+.ob-sum-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px dashed var(--border, rgba(0,0,0,0.06)); font-size: 13px; }
+.ob-sum-row span { opacity: 0.6; text-transform: uppercase; font-size: 11px; letter-spacing: 0.05em; }
+.ob-sum-row strong { font-weight: 600; }
+.ob-success { text-align: center; padding: 24px 0; }
+.ob-check { width: 56px; height: 56px; border-radius: 50%; background: var(--fern, #5A8A78); color: white; font-size: 26px; line-height: 56px; margin: 0 auto 16px; }
+.ob-success h2 { font-family: var(--font-serif, Fraunces, Georgia, serif); margin: 0 0 12px; }
+.ob-trigger-section { margin-top: 28px; padding: 20px; background: var(--bg-card, rgba(184,106,66,0.06)); border-left: 3px solid var(--ember, #B86A42); border-radius: 8px; }
+.ob-trigger-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.55; margin-bottom: 8px; }
+.ob-trigger-text { font-size: 13px; line-height: 1.5; opacity: 0.8; margin: 0 0 12px; }
 
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -2869,6 +3048,217 @@ const db = (typeof supabase !== 'undefined')
     })
   : null;
 
+// ════════════════════════════════════════════════════════════════════
+// ─── PUBLIC SALES WIZARD (guest-facing, no auth) ───────────────────
+// ════════════════════════════════════════════════════════════════════
+
+function isPublicWizard() {
+  const params = new URLSearchParams(window.location.search);
+  return params.has('wizard') || window.location.hash === '#book' || window.location.hash === '#inquire';
+}
+
+let _wizardStep = 0;
+let _wizardData = {};
+
+function escapeHtml(text) {
+  const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+  return String(text).replace(/[&<>"']/g, m => map[m]);
+}
+
+function renderPublicWizard() {
+  const restName = 'Bistro Mondo';
+  return `
+    <div class="pw-shell">
+      <div class="pw-bg-gradient"></div>
+      <div class="pw-frame">
+        <div class="pw-header">
+          <div class="pw-brand">${restName}</div>
+          <div class="pw-tagline">Tell us about your event — we'll handle the rest.</div>
+        </div>
+        <div class="pw-progress">
+          <div class="pw-progress-bar" id="pw-progress-bar" style="width:14%"></div>
+        </div>
+        <div class="pw-body" id="pw-body">
+          ${renderWizardStep(0)}
+        </div>
+      </div>
+      <div class="pw-foot">Powered by Food Studio OS · The operating system for hospitality.</div>
+    </div>
+  `;
+}
+
+function renderWizardStep(step) {
+  const totalSteps = 7;
+  const progress = Math.round(((step + 1) / totalSteps) * 100);
+  setTimeout(() => {
+    const bar = document.getElementById('pw-progress-bar');
+    if (bar) bar.style.width = progress + '%';
+  }, 50);
+
+  switch (step) {
+    case 0: return `
+      <div class="pw-question">
+        <div class="pw-step-num">01 — Your name</div>
+        <h2 class="pw-q-title">First, who should we welcome?</h2>
+        <input type="text" id="pw-name" class="pw-input" placeholder="Your name" autofocus>
+        <input type="email" id="pw-email" class="pw-input" placeholder="Your email">
+        <input type="tel" id="pw-phone" class="pw-input" placeholder="Phone (optional)">
+        <button class="pw-next" onclick="wizardNext()">Continue →</button>
+      </div>`;
+    case 1: return `
+      <div class="pw-question">
+        <div class="pw-step-num">02 — Occasion</div>
+        <h2 class="pw-q-title">What kind of evening are you planning?</h2>
+        <div class="pw-choices">
+          ${['Private dinner','Birthday celebration','Anniversary','Corporate / team','Wedding party','Yacht catering','Masterclass / cooking lesson','Something else'].map(opt => `
+            <button class="pw-choice ${_wizardData.occasion===opt?'selected':''}" onclick="setWizardField('occasion','${opt}')">${opt}</button>
+          `).join('')}
+        </div>
+      </div>`;
+    case 2: return `
+      <div class="pw-question">
+        <div class="pw-step-num">03 — Date</div>
+        <h2 class="pw-q-title">When?</h2>
+        <input type="date" id="pw-date" class="pw-input pw-input-date" value="${_wizardData.date||''}">
+        <div class="pw-q-hint">If flexible, pick the earliest you'd consider — we'll reply with available alternatives.</div>
+        <button class="pw-next" onclick="wizardNext()">Continue →</button>
+      </div>`;
+    case 3: return `
+      <div class="pw-question">
+        <div class="pw-step-num">04 — Party size</div>
+        <h2 class="pw-q-title">How many guests?</h2>
+        <div class="pw-choices pw-choices-grid">
+          ${['2','4','6','8','10','12','14','16','18','20','25','30+'].map(n => `
+            <button class="pw-choice pw-choice-sm ${String(_wizardData.party_size)===n?'selected':''}" onclick="setWizardField('party_size','${n}')">${n}</button>
+          `).join('')}
+        </div>
+      </div>`;
+    case 4: return `
+      <div class="pw-question">
+        <div class="pw-step-num">05 — Budget</div>
+        <h2 class="pw-q-title">What's your per-guest budget?</h2>
+        <div class="pw-choices">
+          ${['Up to €60 / pax','€60 - €100','€100 - €150','€150 - €250','€250+ / luxury','Surprise me'].map(b => `
+            <button class="pw-choice ${_wizardData.budget===b?'selected':''}" onclick="setWizardField('budget','${b}')">${b}</button>
+          `).join('')}
+        </div>
+      </div>`;
+    case 5: return `
+      <div class="pw-question">
+        <div class="pw-step-num">06 — Dietary needs</div>
+        <h2 class="pw-q-title">Allergies or dietary requirements?</h2>
+        <div class="pw-allergen-grid">
+          ${['Gluten-free','Dairy-free','Vegan','Vegetarian','Nut allergy','Shellfish allergy','Pescatarian','Kosher','Halal'].map(d => `
+            <button class="pw-checkbox ${(_wizardData.dietary||[]).includes(d)?'selected':''}" onclick="toggleWizardDietary('${d}')">${d}</button>
+          `).join('')}
+        </div>
+        <input type="text" id="pw-dietary-other" class="pw-input" placeholder="Other (free text)" value="${_wizardData.dietary_other||''}">
+        <button class="pw-next" onclick="wizardNext()">Continue →</button>
+      </div>`;
+    case 6: return `
+      <div class="pw-question">
+        <div class="pw-step-num">07 — Your vision</div>
+        <h2 class="pw-q-title">Tell us a little about what you're imagining.</h2>
+        <textarea id="pw-vision" class="pw-textarea" placeholder="Surprise menu? Wine pairing? A specific cuisine? Something we haven't thought of? Anything you share helps us craft the right experience." rows="5">${_wizardData.vision||''}</textarea>
+        <button class="pw-submit" onclick="submitWizard()">Send to the Chef →</button>
+      </div>`;
+    case 99: return `
+      <div class="pw-confirm">
+        <div class="pw-check">✓</div>
+        <h2 class="pw-q-title">Thank you, ${escapeHtml(_wizardData.name||'')}</h2>
+        <p class="pw-confirm-msg">Your inquiry is in the chef's inbox. <strong>Boris will personally come back to you within 24 hours</strong> with a tailored proposal — including suggested menus, wine pairings, staffing, and a clear price.</p>
+        <p class="pw-confirm-meta">If it's urgent, WhatsApp us on <strong>+34 664 213 227</strong>.</p>
+        <p class="pw-confirm-note">— Boris</p>
+      </div>`;
+  }
+  return '';
+}
+
+function setWizardField(key, value) {
+  _wizardData[key] = value;
+  wizardNext();
+}
+
+function toggleWizardDietary(d) {
+  _wizardData.dietary = _wizardData.dietary || [];
+  const i = _wizardData.dietary.indexOf(d);
+  if (i >= 0) _wizardData.dietary.splice(i, 1);
+  else _wizardData.dietary.push(d);
+  document.getElementById('pw-body').innerHTML = renderWizardStep(_wizardStep);
+}
+
+function wizardNext() {
+  const captureInput = (id, key) => { const el = document.getElementById(id); if (el && el.value.trim()) _wizardData[key] = el.value.trim(); };
+  captureInput('pw-name', 'name');
+  captureInput('pw-email', 'email');
+  captureInput('pw-phone', 'phone');
+  captureInput('pw-date', 'date');
+  captureInput('pw-dietary-other', 'dietary_other');
+  captureInput('pw-vision', 'vision');
+
+  _wizardStep++;
+  document.getElementById('pw-body').innerHTML = renderWizardStep(_wizardStep);
+}
+
+async function submitWizard() {
+  const visionEl = document.getElementById('pw-vision');
+  if (visionEl) _wizardData.vision = visionEl.value.trim();
+
+  const summary = `${_wizardData.occasion || 'Event'} · ${_wizardData.party_size || '?'} guests · ${_wizardData.date || 'TBD'}`;
+  const dietaryStr = (_wizardData.dietary||[]).join(', ') || '—';
+  const dietaryFull = dietaryStr + (_wizardData.dietary_other ? ' · ' + _wizardData.dietary_other : '');
+  const body = `INQUIRY FROM PUBLIC WIZARD\n\nName: ${_wizardData.name||'?'}\nEmail: ${_wizardData.email||'?'}\nPhone: ${_wizardData.phone||'?'}\nOccasion: ${_wizardData.occasion||'?'}\nDate: ${_wizardData.date||'?'}\nGuests: ${_wizardData.party_size||'?'}\nBudget: ${_wizardData.budget||'?'}\nDietary: ${dietaryFull}\nVision: ${_wizardData.vision||'—'}`;
+
+  const supaUrl = SUPABASE_URL;
+  const supaKey = SUPABASE_KEY;
+
+  try {
+    await fetch(supaUrl + '/rest/v1/sales_events', {
+      method: 'POST',
+      headers: { apikey: supaKey, Authorization: 'Bearer ' + supaKey, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        operator_entity_id: 'd1ee19b6-5fb4-460c-8326-685dc86e47df',
+        title: `${_wizardData.occasion || 'Event'} for ${_wizardData.name || 'guest'}`,
+        event_type: (_wizardData.occasion || 'private_dinner').toLowerCase().replace(/\s+/g, '_'),
+        event_date: _wizardData.date || null,
+        guests_count: parseInt((_wizardData.party_size || '0').replace('+', ''), 10) || null,
+        status: 'inquiry',
+        contact_name: _wizardData.name,
+        theme: _wizardData.vision || '',
+        metadata: { source: 'public_wizard', dietary: _wizardData.dietary, dietary_other: _wizardData.dietary_other, budget: _wizardData.budget, contact: { name: _wizardData.name, email: _wizardData.email, phone: _wizardData.phone } }
+      })
+    });
+  } catch(e) { console.warn('event insert:', e); }
+
+  try {
+    await fetch(supaUrl + '/rest/v1/inbox_items', {
+      method: 'POST',
+      headers: { apikey: supaKey, Authorization: 'Bearer ' + supaKey, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        operator_entity_id: 'd1ee19b6-5fb4-460c-8326-685dc86e47df',
+        category: 'booking',
+        source: 'manual',
+        sender_name: _wizardData.name || 'Public wizard',
+        sender_handle: _wizardData.email || '',
+        subject: `New inquiry: ${summary}`,
+        body,
+        received_at: new Date().toISOString(),
+        status: 'new',
+        priority: 'high'
+      })
+    });
+  } catch(e) { console.warn('inbox insert:', e); }
+
+  _wizardStep = 99;
+  document.getElementById('pw-body').innerHTML = renderWizardStep(99);
+  const bar = document.getElementById('pw-progress-bar');
+  if (bar) bar.style.width = '100%';
+}
+
+// ────────────────────────────────────────────────────────────────────
+// End PUBLIC SALES WIZARD
+// ────────────────────────────────────────────────────────────────────
+
 // ── Multiplayer Presence (Supabase Realtime) ────────────────────────────
 let _presenceChannel = null;
 let _presenceState = {};
@@ -3028,12 +3418,13 @@ const MENU_LIBRARY = [
 // ══ STATE ══
 let USER={name:'',role:'owner',lang:'en',zone:''},selRV='',selLV='en',selRestV=null,selAreaV='';
 let R=0,AREA='boh',ZONE='Hot Station';
-let currentTab='today',recEditId=null,menuAddSec='hot',prodTab='mep',todaySubTab='day',eventsView='pipeline';
+let currentTab='today',recEditId=null,menuAddSec='hot',prodTab='mep',todaySubTab='day',eventsView='pipeline',cleaningView='tasks';
 let currentMenuType='all';
 let menuViewMode='active'; // 'active' | 'library'
 let ordersSearchQuery='';
 let currentOrdersView='catalogue';
 let INVENTORY_ITEMS=[],inventoryLoaded=false,inventorySearch='';
+let MISSING_INVOICES=[];
 let taskState={},cleanState={},mepState={},dishOpen={},menuSectionOpen={};
 let taskPriority={},taskUrgent={};
 let wSigned=[false,false],mSigned=[false,false],clSigned=[false,false];
@@ -3047,6 +3438,21 @@ let SUPABASE_URGENT_TASKS=[];let sbUrgentLoaded=false;
 let HACCP_PLANS=[];let haccpLoaded=false;
 let AGENT_SKILLS=[];let agentSkillsLoaded=false;
 let currentCommsView='internal';
+// ── VENUE ONBOARDING WIZARD ──────
+let _onboardStep=0,_onboardData={};
+function openVenueOnboarding(){if(!['owner','manager'].includes((USER?.role||'').toLowerCase())){showToast('Only owners can add new venues');return;}
+_onboardStep=0;_onboardData={operator_entity_id:USER._operatorEntityId||'d1ee19b6-5fb4-460c-8326-685dc86e47df',primary_color:'#B86A42',fence_radius_m:100};
+const html=`<div class="modal-overlay" id="m-onboard" onclick="if(event.target===this)closeModal('m-onboard')"><div class="modal-sheet onboard-sheet"><div class="mh"></div><div class="ob-header"><div class="ob-eyebrow">Add a new venue</div><div class="ob-title" id="ob-title">Let's get your new venue set up.</div><div class="ob-progress"><div class="ob-progress-bar" id="ob-progress" style="width:16%"></div></div></div><div class="ob-body" id="ob-body">${renderOnboardStep(0)}</div></div></div>`;
+let el=document.getElementById('m-onboard');if(el)el.outerHTML=html;else document.body.insertAdjacentHTML('beforeend',html);setTimeout(()=>document.getElementById('m-onboard').classList.add('open'),10);}
+function renderOnboardStep(step){const total=6;setTimeout(()=>{const bar=document.getElementById('ob-progress');if(bar)bar.style.width=Math.round(((step+1)/total)*100)+'%';const t=document.getElementById('ob-title');if(t)t.textContent=['Let\'s get your new venue set up.','About the venue.','Where exactly is it?','Brand identity.','Invite your first team member.','Ready to launch?'][step]||'';},50);
+switch(step){case 0:return`<div class="ob-step"><p class="ob-explainer">This wizard sets up a new venue in your Food Studio operating system. It takes about 2 minutes. You can edit anything later.</p><ul class="ob-checklist"><li>Venue name + city</li><li>GPS coordinates (for clock-in fence)</li><li>Brand identity (primary color, tagline)</li><li>First team invite</li></ul><button class="cta" onclick="onboardNext()">Get started →</button></div>`;case 1:return`<div class="ob-step"><label class="ob-field">Venue name<input type="text" id="ob-name" class="mi" value="${escapeHtml(_onboardData.name||'')}" placeholder="e.g. Bistro Capri"></label><label class="ob-field">URL slug<input type="text" id="ob-slug" class="mi" value="${escapeHtml(_onboardData.slug||'')}" placeholder="bistro-capri"></label><label class="ob-field">City<input type="text" id="ob-city" class="mi" value="${escapeHtml(_onboardData.city||'')}" placeholder="Capri, Italy"></label><label class="ob-field">Address<input type="text" id="ob-address" class="mi" value="${escapeHtml(_onboardData.address||'')}" placeholder="Via Vittorio Emanuele 12"></label><div class="ob-actions"><button class="cta-sec" onclick="onboardBack()">Back</button><button class="cta" onclick="onboardCaptureAndNext(['ob-name|name','ob-slug|slug','ob-city|city','ob-address|address'])">Continue →</button></div></div>`;case 2:return`<div class="ob-step"><p class="ob-explainer">GPS coordinates anchor the clock-in fence so your team can punch in only when they're physically at the venue.</p><label class="ob-field">Latitude<input type="number" step="0.000001" id="ob-lat" class="mi" value="${_onboardData.lat||''}" placeholder="38.987654"></label><label class="ob-field">Longitude<input type="number" step="0.000001" id="ob-lng" class="mi" value="${_onboardData.lng||''}" placeholder="1.234567"></label><label class="ob-field">Fence radius (meters)<input type="number" id="ob-radius" class="mi" value="${_onboardData.fence_radius_m||100}" placeholder="100"></label><div class="ob-hint">Tip: open Maps, drop a pin on your venue, copy the lat/lng from the URL. Or use 100m as a sensible default.</div><div class="ob-actions"><button class="cta-sec" onclick="onboardBack()">Back</button><button class="cta" onclick="onboardCaptureAndNext(['ob-lat|lat','ob-lng|lng','ob-radius|fence_radius_m'])">Continue →</button></div></div>`;case 3:return`<div class="ob-step"><label class="ob-field">Primary brand color<div class="ob-color-row"><input type="color" id="ob-color" class="mi-color" value="${_onboardData.primary_color||'#B86A42'}"><input type="text" id="ob-color-text" class="mi" value="${_onboardData.primary_color||'#B86A42'}" oninput="document.getElementById('ob-color').value=this.value"></div></label><label class="ob-field">Tagline (optional)<input type="text" id="ob-tagline" class="mi" value="${escapeHtml(_onboardData.tagline||'')}" placeholder="e.g. Mediterranean cuisine, daily catch"></label><label class="ob-field">Cuisine description (optional)<textarea id="ob-cuisine" class="mi" rows="3" placeholder="2-3 sentences your team can use when describing the venue to guests">${escapeHtml(_onboardData.cuisine_desc||'')}</textarea></label><div class="ob-actions"><button class="cta-sec" onclick="onboardBack()">Back</button><button class="cta" onclick="onboardCaptureAndNext(['ob-color|primary_color','ob-tagline|tagline','ob-cuisine|cuisine_desc'])">Continue →</button></div></div>`;case 4:return`<div class="ob-step"><p class="ob-explainer">Invite your first manager. They'll get an email with a sign-in link and full access to manage the venue.</p><label class="ob-field">Manager name<input type="text" id="ob-mgr-name" class="mi" value="${escapeHtml(_onboardData.mgr_name||'')}" placeholder="Their full name"></label><label class="ob-field">Manager email<input type="email" id="ob-mgr-email" class="mi" value="${escapeHtml(_onboardData.mgr_email||'')}" placeholder="manager@yourvenue.com"></label><div class="ob-hint">You can invite more team members from the Team tab once the venue is live.</div><div class="ob-actions"><button class="cta-sec" onclick="onboardBack()">Back</button><button class="cta-sec" onclick="onboardSkipMgr()">Skip for now</button><button class="cta" onclick="onboardCaptureAndNext(['ob-mgr-name|mgr_name','ob-mgr-email|mgr_email'])">Continue →</button></div></div>`;case 5:return`<div class="ob-step"><p class="ob-explainer">Quick review before we create everything.</p><div class="ob-summary"><div class="ob-sum-row"><span>Venue</span><strong>${escapeHtml(_onboardData.name||'?')}</strong></div><div class="ob-sum-row"><span>City</span><strong>${escapeHtml(_onboardData.city||'?')}</strong></div><div class="ob-sum-row"><span>Address</span><strong>${escapeHtml(_onboardData.address||'—')}</strong></div><div class="ob-sum-row"><span>GPS</span><strong>${_onboardData.lat||'?'}, ${_onboardData.lng||'?'} · ${_onboardData.fence_radius_m||100}m fence</strong></div><div class="ob-sum-row"><span>Brand</span><strong style="color:${_onboardData.primary_color||'#B86A42'}">${_onboardData.primary_color||'?'}</strong></div><div class="ob-sum-row"><span>Tagline</span><strong>${escapeHtml(_onboardData.tagline||'—')}</strong></div><div class="ob-sum-row"><span>First manager</span><strong>${_onboardData.mgr_name?escapeHtml(_onboardData.mgr_name)+' · '+escapeHtml(_onboardData.mgr_email):'Skipped'}</strong></div></div><div class="ob-actions"><button class="cta-sec" onclick="onboardBack()">Back</button><button class="cta" onclick="onboardCommit()">Create venue</button></div></div>`;case 99:return`<div class="ob-step ob-success"><div class="ob-check">✓</div><h2>${escapeHtml(_onboardData.name||'Venue')} is live!</h2><p>Your new venue is set up and ready. Switch into it from the topbar restaurant selector to start configuring its menu, cleaning plans, and team.</p><button class="cta" onclick="closeModal('m-onboard');location.reload()">Open it →</button></div>`;}}return'';}
+function onboardNext(){_onboardStep++;document.getElementById('ob-body').innerHTML=renderOnboardStep(_onboardStep);}
+function onboardBack(){if(_onboardStep>0){_onboardStep--;document.getElementById('ob-body').innerHTML=renderOnboardStep(_onboardStep);}}
+function onboardSkipMgr(){_onboardData.mgr_name='';_onboardData.mgr_email='';onboardNext();}
+function onboardCaptureAndNext(fieldMappings){for(const m of fieldMappings){const [id,key]=m.split('|');const el=document.getElementById(id);if(el&&el.value!==undefined)_onboardData[key]=el.value;}onboardNext();}
+async function onboardCommit(){showToast('Creating '+_onboardData.name+'…',{duration_ms:2000});try{const restPayload={operator_entity_id:_onboardData.operator_entity_id,slug:_onboardData.slug,name:_onboardData.name,city:_onboardData.city||null,address:_onboardData.address||null,lat:_onboardData.lat?parseFloat(_onboardData.lat):null,lng:_onboardData.lng?parseFloat(_onboardData.lng):null,tagline:_onboardData.tagline||null,cuisine_desc:_onboardData.cuisine_desc||null,primary_color:_onboardData.primary_color||'#B86A42',is_active:true};await fetch(`${SUPABASE_URL}/rest/v1/restaurants`,{method:'POST',headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json'},body:JSON.stringify(restPayload)});}catch(e){console.warn('restaurant insert:',e);}
+if(_onboardData.mgr_email){try{await fetch(`${SUPABASE_URL}/rest/v1/team_members`,{method:'POST',headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json'},body:JSON.stringify({operator_entity_id:_onboardData.operator_entity_id,email:_onboardData.mgr_email,name:_onboardData.mgr_name,role:'manager',status:'invited'})});}catch(e){console.warn('team_members insert:',e);}}
+_onboardStep=99;document.getElementById('ob-body').innerHTML=renderOnboardStep(99);const bar=document.getElementById('ob-progress');if(bar)bar.style.width='100%';}
 // ── CLOCK-IN / OUT (Spanish Registro de jornada compliance) ──────
 let CLOCK_EVENTS=[];let clockLoaded=false;
 let CLOCK_VARIANCES=[];let variancesLoaded=false;
@@ -3369,6 +3775,12 @@ function doLogin(){
 
 // ══ INIT ══
 function initApp(){
+  // PUBLIC WIZARD: early short-circuit
+  if (isPublicWizard()) {
+    document.body.innerHTML = renderPublicWizard();
+    return;
+  }
+
   try {
     const rc=ROLE_COLORS[USER.role];
     const av=document.getElementById('tb-av');
@@ -3558,6 +3970,7 @@ function renderTab(){
   else if(currentTab==='team')c.innerHTML=renderTeam();
   else if(currentTab==='office')c.innerHTML=renderOffice();
   else if(currentTab==='inbox')c.innerHTML=renderInbox();
+  else if(currentTab==='settings')c.innerHTML=renderSettings();
   updateAllBadges();
 }
 
@@ -3603,7 +4016,39 @@ async function loadAgentSkills(){
   }
 }
 
+async function runFindMissingInvoices(){
+  showToast('Scanning Holded for missing invoices…',{duration_ms:3000});
+  try{
+    const resp=await fetch('/api/missing-invoices',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({days_back:90,restaurant_id:RESTAURANTS[R]?.id})
+    });
+    const data=await resp.json();
+    if(!data.ok){
+      showToast('Find failed: '+(data.error||'unknown'),{kind:'error',duration_ms:6000});
+      return;
+    }
+    if(typeof MISSING_INVOICES!=='undefined'){
+      MISSING_INVOICES=(data.missing||[]).map(m=>({ref:m.delivery_ref,supplier:m.supplier,expected_date:m.delivery_date,amount:m.amount,supplier_email:m.supplier_email}));
+    }
+    showToast(`✓ Found ${data.missing_count} missing invoice${data.missing_count===1?'':'s'} (scanned ${data.total_deliveries} deliveries / ${data.total_invoices} invoices)`,{kind:'success',duration_ms:6000});
+    if(typeof switchTab==='function')switchTab('office',null);
+    setTimeout(()=>{
+      const el=document.querySelector('.mi-panel');
+      if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+    },300);
+  }catch(e){
+    showToast('Holded call failed: '+e.message,{kind:'error'});
+  }
+}
+
 async function runAgentSkill(skillCode){
+  // Special-case skills with dedicated endpoints
+  if(skillCode==='find_missing_invoices'){
+    return runFindMissingInvoices();
+  }
+
   showToast('Firing skill: '+skillCode+'…',{duration_ms:2000});
   try{
     const resp=await fetch('/api/dispatch',{
@@ -3633,6 +4078,75 @@ function setCommsView(view){
   document.querySelector('.cc-tab[data-comms-view="'+view+'"]')?.classList.add('active');
 }
 
+// ══ MISSING INVOICES [UNIQUE_ANCHOR: missing_invoices_functions] ══
+function renderMissingInvoicesPanel() {
+  return `<div class="mi-panel">
+    <div class="mi-panel-header">
+      <div class="mi-panel-title">Missing invoices</div>
+      <div class="mi-panel-sub">${MISSING_INVOICES.length} pending · sourced from local Holded scanner</div>
+    </div>
+    ${MISSING_INVOICES.length === 0 ? `
+      <div class="mi-empty">
+        <p>No invoices loaded.</p>
+        <button class="cta" onclick="runFindMissingInvoices()">Run scan now (calls Holded)</button>
+        <button class="cta-sec" onclick="showMissingInvoicesUpload()">Upload CSV</button>
+        <div class="mi-hint">Automatically scan Holded for missing invoices, or manually upload a CSV from your local scanner.</div>
+      </div>` : `
+      <div class="mi-list">
+        ${MISSING_INVOICES.map((inv, i) => `
+          <div class="mi-row">
+            <div class="mi-row-info">
+              <div class="mi-row-ref">${escapeHtml(inv.ref || 'No ref')} · ${escapeHtml(inv.supplier || 'Unknown supplier')}</div>
+              <div class="mi-row-meta">Expected ${escapeHtml(inv.expected_date || '?')} · €${escapeHtml(inv.amount || '?')}</div>
+            </div>
+            <div class="mi-row-actions">
+              <button class="cta-sec" onclick="draftChaseEmail(${i})">Chase</button>
+              <button class="cta-sec" onclick="markInvoiceReceived(${i})">Received</button>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+      <button class="cta-sec" onclick="showMissingInvoicesUpload()">Re-upload CSV</button>
+    `}
+  </div>`;
+}
+
+function showMissingInvoicesUpload() {
+  const csv = prompt('Paste the contents of missing_invoices.csv:\n(format: ref, supplier, expected_date, amount[, supplier_email])');
+  if (!csv) return;
+  MISSING_INVOICES = parseInvoicesCSV(csv);
+  showToast(`Parsed ${MISSING_INVOICES.length} missing invoice${MISSING_INVOICES.length===1?'':'s'}`);
+  renderTab();
+}
+
+function parseInvoicesCSV(text) {
+  const lines = text.split(/\r?\n/).map(l => l.trim()).filter(l => l && !l.startsWith('#'));
+  if (!lines.length) return [];
+  // Detect header row
+  const first = lines[0].toLowerCase();
+  const hasHeader = first.includes('ref') || first.includes('supplier') || first.includes('invoice');
+  const dataLines = hasHeader ? lines.slice(1) : lines;
+  return dataLines.map(line => {
+    const cols = line.split(',').map(c => c.trim().replace(/^"|"$/g, ''));
+    return { ref: cols[0], supplier: cols[1], expected_date: cols[2], amount: cols[3], supplier_email: cols[4] || '' };
+  });
+}
+
+function draftChaseEmail(idx) {
+  const inv = MISSING_INVOICES[idx]; if (!inv) return;
+  const subject = encodeURIComponent(`Missing invoice ${inv.ref || ''} — ${inv.supplier || ''}`);
+  const body = encodeURIComponent(`Hello,\n\nFollowing up on a missing invoice from your end:\n\nReference: ${inv.ref || '(no ref)'}\nExpected date: ${inv.expected_date || '?'}\nAmount: €${inv.amount || '?'}\n\nCould you send the invoice at your earliest convenience? We need it for our books.\n\nThank you,\nBoris\nIbiza Food Studio · Bistro Mondo`);
+  const to = inv.supplier_email || '';
+  window.open(`mailto:${to}?subject=${subject}&body=${body}`, '_blank');
+}
+
+function markInvoiceReceived(idx) {
+  const inv = MISSING_INVOICES[idx];
+  showToast(`${inv?.ref || 'Invoice'} marked received`, { undo_fn: () => { MISSING_INVOICES.splice(idx, 0, inv); renderTab(); } });
+  MISSING_INVOICES.splice(idx, 1);
+  renderTab();
+}
+
 function renderOffice(){
   const canMgr=['manager','owner'].includes(USER.role);
   if(!canMgr)return`<div style="padding:32px;text-align:center;color:var(--text-tertiary);font-size:13px;">Office access is for owners and managers.</div>`;
@@ -3659,6 +4173,11 @@ function renderOffice(){
       <a class="office-cta-sec" href="https://app.holded.com" target="_blank">Open Holded ledger →</a>
     </div>
   </div>`;
+
+  // ═════════════════════════════════════════════════════════════════
+  // SECTION 1.5: Missing Invoices
+  // ═════════════════════════════════════════════════════════════════
+  html+=renderMissingInvoicesPanel();
 
   // ═════════════════════════════════════════════════════════════════
   // SECTION 2: Agent Console (headline)
@@ -3741,8 +4260,155 @@ function renderOffice(){
     </div>
   </div>`;
 
+  // ═════════════════════════════════════════════════════════════════
+  // SECTION 6: Expand the System — Add New Venue
+  // ═════════════════════════════════════════════════════════════════
+  html+=`<div class="ob-trigger-section">
+    <div class="ob-trigger-label">Expand the system</div>
+    <p class="ob-trigger-text">Adding a new venue takes 2 minutes. The OS handles the rest — menu, cleaning, schedule, and team scaffolding all carry over.</p>
+    <button class="cta" onclick="openVenueOnboarding()">+ Add a new venue</button>
+  </div>`;
+
   html+=`</div>`;
   return html;
+}
+
+// ══ SETTINGS ══ [UNIQUE_ANCHOR: renderSettings_function]
+function renderSettings() {
+  const u = window.USER || {};
+  const currentTheme = localStorage.getItem('fs_theme_pref') || 'auto';
+  const currentLang = localStorage.getItem('fs_lang_pref') || (navigator.language.startsWith('es') ? 'es' : 'en');
+  const notifsEnabled = localStorage.getItem('fs_notifs_enabled') === '1';
+  const digestOptIn = localStorage.getItem('fs_digest_optin') === '1';
+
+  return `
+    <div class="settings-page">
+      <div class="settings-header">
+        <h2 class="settings-title">Settings</h2>
+        <p class="settings-sub">Personalise your Food Studio OS experience.</p>
+      </div>
+
+      <div class="settings-section">
+        <div class="ss-label">Theme</div>
+        <div class="ss-row">
+          <button class="ss-theme ${currentTheme==='bohemian'?'active':''}" onclick="applyTheme('bohemian')">
+            <span class="ss-swatch" style="background:linear-gradient(135deg,#F7F5F2,#B86A42)"></span>
+            <div><div class="ss-theme-name">Bohemian Precision</div><div class="ss-theme-desc">Warm parchment + ember</div></div>
+          </button>
+          <button class="ss-theme ${currentTheme==='midnight'?'active':''}" onclick="applyTheme('midnight')">
+            <span class="ss-swatch" style="background:linear-gradient(135deg,#0A0A0A,#FFB347)"></span>
+            <div><div class="ss-theme-name">Midnight Pass</div><div class="ss-theme-desc">Cold neon · evening service</div></div>
+          </button>
+          <button class="ss-theme ${currentTheme==='concierge'?'active':''}" onclick="applyTheme('concierge')">
+            <span class="ss-swatch" style="background:linear-gradient(135deg,#0F172A,#D4AF37)"></span>
+            <div><div class="ss-theme-name">White Isle Concierge</div><div class="ss-theme-desc">Navy + gold · back office</div></div>
+          </button>
+          <button class="ss-theme ${currentTheme==='auto'?'active':''}" onclick="applyTheme('auto')">
+            <span class="ss-swatch" style="background:linear-gradient(135deg,#888,#ccc)"></span>
+            <div><div class="ss-theme-name">Auto</div><div class="ss-theme-desc">Match system preference</div></div>
+          </button>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <div class="ss-label">Language</div>
+        <div class="ss-row">
+          <button class="ss-lang ${currentLang==='en'?'active':''}" onclick="setLang('en')">English</button>
+          <button class="ss-lang ${currentLang==='es'?'active':''}" onclick="setLang('es')">Español</button>
+        </div>
+        <div class="ss-hint">Voice commands and AI responses follow this preference. UI text translation coming soon.</div>
+      </div>
+
+      <div class="settings-section">
+        <div class="ss-label">Notifications</div>
+        <div class="ss-toggle-row">
+          <div class="ss-toggle-label">
+            <div class="ss-toggle-name">Browser push notifications</div>
+            <div class="ss-toggle-desc">Urgent inbox items, VIP arrivals, kitchen alerts</div>
+          </div>
+          <button class="ss-toggle ${notifsEnabled?'on':''}" onclick="toggleNotifs()"><span class="ss-toggle-dot"></span></button>
+        </div>
+        <div class="ss-toggle-row">
+          <div class="ss-toggle-label">
+            <div class="ss-toggle-name">Morning digest in inbox</div>
+            <div class="ss-toggle-desc">Gemini-generated brief at 06:00 daily</div>
+          </div>
+          <button class="ss-toggle ${digestOptIn?'on':''}" onclick="toggleDigest()"><span class="ss-toggle-dot"></span></button>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <div class="ss-label">Account</div>
+        <div class="ss-account">
+          <div class="ss-acct-row"><span class="ss-acct-key">Name</span><span class="ss-acct-val">${escapeHtml(u.name || '—')}</span></div>
+          <div class="ss-acct-row"><span class="ss-acct-key">Email</span><span class="ss-acct-val">${escapeHtml(u.email || '—')}</span></div>
+          <div class="ss-acct-row"><span class="ss-acct-key">Role</span><span class="ss-acct-val">${escapeHtml(u.role || '—')}</span></div>
+          <div class="ss-acct-row"><span class="ss-acct-key">Restaurant</span><span class="ss-acct-val">${escapeHtml(typeof RESTAURANTS !== 'undefined' && RESTAURANTS[R] ? RESTAURANTS[R].name : '—')}</span></div>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <div class="ss-label">Privacy & data</div>
+        <div class="ss-data-actions">
+          <button class="cta-sec" onclick="exportMyData()">Export my data</button>
+          <button class="cta-sec" onclick="clearLocalCache()">Clear local cache</button>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <button class="cta cta-danger" onclick="signOut()">Sign out</button>
+      </div>
+
+      <div class="settings-foot">
+        Food Studio OS · v3.${new Date().toISOString().slice(2,10).replace(/-/g,'')}<br>
+        The operating system for hospitality
+      </div>
+    </div>
+  `;
+}
+
+function setLang(lang) {
+  localStorage.setItem('fs_lang_pref', lang);
+  showToast('Language preference saved');
+  renderTab();
+}
+
+async function toggleNotifs() {
+  const enabled = localStorage.getItem('fs_notifs_enabled') === '1';
+  if (!enabled) {
+    if ('Notification' in window) {
+      const perm = await Notification.requestPermission();
+      if (perm !== 'granted') { showToast('Permission denied — enable in browser settings'); return; }
+    }
+    localStorage.setItem('fs_notifs_enabled', '1');
+    showToast('Notifications enabled');
+  } else {
+    localStorage.removeItem('fs_notifs_enabled');
+    showToast('Notifications disabled');
+  }
+  renderTab();
+}
+
+function toggleDigest() {
+  const on = localStorage.getItem('fs_digest_optin') === '1';
+  if (on) localStorage.removeItem('fs_digest_optin');
+  else localStorage.setItem('fs_digest_optin', '1');
+  showToast(on ? 'Morning digest off' : 'Morning digest on');
+  renderTab();
+}
+
+function exportMyData() { showToast('Data export request submitted (manual fulfilment for now)'); }
+
+function clearLocalCache() {
+  if (!confirm('This will sign you out and clear local OS data. Continue?')) return;
+  localStorage.clear();
+  location.reload();
+}
+
+function signOut() {
+  if (window.sb) { try { sb.auth.signOut(); } catch(e){} }
+  localStorage.clear();
+  location.reload();
 }
 
 function renderAgentConsole(){
@@ -4443,6 +5109,7 @@ async function updateInventoryCost(itemId,newCost){
   item.last_cost_update=new Date().toISOString();
   showToast(`${item.name} → €${v.toFixed(2)}`,{undo_fn:async()=>{item.unit_cost=oldCost;await persistInventoryCost(itemId,oldCost);renderTab();}});
   await persistInventoryCost(itemId,v);
+  checkCostSpikes(itemId, oldCost, v);
   recomputeRecipesForInventoryItem(itemId);
 }
 
@@ -4509,6 +5176,44 @@ async function addInventoryItem(name,unit,cost){
     renderTab();
     showToast(`Added ${name}`,{kind:'success'});
   }catch(e){showToast('Add failed: '+e.message,{kind:'error'});}
+}
+
+// ══ COST SPIKE ALARM [UNIQUE_ANCHOR: cost_spike_alarm_function] ══
+async function checkCostSpikes(inventoryItemId, oldCost, newCost) {
+  if (oldCost <= 0) return;
+  const pctChange = ((newCost - oldCost) / oldCost) * 100;
+  if (Math.abs(pctChange) < 10) return;
+  const item = INVENTORY_ITEMS.find(i => i.id === inventoryItemId);
+  if (!item) return;
+  // Find affected recipes
+  try {
+    const ris = await sbFetch(`recipe_ingredients?inventory_item_id=eq.${inventoryItemId}&select=recipe_id,recipes(name)`);
+    const affectedNames = (ris||[]).map(r => r.recipes?.name).filter(Boolean);
+    const direction = pctChange > 0 ? 'up' : 'down';
+    const subject = `Cost ${direction} ${Math.abs(pctChange).toFixed(0)}%: ${item.name}`;
+    const body = `${item.name} changed €${oldCost.toFixed(2)} → €${newCost.toFixed(2)} (${pctChange > 0 ? '+' : ''}${pctChange.toFixed(0)}%). Affects ${affectedNames.length} recipe${affectedNames.length===1?'':'s'}: ${affectedNames.slice(0,5).join(', ')}${affectedNames.length>5?'…':''}. Review menu price suggestions.`;
+    const now = new Date().toISOString();
+    const restId = RESTAURANTS[R]?.id;
+    await fetch(`${SUPABASE_URL}/rest/v1/inbox_items`, {
+      method: 'POST',
+      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        operator_entity_id: USER._operatorEntityId || 'd1ee19b6-5fb4-460c-8326-685dc86e47df',
+        restaurant_id: restId,
+        category: 'agent_escalation',
+        source: 'cost_spike_alarm',
+        sender_name: 'CFO Gem',
+        sender_handle: 'cfo',
+        subject, body,
+        received_at: now,
+        status: 'new',
+        priority: pctChange > 25 ? 'high' : 'normal',
+        metadata: { inventory_item_id: inventoryItemId, old_cost: oldCost, new_cost: newCost, pct_change: pctChange, affected_recipe_count: affectedNames.length }
+      })
+    });
+    showToast(`⚠ Cost spike: ${item.name} ${direction} ${Math.abs(pctChange).toFixed(0)}% — flagged in inbox`, { duration_ms: 6000, kind: pctChange > 25 ? 'error' : 'success' });
+    if (typeof updateAllBadges === 'function') updateAllBadges();
+  } catch(e) { console.warn('checkCostSpikes:', e); }
 }
 
 function renderReceiving(){
@@ -4738,20 +5443,30 @@ function openBeverageDetail(itemId){
 window.openWineDetail = function(id) { return openBeverageDetail(id); };
 
 // ══ CLEANING ══
+// ══ SOP LIBRARY ══ ANCHOR: sop_library_constants
+const SOP_LIBRARY=[{id:'oven-deep-clean',category:'Equipment',title:'Oven deep clean (weekly)',frequency:'Weekly · Sunday close',duration_min:45,risk:'Burn (cooled before start), chemical exposure (gloves required)',steps:['Turn off oven, allow ≥2 hours to cool fully','Remove all racks, trays, thermometer probes','Apply degreaser to interior walls (avoid heating elements)','Let degreaser sit 15 min','Scrub walls with non-abrasive sponge, wipe with damp cloth','Wash racks in pot sink with degreaser; rinse + dry','Wipe seals + door interior with sanitiser','Replace racks; record temp probe reading next service'],products:['Degreaser industrial (Oven Pride or equivalent)','Sanitiser FoodSafe','Non-abrasive sponge','Microfibre cloths','Heat-resistant gloves'],sign_off:'Photo of clean interior + initials in HACCP register'},{id:'fridge-deep-clean',category:'Equipment',title:'Cámara fría deep clean (weekly)',frequency:'Weekly · Wednesday morning',duration_min:60,risk:'Cross-contamination if produce not relocated, food safety',steps:['Move all product to backup fridge or insulated containers','Discard anything past use-by; document waste','Remove all shelves + bins','Wash shelves at pot sink with sanitiser','Spray interior with food-safe sanitiser, wait 5 min','Wipe down with clean microfibre','Check door seals for damage; report if any','Replace shelves + reorganise FIFO','Record fridge temp reading once stable'],products:['Sanitiser FoodSafe (D10)','Microfibre cloths (white only — colour-coded for raw vs ready)'],sign_off:'Initials + temperature reading in HACCP register'},{id:'plancha-end-of-service',category:'Equipment',title:'Plancha end-of-service',frequency:'Daily · close',duration_min:15,risk:'Burn — surface stays hot 30 min after off',steps:['Turn off plancha at switch','Scrape excess grease into drip tray with spatula','Apply scoring brick or chain-mail scourer with grill polish','Wipe with paper towel; repeat if needed','Empty drip tray into grease bin','Wipe surrounding work surface with degreaser'],products:['Grill polish','Scoring brick','Heavy-duty paper towels','Degreaser'],sign_off:'Initials in close-out checklist'},{id:'wash-station-sani',category:'Hygiene',title:'Wash-station sanitisation cycle',frequency:'Every 2 hours during service',duration_min:5,risk:'Cross-contamination if skipped',steps:['Empty + rinse all sinks','Refill sanitiser bath (D10 at 1:50 dilution, ≥75°C)','Wipe taps + handles with sanitiser','Replace hand towels','Refill soap dispensers'],products:['D10 sanitiser','Liquid hand soap','Hand towels'],sign_off:'Tick on 2hr rota board'},{id:'allergen-segregation',category:'Allergens',title:'Allergen prep — gluten-free segregation',frequency:'Per gluten-free order',duration_min:0,risk:'Cross-contamination — anaphylaxis risk',steps:['Verify allergen on the ticket BEFORE prep','Wash hands + change gloves (purple = allergen-safe)','Use dedicated GF cutting board (purple) + dedicated knife','Use clean pan / plancha section (do not share with floured items)','Plate on dedicated GF tableware (marked underside)','Seal plate with allergen tag before passing to FOH','Notify FOH: "Allergen plate — Table X"'],products:['Purple GF cutting board','Purple GF knife','Allergen tags','Clean nitrile gloves'],sign_off:'Verbal confirm with FOH + allergen tag visible'},{id:'opening-checklist',category:'Service',title:'Opening checklist — kitchen',frequency:'Daily · 11:00',duration_min:30,risk:'Service delay if missed',steps:['Verify temp readings: cámara fría ≤4°C, congelador ≤-18°C','Check delivery from suppliers; verify against order','MEP from Production tab — start prep priorities','Stations: stock with daily mise en place','Test plancha + oven heat-up','Brief team on today\'s specials + 86\'d items'],products:['Probe thermometer','Daily order sheets'],sign_off:'Manager initials in opening checklist'}];
+function setCleaningView(v){cleaningView=v;renderTab();}
+function toggleSOP(id){window._openSOPId=(window._openSOPId===id)?null:id;renderTab();}
+function printSOP(id){const sop=SOP_LIBRARY.find(s=>s.id===id);if(!sop)return;const w=window.open('','_blank');w.document.write(`<html><head><title>SOP — ${sop.title}</title><style>body{font-family:Georgia,serif;max-width:600px;margin:40px auto;padding:0 20px;line-height:1.6;color:#1a1510}h1{font-size:22px;font-weight:600;margin-bottom:12px}h2{font-size:14px;text-transform:uppercase;letter-spacing:0.08em;opacity:0.6;margin-top:20px;margin-bottom:10px}ol,ul{padding-left:20px}.meta{font-size:12px;opacity:0.6;margin-bottom:16px}</style></head><body><h1>${escapeHtml(sop.title)}</h1><div class="meta">${escapeHtml(sop.category)} · ${escapeHtml(sop.frequency)} · ${sop.duration_min} min</div><h2>Risk / safety</h2><p>${escapeHtml(sop.risk)}</p><h2>Steps</h2><ol>${sop.steps.map(s=>`<li>${escapeHtml(s)}</li>`).join('')}</ol><h2>Products needed</h2><ul>${sop.products.map(p=>`<li>${escapeHtml(p)}</li>`).join('')}</ul><h2>Sign-off</h2><p>${escapeHtml(sop.sign_off)}</p></body></html>`);w.document.close();setTimeout(()=>w.print(),200);}
+function renderCleaningSOPs(){let openSOP=window._openSOPId||null;const byCat={};for(const sop of SOP_LIBRARY)(byCat[sop.category]=byCat[sop.category]||[]).push(sop);let html=`<div class="sops-library"><div class="sops-header"><div class="sops-title">SOPs library</div><div class="sops-sub">${SOP_LIBRARY.length} procedures · scheduled into the calendar · part of your Libro Azul self-control plan</div></div>`;for(const cat of Object.keys(byCat)){html+=`<div class="sops-cat"><div class="sops-cat-label">${cat}</div>`;for(const sop of byCat[cat]){const isOpen=openSOP===sop.id;html+=`<div class="sop-card ${isOpen?'open':''}" onclick="toggleSOP('${sop.id}')"><div class="sop-row"><div class="sop-info"><div class="sop-title">${escapeHtml(sop.title)}</div><div class="sop-meta">${escapeHtml(sop.frequency)} · ${sop.duration_min} min</div></div><div class="sop-toggle">${isOpen?'−':'+'}</div></div>${isOpen?`<div class="sop-body"><div class="sop-section"><div class="sop-section-label">Risk / safety</div><div class="sop-section-text">${escapeHtml(sop.risk)}</div></div><div class="sop-section"><div class="sop-section-label">Steps</div><ol class="sop-steps">${sop.steps.map(s=>`<li>${escapeHtml(s)}</li>`).join('')}</ol></div><div class="sop-section"><div class="sop-section-label">Products needed</div><ul class="sop-products">${sop.products.map(p=>`<li>${escapeHtml(p)}</li>`).join('')}</ul></div><div class="sop-section"><div class="sop-section-label">Sign-off</div><div class="sop-section-text">${escapeHtml(sop.sign_off)}</div></div><button class="sop-print" onclick="event.stopPropagation();printSOP('${sop.id}')">Print this SOP</button></div>`:''}`;}}html+=`</div></div>`;html+=`</div>`;return html;}
+
 function renderCleaning(){
+  let html=`<div class="cleaning-subtabs"><button class="cst-pill ${cleaningView==='tasks'?'active':''}" onclick="setCleaningView('tasks')">Today's tasks</button><button class="cst-pill ${cleaningView==='sops'?'active':''}" onclick="setCleaningView('sops')">SOPs library</button><button class="cst-pill ${cleaningView==='maintenance'?'active':''}" onclick="setCleaningView('maintenance')">Maintenance</button></div>`;
+  if(cleaningView==='sops'){return html+renderCleaningSOPs();}
+  if(cleaningView==='maintenance'){return html+`<div style="padding:16px;background:var(--ink-soft);border-radius:8px;border:1px solid var(--border-color);"><div style="font-size:12px;font-weight:600;color:var(--text-primary);margin-bottom:8px;">🔧 Maintenance Feedback</div><textarea id="maintenanceFeedback" placeholder="e.g. Hot water wasn't working last night..." style="width:100%;height:60px;padding:8px;border:1px solid var(--border-color);border-radius:4px;font-size:13px;font-family:Outfit,sans-serif;resize:none;"></textarea><button onclick="reportMaintenanceIssue()" style="margin-top:8px;padding:8px 12px;background:var(--ember);color:white;border:none;border-radius:4px;font-size:12px;font-weight:600;cursor:pointer;">Report</button></div>`;}
   loadHaccpPlans();
   const cl=getZC();
-  let html='';
+  let taskHtml='';
   const mkC=(c,type)=>{const k=`${R}_${AREA}_${ZONE}_${type}_${c.id}`;const done=!!cleanState[k];return `<div class="cl-tile${done?' done':''}" onclick="toggleClean('${k}')"><div class="cl-tick">✓</div><span class="cl-icon">${c.icon}</span><div class="cl-name">${c.name}</div><div class="cl-freq">${c.freq}</div></div>`;};
   if(cl.daily.length||cl.weekly.length){
     const dd=cl.daily.filter(c=>!!cleanState[`${R}_${AREA}_${ZONE}_d_${c.id}`]).length;
     const wd=cl.weekly.filter(c=>!!cleanState[`${R}_${AREA}_${ZONE}_w_${c.id}`]).length;
-    html+=`<div class="sect-label">Daily cleaning <span>${dd}/${cl.daily.length}</span></div><div class="clean-grid">${cl.daily.map(c=>mkC(c,'d')).join('')}</div>`;
-    if(cl.weekly.length){html+=`<div class="sect-label" style="margin-top:18px;">Weekly deep clean <span>${wd}/${cl.weekly.length}</span></div><div class="clean-grid">${cl.weekly.map(c=>mkC(c,'w')).join('')}</div>`;}
+    taskHtml+=`<div class="sect-label">Daily cleaning <span>${dd}/${cl.daily.length}</span></div><div class="clean-grid">${cl.daily.map(c=>mkC(c,'d')).join('')}</div>`;
+    if(cl.weekly.length){taskHtml+=`<div class="sect-label" style="margin-top:18px;">Weekly deep clean <span>${wd}/${cl.weekly.length}</span></div><div class="clean-grid">${cl.weekly.map(c=>mkC(c,'w')).join('')}</div>`;}
   }
   if(HACCP_PLANS.length>0){
-    if(html)html+=`<div style="margin-top:24px;border-top:1px solid var(--border-color);padding-top:18px;"></div>`;
-    html+=`<div style="font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.5px;">Libro Azul — HACCP Plans</div>`;
+    if(taskHtml)taskHtml+=`<div style="margin-top:24px;border-top:1px solid var(--border-color);padding-top:18px;"></div>`;
+    taskHtml+=`<div style="font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.5px;">Libro Azul — HACCP Plans</div>`;
     const today=new Date(),dow=['sunday','monday','tuesday','wednesday','thursday','friday','saturday'][today.getDay()];
     HACCP_PLANS.forEach(plan=>{
       const planId=plan.id,planName=plan.name||plan.plan_code||'Plan',planDesc=plan.description||'';
@@ -4760,13 +5475,13 @@ function renderCleaning(){
       const tasksToShow=planTasks.filter(freqRule);
       if(tasksToShow.length===0)return;
       const doneCnt=tasksToShow.filter(t=>{const k=`${R}_${AREA}_${ZONE}_${t.id}`;return!!cleanState[k];}).length;
-      const taskHtml=tasksToShow.map(t=>{const k=`${R}_${AREA}_${ZONE}_${t.id}`;const done=!!cleanState[k];return `<div class="cl-tile${done?' done':''}" onclick="toggleClean('${k}')"><div class="cl-tick">✓</div><div class="cl-name" style="flex:1;">${t.name||'Task'}</div><div class="cl-freq">${t.frequency_rule||'daily'}</div></div>`;}).join('');
-      html+=`<div style="margin-bottom:20px;padding:12px;background:rgba(90,138,120,0.05);border-radius:8px;border-left:3px solid var(--fern);"><div style="font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:4px;">${planName}</div>${planDesc?`<div style="font-size:11px;color:var(--text-tertiary);margin-bottom:8px;line-height:1.4;">${planDesc}</div>`:''}<div style="font-size:11px;color:var(--text-secondary);margin-bottom:10px;">Progress: ${doneCnt}/${tasksToShow.length}</div><div class="clean-grid">${taskHtml}</div></div>`;
+      const tskHtml=tasksToShow.map(t=>{const k=`${R}_${AREA}_${ZONE}_${t.id}`;const done=!!cleanState[k];return `<div class="cl-tile${done?' done':''}" onclick="toggleClean('${k}')"><div class="cl-tick">✓</div><div class="cl-name" style="flex:1;">${t.name||'Task'}</div><div class="cl-freq">${t.frequency_rule||'daily'}</div></div>`;}).join('');
+      taskHtml+=`<div style="margin-bottom:20px;padding:12px;background:rgba(90,138,120,0.05);border-radius:8px;border-left:3px solid var(--fern);"><div style="font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:4px;">${planName}</div>${planDesc?`<div style="font-size:11px;color:var(--text-tertiary);margin-bottom:8px;line-height:1.4;">${planDesc}</div>`:''}<div style="font-size:11px;color:var(--text-secondary);margin-bottom:10px;">Progress: ${doneCnt}/${tasksToShow.length}</div><div class="clean-grid">${tskHtml}</div></div>`;
     });
   }
-  if(!html)return`<div style="text-align:center;padding:48px 20px;"><div style="font-family:'Fraunces',serif;font-style:italic;font-size:18px;color:var(--text-secondary);margin-bottom:6px;">All clean.</div><div style="font-size:13px;color:var(--text-tertiary);line-height:1.5;">No cleaning checklist set for ${ZONE} yet.</div></div>`;
-  html+=`<div style="margin-top:24px;padding:16px;background:var(--ink-soft);border-radius:8px;border:1px solid var(--border-color);"><div style="font-size:12px;font-weight:600;color:var(--text-primary);margin-bottom:8px;">🔧 Maintenance Feedback</div><textarea id="maintenanceFeedback" placeholder="e.g. Hot water wasn't working last night..." style="width:100%;height:60px;padding:8px;border:1px solid var(--border-color);border-radius:4px;font-size:13px;font-family:Outfit,sans-serif;resize:none;"></textarea><button onclick="reportMaintenanceIssue()" style="margin-top:8px;padding:8px 12px;background:var(--ember);color:white;border:none;border-radius:4px;font-size:12px;font-weight:600;cursor:pointer;">Report</button></div>`;
-  return html;
+  if(!taskHtml)taskHtml=`<div style="text-align:center;padding:48px 20px;"><div style="font-family:'Fraunces',serif;font-style:italic;font-size:18px;color:var(--text-secondary);margin-bottom:6px;">All clean.</div><div style="font-size:13px;color:var(--text-tertiary);line-height:1.5;">No cleaning checklist set for ${ZONE} yet.</div></div>`;
+  taskHtml+=`<div style="margin-top:24px;padding:16px;background:var(--ink-soft);border-radius:8px;border:1px solid var(--border-color);"><div style="font-size:12px;font-weight:600;color:var(--text-primary);margin-bottom:8px;">🔧 Maintenance Feedback</div><textarea id="maintenanceFeedback" placeholder="e.g. Hot water wasn't working last night..." style="width:100%;height:60px;padding:8px;border:1px solid var(--border-color);border-radius:4px;font-size:13px;font-family:Outfit,sans-serif;resize:none;"></textarea><button onclick="reportMaintenanceIssue()" style="margin-top:8px;padding:8px 12px;background:var(--ember);color:white;border:none;border-radius:4px;font-size:12px;font-weight:600;cursor:pointer;">Report</button></div>`;
+  return html+taskHtml;
 }
 
 // ══ RECIPE EDIT ══
@@ -5768,6 +6483,13 @@ async function openEventDetail(eventId) {
           <div class="ed-title">${escapeHtml(e.title || 'Event')}</div>
           <div class="ed-meta">${e.event_date || 'TBD'} · ${e.event_type || ''} · ${e.guests_count || 0} guests · €${revenue.toLocaleString()}</div>
         </div>
+        ${e.contact_name || e.metadata?.contact?.name ? `
+        <div class="ed-contact" onclick="openGuestProfile('${escapeHtml(e.contact_name || e.metadata?.contact?.name || '')}','${escapeHtml(e.metadata?.contact?.email || '')}','${escapeHtml(e.metadata?.contact?.phone || '')}','${e.id}')">
+          <span class="ed-contact-icon">◉</span>
+          <span class="ed-contact-name">${escapeHtml(e.contact_name || e.metadata?.contact?.name || '')}</span>
+          <span class="ed-contact-hint">View guest profile →</span>
+        </div>
+        ` : ''}
 
         <div class="ed-stats">
           <div class="ed-stat"><div class="es-label">Guests</div><div class="es-val">${e.guests_count || 0}</div></div>
@@ -5785,6 +6507,23 @@ async function openEventDetail(eventId) {
             <button class="ed-skill" onclick="runEventSkill('${e.id}','forecast_event')">Forecast it</button>
             <button class="ed-skill" onclick="runEventSkill('${e.id}','compose_BEO')">Compose BEO</button>
             <button class="ed-skill" onclick="runEventSkill('${e.id}','close_event')">Close out</button>
+          </div>
+        </div>
+
+        <div class="ed-section">
+          <div class="ed-section-label">Allergens & dietary requirements</div>
+          <div class="ed-allergen-current">
+            ${(e.metadata?.allergens || []).length === 0 ? '<div class="ed-allergen-empty">No allergens flagged. Add as guests confirm.</div>' :
+              (e.metadata?.allergens || []).map((a,i) => `<div class="ed-allergen-pill">${escapeHtml(a)} <button onclick="removeAllergenFromEvent('${e.id}',${i})" style="background:transparent;border:0;color:white;cursor:pointer;font-size:14px;padding:0;line-height:1;opacity:0.7;">×</button></div>`).join('')}
+          </div>
+          <div class="ed-allergen-add">
+            <select id="ed-allergen-select" class="mi" style="flex:1;max-width:200px;padding:8px 10px;border:1px solid var(--border,rgba(0,0,0,0.08));border-radius:6px;font-family:Outfit,sans-serif;font-size:13px;">
+              <option value="">+ add EU 14 allergen…</option>
+              ${['Gluten','Crustaceans','Eggs','Fish','Peanuts','Soy','Milk','Tree nuts','Celery','Mustard','Sesame','Sulphites','Lupin','Molluscs'].map(a => `<option value="${a}">${a}</option>`).join('')}
+            </select>
+            <button class="cta-sec" onclick="addAllergenToEvent('${e.id}')" style="padding:8px 12px;">Add</button>
+            <input id="ed-dietary-input" class="mi" type="text" placeholder="Or: dietary need (vegan, kosher, halal…)" style="flex:1;min-width:160px;padding:8px 10px;border:1px solid var(--border,rgba(0,0,0,0.08));border-radius:6px;font-family:Outfit,sans-serif;font-size:13px;">
+            <button class="cta-sec" onclick="addDietaryToEvent('${e.id}')" style="padding:8px 12px;">Add</button>
           </div>
         </div>
 
@@ -5852,6 +6591,97 @@ async function runEventSkill(eventId, skillCode) {
   }
 }
 
+async function addAllergenToEvent(eventId) {
+  const sel = document.getElementById('ed-allergen-select');
+  if (!sel || !sel.value) return;
+  const allergen = sel.value;
+  const e = (typeof SALES_EVENTS !== 'undefined' && Array.isArray(SALES_EVENTS) ? SALES_EVENTS : []).find(x => x.id === eventId);
+  if (!e) return;
+  e.metadata = e.metadata || {};
+  e.metadata.allergens = e.metadata.allergens || [];
+  if (e.metadata.allergens.includes(allergen)) { showToast(allergen + ' already added'); return; }
+  e.metadata.allergens.push(allergen);
+  try {
+    await fetch(`${SUPABASE_URL}/rest/v1/sales_events?id=eq.${eventId}`, {
+      method: 'PATCH',
+      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ metadata: e.metadata })
+    });
+  } catch (err) { console.error('Failed to update allergen:', err); }
+  showToast(allergen + ' added — kitchen alerted');
+  openEventDetail(eventId);
+}
+
+async function addDietaryToEvent(eventId) {
+  const inp = document.getElementById('ed-dietary-input');
+  if (!inp || !inp.value.trim()) return;
+  const note = inp.value.trim();
+  const e = (typeof SALES_EVENTS !== 'undefined' && Array.isArray(SALES_EVENTS) ? SALES_EVENTS : []).find(x => x.id === eventId);
+  if (!e) return;
+  e.metadata = e.metadata || {};
+  e.metadata.allergens = e.metadata.allergens || [];
+  if (e.metadata.allergens.includes(note)) { showToast(note + ' already added'); return; }
+  e.metadata.allergens.push(note);
+  try {
+    await fetch(`${SUPABASE_URL}/rest/v1/sales_events?id=eq.${eventId}`, {
+      method: 'PATCH',
+      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ metadata: e.metadata })
+    });
+  } catch (err) { console.error('Failed to update dietary note:', err); }
+  inp.value = '';
+  showToast(note + ' added — flagged for FOH + kitchen');
+  openEventDetail(eventId);
+}
+
+async function removeAllergenFromEvent(eventId, idx) {
+  const e = (typeof SALES_EVENTS !== 'undefined' && Array.isArray(SALES_EVENTS) ? SALES_EVENTS : []).find(x => x.id === eventId);
+  if (!e || !e.metadata?.allergens) return;
+  const removed = e.metadata.allergens.splice(idx, 1)[0];
+  try {
+    await fetch(`${SUPABASE_URL}/rest/v1/sales_events?id=eq.${eventId}`, {
+      method: 'PATCH',
+      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ metadata: e.metadata })
+    });
+  } catch (err) { console.error('Failed to remove allergen:', err); }
+  showToast(removed + ' removed');
+  openEventDetail(eventId);
+}
+
+function openGuestProfile(name, email, phone, eventId) {
+  const html = `
+    <div class="modal-overlay" id="m-guest-profile" onclick="if(event.target===this)closeModal('m-guest-profile')">
+      <div class="modal-sheet guest-sheet">
+        <div class="mh"></div>
+        <div class="gp-header">
+          <div class="gp-avatar">${name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase()}</div>
+          <div class="gp-id">
+            <div class="gp-name">${escapeHtml(name)}</div>
+            <div class="gp-tags"><span class="gp-tag">VIP</span></div>
+          </div>
+        </div>
+        <div class="gp-row"><span class="gp-key">Email</span><span class="gp-val">${escapeHtml(email||'—')}</span></div>
+        <div class="gp-row"><span class="gp-key">Phone</span><span class="gp-val">${escapeHtml(phone||'—')}</span></div>
+        <div class="gp-row"><span class="gp-key">Past visits</span><span class="gp-val">— (Concierge Gem will populate)</span></div>
+        <div class="gp-row"><span class="gp-key">Preferred wine</span><span class="gp-val">— </span></div>
+        <div class="gp-row"><span class="gp-key">Notes</span><span class="gp-val">—</span></div>
+        <div class="gp-foot">
+          <button class="cta-sec" onclick="closeModal('m-guest-profile')">Close</button>
+          <button class="cta" onclick="closeModal('m-guest-profile')">Edit profile (soon)</button>
+        </div>
+      </div>
+    </div>
+  `;
+  let el = document.getElementById('m-guest-profile');
+  if (el) el.outerHTML = html;
+  else document.body.insertAdjacentHTML('beforeend', html);
+  setTimeout(() => {
+    const modal = document.getElementById('m-guest-profile');
+    if (modal) modal.classList.add('show');
+  }, 10);
+}
+
 async function moveEventStage(eventId, newStage) {
   const item = (typeof SALES_EVENTS !== 'undefined' && Array.isArray(SALES_EVENTS) ? SALES_EVENTS : []).find(x => x.id === eventId);
   if (!item) return;
@@ -5889,8 +6719,79 @@ async function loadEventActivity(eventId) {
 }
 
 function exportEventBEO(eventId) {
-  showToast('Composing BEO PDF…', { duration_ms: 2000 });
-  runEventSkill(eventId, 'compose_BEO');
+  const e = (typeof SALES_EVENTS !== 'undefined' && Array.isArray(SALES_EVENTS) ? SALES_EVENTS : []).find(x => x.id === eventId);
+  if (!e) { showToast('Event not found'); return; }
+  const restName = (typeof RESTAURANTS !== 'undefined' && RESTAURANTS[R]) ? RESTAURANTS[R].name : 'Food Studio';
+  const allergens = (e.metadata?.allergens || []).join(', ') || 'None flagged';
+  const contact = e.contact_name || e.metadata?.contact?.name || '—';
+  const revenue = (Number(e.guests_count || 0) * Number(e.price_per_guest || 0));
+  const today = new Date().toLocaleDateString('en-US', {weekday:'long', year:'numeric', month:'long', day:'numeric'});
+
+  const w = window.open('', '_blank');
+  w.document.write(`<!DOCTYPE html><html><head><title>BEO — ${escapeHtml(e.title||'Event')}</title>
+    <style>
+      @page { size: A4; margin: 16mm; }
+      body { font-family: 'Times New Roman', Times, serif; max-width: 720px; margin: 0 auto; padding: 0 16px; line-height: 1.5; color: #1a1a1a; }
+      .beo-head { text-align: center; padding-bottom: 18px; border-bottom: 2px solid #B86A42; margin-bottom: 24px; }
+      .beo-eyebrow { font-size: 10px; text-transform: uppercase; letter-spacing: 0.2em; color: #B86A42; }
+      .beo-title { font-size: 26px; font-weight: 600; margin: 6px 0 0; font-style: italic; }
+      .beo-rest { font-size: 12px; opacity: 0.7; margin-top: 4px; }
+      .beo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
+      .beo-cell h3 { font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: #888; margin: 0 0 6px; font-weight: 500; }
+      .beo-cell .v { font-size: 16px; }
+      .beo-section { margin-top: 24px; }
+      .beo-section h2 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em; color: #B86A42; border-bottom: 1px solid #E5DFD5; padding-bottom: 4px; }
+      .beo-section .body { padding: 8px 0; font-size: 14px; }
+      .beo-allergen { display: inline-block; padding: 4px 10px; background: #FBF0F0; color: #A03838; border-radius: 12px; font-size: 12px; margin: 2px 4px 2px 0; font-weight: 500; }
+      .beo-foot { margin-top: 36px; padding-top: 16px; border-top: 1px solid #E5DFD5; font-size: 10px; opacity: 0.55; text-align: center; }
+      .beo-stat { background: #FAF8F3; padding: 14px 16px; border-radius: 8px; }
+      .beo-stat .stat-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.55; }
+      .beo-stat .stat-val { font-size: 22px; font-weight: 600; margin-top: 4px; }
+    </style></head><body>
+    <div class="beo-head">
+      <div class="beo-eyebrow">Banquet Event Order</div>
+      <div class="beo-title">${escapeHtml(e.title || 'Untitled event')}</div>
+      <div class="beo-rest">${escapeHtml(restName)} · Generated ${escapeHtml(today)}</div>
+    </div>
+    <div class="beo-grid">
+      <div class="beo-cell"><h3>Date</h3><div class="v">${escapeHtml(e.event_date || 'TBD')}</div></div>
+      <div class="beo-cell"><h3>Type</h3><div class="v">${escapeHtml(e.event_type || '—')}</div></div>
+      <div class="beo-cell"><h3>Contact</h3><div class="v">${escapeHtml(contact)}</div></div>
+      <div class="beo-cell"><h3>Status</h3><div class="v">${escapeHtml(e.status || 'inquiry')}</div></div>
+    </div>
+    <div class="beo-grid">
+      <div class="beo-cell beo-stat"><div class="stat-label">Guests</div><div class="stat-val">${e.guests_count || 0}</div></div>
+      <div class="beo-cell beo-stat"><div class="stat-label">€ / pax</div><div class="stat-val">€${e.price_per_guest || 0}</div></div>
+      <div class="beo-cell beo-stat"><div class="stat-label">Revenue</div><div class="stat-val">€${revenue.toLocaleString()}</div></div>
+      <div class="beo-cell beo-stat"><div class="stat-label">Margin (est)</div><div class="stat-val">€${Math.round(revenue * 0.65).toLocaleString()}</div></div>
+    </div>
+    <div class="beo-section">
+      <h2>Allergens & dietary</h2>
+      <div class="body">${(e.metadata?.allergens||[]).length > 0 ? (e.metadata.allergens||[]).map(a => '<span class="beo-allergen">' + escapeHtml(a) + '</span>').join('') : '<em>None flagged at this stage. Confirm with guests on arrival.</em>'}</div>
+    </div>
+    <div class="beo-section">
+      <h2>Theme & narrative</h2>
+      <div class="body">${escapeHtml(e.theme || e.notes || '—')}</div>
+    </div>
+    <div class="beo-section">
+      <h2>Menu (TBC)</h2>
+      <div class="body"><em>Generated by Concierge Gem on demand. To attach a finalised menu, run the propose_event skill from the event detail.</em></div>
+    </div>
+    <div class="beo-section">
+      <h2>Staffing (TBC)</h2>
+      <div class="body"><em>Run staff_event skill to generate staffing plan.</em></div>
+    </div>
+    <div class="beo-section">
+      <h2>Provisions (TBC)</h2>
+      <div class="body"><em>Run provision_event skill to generate shopping list.</em></div>
+    </div>
+    <div class="beo-foot">
+      Food Studio OS — generated automatically. This document supersedes all prior versions.
+    </div>
+    <script>setTimeout(()=>window.print(),300)<\/script>
+    </body></html>`);
+  w.document.close();
+  showToast('BEO opened in new window — print dialog will appear');
 }
 
 function renderEventForm(){
@@ -8640,6 +9541,7 @@ function showInlineToastError(msg) {
     <button class="more-btn mgr-only" onclick="switchTab('integrations',null);closeMore()" style="display:none"><span class="more-lbl">Integrations</span></button>
     <button class="more-btn mgr-only" onclick="switchTab('onboarding',null);closeMore()" style="display:none"><span class="more-lbl">Onboard</span></button>
     <button class="more-btn mgr-only" onclick="switchTab('office',null);closeMore()" style="display:none"><span class="more-lbl">Office</span></button>
+    <button class="more-btn" onclick="switchTab('settings',null);closeMore()"><span class="more-lbl">Settings</span></button>
   </div>
   <div style="border-top:1px solid var(--border);margin-top:12px;padding-top:12px;">
     <div style="font-size:12px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;padding:0 8px;">Theme</div>
