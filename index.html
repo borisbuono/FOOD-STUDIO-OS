@@ -1655,6 +1655,38 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
 .day-bookings-count { font-size:11px;opacity:0.7;margin-top:2px;padding:6px 0; }
 .labor-cost-chip { display:inline-block;padding:8px 12px;border-radius:8px;background:rgba(0,0,0,0.04);font-size:13px;margin:8px 0;border-left:3px solid #A8893A; }
 
+/* ── BOOKING MODULE ── */
+.cta.primary { background:var(--ember,#4E6332);color:white;border:0; }
+.cta.primary:hover { opacity:0.9; }
+.bookings-section { margin-bottom:24px;padding:16px;border:1px solid rgba(0,0,0,0.08);border-radius:10px;background:#FFFFFF;box-shadow:0 1px 3px rgba(0,0,0,0.03); }
+.bk-header { display:flex;justify-content:space-between;align-items:center;margin-bottom:12px; }
+.bk-title { font-family:'Fraunces',Georgia,serif;font-size:18px;font-weight:600;color:#1F2916; }
+.bk-summary { font-size:13px;opacity:0.7;padding-bottom:10px;border-bottom:1px solid rgba(0,0,0,0.06);margin-bottom:8px; }
+.bk-empty { padding:20px;opacity:0.6;font-style:italic;text-align:center;font-size:13px;color:#9B8E7E; }
+.bk-loading { padding:16px;opacity:0.5;font-style:italic;text-align:center;font-size:13px; }
+.bk-list { display:flex;flex-direction:column;gap:4px; }
+.bk-row { display:flex;align-items:center;gap:12px;padding:8px 10px;background:rgba(0,0,0,0.02);border-radius:6px;transition:all 0.15s; }
+.bk-row:hover { background:rgba(0,0,0,0.04); }
+.bk-row-time { min-width:50px;font-family:'DM Mono',monospace;font-size:13px;font-weight:600;color:#4E6332; }
+.bk-row-info { flex:1;min-width:0; }
+.bk-row-name { font-size:13px;font-weight:500;color:#1F2916; }
+.bk-row-meta { font-size:11px;opacity:0.6;margin-top:2px;color:#5C4E3C; }
+.bk-row-actions { flex-shrink:0; }
+.bk-action { width:28px;height:28px;border-radius:50%;border:1px solid rgba(0,0,0,0.1);background:transparent;cursor:pointer;opacity:0.5;font-size:14px;color:#A03838;transition:all 0.15s;font-family:inherit; }
+.bk-action:hover { opacity:1;background:#A03838;color:white;border-color:#A03838; }
+.booking-sheet { max-width:480px; }
+.bk-eyebrow { font-size:11px;text-transform:uppercase;letter-spacing:0.08em;opacity:0.55;margin-bottom:4px; }
+.bk-kind-row { display:flex;gap:6px;margin:14px 0 18px 0; }
+.bk-kind { flex:1;padding:10px 14px;border-radius:8px;border:1px solid rgba(0,0,0,0.1);background:transparent;cursor:pointer;font-size:13px;color:inherit;font-family:inherit;transition:all 0.15s; }
+.bk-kind.selected { background:#4E6332;color:white;border-color:#4E6332; }
+.bk-field { display:flex;flex-direction:column;gap:6px;margin-bottom:12px;font-size:11px;opacity:0.7;text-transform:uppercase;letter-spacing:0.05em;font-weight:500; }
+.bk-field input.mi, .bk-field textarea.mi { padding:10px 12px;border:1px solid rgba(0,0,0,0.1);border-radius:6px;font-size:14px;font-family:inherit;opacity:1;text-transform:none;letter-spacing:normal;font-weight:normal;background:white;color:#1F2916; }
+.bk-pax-row { display:flex;align-items:center;gap:8px; }
+.bk-pax-btn { width:36px;height:36px;border-radius:50%;border:1px solid rgba(0,0,0,0.15);background:transparent;cursor:pointer;font-size:18px;color:inherit;flex-shrink:0;transition:all 0.15s;font-family:inherit; }
+.bk-pax-btn:hover { background:#4E6332;color:white;border-color:#4E6332; }
+.bk-pax-input { flex:1;text-align:center;font-size:18px !important;font-weight:600;font-family:'Fraunces',Georgia,serif !important;padding:8px !important; }
+.bk-foot { display:flex;gap:8px;justify-content:flex-end;padding-top:14px;border-top:1px solid rgba(0,0,0,0.06);margin-top:12px; }
+
 /* ── COOK MODE ── */
 .cook-screen { background:#FFFFFF;min-height:calc(100dvh - 180px);display:flex;flex-direction:column; }
 .cook-recipe-sel { background:#FFFFFF;border:1px solid rgba(0,0,0,0.07);border-radius:13px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,0.04); }
@@ -3606,7 +3638,7 @@ function printBriefing() {
     <p style="font-size:15px;line-height:1.7">${escapeHtml(b.brief).replace(/\n/g, '<br>')}</p>
     <h2>Tonight's events</h2>
     <ul>${b.context.events.map(e => `<li>${escapeHtml(e.title)} · ${e.guests} pax · ${escapeHtml(e.status)}</li>`).join('') || '<li>No events booked</li>'}</ul>
-    <script>setTimeout(()=>window.print(),200)</script>
+    <script>setTimeout(()=>window.print(),200)<\/script>
     </body></html>`);
   w.document.close();
 }
@@ -7265,7 +7297,7 @@ function printScaledRecipe() {
     ${s.ingredients.map(x => `<tr><td>${escapeHtml(x.name)}</td><td>${x.scaled_qty} ${escapeHtml(x.unit)}</td><td>€${x.line_cost.toFixed(2)}</td></tr>`).join('')}
     </tbody></table>
     <h2>Technique note</h2><p>${escapeHtml(s.techniqueNote)}</p>
-    <script>setTimeout(()=>window.print(),200)</script>
+    <script>setTimeout(()=>window.print(),200)<\/script>
     </body></html>`);
   w.document.close();
 }
@@ -8688,6 +8720,205 @@ function coversForDate(dateStr) {
   return COVERS_BY_DATE[dateStr] || [];
 }
 
+// ═══════════════════════════════════════════
+// BOOKING MODULE
+// ═══════════════════════════════════════════
+
+let _newBooking = {};
+let _bookingsCache = [];
+
+async function loadBookings() {
+  const now = new Date();
+  const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const today = now.getDay();
+  const dayDate = new Date();
+  dayDate.setDate(dayDate.getDate() - today + selectedDay);
+  const dayDateStr = dayDate.toISOString().slice(0, 10);
+
+  const restId = RESTAURANTS?.[R]?.id;
+  try {
+    const path = restId
+      ? `covers?restaurant_id=eq.${restId}&service_date=eq.${dayDateStr}&order=reservation_time.asc.nullsfirst`
+      : `covers?service_date=eq.${dayDateStr}&order=reservation_time.asc.nullsfirst`;
+    const rows = await sbFetch(path);
+    _bookingsCache = rows || [];
+    renderBookingsList();
+  } catch(e) {
+    const list = document.getElementById('bk-list');
+    if (list) list.innerHTML = `<div class="bk-empty">Couldn't load bookings: ${escapeHtml(e.message)}</div>`;
+  }
+}
+
+function renderBookingsList() {
+  const list = document.getElementById('bk-list');
+  if (!list) return;
+  if (!_bookingsCache.length) {
+    list.innerHTML = `<div class="bk-empty">No bookings logged for this day. Tap <strong>+ New booking</strong> when guests arrive or call.</div>`;
+    return;
+  }
+  const totalCovers = _bookingsCache.reduce((s, b) => s + (Number(b.covers_count||b.pax||0)), 0);
+  list.innerHTML = `
+    <div class="bk-summary"><strong>${totalCovers} covers</strong> across ${_bookingsCache.length} booking${_bookingsCache.length===1?'':'s'} today</div>
+    ${_bookingsCache.map(b => `
+      <div class="bk-row" id="bk-${b.id}">
+        <div class="bk-row-time">${b.reservation_time ? b.reservation_time.slice(0,5) : '—'}</div>
+        <div class="bk-row-info">
+          <div class="bk-row-name">${escapeHtml(b.guest_name || '(walk-in)')} · ${b.covers_count || b.pax || 0} pax</div>
+          <div class="bk-row-meta">${escapeHtml(b.reservation_kind || 'walk_in')}${b.guest_phone ? ' · ' + escapeHtml(b.guest_phone) : ''}${b.notes ? ' · ' + escapeHtml((b.notes+'').slice(0, 40)) + ((b.notes+'').length>40?'…':'') : ''}</div>
+        </div>
+        <div class="bk-row-actions">
+          <button class="bk-action" onclick="cancelBooking('${b.id}')" title="Cancel">×</button>
+        </div>
+      </div>
+    `).join('')}
+  `;
+}
+
+function openNewBookingModal() {
+  _newBooking = {
+    covers_count: 2,
+    reservation_kind: 'walk_in',
+    reservation_time: new Date().toTimeString().slice(0,5)
+  };
+  renderNewBookingModal();
+}
+
+function renderNewBookingModal() {
+  const html = `
+    <div class="modal-overlay" id="m-new-booking" onclick="if(event.target===this)closeModal('m-new-booking')">
+      <div class="modal-sheet booking-sheet">
+        <div class="mh"></div>
+        <div class="bk-eyebrow">New booking</div>
+        <div class="mt">Log a walk-in or phone reservation</div>
+
+        <div class="bk-kind-row">
+          ${[
+            { id: 'walk_in', label: 'Walk-in' },
+            { id: 'phone', label: 'Phone' },
+            { id: 'online', label: 'Online' }
+          ].map(k => `
+            <button class="bk-kind ${_newBooking.reservation_kind===k.id?'selected':''}" onclick="setBookingKind('${k.id}')">${k.label}</button>
+          `).join('')}
+        </div>
+
+        <label class="bk-field">Party size
+          <div class="bk-pax-row">
+            <button class="bk-pax-btn" onclick="adjBookingPax(-1)">−</button>
+            <input id="bk-pax" type="number" min="1" max="100" value="${_newBooking.covers_count}" class="mi bk-pax-input" oninput="_newBooking.covers_count=parseInt(this.value)||1">
+            <button class="bk-pax-btn" onclick="adjBookingPax(1)">+</button>
+          </div>
+        </label>
+
+        <label class="bk-field">Time
+          <input id="bk-time" type="time" class="mi" value="${_newBooking.reservation_time}" oninput="_newBooking.reservation_time=this.value">
+        </label>
+
+        ${_newBooking.reservation_kind !== 'walk_in' ? `
+          <label class="bk-field">Guest name
+            <input id="bk-name" type="text" class="mi" placeholder="Name on the booking" oninput="_newBooking.guest_name=this.value">
+          </label>
+          <label class="bk-field">Phone (optional)
+            <input id="bk-phone" type="tel" class="mi" placeholder="+34..." oninput="_newBooking.guest_phone=this.value">
+          </label>
+        ` : ''}
+
+        <label class="bk-field">Notes (allergies, occasion, table preference)
+          <textarea id="bk-notes" class="mi" rows="2" placeholder="Window table, gluten-free guest, anniversary…" oninput="_newBooking.notes=this.value"></textarea>
+        </label>
+
+        <div class="bk-foot">
+          <button class="cta-sec" onclick="closeModal('m-new-booking')">Cancel</button>
+          <button class="cta primary" onclick="saveBooking()">Log booking</button>
+        </div>
+      </div>
+    </div>
+  `;
+  let el = document.getElementById('m-new-booking');
+  if (el) el.outerHTML = html;
+  else document.body.insertAdjacentHTML('beforeend', html);
+  setTimeout(() => {
+    const m = document.getElementById('m-new-booking');
+    if(m) m.classList.add('show');
+  }, 10);
+}
+
+function setBookingKind(kind) {
+  _newBooking.reservation_kind = kind;
+  renderNewBookingModal();
+}
+
+function adjBookingPax(delta) {
+  _newBooking.covers_count = Math.max(1, Math.min(100, (Number(_newBooking.covers_count)||1) + delta));
+  const input = document.getElementById('bk-pax');
+  if (input) input.value = _newBooking.covers_count;
+}
+
+async function saveBooking() {
+  const now = new Date();
+  const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const today = now.getDay();
+  const dayDate = new Date();
+  dayDate.setDate(dayDate.getDate() - today + selectedDay);
+  const dayDateStr = dayDate.toISOString().slice(0, 10);
+
+  const payload = {
+    operator_entity_id: USER?._operatorEntityId || 'd1ee19b6-5fb4-460c-8326-685dc86e47df',
+    restaurant_id: RESTAURANTS?.[R]?.id,
+    service_date: dayDateStr,
+    covers_count: Number(_newBooking.covers_count) || 2,
+    reservation_time: _newBooking.reservation_time || null,
+    reservation_kind: _newBooking.reservation_kind || 'walk_in',
+    guest_name: _newBooking.guest_name || null,
+    guest_phone: _newBooking.guest_phone || null,
+    notes: _newBooking.notes || null,
+    created_by: USER?.name || null,
+    source: 'os_manual'
+  };
+
+  showToast('Logging booking…', { duration_ms: 1500 });
+  try {
+    const resp = await fetch(`${SUPABASE_URL}/rest/v1/covers`, {
+      method: 'POST',
+      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', Prefer: 'return=representation' },
+      body: JSON.stringify(payload)
+    });
+    if (!resp.ok) throw new Error(`${resp.status} ${resp.statusText}`);
+    const data = await resp.json();
+    if (Array.isArray(data) && data[0]) {
+      _bookingsCache.unshift(data[0]);
+      _bookingsCache.sort((a,b) => (a.reservation_time || '').localeCompare(b.reservation_time || ''));
+      renderBookingsList();
+      if (typeof logAudit === 'function') {
+        logAudit('cover', data[0].id, 'booking_created', { newValue: { name: payload.guest_name, pax: payload.covers_count, time: payload.reservation_time, kind: payload.reservation_kind } });
+      }
+    }
+    closeModal('m-new-booking');
+    showToast(`✓ Booked ${payload.covers_count} pax${payload.guest_name ? ' · ' + payload.guest_name : ''}${payload.reservation_time ? ' at ' + payload.reservation_time : ''}`, { kind: 'success', duration_ms: 4000 });
+  } catch(e) {
+    showToast('Booking failed: ' + e.message, { kind: 'error' });
+  }
+}
+
+async function cancelBooking(bookingId) {
+  const idx = _bookingsCache.findIndex(b => b.id === bookingId);
+  if (idx === -1) return;
+  const removed = _bookingsCache[idx];
+  _bookingsCache.splice(idx, 1);
+  renderBookingsList();
+  showToast(`Cancelled ${removed.guest_name || 'walk-in'} (${removed.covers_count || removed.pax || 0} pax)`, {
+    undo_fn: () => { _bookingsCache.splice(idx, 0, removed); renderBookingsList(); }
+  });
+  try {
+    await fetch(`${SUPABASE_URL}/rest/v1/covers?id=eq.${bookingId}`, {
+      method: 'DELETE',
+      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` }
+    });
+    if (typeof logAudit === 'function') {
+      logAudit('cover', bookingId, 'booking_cancelled', { oldValue: removed });
+    }
+  } catch(e) {}
+}
+
 function renderSchedule(){
   const now = new Date();
   const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
@@ -8703,6 +8934,18 @@ function renderSchedule(){
     </button>`;
   }
   html += `</div>`;
+
+  // Bookings section (anchor: BOOKING_SECTION_HTML)
+  html += `<div class="bookings-section">
+    <div class="bk-header">
+      <div class="bk-title">Bookings</div>
+      <button class="cta primary" onclick="openNewBookingModal()">+ New booking</button>
+    </div>
+    <div class="bk-list" id="bk-list">
+      <div class="bk-loading">Loading bookings…</div>
+    </div>
+  </div>`;
+  loadBookings();
 
   // Labour cost summary for selected day
   const dayShifts = WEEK_SHIFTS.map(s => ({...s, todayShift: s.schedule.find(sh => sh.day === selectedDay)})).filter(s => s.todayShift);
@@ -9517,7 +9760,7 @@ async function generateEODReport(){
       ${restName} · ${escapeHtml(restSlug)}
     </div>
 
-    <script>setTimeout(()=>window.print(), 400)</script>
+    <script>setTimeout(()=>window.print(), 400)<\/script>
     </body></html>
   `);
   w.document.close();
@@ -11798,6 +12041,7 @@ function cmdkSearch(query) {
     { type:'action', icon:'⟳', title:'Scale a recipe', sub:'Culinary Gem · multiply for any cover count', fn:()=>{ closeCmdK(); setTimeout(promptScaleAnyRecipe, 100); }, keywords:'scale recipe culinary gem multiply' },
     { type:'action', icon:'☾', title:'Toggle dark mode', sub:'Theme', fn:()=>{ const cur=document.documentElement.getAttribute('data-theme'); applyTheme((cur==='midnight'||cur==='dark')?'bohemian':'midnight'); }, keywords:'dark light theme mode' },
     { type:'action', icon:'⌖', title:'Open Menu Library', sub:'All Canva designs', fn:()=>{ menuViewMode='library'; switchTab('menu',null); }, keywords:'menu library canva designs' },
+    { type:'action', icon:'⊕', title:'Log new booking', sub:'Walk-in or phone reservation', fn:()=>{ closeCmdK(); switchTab('schedule',null); setTimeout(openNewBookingModal, 200); }, keywords:'booking reservation walk-in phone new log covers' },
     { type:'action', icon:'⌘', title:'Keyboard shortcuts', sub:'See all available shortcuts', fn: () => { closeCmdK(); setTimeout(openShortcutsHelp, 100); }, keywords:'keyboard shortcut help cheatsheet' },
   ];
   for (const a of actions) {
