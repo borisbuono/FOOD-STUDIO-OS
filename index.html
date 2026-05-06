@@ -333,6 +333,13 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
 .ss-n.em{color:var(--ember)}.ss-n.good{color:var(--fern)}
 .ss-l{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-tertiary);margin-top:3px;}
 .ss-div{width:1px;height:36px;background:rgba(0,0,0,.07);flex-shrink:0;}
+/* ─── NEW TODAY HERO & COMMAND CENTER ─── */
+.today-hero{padding:32px 0 24px;}.th-greeting{font-family:'Fraunces',Georgia,serif;font-size:32px;font-weight:400;line-height:1.2;letter-spacing:-0.01em;color:var(--text-primary);}.th-date{font-size:14px;opacity:0.65;margin-top:6px;color:var(--text-secondary);}.th-tagline{font-size:16px;font-style:italic;margin-top:14px;opacity:0.85;color:var(--text-secondary);}
+.today-attention{margin:20px 0 28px;padding:18px 22px;background:rgba(184,150,58,0.06);border-left:3px solid var(--ember);border-radius:6px;}.ta-label{font-size:11px;text-transform:uppercase;letter-spacing:0.08em;opacity:0.6;margin-bottom:8px;color:var(--text-tertiary);}.ta-prose{font-size:15px;line-height:1.55;font-family:'Fraunces',Georgia,serif;font-style:italic;color:var(--text-primary);}
+.today-quick-actions{display:grid;grid-template-columns:1fr;gap:12px;margin-bottom:28px;}.tqa{padding:18px 20px;border-radius:12px;border:1px solid rgba(0,0,0,0.08);background:transparent;text-align:left;cursor:pointer;transition:all 0.2s;font-family:'Outfit',sans-serif;-webkit-tap-highlight-color:transparent;}.tqa:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,0.06);border-color:var(--ember);}.tqa-icon{font-size:22px;color:var(--ember);margin-bottom:6px;}.tqa-title{font-size:15px;font-weight:500;color:var(--text-primary);}.tqa-sub{font-size:12px;opacity:0.6;margin-top:4px;color:var(--text-secondary);}
+@media (min-width:600px){.today-quick-actions{grid-template-columns:1fr 1fr;}}@media (min-width:900px){.today-quick-actions{grid-template-columns:1fr 1fr 1fr;}}
+.today-events{margin:24px 0;}.te-label{font-size:11px;text-transform:uppercase;letter-spacing:0.08em;opacity:0.6;margin-bottom:10px;color:var(--text-tertiary);}.te-strip{display:flex;gap:12px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch;}.te-card{flex-shrink:0;min-width:200px;padding:14px 16px;border:1px solid rgba(0,0,0,0.08);border-radius:10px;background:white;}.te-time{font-size:12px;opacity:0.6;color:var(--text-tertiary);}.te-title{font-weight:500;margin-top:4px;color:var(--text-primary);}.te-pax{font-size:12px;opacity:0.7;margin-top:4px;color:var(--text-secondary);}.te-status{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;text-transform:uppercase;letter-spacing:0.06em;margin-top:8px;background:rgba(0,0,0,0.06);color:var(--text-primary);}.te-status.status-confirmed{background:var(--fern);color:white;}.te-status.status-inquiry{background:var(--gold);color:white;}
+.today-header-compact{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;}
 /* ─── PHASE TABS ─── */
 .phase-tabs{display:flex;gap:6px;margin-bottom:14px;}
 .phase-tab{flex:1;padding:8px 4px;border-radius:11px;border:1.5px solid rgba(0,0,0,.08);background:transparent;color:var(--text-secondary);font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .18s;-webkit-tap-highlight-color:transparent;}
@@ -1532,6 +1539,10 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
 
   /* ── Fix content area width on desktop (F30) ── */
   .dash-scroll { max-width: 100%; width: 100%; padding: 28px 48px calc(40px + env(safe-area-inset-bottom,0px)); }
+
+  /* Recipe detail desktop layout: full width + 2-column grid */
+  .det-scroll { max-width: 100%; width: 100%; padding: 28px 48px calc(140px + env(safe-area-inset-bottom,0px)); }
+  #screen-detail { width: 100%; }
 }
 
 /* Mobile: hide desktop sidebar */
@@ -2797,8 +2808,6 @@ function renderTab(){
 // ══ TODAY ══
 function renderToday(){
   const now=new Date();const h=now.getHours();
-  const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-  const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   const phase=getTodayPhase();
   const covers=parseInt(document.getElementById('cov-hidden')?.value||40);
   const openTasks=getZT('opening');
@@ -2810,46 +2819,83 @@ function renderToday(){
   const ws=wSigned[R],ms=mSigned[R];
   const canMgr=['manager','owner'].includes(USER.role);
 
-  let html=`
-    <input type="hidden" id="cov-hidden" value="${covers}">
-    <div class="today-header">
-      <div>
-        <div style="font-size:13px;font-weight:600;color:var(--text-primary);">${USER.name.split(' ')[0]} · ${ZONE}</div>
-        <div style="font-size:11px;color:var(--text-tertiary);">${days[now.getDay()]} ${now.getDate()} ${months[now.getMonth()]} · ${R===0?'Taller':'Bistro Mondo'}</div>
-      </div>
-      ${(()=>{ const cs=clockState(); const since=clockedSinceText(); return `<div class="clock-strip ${cs==='in'?'on':''}" onclick="clockToggle()" title="Spanish Registro de jornada — chained timestamps for compliance">
-        <div class="clock-state">${cs==='in'?'CLOCKED IN':'CLOCK IN'}</div>
-        <div class="clock-since">${cs==='in'?(since+' · tap to clock out'):'Tap to start your shift'}</div>
-      </div>`; })()}
-    </div>
-    <div class="stat-strip">
-      <div class="ss-item"><span class="ss-n">${covers}</span><span class="ss-l">Covers</span></div>
-      <div class="ss-div"></div>
-      <div class="ss-item"><span class="ss-n${pendingCount>0?' em':''}">${pendingCount}</span><span class="ss-l">Pending</span></div>
-      <div class="ss-div"></div>
-      <div class="ss-item"><span class="ss-n">${donePhaseTasks}</span><span class="ss-l">Done</span></div>
-      <div class="ss-div"></div>
-      <div class="ss-item"><span class="ss-n" style="font-size:12px;letter-spacing:.04em;">${phase.charAt(0).toUpperCase()+phase.slice(1)}</span><span class="ss-l">Phase</span></div>
-    </div>
-    <div class="today-subtabs">
-      <button class="today-stab${todaySubTab==='day'?' active':''}" onclick="todaySubTab='day';renderTab()">Day</button>
-      <button class="today-stab${todaySubTab==='brief'?' active':''}" onclick="todaySubTab='brief';renderTab()">Brief</button>
-    </div>`;
+  let html=`<input type="hidden" id="cov-hidden" value="${covers}">`;
 
-  // ── BRIEFING sub-tab ──────────────────────────────────────
-  if(todaySubTab==='brief'){
-    html+=renderTodayBriefing(covers,phase);
-    return html;
+  // ═══ SECTION 1: HERO GREETING ═══════════════════════════════════
+  html+=`<div class="today-hero">
+    <div class="th-greeting">${h<12?'Good morning,':h<18?'Good afternoon,':'Buenas noches,'} ${USER.name?.split(' ')[0]||'chef'}.</div>
+    <div class="th-date">${now.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})} · ${R===0?'Taller':'Bistro Mondo'}</div>
+    <div class="th-tagline">The operating system for hospitality.</div>
+  </div>`;
+
+  // ═══ SECTION 2: WHAT NEEDS YOUR ATTENTION ══════════════════════
+  const urgentCount=allUrgent.length;
+  const inqCount=SALES_EVENTS.filter(e=>e.status==='inquiry').length;
+  let attnProse='Quiet morning. Your team is set up for service.';
+  if(urgentCount>0){
+    attnProse=`You have ${urgentCount} urgent ${urgentCount===1?'task':'tasks'} from management.`;
+    if(inqCount>0) attnProse+=` There are also ${inqCount} pending inquiry ${inqCount===1?'response':'responses'}.`;
+  } else if(inqCount>0){
+    attnProse=`${inqCount} sales inquiry ${inqCount===1?'awaits':'await'} follow-up — worth a moment before service.`;
+  }
+  html+=`<div class="today-attention">
+    <div class="ta-label">What needs your attention</div>
+    <div class="ta-prose">${attnProse}</div>
+  </div>`;
+
+  // ═══ SECTION 3: QUICK ACTIONS ═════════════════════════════════
+  html+=`<div class="today-quick-actions">
+    <button class="tqa" onclick="switchTab('events',document.querySelector('[data-tab=events]'))">
+      <div class="tqa-icon">✦</div>
+      <div class="tqa-title">Sales events</div>
+      <div class="tqa-sub">${SALES_EVENTS.length} on books</div>
+    </button>
+    <button class="tqa" onclick="switchTab('menu',document.querySelector('[data-tab=menu]'))">
+      <div class="tqa-icon">📋</div>
+      <div class="tqa-title">Active menu</div>
+      <div class="tqa-sub">Today's dishes</div>
+    </button>
+    <button class="tqa" onclick="switchTab('recipes',document.querySelector('[data-tab=recipes]'))">
+      <div class="tqa-icon">🍳</div>
+      <div class="tqa-title">Start cooking</div>
+      <div class="tqa-sub">Recipe library</div>
+    </button>
+  </div>`;
+
+  // ═══ SECTION 4: TODAY'S PULSE (Events Strip) ════════════════════
+  const todayEvents=SALES_EVENTS.filter(e=>{
+    const eDate=(e.event_date||'').slice(0,10);
+    const today=now.toISOString().slice(0,10);
+    return eDate===today;
+  });
+  if(todayEvents.length>0){
+    html+=`<div class="today-events">
+      <div class="te-label">Today's pulse</div>
+      <div class="te-strip">`;
+    todayEvents.forEach(e=>{
+      const statusClass='status-'+e.status;
+      const revenue=e.guests_count&&e.price_per_guest?Math.round(e.guests_count*e.price_per_guest):'–';
+      html+=`<div class="te-card">
+        <div class="te-time">${e.start_time||'All day'}</div>
+        <div class="te-title">${e.title||'Event'}</div>
+        <div class="te-pax">${e.guests_count||0} guests · €${revenue}</div>
+        <div class="te-status ${statusClass}">${e.status}</div>
+      </div>`;
+    });
+    html+=`</div></div>`;
   }
 
-  // ── DAY sub-tab (default) ─────────────────────────────────
-  html+=`<div class="phase-tabs">
-      <button class="phase-tab${phase==='opening'?' active':''}" onclick="setTodayPhase('opening')">Opening</button>
-      <button class="phase-tab${phase==='service'?' active':''}" onclick="setTodayPhase('service')">Service</button>
-      <button class="phase-tab${phase==='closing'?' active':''}" onclick="setTodayPhase('closing')">Closing</button>
-    </div>`;
+  // ═══ SECTION 5: CLOCK-IN PILL & ACTIVE WORKFLOWS ════════════════
+  html+=`<div class="today-header-compact">
+    <div>
+      <div style="font-size:13px;font-weight:600;color:var(--text-primary);">${USER.name.split(' ')[0]} · ${ZONE}</div>
+    </div>
+    ${(()=>{ const cs=clockState(); const since=clockedSinceText(); return `<div class="clock-strip ${cs==='in'?'on':''}" onclick="clockToggle()" title="Spanish Registro de jornada — chained timestamps for compliance">
+      <div class="clock-state">${cs==='in'?'CLOCKED IN':'CLOCK IN'}</div>
+      <div class="clock-since">${cs==='in'?(since+' · tap to clock out'):'Tap to start your shift'}</div>
+    </div>`; })()}
+  </div>`;
 
-  // Active workflows — always show if running
   if(activeWorkflows.length>0){
     html+=`<div class="sect-label">Active workflows</div>`;
     activeWorkflows.forEach((wf,idx)=>{
@@ -2875,9 +2921,14 @@ function renderToday(){
     });
   }
 
-  // Phase-specific content
+  // ═══ SECTION 6: PHASE TABS & CONTENT ═══════════════════════════
+  html+=`<div class="phase-tabs">
+    <button class="phase-tab${phase==='opening'?' active':''}" onclick="setTodayPhase('opening')">Opening</button>
+    <button class="phase-tab${phase==='service'?' active':''}" onclick="setTodayPhase('service')">Service</button>
+    <button class="phase-tab${phase==='closing'?' active':''}" onclick="setTodayPhase('closing')">Closing</button>
+  </div>`;
+
   if(phase==='service'){
-    // MEP progress card
     const mepZoneData=MEP[R]?.[ZONE]||[];
     if(mepZoneData.length>0){
       const mepTotal=mepZoneData.reduce((a,d)=>a+d.components.length,0);
@@ -2893,7 +2944,6 @@ function renderToday(){
         <div class="wf-bar" style="margin-top:8px;"><div class="wf-bar-fill" style="width:${mepPct}%"></div></div>
       </div>`;
     }
-    // Urgent tasks only during service
     if(allUrgent.length>0){
       html+=`<div class="sect-label">Urgent${canMgr?` <button onclick="openModal('m-urgent')">Push</button>`:''}`;
       html+=`</div>`;
@@ -2906,7 +2956,6 @@ function renderToday(){
       html+=`<div style="text-align:center;padding:40px 20px;color:var(--text-tertiary);font-size:14px;">Service is running. Use Cook Mode to start a workflow.</div>`;
     }
   } else {
-    // Opening / Closing checklist
     const tasks=phaseTasks;
     const phaseLabel=phase==='opening'?'Opening':'Closing';
     html+=`<div class="sect-label">${phaseLabel} checklist${canMgr&&phase==='opening'?` <button onclick="openModal('m-urgent')">Push urgent</button>`:''}`;
@@ -2935,12 +2984,11 @@ function renderToday(){
       </div>`;
     });
     if(!tasks.length)html+=`<div style="text-align:center;padding:48px 20px;">
-        <div style="font-family:'Fraunces',serif;font-style:italic;font-size:18px;color:var(--text-secondary);margin-bottom:6px;">Nothing on ${phaseLabel.toLowerCase()} yet.</div>
-        <div style="font-size:13px;color:var(--text-tertiary);line-height:1.5;">All clean for ${ZONE}. Switch zone via the pill, top-right${canMgr?', or push an urgent task using the button above':''}.</div>
-      </div>`;
+      <div style="font-family:'Fraunces',serif;font-style:italic;font-size:18px;color:var(--text-secondary);margin-bottom:6px;">Nothing on ${phaseLabel.toLowerCase()} yet.</div>
+      <div style="font-size:13px;color:var(--text-tertiary);line-height:1.5;">All clean for ${ZONE}. Switch zone via the pill, top-right${canMgr?', or push an urgent task using the button above':''}.</div>
+    </div>`;
   }
 
-  // Sign-off rows
   if(phase!=='closing'){
     html+=`<div class="signoff-row">
       <div class="so-icon" style="font-size:11px;font-weight:700;color:var(--text-tertiary);">SIG</div>
@@ -2955,6 +3003,7 @@ function renderToday(){
   } else {
     if(canMgr||clSigned[R]){html+=`<div class="signoff-row mgr"><div class="so-icon" style="font-size:11px;font-weight:700;color:var(--ember);">LOCK</div><div class="so-info"><div class="so-title">Close-down sign-off</div><div class="so-sub">Manager confirms zone secured</div></div><button class="so-btn${clSigned[R]?' signed':''}" onclick="openModal('m-close-pin')">${clSigned[R]?'✓ Closed':'Sign off'}</button></div>`;}
   }
+
   return html;
 }
 
@@ -2966,6 +3015,9 @@ function renderMenu(){
   const secs=['cold','hot','pizza','dessert','breakfast','wine'];
   const sNames={cold:'Cold',hot:'Hot',pizza:'Pizza & Fryer',dessert:'Desserts',breakfast:'Breakfast',wine:'Wine'};
   const restName=R===0?'Taller':'Bistro Mondo';
+  const restSlug=R===0?'taller':'bistro';
+  // Filter menu items to show only restaurant-appropriate items (by restaurant field or 'both')
+  const menuFiltered=MENU[R].filter(d=>!d.restaurant || d.restaurant===restSlug || d.restaurant==='both');
   let html=`<div style="display:flex;gap:7px;margin-bottom:14px;">
     <button onclick="R=0;menuSectionOpen={};renderTab()" style="flex:1;padding:10px;border-radius:11px;border:1.5px solid ${R===0?'#4E6332':'rgba(0,0,0,0.1)'};background:${R===0?'#F5F2E6':'white'};color:${R===0?'#4E6332':'#9B8E7E'};font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;">Taller</button>
     <button onclick="R=1;menuSectionOpen={};renderTab()" style="flex:1;padding:10px;border-radius:11px;border:1.5px solid ${R===1?'#4E6332':'rgba(0,0,0,0.1)'};background:${R===1?'#F5F2E6':'white'};color:${R===1?'#4E6332':'#9B8E7E'};font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;">Bistro Mondo</button>
@@ -2980,12 +3032,12 @@ function renderMenu(){
   const previewKey='preview_'+R;
   const previewOpen=!!menuSectionOpen[previewKey];
   html+=`<div class="menu-preview-card"><div class="menu-preview-head" onclick="menuSectionOpen['${previewKey}']=!menuSectionOpen['${previewKey}'];renderTab()"><span class="menu-preview-title">📄 Menu preview</span><span class="menu-preview-badge">${previewOpen?'Close':'View printed menu'}</span></div><div class="menu-preview-body${previewOpen?' open':''}"><div class="menu-print menu-print-target"><div class="menu-print-rest">${restName}</div><div class="menu-print-sub">Today's menu</div>`;
-  secs.forEach(sec=>{const dishes=MENU[R].filter(d=>d.section===sec&&!d.off);if(!dishes.length)return;html+=`<div class="menu-print-section">${sNames[sec]}</div>`;dishes.forEach(d=>{html+=`<div class="menu-print-dish"><span class="menu-print-name">${d.name}</span><span class="menu-print-dots"></span><span class="menu-print-price">€${d.price||'–'}</span></div>`;if(d.desc)html+=`<div class="menu-print-desc">${d.desc}</div>`;});});
+  secs.forEach(sec=>{const dishes=menuFiltered.filter(d=>d.section===sec&&!d.off);if(!dishes.length)return;html+=`<div class="menu-print-section">${sNames[sec]}</div>`;dishes.forEach(d=>{html+=`<div class="menu-print-dish"><span class="menu-print-name">${d.name}</span><span class="menu-print-dots"></span><span class="menu-print-price">€${d.price||'–'}</span></div>`;if(d.desc)html+=`<div class="menu-print-desc">${d.desc}</div>`;});});
   html+=`</div></div></div>`;
-  const special=MENU[R].find(d=>d.special&&!d.off);
+  const special=menuFiltered.find(d=>d.special&&!d.off);
   if(special){html+=`<div style="background:#F5F2E6;border:1px solid rgba(78,99,50,0.2);border-radius:14px;padding:13px 16px;margin-bottom:12px;display:flex;align-items:center;gap:10px;"><span style="font-size:20px;">⭐</span><div style="flex:1"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#4E6332;margin-bottom:2px;">Today's special</div><div style="font-size:14px;font-weight:500;color:#1F2916;">${special.name} · €${special.price}</div></div><button onclick="clearSpecial()" style="background:#4E6332;color:white;border:none;border-radius:8px;padding:7px 12px;font-size:11px;font-weight:600;cursor:pointer;">Clear</button></div>`;}
   secs.forEach(sec=>{
-    const dishes=MENU[R].filter(d=>d.section===sec);
+    const dishes=menuFiltered.filter(d=>d.section===sec);
     const isOpen=!!menuSectionOpen[''+R+'_'+sec];
     html+=`<div class="menu-sec"><div class="menu-sec-head" onclick="menuSectionOpen['${R}_${sec}']=!menuSectionOpen['${R}_${sec}'];renderTab()"><div class="msh-left"><span class="msh-dot ${sec}"></span><span class="msh-title">${sNames[sec]}</span></div><div class="msh-right"><span class="msh-count">${dishes.filter(d=>!d.off).length} active</span><button onclick="event.stopPropagation();openAddMenu('${sec}')" class="msh-add">+ Add</button><span style="color:#C8C0B8;font-size:12px;margin-left:4px;">${isOpen?'▴':'▾'}</span></div></div>`;
     if(isOpen){
@@ -4926,8 +4978,8 @@ async function loadSupabaseUrgentTasks(){
 }
 
 let MENU=[
-  [{id:'m1',name:'Chitarra Trufa',section:'hot',price:18,cost:4.20,recipeId:'r1',off:false,special:true},{id:'m2',name:'Pan Saigon',section:'cold',price:14,cost:2.80,recipeId:'r2',off:false,special:false},{id:'m3',name:'Pollo Green Curry',section:'hot',price:16,cost:3.60,recipeId:'r3',off:false,special:false},{id:'m4',name:'Gateau Marcel',section:'dessert',price:10,cost:2.10,recipeId:'r4',off:false,special:false},{id:'m5',name:'Falafel',section:'pizza',price:12,cost:1.80,recipeId:'r5',off:false,special:false},{id:'m6',name:'Margherita',section:'pizza',price:14,cost:3.20,recipeId:null,off:false,special:false},{id:'m7',name:'Ensalada Verde',section:'cold',price:9,cost:1.50,recipeId:null,off:false,special:false},{id:'m8',name:'Sopa del Día',section:'hot',price:8,cost:1.20,recipeId:null,off:false,special:false},{id:'m9',name:'Arancini',section:'pizza',price:12,cost:1.90,recipeId:'r12',off:false,special:false},{id:'m10',name:'Tarta del Día',section:'dessert',price:8,cost:1.80,recipeId:null,off:false,special:false}],
-  [{id:'b1',name:'Ostras',section:'cold',price:16,cost:4.80,recipeId:'r6',off:false,special:false},{id:'b2',name:'Cous Cous Marrakesh',section:'cold',price:13,cost:2.20,recipeId:'r7',off:false,special:false},{id:'b3',name:'Mariscos Pica Pica',section:'cold',price:22,cost:6.50,recipeId:'r8',off:false,special:true},{id:'b4',name:'Crème Caramel',section:'dessert',price:9,cost:1.40,recipeId:'r9',off:false,special:false},{id:'b5',name:'Vegan Cheesecake',section:'dessert',price:11,cost:2.80,recipeId:'r10',off:false,special:false},{id:'b6',name:'Chitarra Trufa',section:'hot',price:18,cost:4.20,recipeId:'r1',off:false,special:false},{id:'b7',name:'Chicken Wings',section:'hot',price:14,cost:3.20,recipeId:null,off:false,special:false},{id:'b8',name:'Margherita',section:'pizza',price:14,cost:3.20,recipeId:'r11',off:false,special:false},{id:'b9',name:'Pizza Bianca',section:'pizza',price:16,cost:3.80,recipeId:null,off:false,special:false},{id:'b10',name:'Arancini',section:'pizza',price:12,cost:1.90,recipeId:'r12',off:false,special:false},{id:'b11',name:'Falafel',section:'pizza',price:12,cost:1.80,recipeId:'r5',off:false,special:false},{id:'b12',name:'Pollo Green Curry',section:'hot',price:16,cost:3.60,recipeId:'r3',off:false,special:false},{id:'b13',name:'Gateau Marcel',section:'dessert',price:10,cost:2.10,recipeId:'r4',off:false,special:false}]
+  [{id:'m1',name:'Chitarra Trufa',section:'hot',price:18,cost:4.20,recipeId:'r1',off:false,special:true,restaurant:'taller'},{id:'m2',name:'Pan Saigon',section:'cold',price:14,cost:2.80,recipeId:'r2',off:false,special:false,restaurant:'taller'},{id:'m3',name:'Pollo Green Curry',section:'hot',price:16,cost:3.60,recipeId:'r3',off:false,special:false,restaurant:'both'},{id:'m4',name:'Gateau Marcel',section:'dessert',price:10,cost:2.10,recipeId:'r4',off:false,special:false,restaurant:'both'},{id:'m5',name:'Falafel',section:'pizza',price:12,cost:1.80,recipeId:'r5',off:false,special:false,restaurant:'both'},{id:'m6',name:'Margherita',section:'pizza',price:14,cost:3.20,recipeId:null,off:false,special:false,restaurant:'taller'},{id:'m7',name:'Ensalada Verde',section:'cold',price:9,cost:1.50,recipeId:null,off:false,special:false,restaurant:'taller'},{id:'m8',name:'Sopa del Día',section:'hot',price:8,cost:1.20,recipeId:null,off:false,special:false,restaurant:'taller'},{id:'m9',name:'Arancini',section:'pizza',price:12,cost:1.90,recipeId:'r12',off:false,special:false,restaurant:'both'},{id:'m10',name:'Tarta del Día',section:'dessert',price:8,cost:1.80,recipeId:null,off:false,special:false,restaurant:'taller'}],
+  [{id:'b1',name:'Ostras',section:'cold',price:16,cost:4.80,recipeId:'r6',off:false,special:false,restaurant:'bistro'},{id:'b2',name:'Cous Cous Marrakesh',section:'cold',price:13,cost:2.20,recipeId:'r7',off:false,special:false,restaurant:'bistro'},{id:'b3',name:'Mariscos Pica Pica',section:'cold',price:22,cost:6.50,recipeId:'r8',off:false,special:true,restaurant:'bistro'},{id:'b4',name:'Crème Caramel',section:'dessert',price:9,cost:1.40,recipeId:'r9',off:false,special:false,restaurant:'bistro'},{id:'b5',name:'Vegan Cheesecake',section:'dessert',price:11,cost:2.80,recipeId:'r10',off:false,special:false,restaurant:'bistro'},{id:'b6',name:'Margherita',section:'pizza',price:14,cost:3.20,recipeId:'r11',off:false,special:false,restaurant:'bistro'},{id:'b7',name:'Chicken Wings',section:'hot',price:14,cost:3.20,recipeId:null,off:false,special:false,restaurant:'bistro'},{id:'b8',name:'Pizza Bianca',section:'pizza',price:16,cost:3.80,recipeId:null,off:false,special:false,restaurant:'bistro'},{id:'b9',name:'Arancini',section:'pizza',price:12,cost:1.90,recipeId:'r12',off:false,special:false,restaurant:'both'},{id:'b10',name:'Falafel',section:'pizza',price:12,cost:1.80,recipeId:'r5',off:false,special:false,restaurant:'both'},{id:'b11',name:'Pollo Green Curry',section:'hot',price:16,cost:3.60,recipeId:'r3',off:false,special:false,restaurant:'both'},{id:'b12',name:'Crème Brûlée',section:'dessert',price:9,cost:1.40,recipeId:null,off:false,special:false,restaurant:'bistro'},{id:'b13',name:'Soufflé Grand Marnier',section:'dessert',price:12,cost:2.10,recipeId:null,off:false,special:false,restaurant:'bistro'}]
 ];
 
 const TASKS={0:{foh:{'All FOH':{opening:[{id:'tf1',name:'Tables set & polished',sub:'Check all covers'},{id:'tf2',name:'Menus clean & positioned',sub:''},{id:'tf3',name:'Water stations filled',sub:'Still + sparkling'},{id:'tf4',name:'Music & lighting checked',sub:''},{id:'tf5',name:'Reservations reviewed',sub:'Alert team of large groups'},{id:'tf6',name:'POS on & tested',sub:''},{id:'tf7',name:'Team briefed on specials',sub:''}],closing:[{id:'tfc1',name:'Tables cleared & wiped',sub:''},{id:'tfc2',name:'POS closed & cash counted',sub:''},{id:'tfc3',name:'Floors swept',sub:''},{id:'tfc4',name:'Music & lights off',sub:''},{id:'tfc5',name:'Doors locked',sub:''}],cleaning:{daily:[{id:'tfd1',icon:'🪑',name:'Tables & chairs',freq:'Daily'},{id:'tfd2',icon:'🚽',name:'Guest bathrooms',freq:'3× service'},{id:'tfd3',icon:'🪟',name:'Entrance & windows',freq:'Daily'}],weekly:[{id:'tfw1',icon:'🧴',name:'Deep clean bathrooms',freq:'Weekly'},{id:'tfw2',icon:'🪣',name:'Floor deep clean',freq:'Weekly'}]}}},boh:{'Hot Station':{opening:[{id:'th1',name:'Ovens on & calibrated',sub:'Check temps'},{id:'th2',name:'Bread bake started',sub:'Pan moldes'},{id:'th3',name:'Pasta del día — pollonesa',sub:'Rigatonito'},{id:'th4',name:'Chitarra trufa rolled & cut',sub:''},{id:'th5',name:'Sopa del día',sub:'Cook + strain'},{id:'th6',name:'Green curry paste',sub:'Blitz'},{id:'th7',name:'Chicken ragout',sub:'Muslo + pechuga'},{id:'th8',name:'Tortilla cooked',sub:'Patata + cebolla'},{id:'th9',name:'Mushroom mise en place',sub:''},{id:'th10',name:'Basmati garni cooked',sub:''},{id:'th11',name:'Falafel formed & ready',sub:'Garbanzos soaked'},{id:'th12',name:'Arancini production',sub:''},{id:'th13',name:'Fries boiled & cooled',sub:'Mayo spicy + trufa'},{id:'th14',name:'Focaccia baked',sub:'EVO y romero'},{id:'th15',name:'Gateau Marcel portioned',sub:''},{id:'th16',name:'Calzone nutella filling',sub:''},{id:'th17',name:'Tarta del día',sub:''},{id:'th18',name:'Ice creams tempered',sub:'Fresa, limón, choco, vainilla'}],closing:[{id:'thc1',name:'All food labelled & stored',sub:'Date + product'},{id:'thc2',name:'Fridge temps logged',sub:'≤5°C'},{id:'thc3',name:'Ovens off & wiped',sub:''},{id:'thc4',name:'Grill scrubbed',sub:''},{id:'thc5',name:'Fryer oil strained',sub:''},{id:'thc6',name:'Surfaces sanitised',sub:''},{id:'thc7',name:'Floors swept & mopped',sub:''},{id:'thc8',name:'Waste sorted',sub:''}],cleaning:{daily:[{id:'thd1',icon:'🔥',name:'Oven & burners',freq:'Daily'},{id:'thd2',icon:'🍳',name:'Cooking surfaces',freq:'Daily'},{id:'thd3',icon:'🗑️',name:'Bins',freq:'Daily'},{id:'thd4',icon:'🪣',name:'Floors',freq:'Daily'}],weekly:[{id:'thw1',icon:'🔥',name:'Oven deep clean',freq:'Weekly'},{id:'thw2',icon:'❄️',name:'Fridge interior',freq:'Weekly'},{id:'thw3',icon:'💨',name:'Extraction filters',freq:'Weekly'},{id:'thw4',icon:'🪤',name:'Grease trap',freq:'Weekly'}]}},'Cold Station':{opening:[{id:'tc1',name:'Fridge temps checked',sub:'All ≤5°C'},{id:'tc2',name:'Zanahoria, daikon, pepino mix',sub:'Pickled veg'},{id:'tc3',name:'Blanch & grill calcots',sub:''},{id:'tc4',name:'Coliflor blanched',sub:''},{id:'tc5',name:'Remolacha marinated',sub:''},{id:'tc6',name:'Asparagus blanched',sub:''},{id:'tc7',name:'Aliño de goma',sub:'Sesame dressing'},{id:'tc8',name:'Ajo blanco',sub:'Blitz + chill'},{id:'tc9',name:'Fideos hidratados',sub:''},{id:'tc10',name:'Crudité du jour',sub:''},{id:'tc11',name:'Fermentados + giardinera',sub:''},{id:'tc12',name:'Chile en vinagreta',sub:''},{id:'tc13',name:'Aioli production',sub:''},{id:'tc14',name:'Riccotta cream',sub:''},{id:'tc15',name:'Mozzarella bufala portioned',sub:''}],closing:[{id:'tcc1',name:'All preps covered & dated',sub:''},{id:'tcc2',name:'Fridge temps logged',sub:''},{id:'tcc3',name:'Boards sanitised',sub:''},{id:'tcc4',name:'Surfaces wiped',sub:''},{id:'tcc5',name:'Waste cleared',sub:''}],cleaning:{daily:[{id:'tcd1',icon:'🔪',name:'Chopping boards',freq:'Daily'},{id:'tcd2',icon:'🧊',name:'Fridge exterior',freq:'Daily'},{id:'tcd3',icon:'🍶',name:'Cold surfaces',freq:'Daily'},{id:'tcd4',icon:'🪣',name:'Floors',freq:'Daily'}],weekly:[{id:'tcw1',icon:'❄️',name:'Fridge interior',freq:'Weekly'},{id:'tcw2',icon:'🧴',name:'Containers',freq:'Weekly'},{id:'tcw3',icon:'🫙',name:'Dry store',freq:'Weekly'}]}}},admin:{'Administration':{opening:[{id:'ta1',name:'Check reservations',sub:''},{id:'ta2',name:'Review covers & alert kitchen',sub:''},{id:'ta3',name:'Supplier deliveries today',sub:''},{id:'ta4',name:'Review previous day sales',sub:''},{id:'ta5',name:'Staff rota confirmed',sub:''}],closing:[{id:'tac1',name:'Sales reconciled',sub:''},{id:'tac2',name:'Wastage logged',sub:''},{id:'tac3',name:'Tomorrow orders confirmed',sub:''},{id:'tac4',name:'Tomorrow reservations confirmed',sub:''},{id:'tac5',name:'Staff hours logged',sub:''}],cleaning:{daily:[],weekly:[]}}}},1:{foh:{'Terrace':{opening:[{id:'bte1',name:'Terrace tables set',sub:''},{id:'bte2',name:'Menus positioned',sub:''},{id:'bte3',name:'Parasols up & secured',sub:'Check wind'},{id:'bte4',name:'Water station filled',sub:''},{id:'bte5',name:'Lighting checked',sub:''},{id:'bte6',name:'Reservations confirmed',sub:''}],closing:[{id:'btc1',name:'Tables cleared',sub:''},{id:'btc2',name:'Parasols down',sub:''},{id:'btc3',name:'Terrace swept',sub:''},{id:'btc4',name:'Furniture covered',sub:''}],cleaning:{daily:[{id:'btd1',icon:'☂️',name:'Parasols & furniture',freq:'Daily'},{id:'btd2',icon:'🌿',name:'Terrace floor',freq:'Daily'},{id:'btd3',icon:'🪑',name:'Tables & chairs',freq:'Daily'}],weekly:[{id:'btw1',icon:'🧴',name:'Deep clean furniture',freq:'Weekly'},{id:'btw2',icon:'🪣',name:'Floor wash',freq:'Weekly'}]}},'Garden':{opening:[{id:'bge1',name:'Garden swept & cleared',sub:''},{id:'bge2',name:'Garden tables set',sub:''},{id:'bge3',name:'Plants watered',sub:''},{id:'bge4',name:'Lighting tested',sub:''},{id:'bge5',name:'Garden reservations checked',sub:''}],closing:[{id:'bgc1',name:'Garden tables cleared',sub:''},{id:'bgc2',name:'Garden swept',sub:''},{id:'bgc3',name:'Lights off',sub:''},{id:'bgc4',name:'Gate secured',sub:''}],cleaning:{daily:[{id:'bgd1',icon:'🌳',name:'Garden swept',freq:'Daily'},{id:'bgd2',icon:'🪑',name:'Tables & chairs',freq:'Daily'},{id:'bgd3',icon:'💡',name:'Lighting',freq:'Daily'}],weekly:[{id:'bgw1',icon:'🌿',name:'Plants maintained',freq:'Weekly'},{id:'bgw2',icon:'🧴',name:'Furniture deep clean',freq:'Weekly'}]}}},boh:{'Kitchen':{opening:[{id:'bk1',name:'Fridge temps checked',sub:'≤5°C'},{id:'bk2',name:'Blast chiller checked',sub:''},{id:'bk3',name:'Ovens on & calibrated',sub:''},{id:'bk4',name:'Ostras opened + minonette',sub:''},{id:'bk5',name:'Mariscos prepped',sub:'Gambas, langostino, pulpo, calamar'},{id:'bk6',name:'Pure de coliflor',sub:'Cook + blitz'},{id:'bk7',name:'Brown butter vinagrete',sub:''},{id:'bk8',name:'Aliño de goma',sub:''},{id:'bk9',name:'Cous cous Marrakesh',sub:''},{id:'bk10',name:'Aioli + tzatziki',sub:''},{id:'bk11',name:'Hummus',sub:''},{id:'bk12',name:'Pico de gallo',sub:''},{id:'bk13',name:'Kimchee + crudité',sub:''},{id:'bk14',name:'Pasta del día',sub:'Rigatonito'},{id:'bk15',name:'Chitarra trufa',sub:'Roll + cut'},{id:'bk16',name:'Sopa del día',sub:'Yogurt + vege demi'},{id:'bk17',name:'Chicken wings',sub:'Marinate + salsa'},{id:'bk18',name:'Green curry paste',sub:''},{id:'bk19',name:'Chicken ragout',sub:'Muslo + pechuga'},{id:'bk20',name:'Mushroom mise en place',sub:''},{id:'bk21',name:'Aubergine + verduras',sub:'Roast'},{id:'bk22',name:'Vege demi-glace',sub:'Reduce'},{id:'bk23',name:'Ice creams ready',sub:'5 flavours incl. mango'},{id:'bk24',name:'Gateau Marcel',sub:''},{id:'bk25',name:'Crème caramel',sub:''},{id:'bk26',name:'Vegan cheesecake',sub:'Grilled pineapple'},{id:'bk27',name:'Calzone nutella filling',sub:''}],closing:[{id:'bkc1',name:'All food labelled & stored',sub:''},{id:'bkc2',name:'Fridge temps logged',sub:''},{id:'bkc3',name:'Ovens off & wiped',sub:''},{id:'bkc4',name:'Mariscos stored correctly',sub:''},{id:'bkc5',name:'Surfaces sanitised',sub:''},{id:'bkc6',name:'Floors swept & mopped',sub:''},{id:'bkc7',name:'Waste sorted',sub:''}],cleaning:{daily:[{id:'bkd1',icon:'🔥',name:'Cooking surfaces',freq:'Daily'},{id:'bkd2',icon:'🦞',name:'Seafood station',freq:'After service'},{id:'bkd3',icon:'🧊',name:'Fridge exterior',freq:'Daily'},{id:'bkd4',icon:'🗑️',name:'Bins',freq:'Daily'},{id:'bkd5',icon:'🪣',name:'Floors',freq:'Daily'}],weekly:[{id:'bkw1',icon:'❄️',name:'Fridge interior',freq:'Weekly'},{id:'bkw2',icon:'🔥',name:'Oven deep clean',freq:'Weekly'},{id:'bkw3',icon:'💨',name:'Extraction filters',freq:'Weekly'},{id:'bkw4',icon:'🪤',name:'Grease trap',freq:'Weekly'}]}},'Pizzeria':{opening:[{id:'bp1',name:'Pizza oven lit',sub:''},{id:'bp2',name:'Dough balls proving',sub:''},{id:'bp3',name:'Tomato sauce ready',sub:''},{id:'bp4',name:'Mozzarella bufala drained',sub:''},{id:'bp5',name:'Burrata drained',sub:''},{id:'bp6',name:'Pesto de rúcula',sub:''},{id:'bp7',name:'Focaccia baked',sub:''},{id:'bp8',name:'Falafel ready to fry',sub:''},{id:'bp9',name:'Arancini done',sub:''},{id:'bp10',name:'Fries boiled & cooled',sub:''}],closing:[{id:'bpc1',name:'Dough wrapped & fridged',sub:''},{id:'bpc2',name:'Pizza oven cleaned',sub:''},{id:'bpc3',name:'Fryer oil strained',sub:''},{id:'bpc4',name:'Surfaces sanitised',sub:''},{id:'bpc5',name:'Floors swept',sub:''}],cleaning:{daily:[{id:'bpd1',icon:'🍕',name:'Pizza oven wiped',freq:'Daily'},{id:'bpd2',icon:'🔪',name:'Prep surfaces',freq:'Daily'},{id:'bpd3',icon:'🍟',name:'Fryer',freq:'Daily'},{id:'bpd4',icon:'🪣',name:'Floors',freq:'Daily'}],weekly:[{id:'bpw1',icon:'🔥',name:'Oven deep clean',freq:'Weekly'},{id:'bpw2',icon:'🧴',name:'Containers sanitised',freq:'Weekly'}]}},'Prep Kitchen':{opening:[{id:'bpr1',name:'Prep fridge temps',sub:''},{id:'bpr2',name:'Bread moulds prepped',sub:''},{id:'bpr3',name:'Bread bake started',sub:''},{id:'bpr4',name:'Pica pica mix',sub:'Zanahoria, daikon, pepino'},{id:'bpr5',name:'Fideos hidratados',sub:''},{id:'bpr6',name:'Fermentados + giardinera',sub:''},{id:'bpr7',name:'Gengibre encurtido',sub:''},{id:'bpr8',name:'Basmati garni',sub:''},{id:'bpr9',name:'Stocks checked',sub:''}],closing:[{id:'bprc1',name:'All preps covered & dated',sub:''},{id:'bprc2',name:'Fridge temps logged',sub:''},{id:'bprc3',name:'Surfaces sanitised',sub:''},{id:'bprc4',name:'Floors swept',sub:''}],cleaning:{daily:[{id:'bprd1',icon:'🔪',name:'Chopping boards',freq:'Daily'},{id:'bprd2',icon:'🫙',name:'Containers',freq:'Daily'},{id:'bprd3',icon:'🪣',name:'Floors',freq:'Daily'}],weekly:[{id:'bprw1',icon:'❄️',name:'Prep fridge deep clean',freq:'Weekly'},{id:'bprw2',icon:'🫙',name:'Dry store',freq:'Weekly'},{id:'bprw3',icon:'🧴',name:'All containers',freq:'Weekly'}]}}},admin:{'Administration':{opening:[{id:'ba1',name:'Check reservations — terrace & garden',sub:''},{id:'ba2',name:'Review covers & alert kitchen',sub:''},{id:'ba3',name:'Supplier deliveries today',sub:''},{id:'ba4',name:'Review previous day sales',sub:''},{id:'ba5',name:'Staff rota confirmed',sub:''}],closing:[{id:'bac1',name:'Sales reconciled',sub:''},{id:'bac2',name:'Wastage logged',sub:''},{id:'bac3',name:'Tomorrow orders confirmed',sub:''},{id:'bac4',name:'Tomorrow reservations confirmed',sub:''},{id:'bac5',name:'Staff hours logged',sub:''}],cleaning:{daily:[],weekly:[]}}}}};
