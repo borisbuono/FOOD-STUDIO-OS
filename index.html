@@ -640,6 +640,24 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
   font-size: 10px; font-weight: 600; padding: 4px 10px;
   border-radius: 8px; letter-spacing: 0.04em;
 }
+.dish-story {
+  margin: 16px 0; padding: 14px 16px;
+  background: rgba(168,137,58,0.06); border-left: 3px solid var(--gold);
+  border-radius: 6px;
+}
+.dish-story .ds-label {
+  font-size: 10px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.1em; opacity: 0.7; margin-bottom: 8px;
+  color: var(--text-tertiary);
+}
+.dish-story .ds-text {
+  font-family: 'Fraunces', serif; font-style: italic;
+  line-height: 1.6; font-size: 14px; color: var(--text-secondary);
+}
+.mi-story-preview {
+  font-size: 13px; font-style: italic; opacity: 0.75;
+  margin-top: 5px; line-height: 1.4; color: var(--text-secondary);
+}
 .det-desc {
   background: var(--ink-mid); border: 1px solid var(--border); border-radius: 12px;
   padding: 14px 16px; font-size: 13px; color: var(--text-secondary);
@@ -944,6 +962,36 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
 .ai-draft-ings { font-size: 12px; color: var(--text-secondary); line-height: 2; font-family: 'DM Mono', monospace; }
 .ai-draft-actions { display: flex; gap: 7px; margin-top: 14px; }
 
+/* ─── WINE POPOVER (F55) ─── */
+.wine-item {
+  padding: 13px 14px; border: 1px solid var(--glass-border); border-radius: 11px;
+  background: var(--glass); display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 8px; cursor: pointer; transition: all 0.2s;
+}
+.wine-item:active { transform: scale(0.98); opacity: 0.8; }
+.wine-item-name { font-size: 14px; font-weight: 500; color: var(--text-primary); }
+.wine-item-price { font-family: 'DM Mono', monospace; font-size: 13px; font-weight: 600; color: var(--gold, #B8963A); }
+.wine-sheet { max-width: 480px; }
+.wine-type {
+  font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--text-tertiary); margin-bottom: 8px;
+}
+.wine-price {
+  font-family: 'Fraunces', serif; font-size: 26px; font-weight: 600; text-align: center;
+  margin: 14px 0; color: var(--gold, #B8963A);
+}
+.wine-desc { font-size: 13px; line-height: 1.6; color: var(--text-secondary); margin-bottom: 12px; }
+.wine-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 0; border-bottom: 1px solid var(--glass-border);
+  font-size: 13px;
+}
+.wr-label { opacity: 0.6; text-transform: uppercase; font-size: 10px; letter-spacing: 0.06em; font-weight: 600; }
+.wr-val { font-weight: 500; color: var(--text-primary); }
+.wine-block { margin: 16px 0; }
+.wb-label { font-size: 10px; opacity: 0.6; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; margin-bottom: 6px; }
+.wb-text { font-size: 13px; line-height: 1.6; color: var(--text-secondary); }
+
 /* ─── CONTEXT SWITCHER ─── */
 .ctx-switcher {
   display: flex; gap: 6px; padding: 12px 16px; overflow-x: auto;
@@ -1196,6 +1244,15 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
 .labour-pct { font-family:'DM Mono',monospace;font-size:12px; }
 .labour-prog { height:6px;background:#F0EDE8;border-radius:3px;overflow:hidden;margin-top:8px; }
 .labour-prog-fill { height:100%;border-radius:3px;transition:width 0.4s; }
+.schedule-overlay { background:#FFFFFF;border:1px solid rgba(0,0,0,0.07);border-radius:13px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,0.04); }
+.day-events { display:flex;flex-wrap:wrap;gap:6px;margin:8px 0; }
+.day-event-chip { background:#A8893A;color:white;padding:6px 10px;border-radius:12px;font-size:12px;cursor:pointer;display:inline-flex;gap:6px;align-items:center;margin-bottom:8px; }
+.day-event-chip:hover { opacity:0.9; }
+.dec-time { opacity:0.85;font-weight:500; }
+.dec-title { font-weight:600; }
+.dec-pax { opacity:0.8;font-size:11px; }
+.day-bookings-count { font-size:11px;opacity:0.7;margin-top:2px;padding:6px 0; }
+.labor-cost-chip { display:inline-block;padding:8px 12px;border-radius:8px;background:rgba(0,0,0,0.04);font-size:13px;margin:8px 0;border-left:3px solid #A8893A; }
 
 /* ── COOK MODE ── */
 .cook-screen { background:#FFFFFF;min-height:calc(100dvh - 180px);display:flex;flex-direction:column; }
@@ -1927,6 +1984,24 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
 .sa-skill-bar button { padding: 6px 12px; background: #F7F4EE; border: 1px solid #E5DFD2; color: #1A1A1A; border-radius: 16px; font-size: 12px; cursor: pointer; font-family: ui-sans-serif,system-ui,sans-serif; }
 .sa-skill-bar button:hover { background: #EDE6D6; }
 
+/* ══ Menu Types Filter (F54) ══ */
+.menu-types { display: flex; gap: 8px; margin-bottom: 14px; overflow-x: auto; padding-bottom: 4px; }
+.mt-pill { padding: 8px 14px; border: 1.5px solid var(--border); background: var(--bg); color: var(--text-secondary); border-radius: 20px; font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: all 0.2s; }
+.mt-pill:hover { border-color: var(--text-secondary); }
+.mt-pill.active { background: var(--ember); color: white; border-color: var(--ember); }
+
+/* ══ Print Styles (F11) ══ */
+@media print {
+  body * { visibility: hidden; }
+  .menu-print-target, .menu-print-target * { visibility: visible; }
+  .menu-print-target { position: absolute; left: 0; top: 0; width: 100%; }
+  .menu-types, .menu-print-btn, .nav, .topbar, .more-btn, .menu-sec-head, .msh-add { display: none !important; }
+  body, [data-theme="dark"], [data-theme="light"], :root { --bg: #FFFFFF; --text-primary: #000000; --border: #888888; background: white !important; color: black !important; }
+  .menu-print { background: white; color: black; padding: 20px; }
+  .menu-print-rest { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
+  .menu-print-sub { font-size: 12px; color: #666; margin-bottom: 16px; }
+}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://accounts.google.com/gsi/client" async></script>
@@ -2221,6 +2296,20 @@ async function sbFetch(path){
   return r.json();
 }
 
+async function loadHaccpPlans(){
+  if(haccpLoaded)return;
+  try{
+    const restSlug=R===0?'taller':'bistro-mondo';
+    const rs=await sbFetch(`restaurants?slug=eq.${restSlug}&select=id`);
+    if(!rs.length){haccpLoaded=true;return;}
+    const restId=rs[0].id;
+    const rows=await sbFetch(`haccp_plans?restaurant_id=eq.${restId}&order=plan_code.asc`);
+    HACCP_PLANS=rows||[];
+    haccpLoaded=true;
+    if(currentTab==='cleaning')renderTab();
+  }catch(e){console.warn('haccp load:',e.message);}
+}
+
 const SVG_CHK=`<svg width="11" height="9" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 const ROLE_COLORS={worker:'#8AA350',chef:'#4E6332',maitre:'#5A8A78',manager:'#1F3D2F',owner:'#3B6D11'};
 const ZONE_COLORS={cold:'#5A8A78',hot:'#4E6332',pizza:'#3B6D11',dessert:'#8AA350',breakfast:'#6FA17F'};
@@ -2230,6 +2319,7 @@ const ZONES={0:{boh:['Hot Station','Cold Station'],foh:['All FOH'],admin:['Admin
 let USER={name:'',role:'owner',lang:'en',zone:''},selRV='',selLV='en',selRestV=null,selAreaV='';
 let R=0,AREA='boh',ZONE='Hot Station';
 let currentTab='today',recEditId=null,menuAddSec='hot',prodTab='mep',todaySubTab='day';
+let currentMenuType='all';
 let ordersSearchQuery='';
 let taskState={},cleanState={},mepState={},dishOpen={},menuSectionOpen={};
 let taskPriority={},taskUrgent={};
@@ -2241,8 +2331,10 @@ let ctxPending={R:0,AREA:'boh',ZONE:'Hot Station'};
 let todayPhase=null,activeWorkflows=[];
 let SUPABASE_BRIEFINGS=[];let sbBriefingsLoaded=false;
 let SUPABASE_URGENT_TASKS=[];let sbUrgentLoaded=false;
+let HACCP_PLANS=[];let haccpLoaded=false;
 // ── CLOCK-IN / OUT (Spanish Registro de jornada compliance) ──────
 let CLOCK_EVENTS=[];let clockLoaded=false;
+let CLOCK_VARIANCES=[];let variancesLoaded=false;
 async function computeEventHash(prev, payload){
   const data = new TextEncoder().encode((prev||'')+'|'+JSON.stringify(payload));
   const buf = await crypto.subtle.digest('SHA-256', data);
@@ -2309,6 +2401,102 @@ async function clockToggle(){
   }
 }
 
+async function reportMaintenanceIssue(){
+  const text=document.getElementById('maintenanceFeedback')?.value.trim();
+  if(!text){showToast('Please enter a maintenance issue');return;}
+  try{
+    const restSlug=R===0?'taller':'bistro-mondo';
+    const rs=await sbFetch(`restaurants?slug=eq.${restSlug}&select=id`);
+    if(!rs.length){showToast('Restaurant not found');return;}
+    const restId=rs[0].id;
+    const now=new Date().toISOString();
+    const payload={
+      restaurant_id:restId,
+      category:'maintenance',
+      source:'cleaning_feedback',
+      sender_name:USER.name||'Cleaning team',
+      subject:'Maintenance issue reported',
+      body:text,
+      received_at:now,
+      status:'new',
+      priority:'normal',
+      created_at:now
+    };
+    const r=await fetch(`${SUPABASE_URL}/rest/v1/inbox_items`,{
+      method:'POST',
+      headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json',Prefer:'return=minimal'},
+      body:JSON.stringify(payload)
+    });
+    if(r.ok){
+      document.getElementById('maintenanceFeedback').value='';
+      showToast('✓ Reported to maintenance inbox');
+    }else{
+      showToast('Failed to report — try again');
+    }
+  }catch(e){
+    console.warn('maintenance report:',e.message);
+    showToast('Error: '+e.message);
+  }
+}
+
+// ── CLOCK VARIANCE APPROVAL ──────────────────────────
+function computeClockVariances(){
+  const variances=[];
+  const today=new Date().toISOString().slice(0,10);
+  const dow=new Date().getDay();
+  WEEK_SHIFTS.forEach(worker=>{
+    const workerSchedule=worker.schedule.find(s=>s.day===dow);
+    if(!workerSchedule)return;
+    const workerClocks=CLOCK_EVENTS.filter(c=>c.worker_name===worker.name&&c.shift_date===today);
+    if(!workerClocks.length)return;
+    const clockIn=workerClocks.find(c=>c.event_type==='in');
+    const clockOut=workerClocks[workerClocks.length-1]?.event_type==='out'?workerClocks[workerClocks.length-1]:null;
+    if(!clockIn)return;
+    const [sh,sm]=workerSchedule.start.split(':').map(Number);
+    const [eh,em]=workerSchedule.end.split(':').map(Number);
+    const schedStart=sh*60+sm;
+    const schedEnd=eh*60+em;
+    const [ach,acm]=clockIn.event_time.split('T')[1].split(':').map(Number);
+    const clockStart=ach*60+acm;
+    const clockEnd=clockOut?clockOut.event_time.split('T')[1].split(':').map((n,i)=>i===0?parseInt(n):parseInt(n))[0]*60+parseInt(clockOut.event_time.split('T')[1].split(':')[1]):null;
+    const varMins=(clockStart-schedStart)+(clockEnd?clockEnd-schedEnd:0);
+    if(Math.abs(varMins)>=5){
+      variances.push({
+        id:worker.name+'-'+today,
+        name:worker.name,
+        date:today,
+        scheduledMins:schedEnd-schedStart,
+        clockedMins:clockEnd?clockEnd-clockStart:null,
+        varianceMins:varMins,
+        status:'pending',
+        approvedBy:null,
+        approvedAt:null
+      });
+    }
+  });
+  CLOCK_VARIANCES=variances;
+  variancesLoaded=true;
+}
+
+async function approveClockVariance(varianceId,decision){
+  const variance=CLOCK_VARIANCES.find(v=>v.id===varianceId);
+  if(!variance)return;
+  const now=new Date().toISOString();
+  variance.status=decision;
+  variance.approvedBy=USER.name;
+  variance.approvedAt=now;
+  try{
+    await fetch(`${SUPABASE_URL}/rest/v1/clock_events?worker_name=eq.${encodeURIComponent(variance.name)}&shift_date=eq.${variance.date}`,{
+      method:'PATCH',
+      headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json',Prefer:'return=representation'},
+      body:JSON.stringify({variance_status:decision,approved_by:USER.name,approved_at:now})
+    });
+    showToast(`Variance ${decision}`);
+    renderTab();
+  }catch(e){
+    showToast('Failed: '+e.message);
+  }
+}
 
 function getCov(){return parseInt(document.getElementById('cov-hidden')?.value||document.getElementById('mep-cov')?.value||40);}
 function getPhase(){const h=new Date().getHours();if(h>=5&&h<12)return'opening';if(h>=22||h<5)return'closing';return'service';}
@@ -2596,16 +2784,18 @@ function renderToday(){
 
 // ══ MENU ══
 function renderMenu(){
-  const secs=['cold','hot','pizza','dessert','breakfast'];
-  const sNames={cold:'Cold',hot:'Hot',pizza:'Pizza & Fryer',dessert:'Desserts',breakfast:'Breakfast'};
+  const secs=['cold','hot','pizza','dessert','breakfast','wine'];
+  const sNames={cold:'Cold',hot:'Hot',pizza:'Pizza & Fryer',dessert:'Desserts',breakfast:'Breakfast',wine:'Wine'};
   const restName=R===0?'Taller':'Bistro Mondo';
   let html=`<div style="display:flex;gap:7px;margin-bottom:14px;">
     <button onclick="R=0;menuSectionOpen={};renderTab()" style="flex:1;padding:10px;border-radius:11px;border:1.5px solid ${R===0?'#4E6332':'rgba(0,0,0,0.1)'};background:${R===0?'#F5F2E6':'white'};color:${R===0?'#4E6332':'#9B8E7E'};font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;">Taller</button>
     <button onclick="R=1;menuSectionOpen={};renderTab()" style="flex:1;padding:10px;border-radius:11px;border:1.5px solid ${R===1?'#4E6332':'rgba(0,0,0,0.1)'};background:${R===1?'#F5F2E6':'white'};color:${R===1?'#4E6332':'#9B8E7E'};font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;">Bistro Mondo</button>
   </div>`;
+  html+=`<div class="menu-types"><button class="mt-pill ${currentMenuType==='all'?'active':''}" onclick="setMenuType('all')">All</button><button class="mt-pill ${currentMenuType==='breakfast'?'active':''}" onclick="setMenuType('breakfast')">Breakfast</button><button class="mt-pill ${currentMenuType==='lunch'?'active':''}" onclick="setMenuType('lunch')">Lunch</button><button class="mt-pill ${currentMenuType==='dinner'?'active':''}" onclick="setMenuType('dinner')">Dinner</button><button class="mt-pill ${currentMenuType==='specials'?'active':''}" onclick="setMenuType('specials')">Specials</button></div>`;
+  html+=`<button class="menu-print-btn" onclick="printMenu()" style="width:100%;padding:10px;margin-bottom:12px;border:1.5px solid var(--border);background:var(--bg);color:var(--text-primary);border-radius:11px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;">🖨️ Print menu</button>`;
   const previewKey='preview_'+R;
   const previewOpen=!!menuSectionOpen[previewKey];
-  html+=`<div class="menu-preview-card"><div class="menu-preview-head" onclick="menuSectionOpen['${previewKey}']=!menuSectionOpen['${previewKey}'];renderTab()"><span class="menu-preview-title">📄 Menu preview</span><span class="menu-preview-badge">${previewOpen?'Close':'View printed menu'}</span></div><div class="menu-preview-body${previewOpen?' open':''}"><div class="menu-print"><div class="menu-print-rest">${restName}</div><div class="menu-print-sub">Today's menu</div>`;
+  html+=`<div class="menu-preview-card"><div class="menu-preview-head" onclick="menuSectionOpen['${previewKey}']=!menuSectionOpen['${previewKey}'];renderTab()"><span class="menu-preview-title">📄 Menu preview</span><span class="menu-preview-badge">${previewOpen?'Close':'View printed menu'}</span></div><div class="menu-preview-body${previewOpen?' open':''}"><div class="menu-print menu-print-target"><div class="menu-print-rest">${restName}</div><div class="menu-print-sub">Today's menu</div>`;
   secs.forEach(sec=>{const dishes=MENU[R].filter(d=>d.section===sec&&!d.off);if(!dishes.length)return;html+=`<div class="menu-print-section">${sNames[sec]}</div>`;dishes.forEach(d=>{html+=`<div class="menu-print-dish"><span class="menu-print-name">${d.name}</span><span class="menu-print-dots"></span><span class="menu-print-price">€${d.price||'–'}</span></div>`;if(d.desc)html+=`<div class="menu-print-desc">${d.desc}</div>`;});});
   html+=`</div></div></div>`;
   const special=MENU[R].find(d=>d.special&&!d.off);
@@ -2617,13 +2807,20 @@ function renderMenu(){
     if(isOpen){
       html+=`<div class="menu-sec-body">`;
       dishes.forEach(d=>{
+        // Wine items: simple click-to-popover layout
+        if(sec==='wine'){
+          const priceLbl=d.price?'€'+d.price:'–';
+          html+='<div class="wine-item" onclick="openWineDetail(\''+d.id+'\')"><div class="wine-item-name">'+d.name+'</div><div class="wine-item-price">'+priceLbl+'</div></div>';
+          return;
+        }
+        // Standard dish rendering
         const mg=d.price&&d.cost?Math.round((1-d.cost/d.price)*100):null;
         const mgColor=mg===null?'#C8C0B8':mg>65?'#4A7B6A':mg>45?'#A8893A':'#A03838';
         const trainingKey='training_'+d.id;
         const trainingOpen=!!menuSectionOpen[trainingKey];
         const rec=RECIPES.find(r=>r.id===d.recipeId);
         const allergenNames=rec?rec.allergens.map(a=>{const al=ALLERGENS.find(x=>x.id===a);return al?al.icon+' '+al.label:'';}).filter(Boolean):[];
-        const off86Lbl=d.off?'Restore':'86';const trainingLbl=trainingOpen?'▴ Hide':'▾ Training';const priceLbl=d.price?'€'+d.price:'–';const mgHtml=mg!==null?('<span style="font-family:DM Mono,monospace;font-size:11px;color:'+mgColor+';">'+mg+'%</span>'):'';const allergenHtml=allergenNames.length?('<div class="dt-section">Allergens</div><div class="dt-allergen-row">'+allergenNames.map(function(a){return'<span class="dt-allergen">'+a+'</span>';}).join('')+'</div>'):'';const recHtml=rec?('<div class="dt-section">Recipe</div><div class="dt-recipe-link" onclick="showRecipeDetail(\''+rec.id+'\')"><span class="dt-recipe-icon">📋</span><span class="dt-recipe-text">'+rec.name+' — '+rec.portions+' portions base</span><span class="dt-recipe-arrow">→</span></div>'):'';const descHtml=rec?rec.desc:(d.desc||'No description yet.');html+='<div class="dish-row'+(d.off?' off':'')+'"><div style="flex:1"><div class="dish-name">'+d.name+(d.special?' (special)':'')+'</div><div class="dish-meta">'+(d.cost?'Cost €'+d.cost.toFixed(2):'')+( rec?' · Recipe linked':'')+'</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0;"><span style="font-family:DM Mono,monospace;font-size:15px;font-weight:600;color:#1F2916;">'+priceLbl+'</span>'+mgHtml+'<div style="display:flex;gap:5px;align-items:center;margin-top:2px;"><button style="background:none;border:none;color:#4E6332;font-size:11px;font-weight:600;font-family:Outfit,sans-serif;cursor:pointer;" onclick="menuSectionOpen[\"'+trainingKey+'\"]=!menuSectionOpen[\"'+trainingKey+'\"];renderTab();">'+trainingLbl+'</button><button style="font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;border:none;cursor:pointer;background:#FBF0F0;color:#A03838;" onclick="toggle86(\"'+d.id+'\")">'+off86Lbl+'</button></div></div></div><div class="dish-training'+(trainingOpen?' open':'')+'"><div class="dt-section">Description & technique</div><div class="dt-desc">'+descHtml+'</div>'+allergenHtml+recHtml+'<div class="dt-section">Staff training</div><div class="dt-video"><div class="dt-video-icon">▶</div><div><div class="dt-video-text">Add training video</div><div class="dt-video-sub">Tap to link a video for this dish</div></div></div></div>';
+        const off86Lbl=d.off?'Restore':'86';const trainingLbl=trainingOpen?'▴ Hide':'▾ Training';const priceLbl=d.price?'€'+d.price:'–';const mgHtml=mg!==null?('<span style="font-family:DM Mono,monospace;font-size:11px;color:'+mgColor+';">'+mg+'%</span>'):'';const allergenHtml=allergenNames.length?('<div class="dt-section">Allergens</div><div class="dt-allergen-row">'+allergenNames.map(function(a){return'<span class="dt-allergen">'+a+'</span>';}).join('')+'</div>'):'';const recHtml=rec?('<div class="dt-section">Recipe</div><div class="dt-recipe-link" onclick="showRecipeDetail(\''+rec.id+'\')"><span class="dt-recipe-icon">📋</span><span class="dt-recipe-text">'+rec.name+' — '+rec.portions+' portions base</span><span class="dt-recipe-arrow">→</span></div>'):'';const descHtml=rec?rec.desc:(d.desc||'No description yet.');const narrativePreview=(rec?(rec.narrative||rec.history||rec.cultural_inspiration||''):'').slice(0,90);const storyHtml=narrativePreview?'<div class="mi-story-preview">'+narrativePreview+(narrativePreview.length>90?'…':'')+'</div>':'';html+='<div class="dish-row'+(d.off?' off':'')+'"><div style="flex:1"><div class="dish-name">'+d.name+(d.special?' (special)':'')+'</div>'+storyHtml+'<div class="dish-meta">'+(d.cost?'Cost €'+d.cost.toFixed(2):'')+( rec?' · Recipe linked':'')+'</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0;"><span style="font-family:DM Mono,monospace;font-size:15px;font-weight:600;color:#1F2916;">'+priceLbl+'</span>'+mgHtml+'<div style="display:flex;gap:5px;align-items:center;margin-top:2px;"><button style="background:none;border:none;color:#4E6332;font-size:11px;font-weight:600;font-family:Outfit,sans-serif;cursor:pointer;" onclick="menuSectionOpen[\"'+trainingKey+'\"]=!menuSectionOpen[\"'+trainingKey+'\"];renderTab();">'+trainingLbl+'</button><button style="font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;border:none;cursor:pointer;background:#FBF0F0;color:#A03838;" onclick="toggle86(\"'+d.id+'\")">'+off86Lbl+'</button></div></div></div><div class="dish-training'+(trainingOpen?' open':'')+'"><div class="dt-section">Description & technique</div><div class="dt-desc">'+descHtml+'</div>'+allergenHtml+recHtml+'<div class="dt-section">Staff training</div><div class="dt-video"><div class="dt-video-icon">▶</div><div><div class="dt-video-text">Add training video</div><div class="dt-video-sub">Tap to link a video for this dish</div></div></div></div>';
       });
       if(!dishes.length)html+=`<div style="padding:14px 16px;font-size:13px;color:#C8C0B8;">No dishes yet — tap + Add</div>`;
       html+=`</div>`;
@@ -2653,6 +2850,32 @@ function saveMenuDish(){
 }
 function toggle86(id){const d=MENU[R].find(x=>x.id===id);if(d){d.off=!d.off;renderTab();}}
 function clearSpecial(){MENU[R].forEach(d=>d.special=false);renderTab();}
+
+// ══ F54: Menu Type Filter ══
+function setMenuType(type){
+  currentMenuType=type;
+  renderTab();
+}
+
+// ══ F11: Print Menu ══
+function printMenu(){
+  document.body.classList.add('printing-menu');
+  window.print();
+  setTimeout(()=>document.body.classList.remove('printing-menu'),1000);
+}
+
+function shareMenu(){
+  const restName=R===0?'Taller':'Bistro Mondo';
+  if(navigator.share){
+    navigator.share({
+      title:restName+' — Menu',
+      text:'Today\'s menu at '+restName,
+      url:window.location.href
+    }).catch(()=>{});
+  }else{
+    printMenu();
+  }
+}
 
 // ══ MEP ══
 function renderMEP(){
@@ -2905,6 +3128,7 @@ function showRecipeDetail(id){
         ${allergenHtml}
       </div>
     </div>
+    ${r.narrative||r.history||r.cultural_inspiration?`<div class="dish-story"><div class="ds-label">Story</div><div class="ds-text">${r.narrative||r.history||r.cultural_inspiration||'Story not yet written.'}</div></div>`:''}
     ${r.desc?`<div class="det-section">Description & Technique</div><div class="det-desc">${r.desc}</div>`:''}
     <div class="det-section">Ingredients (${r.portions} portions)</div>
     <table class="ing-table"><thead class="ing-table-head"><tr><td>Ingredient</td><td>Qty</td><td>Unit</td></tr></thead><tbody>${ingHtml}</tbody></table>
@@ -2927,19 +3151,78 @@ function showRecipeDetail(id){
 }
 function hideDetail(){document.getElementById('screen-detail').style.display='none';document.getElementById('screen-dashboard').style.display='block';}
 
+// ══ WINE POPOVER (F55) ══
+let WINE_KNOWLEDGE_CACHE={};
+function openWineDetail(wineId){
+  const wine=MENU[R]?.find(m=>m.id===wineId);
+  if(!wine)return;
+  const priceLbl=wine.price?'€'+wine.price.toFixed(2):'Price TBA';
+  const descLines=(wine.description||'').split('·').map(s=>s.trim()).filter(Boolean);
+  let wineMeta='';
+  let wineStyle='White';
+  let wineRegion='';
+  let wineGrape='';
+  let winePairings='';
+  if(descLines.length>0){
+    const firstLine=descLines[0];
+    wineStyle=firstLine.split(/\s+/)[0]||'Wine';
+    if(descLines.length>1)wineRegion=descLines[1];
+    if(descLines.length>2)wineGrape=descLines[2];
+    if(descLines.length>3&&descLines[3].toLowerCase().includes('pair'))winePairings=descLines.slice(3).join(' · ');
+  }
+  const regionHtml=wineRegion?`<div class="wine-row"><span class="wr-label">Region</span><span class="wr-val">${wineRegion}</span></div>`:'';
+  const grapeHtml=wineGrape?`<div class="wine-row"><span class="wr-label">Grape</span><span class="wr-val">${wineGrape}</span></div>`:'';
+  const pairHtml=winePairings?`<div class="wine-block"><div class="wb-label">Pairs with</div><div class="wb-text">${winePairings}</div></div>`:'';
+  const html=`
+    <div class="modal-overlay" id="m-wine-detail" onclick="if(event.target===this)closeModal('m-wine-detail')">
+      <div class="modal-sheet wine-sheet">
+        <div class="mh"></div>
+        <div class="mt">${wine.name}</div>
+        <div class="wine-type">${wineStyle}</div>
+        <div class="wine-price">${priceLbl}</div>
+        ${regionHtml}
+        ${grapeHtml}
+        ${pairHtml}
+        ${wine.description?`<div class="wine-desc">${wine.description}</div>`:'<div class="wine-desc" style="opacity:0.5;font-style:italic;">Knowledge being added...</div>'}
+        <button class="mb sec" onclick="closeModal('m-wine-detail')" style="margin-top:14px;">Close</button>
+      </div>
+    </div>
+  `;
+  let el=document.getElementById('m-wine-detail');
+  if(el)el.remove();
+  document.body.insertAdjacentHTML('beforeend',html);
+  setTimeout(()=>document.getElementById('m-wine-detail')?.classList.add('open'),10);
+}
+
 // ══ CLEANING ══
 function renderCleaning(){
+  loadHaccpPlans();
   const cl=getZC();
-  if(!cl.daily.length&&!cl.weekly.length)return`<div style="text-align:center;padding:48px 20px;">
-    <div style="font-family:'Fraunces',serif;font-style:italic;font-size:18px;color:var(--text-secondary);margin-bottom:6px;">All clean.</div>
-    <div style="font-size:13px;color:var(--text-tertiary);line-height:1.5;">No cleaning checklist set for ${ZONE} yet.</div>
-  </div>`;
+  let html='';
   const mkC=(c,type)=>{const k=`${R}_${AREA}_${ZONE}_${type}_${c.id}`;const done=!!cleanState[k];return `<div class="cl-tile${done?' done':''}" onclick="toggleClean('${k}')"><div class="cl-tick">✓</div><span class="cl-icon">${c.icon}</span><div class="cl-name">${c.name}</div><div class="cl-freq">${c.freq}</div></div>`;};
-  // Count BEFORE building HTML so template literals capture correct values
-  const dd=cl.daily.filter(c=>!!cleanState[`${R}_${AREA}_${ZONE}_d_${c.id}`]).length;
-  const wd=cl.weekly.filter(c=>!!cleanState[`${R}_${AREA}_${ZONE}_w_${c.id}`]).length;
-  let html=`<div class="sect-label">Daily cleaning <span>${dd}/${cl.daily.length}</span></div><div class="clean-grid">${cl.daily.map(c=>mkC(c,'d')).join('')}</div>`;
-  if(cl.weekly.length){html+=`<div class="sect-label" style="margin-top:18px;">Weekly deep clean <span>${wd}/${cl.weekly.length}</span></div><div class="clean-grid">${cl.weekly.map(c=>mkC(c,'w')).join('')}</div>`;}
+  if(cl.daily.length||cl.weekly.length){
+    const dd=cl.daily.filter(c=>!!cleanState[`${R}_${AREA}_${ZONE}_d_${c.id}`]).length;
+    const wd=cl.weekly.filter(c=>!!cleanState[`${R}_${AREA}_${ZONE}_w_${c.id}`]).length;
+    html+=`<div class="sect-label">Daily cleaning <span>${dd}/${cl.daily.length}</span></div><div class="clean-grid">${cl.daily.map(c=>mkC(c,'d')).join('')}</div>`;
+    if(cl.weekly.length){html+=`<div class="sect-label" style="margin-top:18px;">Weekly deep clean <span>${wd}/${cl.weekly.length}</span></div><div class="clean-grid">${cl.weekly.map(c=>mkC(c,'w')).join('')}</div>`;}
+  }
+  if(HACCP_PLANS.length>0){
+    if(html)html+=`<div style="margin-top:24px;border-top:1px solid var(--border-color);padding-top:18px;"></div>`;
+    html+=`<div style="font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:12px;text-transform:uppercase;letter-spacing:0.5px;">Libro Azul — HACCP Plans</div>`;
+    const today=new Date(),dow=['sunday','monday','tuesday','wednesday','thursday','friday','saturday'][today.getDay()];
+    HACCP_PLANS.forEach(plan=>{
+      const planId=plan.id,planName=plan.name||plan.plan_code||'Plan',planDesc=plan.description||'';
+      const planTasks=(TASKS[R]?.[AREA]?.[ZONE]?.cleaning?.daily||[]).concat(TASKS[R]?.[AREA]?.[ZONE]?.cleaning?.weekly||[]).filter(t=>!t.haccp_plan_id||t.haccp_plan_id===planId);
+      const freqRule=(t)=>{const f=(t.frequency_rule||'daily').toLowerCase();return f==='daily'||f===''||f.includes(dow);};
+      const tasksToShow=planTasks.filter(freqRule);
+      if(tasksToShow.length===0)return;
+      const doneCnt=tasksToShow.filter(t=>{const k=`${R}_${AREA}_${ZONE}_${t.id}`;return!!cleanState[k];}).length;
+      const taskHtml=tasksToShow.map(t=>{const k=`${R}_${AREA}_${ZONE}_${t.id}`;const done=!!cleanState[k];return `<div class="cl-tile${done?' done':''}" onclick="toggleClean('${k}')"><div class="cl-tick">✓</div><div class="cl-name" style="flex:1;">${t.name||'Task'}</div><div class="cl-freq">${t.frequency_rule||'daily'}</div></div>`;}).join('');
+      html+=`<div style="margin-bottom:20px;padding:12px;background:rgba(90,138,120,0.05);border-radius:8px;border-left:3px solid var(--fern);"><div style="font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:4px;">${planName}</div>${planDesc?`<div style="font-size:11px;color:var(--text-tertiary);margin-bottom:8px;line-height:1.4;">${planDesc}</div>`:''}<div style="font-size:11px;color:var(--text-secondary);margin-bottom:10px;">Progress: ${doneCnt}/${tasksToShow.length}</div><div class="clean-grid">${taskHtml}</div></div>`;
+    });
+  }
+  if(!html)return`<div style="text-align:center;padding:48px 20px;"><div style="font-family:'Fraunces',serif;font-style:italic;font-size:18px;color:var(--text-secondary);margin-bottom:6px;">All clean.</div><div style="font-size:13px;color:var(--text-tertiary);line-height:1.5;">No cleaning checklist set for ${ZONE} yet.</div></div>`;
+  html+=`<div style="margin-top:24px;padding:16px;background:var(--ink-soft);border-radius:8px;border:1px solid var(--border-color);"><div style="font-size:12px;font-weight:600;color:var(--text-primary);margin-bottom:8px;">🔧 Maintenance Feedback</div><textarea id="maintenanceFeedback" placeholder="e.g. Hot water wasn't working last night..." style="width:100%;height:60px;padding:8px;border:1px solid var(--border-color);border-radius:4px;font-size:13px;font-family:Outfit,sans-serif;resize:none;"></textarea><button onclick="reportMaintenanceIssue()" style="margin-top:8px;padding:8px 12px;background:var(--ember);color:white;border:none;border-radius:4px;font-size:12px;font-weight:600;cursor:pointer;">Report</button></div>`;
   return html;
 }
 
@@ -3848,6 +4131,69 @@ const WEEK_SHIFTS = [
   {name:'Lucia', role:'Worker', color:'#A8893A', schedule:[{day:1,zone:'Kitchen',start:'10:00',end:'18:00'},{day:3,zone:'Kitchen',start:'10:00',end:'18:00'},{day:4,zone:'Kitchen',start:'10:00',end:'18:00'},{day:5,zone:'Kitchen',start:'10:00',end:'18:00'},{day:6,zone:'Kitchen',start:'10:00',end:'18:00'}]},
 ];
 
+// Sales events and covers data for schedule overlay
+let SALES_EVENTS = [];
+let COVERS_BY_DATE = {};
+let salesEventsLoaded = false;
+
+async function loadSalesEventsForSchedule() {
+  if (salesEventsLoaded) return;
+  try {
+    const restSlug = R === 0 ? 'taller' : 'bistro-mondo';
+    const rs = await sbFetch(`restaurants?slug=eq.${restSlug}&select=id`);
+    if (!rs.length) return;
+    const restId = rs[0].id;
+
+    const now = new Date();
+    const minDate = new Date(now); minDate.setDate(minDate.getDate() - 7);
+    const maxDate = new Date(now); maxDate.setDate(maxDate.getDate() + 14);
+    const minStr = minDate.toISOString().slice(0, 10);
+    const maxStr = maxDate.toISOString().slice(0, 10);
+
+    const events = await sbFetch(`sales_events?restaurant_id=eq.${restId}&event_date=gte.${minStr}&event_date=lte.${maxStr}&order=event_date`);
+    SALES_EVENTS = events || [];
+
+    // Load covers per day (if table exists)
+    try {
+      const covers = await sbFetch(`covers?restaurant_id=eq.${restId}&cover_date=gte.${minStr}&cover_date=lte.${maxStr}`);
+      COVERS_BY_DATE = {};
+      if (covers && covers.length) {
+        covers.forEach(c => {
+          const dateStr = (c.cover_date || '').slice(0, 10);
+          if (!COVERS_BY_DATE[dateStr]) COVERS_BY_DATE[dateStr] = [];
+          COVERS_BY_DATE[dateStr].push(c);
+        });
+      }
+    } catch(e) {
+      console.warn('covers load (table may not exist):', e.message);
+    }
+
+    salesEventsLoaded = true;
+  } catch(e) {
+    console.warn('sales_events load:', e.message);
+  }
+}
+
+function todayMinusDays(n) {
+  const d = new Date();
+  d.setDate(d.getDate() - n);
+  return d.toISOString().slice(0, 10);
+}
+
+function todayPlusDays(n) {
+  const d = new Date();
+  d.setDate(d.getDate() + n);
+  return d.toISOString().slice(0, 10);
+}
+
+function eventsForDate(dateStr) {
+  return SALES_EVENTS.filter(ev => (ev.event_date || '').slice(0, 10) === dateStr);
+}
+
+function coversForDate(dateStr) {
+  return COVERS_BY_DATE[dateStr] || [];
+}
+
 function renderSchedule(){
   const now = new Date();
   const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
@@ -3890,6 +4236,49 @@ function renderSchedule(){
     <div class="labour-prog"><div class="labour-prog-fill" style="width:${Math.min(labourPct,100)}%;background:${labourColor};"></div></div>
   </div>`;
 
+  // Load sales events and covers
+  loadSalesEventsForSchedule().catch(() => {});
+
+  // Get the date string for selected day
+  const dayDate = new Date();
+  dayDate.setDate(dayDate.getDate() - today + selectedDay);
+  const dayDateStr = dayDate.toISOString().slice(0, 10);
+
+  // Sales events overlay
+  const eventsToday = eventsForDate(dayDateStr);
+  const coversToday = coversForDate(dayDateStr);
+  if (eventsToday.length > 0 || coversToday.length > 0) {
+    html += `<div class="schedule-overlay">
+      <div style="padding:12px;border-bottom:1px solid rgba(0,0,0,0.08);">
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:#7A7070;margin-bottom:8px;">Events & Bookings</div>`;
+
+    // Event chips
+    if (eventsToday.length > 0) {
+      eventsToday.forEach(ev => {
+        const typeIcon = ev.event_type === 'private_dinner' ? '🍽' : ev.event_type === 'masterclass' ? '👨‍🍳' : '📅';
+        html += `<div class="day-event-chip" title="${ev.title}">
+          <span style="font-size:12px;margin-right:4px;">${typeIcon}</span>
+          <span class="dec-title">${ev.title}</span>
+          <span class="dec-pax">${ev.guests_count || 0}p</span>
+        </div>`;
+      });
+    }
+
+    // Bookings count
+    if (coversToday.length > 0) {
+      const totalCovers = coversToday.reduce((a, c) => a + (c.cover_count || 0), 0);
+      html += `<div class="day-bookings-count">Booked: ${totalCovers}p across ${coversToday.length} reservation(s)</div>`;
+    }
+
+    html += `</div></div>`;
+  }
+
+  // Labor-cost % placeholder chip
+  html += `<div class="labor-cost-chip">
+    Labor cost: <strong>—%</strong>
+    <div style="font-size:10px;color:#9B8E7E;margin-top:4px;">TODO_F50_LABOR_COST: needs POS revenue data + worker hourly rates</div>
+  </div>`;
+
   if(!dayShifts.length){
     html += `<div style="text-align:center;padding:40px;color:#C8C0B8;font-size:14px;">No shifts scheduled for this day.</div>`;
   } else {
@@ -3902,6 +4291,32 @@ function renderSchedule(){
         <div class="shift-slot-time">${s.todayShift.start}–${s.todayShift.end}</div>
       </div></div>`;
     });
+  }
+
+  // Clock Variances (manager only)
+  if(['owner','manager'].includes(USER.role)){
+    if(!variancesLoaded)computeClockVariances();
+    const pendingVars=CLOCK_VARIANCES.filter(v=>v.status==='pending');
+    if(pendingVars.length>0){
+      html += `<div style="margin-top:20px;border-top:1px solid #E8DDD0;padding-top:12px;">
+        <div class="sect-label">Pending Approvals (${pendingVars.length})</div>`;
+      pendingVars.forEach(v=>{
+        const sign=v.varianceMins>0?'+':'-';
+        const color=Math.abs(v.varianceMins)>60?'#A03838':'#A8893A';
+        html += `<div style="margin-bottom:12px;padding:12px;background:#F9F6F1;border-radius:10px;border-left:3px solid ${color};">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <div style="font-weight:600;font-size:14px;color:#1A1510;">${v.name}</div>
+            <div style="font-size:12px;color:${color};font-weight:600;">${sign}${Math.abs(Math.round(v.varianceMins/60*10)/10)}h</div>
+          </div>
+          <div style="font-size:12px;color:#7A7070;margin-bottom:10px;">Scheduled: ${Math.round(v.scheduledMins/60)}h | Clocked: ${v.clockedMins?Math.round(v.clockedMins/60)+'h':'—'}</div>
+          <div style="display:flex;gap:8px;">
+            <button onclick="approveClockVariance('${v.id}','approved')" style="flex:1;padding:8px;border:none;border-radius:8px;background:#E8F5F0;color:#4A7B6A;font-family:Outfit,sans-serif;font-size:12px;font-weight:600;cursor:pointer;">✓ Approve</button>
+            <button onclick="approveClockVariance('${v.id}','denied')" style="flex:1;padding:8px;border:none;border-radius:8px;background:#FFF0ED;color:#A03838;font-family:Outfit,sans-serif;font-size:12px;font-weight:600;cursor:pointer;">✕ Deny</button>
+          </div>
+        </div>`;
+      });
+      html += `</div>`;
+    }
   }
 
   // AI schedule suggestion
