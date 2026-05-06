@@ -96,7 +96,7 @@ body {
 }
 .login-tagline {
   font-family: 'Fraunces', serif; font-style: italic;
-  font-size: 13px; color: #9B8E7E; margin-bottom: 36px;
+  font-size: 13px; color: var(--ember); margin-top: 20px; margin-bottom: 36px;
 }
 .login-card {
   background: #F7F5F1; border: 1px solid rgba(0,0,0,0.09);
@@ -2378,7 +2378,7 @@ function renderTab(){
   else if(currentTab==='ordering')c.innerHTML=renderOrdering();
   else if(currentTab==='recipes')c.innerHTML=renderRecipes();
   else if(currentTab==='cleaning')c.innerHTML=renderCleaning();
-  else if(currentTab==='events')c.innerHTML=renderEvents();
+  else if(currentTab==='events'){c.innerHTML=renderEvents();if(typeof saLoadTemplates==='function')saLoadTemplates();}
   else if(currentTab==='schedule')c.innerHTML=renderSchedule();
   else if(currentTab==='cookmode')c.innerHTML=renderCookMode();
   else if(currentTab==='briefing')c.innerHTML=renderBriefing();
@@ -3616,7 +3616,17 @@ let eventFormOpen = false;
 let selectedEventId = null;
 
 function renderEvents(){
-  let html = `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+  let html = `<div class="sales-asst">
+    <h2>Sales Assistant</h2>
+    <div class="sub">Describe an event, get a proposal in your brand voice. Or pick a template to clone.</div>
+    <div class="sa-templates" id="saTemplates"></div>
+    <div class="sa-prompt">
+      <textarea id="saInput" placeholder="e.g. Masterclass Friday at Mondo, 12 people, lunch, pasta technique, €85/head with pairing, 2 sous chefs, Marina is the contact"></textarea>
+      <button id="saSubmit" onclick="saPropose()">Draft proposal</button>
+    </div>
+    <div class="sa-output empty" id="saOutput">Type a brief above or pick a template to begin.</div>
+  </div>
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;margin-top:24px;">
     <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#9B8E7E;">${EVENTS.length} events</div>
     <button onclick="toggleEventForm()" style="padding:8px 14px;border-radius:10px;border:none;background:#4E6332;color:white;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;">+ New event</button>
   </div>`;
@@ -4374,7 +4384,7 @@ async function generateTodayBrief(){
   window.todayBriefOpen=true;window.todayBriefLoading=true;window.todayBriefText=null;renderTab();
   try{
     const prompt=`Write a concise pre-service kitchen briefing for ${rest}. Covers: ${covers}. MEP: ${mepPct}% done. Specials: ${specials.map(d=>d.name).join(', ')||'none'}. 86'd: ${off86.map(d=>d.name).join(', ')||'none'}. Keep it punchy, 3-4 bullet points, practical tone for kitchen team.`;
-    const resp=await fetch('/api/dispatch',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-haiku-4-5',max_tokens:250,system:'You are a head chef writing a pre-service briefing. Be direct and practical. Use bullet points.',messages:[{role:'user',content:prompt}]})});
+    const resp=await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:250,system:'You are a head chef writing a pre-service briefing. Be direct and practical. Use bullet points.',messages:[{role:'user',content:prompt}]})});
     const data=await resp.json();
     window.todayBriefText=data.content?.[0]?.text||'Could not generate briefing.';
   }catch(e){window.todayBriefText='Connection error — try again.';}
@@ -6024,7 +6034,7 @@ async function sendAIOv(){
   helpHistory.push({role:'user',content:q});
 
   try{
-    var resp=await fetch('/api/dispatch',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:700,system:sys,messages:helpHistory})});
+    var resp=await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:700,system:sys,messages:helpHistory})});
     if(!resp.ok){throw new Error('HTTP '+resp.status);}
     var data=await resp.json();
     if(data.error){throw new Error(data.error.message||'API error');}
