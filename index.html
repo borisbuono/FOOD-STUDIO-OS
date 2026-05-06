@@ -843,8 +843,19 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
   background: transparent; color: var(--text-secondary);
   display: flex; align-items: center; justify-content: center;
   cursor: pointer; flex-shrink: 0; font-size: 16px;
+  transition: all 0.2s;
+}
+.ai-mic.listening {
+  background: var(--ember, #B86A42) !important;
+  color: white !important;
+  border-color: var(--ember, #B86A42) !important;
+  animation: voice-pulse 1.2s ease-in-out infinite;
 }
 @keyframes pulse { 0%,100%{opacity:1;}50%{opacity:0.6;} }
+@keyframes voice-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(184,106,66,0.6); }
+  50% { box-shadow: 0 0 0 8px rgba(184,106,66,0); }
+}
 
 /* ─── AI RESPONSE STREAM ─── */
 .ai-response {
@@ -1132,12 +1143,53 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
 .ctx-pill.active { background: var(--ember); color: var(--white); border-color: var(--ember); }
 
 /* ─── TOAST ─── */
-.toast {
-  position: fixed; bottom: 96px; left: 50%; transform: translateX(-50%) translateY(10px);
-  background: var(--ink-mid); border: 1px solid var(--fern); color: var(--fern);
-  padding: 10px 20px; border-radius: 20px; font-size: 13px; font-weight: 600;
-  opacity: 0; transition: all 0.3s; z-index: 400; pointer-events: none; white-space: nowrap;
+#toast-wrap {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+  align-items: center;
 }
+.toast {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 14px 10px 16px;
+  border-radius: 10px;
+  background: rgba(26, 21, 16, 0.94);
+  color: #F5EDE3;
+  font-size: 13px;
+  font-family: 'Outfit', system-ui, sans-serif;
+  box-shadow: 0 12px 36px rgba(0,0,0,0.32);
+  max-width: min(92vw, 480px);
+  animation: toast-in 0.18s ease-out;
+}
+.toast.toast-success { background: rgba(74,123,106,0.96); }
+.toast.toast-error { background: rgba(160,56,56,0.96); }
+.toast-msg { flex: 1; line-height: 1.35; }
+.toast-undo {
+  background: transparent;
+  color: #FBC58E;
+  border: 1px solid rgba(251,197,142,0.4);
+  border-radius: 6px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-family: 'Outfit', sans-serif;
+}
+.toast-undo:hover { background: rgba(251,197,142,0.15); border-color: rgba(251,197,142,0.7); }
+.toast-dismiss { animation: toast-out 0.24s ease-in forwards; }
+@keyframes toast-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes toast-out { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(8px); } }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
 /* ─── URGENT PUSH BTN ─── */
@@ -2159,6 +2211,54 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
   .menu-print-sub { font-size: 12px; color: #666; margin-bottom: 16px; }
 }
 
+/* ═══════════════════════════════════════════════════════════════════════════ */
+/* ADMIN OFFICE SECTIONS (Agent Console, Finance Pulse, Comms Composer) */
+/* ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Agent console */
+.agent-console { padding: 0 4px; }
+.ac-header { margin-bottom: 18px; }
+.ac-title { font-family: var(--font-serif, Fraunces, Georgia, serif); font-size: 22px; font-weight: 600; }
+.ac-sub { font-size: 13px; opacity: 0.65; margin-top: 4px; }
+.ac-agent { margin-bottom: 18px; padding: 14px 16px; border: 1px solid var(--border, rgba(0,0,0,0.08)); border-radius: 10px; background: var(--bg-card, transparent); }
+.ac-agent-head { margin-bottom: 10px; }
+.ac-agent-name { font-weight: 600; font-size: 15px; color: var(--ember, #4E6332); }
+.ac-agent-desc { font-size: 12px; opacity: 0.65; margin-top: 2px; }
+.ac-skills { display: flex; flex-direction: column; gap: 6px; }
+.ac-skill { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; background: var(--glass, rgba(0,0,0,0.02)); border-radius: 6px; }
+.ac-skill-info { flex: 1; min-width: 0; }
+.ac-skill-name { font-size: 13px; font-weight: 500; }
+.ac-skill-meta { font-size: 11px; opacity: 0.55; margin-top: 2px; font-family: var(--font-mono, ui-monospace, monospace); }
+.ac-run-btn { padding: 5px 14px; border-radius: 6px; border: 1px solid var(--ember, #4E6332); background: transparent; color: var(--ember, #4E6332); font-size: 12px; font-weight: 600; cursor: pointer; flex-shrink: 0; }
+.ac-run-btn:hover { background: var(--ember, #4E6332); color: white; }
+
+/* Finance pulse */
+.finance-pulse { margin-bottom: 24px; }
+.fp-header { margin-bottom: 12px; }
+.fp-title { font-family: var(--font-serif, Fraunces, Georgia, serif); font-size: 18px; font-weight: 600; }
+.fp-sub { font-size: 12px; opacity: 0.6; margin-top: 2px; }
+.fp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 12px; }
+.fp-card { padding: 12px 14px; border: 1px solid var(--border, rgba(0,0,0,0.08)); border-radius: 8px; }
+.fp-card-label { font-size: 11px; opacity: 0.6; text-transform: uppercase; letter-spacing: 0.06em; }
+.fp-card-val { font-size: 22px; font-weight: 600; margin: 4px 0; font-family: var(--font-serif, Fraunces, Georgia, serif); }
+.fp-card-todo { font-size: 10px; opacity: 0.5; font-style: italic; }
+.fp-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* Communications composer */
+.comms-composer { margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border, rgba(0,0,0,0.08)); }
+.cc-header { margin-bottom: 12px; }
+.cc-title { font-family: var(--font-serif, Fraunces, Georgia, serif); font-size: 18px; font-weight: 600; }
+.cc-sub { font-size: 12px; opacity: 0.6; margin-top: 2px; }
+.cc-tabs { display: flex; gap: 6px; margin-bottom: 10px; }
+.cc-tab { padding: 6px 12px; border-radius: 14px; border: 1px solid var(--border, rgba(0,0,0,0.1)); background: transparent; font-size: 12px; cursor: pointer; transition: all 0.18s; }
+.cc-tab.active { background: var(--ember, #4E6332); color: white; border-color: var(--ember, #4E6332); }
+.cc-textarea { width: 100%; padding: 12px; border: 1px solid var(--border, rgba(0,0,0,0.1)); border-radius: 8px; font-size: 14px; font-family: inherit; resize: vertical; background: var(--bg, transparent); color: inherit; box-sizing: border-box; }
+.cc-actions { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+.office-cta { padding: 8px 16px; border-radius: 8px; background: var(--ember, #4E6332); color: white; border: 0; font-size: 13px; cursor: pointer; font-family: Outfit, sans-serif; font-weight: 600; }
+.office-cta:hover { opacity: 0.9; }
+.office-cta-sec { padding: 8px 16px; border-radius: 8px; background: transparent; color: var(--ember, #4E6332); border: 1px solid var(--ember, #4E6332); font-size: 13px; cursor: pointer; text-decoration: none; display: inline-block; font-family: Outfit, sans-serif; font-weight: 600; transition: all 0.18s; }
+.office-cta-sec:hover { background: var(--ember, #4E6332); color: white; }
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://accounts.google.com/gsi/client" async></script>
@@ -2296,8 +2396,8 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
   <div id="ai-response-text"></div>
 </div>
 
-<!-- TOAST -->
-<div class="toast" id="toast"></div>
+<!-- TOAST WRAPPER -->
+<div id="toast-wrap"></div>
 
 <!-- MODALS -->
 <div class="modal-overlay" id="m-ctx">
@@ -2522,6 +2622,8 @@ let todayPhase=null,activeWorkflows=[];
 let SUPABASE_BRIEFINGS=[];let sbBriefingsLoaded=false;
 let SUPABASE_URGENT_TASKS=[];let sbUrgentLoaded=false;
 let HACCP_PLANS=[];let haccpLoaded=false;
+let AGENT_SKILLS=[];let agentSkillsLoaded=false;
+let currentCommsView='internal';
 // ── CLOCK-IN / OUT (Spanish Registro de jornada compliance) ──────
 let CLOCK_EVENTS=[];let clockLoaded=false;
 let CLOCK_VARIANCES=[];let variancesLoaded=false;
@@ -2799,7 +2901,23 @@ function wfStart(recipeId){
   showToast('Workflow started — '+r.name);
 }
 function wfNext(idx){if(activeWorkflows[idx]&&activeWorkflows[idx].stepIdx<activeWorkflows[idx].steps.length-1){activeWorkflows[idx].stepIdx++;saveState();renderTab();}}
-function wfComplete(idx){const name=activeWorkflows[idx]?.recipeName||'';activeWorkflows.splice(idx,1);saveState();renderTab();showToast(name+' — complete ✓');}
+function wfComplete(idx){
+  const wf = activeWorkflows[idx];
+  if(!wf) return;
+  const name = wf.recipeName || '';
+  activeWorkflows.splice(idx,1);
+  saveState();
+  renderTab();
+  showToast(name + ' — complete ✓', {
+    undo_fn: () => {
+      activeWorkflows.splice(idx, 0, wf);
+      saveState();
+      renderTab();
+    },
+    undo_label: 'Undo',
+    duration_ms: 5000
+  });
+}
 function wfClose(idx){activeWorkflows.splice(idx,1);saveState();renderTab();}
 
 // ══ LOGIN ══
@@ -2899,6 +3017,158 @@ function renderTab(){
   else if(currentTab==='onboarding')c.innerHTML=renderOnboarding();
   else if(currentTab==='integrations')c.innerHTML=renderIntegrations();
   else if(currentTab==='team')c.innerHTML=renderTeam();
+  else if(currentTab==='office')c.innerHTML=renderOffice();
+}
+
+// ══ ADMIN OFFICE ══
+async function loadAgentSkills(){
+  if(agentSkillsLoaded)return;
+  try{
+    const rows=await sbFetch('agent_skills?is_active=eq.true&order=agent_id,skill_code');
+    AGENT_SKILLS=rows||[];
+    agentSkillsLoaded=true;
+    if(currentTab==='office')renderTab();
+  }catch(e){
+    console.warn('agent_skills load:',e.message);
+  }
+}
+
+async function runAgentSkill(skillCode){
+  showToast('Firing skill: '+skillCode+'…',{duration_ms:2000});
+  try{
+    const resp=await fetch('/api/dispatch',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        skill:skillCode,
+        input:{context:'demo run from Admin console',date:new Date().toISOString()},
+        operator_entity_id:USER._operatorEntityId||'d1ee19b6-5fb4-460c-8326-685dc86e47df'
+      })
+    });
+    const data=await resp.json();
+    if(data.ok){
+      showToast('✓ '+skillCode+' returned ('+(data.provider||'?')+'/'+(data.model||'?')+', '+(data.latency_ms||'?')+'ms)',{duration_ms:5000,kind:'success'});
+      console.log('agent dispatch:',data);
+    }else{
+      showToast('Agent error: '+(data.error||'unknown'),{duration_ms:5000,kind:'error'});
+    }
+  }catch(e){
+    showToast('Dispatch failed: '+e.message,{kind:'error'});
+  }
+}
+
+function setCommsView(view){
+  currentCommsView=view;
+  document.querySelectorAll('.cc-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelector('.cc-tab[data-comms-view="'+view+'"]')?.classList.add('active');
+}
+
+function renderOffice(){
+  const canMgr=['manager','owner'].includes(USER.role);
+  if(!canMgr)return`<div style="padding:32px;text-align:center;color:var(--text-tertiary);font-size:13px;">Office access is for owners and managers.</div>`;
+
+  loadAgentSkills();
+
+  let html=`<div style="padding:16px 8px;">`;
+
+  // ═════════════════════════════════════════════════════════════════
+  // SECTION 1: Finance Pulse
+  // ═════════════════════════════════════════════════════════════════
+  html+=`<div class="finance-pulse">
+    <div class="fp-header">
+      <div class="fp-title">Finance pulse</div>
+      <div class="fp-sub">CFO Gem · grounded in Holded data</div>
+    </div>
+    <div class="fp-grid">
+      <div class="fp-card"><div class="fp-card-label">Today's revenue</div><div class="fp-card-val">€—</div><div class="fp-card-todo">Awaiting Holded webhook</div></div>
+      <div class="fp-card"><div class="fp-card-label">Pending invoices</div><div class="fp-card-val">—</div><div class="fp-card-todo">Awaiting Holded sync</div></div>
+      <div class="fp-card"><div class="fp-card-label">Last reconciliation</div><div class="fp-card-val">2 days</div><div class="fp-card-todo">Boris's local cli run</div></div>
+    </div>
+    <div class="fp-actions">
+      <button class="office-cta" onclick="runAgentSkill('categorise_expense')">Categorise pending expense</button>
+      <a class="office-cta-sec" href="https://app.holded.com" target="_blank">Open Holded ledger →</a>
+    </div>
+  </div>`;
+
+  // ═════════════════════════════════════════════════════════════════
+  // SECTION 2: Agent Console (headline)
+  // ═════════════════════════════════════════════════════════════════
+  html+=renderAgentConsole();
+
+  // ═════════════════════════════════════════════════════════════════
+  // SECTION 3: Communications Composer
+  // ═════════════════════════════════════════════════════════════════
+  html+=`<div class="comms-composer">
+    <div class="cc-header">
+      <div class="cc-title">Communications</div>
+      <div class="cc-sub">Internal messages · social · newsletter</div>
+    </div>
+    <div class="cc-tabs">
+      <button class="cc-tab active" data-comms-view="internal" onclick="setCommsView('internal')">Internal team</button>
+      <button class="cc-tab" data-comms-view="social" onclick="setCommsView('social')">Social media</button>
+      <button class="cc-tab" data-comms-view="newsletter" onclick="setCommsView('newsletter')">Newsletter</button>
+    </div>
+    <textarea class="cc-textarea" placeholder="Draft a message to your team, a social post, or a newsletter…" rows="6"></textarea>
+    <div class="cc-actions">
+      <button class="office-cta">Send to team</button>
+      <button class="office-cta-sec">Schedule</button>
+      <button class="office-cta-sec" onclick="runAgentSkill('compose_newsletter')">Let agent write a draft</button>
+    </div>
+  </div>`;
+
+  html+=`</div>`;
+  return html;
+}
+
+function renderAgentConsole(){
+  if(!AGENT_SKILLS.length){
+    return `<div class="agent-console"><div style="padding:24px;opacity:0.6;font-style:italic">Loading agent registry…</div></div>`;
+  }
+
+  const groups={};
+  AGENT_SKILLS.forEach(s=>{
+    (groups[s.agent_id]=groups[s.agent_id]||[]).push(s);
+  });
+
+  const labels={
+    cfo:{name:'CFO Gem',desc:'Finance, Holded reconciliation, expense categorisation'},
+    compliance:{name:'Compliance Gem',desc:'HACCP temperature monitoring, regulatory alerts'},
+    hr_people:{name:'HR Gem',desc:'Shift scheduling, team management'},
+    kitchen_ops:{name:'Kitchen Ops',desc:'Service briefings, MEP coordination'},
+    procurement:{name:'Procurement Gem',desc:'Supplier orders, reorder logic'},
+    recipe:{name:'Culinary Gem',desc:'Recipe drafting, scaling, technique notes'},
+    sales_events:{name:'Concierge Gem',desc:'Proposals, pricing, BEOs, staffing'}
+  };
+
+  let html=`<div class="agent-console">
+    <div class="ac-header">
+      <div class="ac-title">Agent console</div>
+      <div class="ac-sub">${AGENT_SKILLS.length} skills active across ${Object.keys(groups).length} specialist agents · multi-provider routing (Anthropic + Gemini)</div>
+    </div>`;
+
+  for(const aid of Object.keys(groups).sort()){
+    const meta=labels[aid]||{name:aid,desc:''};
+    html+=`<div class="ac-agent">
+      <div class="ac-agent-head">
+        <div class="ac-agent-name">${meta.name}</div>
+        <div class="ac-agent-desc">${meta.desc}</div>
+      </div>
+      <div class="ac-skills">`;
+    for(const s of groups[aid]){
+      const provBadge=s.provider==='google'?'Gemini':'Sonnet';
+      const reviewBadge=s.human_review_required?' · human review':'';
+      html+=`<div class="ac-skill">
+        <div class="ac-skill-info">
+          <div class="ac-skill-name">${s.display_name}</div>
+          <div class="ac-skill-meta">${provBadge} · ${s.model}${reviewBadge}</div>
+        </div>
+        <button class="ac-run-btn" onclick="runAgentSkill('${s.skill_code}')">Run</button>
+      </div>`;
+    }
+    html+=`</div></div>`;
+  }
+  html+=`</div>`;
+  return html;
 }
 
 // ══ TODAY ══
@@ -4300,10 +4570,19 @@ async function pushUrgent(){
   closeModal('m-urgent');
   // Optimistic UI: add with temp id immediately
   const tempId='u'+Date.now();
-  taskUrgent[tempId]={id:tempId,name,sub:'',zone,_pending:true};
-  showToast(`Urgent task pushed to ${zone}`);
+  const newTask={id:tempId,name,sub:'',zone,_pending:true};
+  taskUrgent[tempId]=newTask;
   saveState({taskUrgent:{[tempId]:taskUrgent[tempId]}});
   renderTab();
+  showToast(`Urgent task pushed to ${zone}`, {
+    undo_fn: () => {
+      delete taskUrgent[tempId];
+      saveState({taskUrgent:{}});
+      renderTab();
+    },
+    undo_label: 'Dismiss',
+    duration_ms: 5000
+  });
   // Insert to Supabase in the background
   try{
     const restSlug=R===0?'taller':'bistro-mondo';
@@ -4422,7 +4701,39 @@ function closeModal(id){document.getElementById(id)?.classList.remove('open');}
 document.addEventListener('click',e=>{document.querySelectorAll('.modal-overlay').forEach(el=>{if(e.target===el)el.classList.remove('open');});});
 
 // ══ TOAST ══
-function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+function showToast(message, opts) {
+  opts = opts || {};
+  const wrap = document.getElementById('toast-wrap') || (function(){
+    const w = document.createElement('div');
+    w.id = 'toast-wrap';
+    document.body.appendChild(w);
+    return w;
+  })();
+  const el = document.createElement('div');
+  el.className = 'toast' + (opts.kind ? ' toast-' + opts.kind : '');
+  const msg = document.createElement('span');
+  msg.className = 'toast-msg';
+  msg.textContent = message;
+  el.appendChild(msg);
+  let undoTimer = null;
+  if (typeof opts.undo_fn === 'function') {
+    const btn = document.createElement('button');
+    btn.className = 'toast-undo';
+    btn.textContent = opts.undo_label || 'Undo';
+    btn.onclick = () => {
+      try { opts.undo_fn(); } catch(e) { console.warn('undo failed', e); }
+      if (undoTimer) clearTimeout(undoTimer);
+      el.remove();
+    };
+    el.appendChild(btn);
+  }
+  wrap.appendChild(el);
+  const ms = opts.duration_ms || (opts.undo_fn ? 5000 : 2400);
+  undoTimer = setTimeout(() => {
+    el.classList.add('toast-dismiss');
+    setTimeout(() => el.remove(), 240);
+  }, ms);
+}
 
 // ══ ALLERGENS ══
 const ALLERGENS=[{id:'gluten',icon:'🌾',label:'Gluten'},{id:'crustaceans',icon:'🦐',label:'Crustaceans'},{id:'eggs',icon:'🥚',label:'Eggs'},{id:'fish',icon:'🐟',label:'Fish'},{id:'peanuts',icon:'🥜',label:'Peanuts'},{id:'soy',icon:'🫘',label:'Soy'},{id:'milk',icon:'🥛',label:'Milk'},{id:'nuts',icon:'🌰',label:'Nuts'},{id:'celery',icon:'🥬',label:'Celery'},{id:'mustard',icon:'🟡',label:'Mustard'},{id:'sesame',icon:'⚪',label:'Sesame'},{id:'sulphites',icon:'🍷',label:'Sulphites'},{id:'lupin',icon:'🌿',label:'Lupin'},{id:'molluscs',icon:'🦑',label:'Molluscs'}];
@@ -4545,9 +4856,16 @@ function changeEventStatus(id){
   const ev = EVENTS.find(e => e.id === id);
   if(!ev) return;
   const flow = {proposal:'confirmed', confirmed:'complete', complete:'proposal'};
+  const prevStatus = ev.status;
   ev.status = flow[ev.status];
-  showToast('Status updated → ' + ev.status);
   renderTab();
+  showToast('Status: ' + prevStatus + ' → ' + ev.status, {
+    undo_fn: () => {
+      ev.status = prevStatus;
+      renderTab();
+    },
+    undo_label: 'Undo'
+  });
 }
 
 function copyEventProposal(id){
@@ -6657,6 +6975,75 @@ function quickQ(q) {
   sendAI();
 }
 
+// ── VOICE COMMAND INTENT ROUTING ──
+function handleVoiceCommand(text) {
+  var t = text.toLowerCase();
+  showToast('Heard: "' + text + '"', { duration_ms: 3000 });
+
+  // 1. Navigation: "open <tab>" / "go to <tab>" / "show <tab>"
+  var navMatch = t.match(/\b(open|go to|show|switch to)\s+(today|menu|recipes?|cleaning|orders?|events?|schedule|inbox|cook|cookmode|mep|production)\b/);
+  if (navMatch) {
+    var target = navMatch[2];
+    if (target === 'recipe' || target === 'recipes') target = 'recipes';
+    if (target === 'order' || target === 'orders') target = 'ordering';
+    if (target === 'event' || target === 'events') target = 'events';
+    if (target === 'cook') target = 'cookmode';
+    switchTab(target, null);
+    showToast('Opened ' + target);
+    closeAI();
+    return;
+  }
+
+  // 2. Search intent: "find <X>" / "search for <X>"
+  var findMatch = t.match(/\b(find|search\s+for?)\s+(.+)$/);
+  if (findMatch) {
+    closeAI();
+    setTimeout(function() {
+      if (typeof openCmdK === 'function') openCmdK();
+      setTimeout(function() {
+        var inp = document.getElementById('cmdk-input');
+        if (inp) {
+          inp.value = findMatch[2].trim();
+          inp.dispatchEvent(new Event('input'));
+          inp.focus();
+        }
+      }, 100);
+    }, 300);
+    return;
+  }
+
+  // 3. Sales proposal / Event intent: "draft a proposal" / "new event" / "masterclass"
+  if (/\b(draft|create|new)\s+.*(proposal|event|masterclass)\b/.test(t)) {
+    closeAI();
+    switchTab('events', null);
+    showToast('Sales Assistant ready');
+    return;
+  }
+
+  // 4. Clock-in intent: "clock in" / "fichar" / "empezar turno"
+  if (/\b(clock\s+in|punch\s+in|empezar\s+turno|fichar)\b/.test(t)) {
+    if (typeof clockToggle === 'function') {
+      clockToggle();
+      showToast('Clock toggled');
+      return;
+    }
+  }
+
+  // 5. Default — send to AI dispatcher
+  closeAI();
+  setTimeout(function() {
+    openAI();
+    setTimeout(function() {
+      var ovInput = document.getElementById('ai-ov-input');
+      if (ovInput) {
+        ovInput.value = text;
+        ovInput.focus();
+        sendAIOv();
+      }
+    }, 400);
+  }, 150);
+}
+
 function toggleVoice() {
   var mic = document.getElementById('ai-mic-big');
   var hint = document.getElementById('voice-hint');
@@ -6673,6 +7060,9 @@ function toggleVoice() {
     recognizer.onstart = function() {
       voiceRec = true;
       if (mic) { mic.textContent = '⏹'; mic.style.background = '#EAF3DE'; mic.style.boxShadow = '0 0 0 8px rgba(78,99,50,0.20)'; }
+      // Also add listening class to AI bar mic if it exists
+      var barMic = document.getElementById('ai-mic');
+      if (barMic) barMic.classList.add('listening');
       if (hint) hint.textContent = 'LISTENING...';
       if (status) status.textContent = 'Listening — speak now';
     };
@@ -6695,10 +7085,15 @@ function toggleVoice() {
     recognizer.onend = function() {
       voiceRec = false;
       if (mic) { mic.textContent = '🎙'; mic.style.background = '#F5F3F0'; mic.style.boxShadow = '0 2px 12px rgba(0,0,0,0.08)'; }
+      // Remove listening class from AI bar mic
+      var barMic = document.getElementById('ai-mic');
+      if (barMic) barMic.classList.remove('listening');
       if (hint) hint.textContent = 'TAP MIC TO SPEAK';
       var input = document.getElementById('ai-input');
       if (input && input.value.trim()) {
-        setTimeout(function() { sendAI(); }, 300);
+        var transcript = input.value.trim();
+        input.value = '';
+        setTimeout(function() { handleVoiceCommand(transcript); }, 300);
       } else {
         if (status) status.textContent = 'Tap the mic or type — I will do the rest';
       }
@@ -6707,6 +7102,8 @@ function toggleVoice() {
     recognizer.onerror = function() {
       voiceRec = false;
       if (mic) { mic.textContent = '🎙'; mic.style.background = '#F5F3F0'; }
+      var barMic = document.getElementById('ai-mic');
+      if (barMic) barMic.classList.remove('listening');
       if (hint) hint.textContent = 'TAP MIC TO SPEAK';
       if (status) status.textContent = 'Could not hear — try again or type';
     };
@@ -7162,6 +7559,7 @@ function showInlineToastError(msg) {
     <button class="more-btn mgr-only" onclick="switchTab('command',null);closeMore()" style="display:none"><span class="more-lbl">Command</span></button>
     <button class="more-btn mgr-only" onclick="switchTab('integrations',null);closeMore()" style="display:none"><span class="more-lbl">Integrations</span></button>
     <button class="more-btn mgr-only" onclick="switchTab('onboarding',null);closeMore()" style="display:none"><span class="more-lbl">Onboard</span></button>
+    <button class="more-btn mgr-only" onclick="switchTab('office',null);closeMore()" style="display:none"><span class="more-lbl">Office</span></button>
   </div>
   <div style="border-top:1px solid var(--border);margin-top:12px;padding-top:12px;">
     <div style="font-size:12px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;padding:0 8px;">Theme</div>
