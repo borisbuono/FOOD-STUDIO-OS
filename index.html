@@ -279,6 +279,66 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
 .tb-ctx-zone { font-size: 10px; color: #9B8E7E; }
 .tb-more-btn { background: rgba(0,0,0,0.06); border: none; border-radius: 9px; font-size: 14px; color: var(--text-secondary); cursor: pointer; padding: 6px 10px; line-height: 1; letter-spacing: 3px; -webkit-tap-highlight-color: transparent; font-weight: 700; }
 
+/* ─── PRESENCE AVATARS ─── */
+.presence-avatars {
+  display: flex;
+  gap: 0;
+  align-items: center;
+  z-index: 95;
+  pointer-events: none;
+}
+.presence-pill {
+  pointer-events: auto;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--ember, #4E6332);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  border: 2px solid var(--bg, #FFFFFF);
+  margin-left: -8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  transition: transform 0.15s, z-index 0.15s;
+  position: relative;
+  flex-shrink: 0;
+}
+.presence-pill:first-child { margin-left: 0; }
+.presence-pill:hover { transform: translateY(-2px) scale(1.08); z-index: 1; }
+.presence-pill img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+.presence-pill.presence-ghost {
+  opacity: 0.55;
+  background: var(--gold, #A8893A);
+}
+.presence-pill.presence-ghost::after {
+  content: '~';
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  background: var(--bg, white);
+  color: var(--gold, #A8893A);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  font-size: 10px;
+  line-height: 14px;
+  text-align: center;
+  font-weight: 700;
+}
+.presence-pill.presence-more {
+  background: var(--surface-2, rgba(0,0,0,0.05));
+  color: var(--text-primary, #1F2916);
+  font-size: 10px;
+}
+.pp-initials { line-height: 1; }
+@media (max-width: 600px) {
+  .presence-pill { width: 26px; height: 26px; font-size: 10px; }
+  .presence-pill.presence-ghost::after { width: 12px; height: 12px; }
+}
+
 /* ─── DASHBOARD SCREEN ─── */
 #screen-dashboard { display: block; }
 #screen-detail { display: none; }
@@ -1484,7 +1544,7 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
 .reprice-suggested { font-family:'DM Mono',monospace;font-size:13px;color:#4A7B6A;font-weight:600; }
 
 .bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:rgba(255,255,255,.95);backdrop-filter:blur(20px);border-top:1px solid rgba(0,0,0,.07);display:flex;align-items:stretch;padding-bottom:env(safe-area-inset-bottom,0px);z-index:85;height:60px}
-.bnav-tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;background:transparent;border:none;cursor:pointer;padding:8px 4px;gap:3px;-webkit-tap-highlight-color:transparent}
+.bnav-tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;background:transparent;border:none;cursor:pointer;padding:8px 4px;gap:3px;-webkit-tap-highlight-color:transparent;position:relative}
 .bnav-tab:active{background:rgba(0,0,0,.03)}
 .bic{font-size:20px;line-height:1;transition:transform .15s}
 .blb{font-family:"Outfit",sans-serif;font-size:9px;font-weight:500;letter-spacing:.04em;color:#C8C0B8;text-transform:uppercase}
@@ -1501,7 +1561,7 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
 .more-menu.open{bottom:0;pointer-events:auto}
 .more-handle{width:36px;height:4px;background:rgba(0,0,0,.1);border-radius:2px;margin:0 auto 18px}
 .more-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.more-btn{display:flex;flex-direction:column;align-items:center;gap:7px;padding:16px 8px;border-radius:14px;border:1px solid rgba(0,0,0,.07);background:#F7F5F1;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.more-btn{display:flex;flex-direction:column;align-items:center;gap:7px;padding:16px 8px;border-radius:14px;border:1px solid rgba(0,0,0,.07);background:#F7F5F1;cursor:pointer;-webkit-tap-highlight-color:transparent;position:relative}
 .more-btn:active{background:#F0EDE8;transform:scale(.97)}
 .more-lbl{font-size:11px;font-weight:600;color:#5C4E3C;font-family:"Outfit",sans-serif}
 /* ai-bar hidden — access via round button only */
@@ -1656,11 +1716,32 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
     font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 500;
     color: #5C4E3C; transition: background .15s;
     -webkit-tap-highlight-color: transparent;
+    position: relative;
   }
   .dnav-item:hover { background: rgba(0,0,0,.04); }
   .dnav-item.active { background: #EAF3DE; color: #1F3D2F; font-weight: 600; }
   .dnav-ic { font-size: 16px; line-height: 1; flex-shrink: 0; }
   .dnav-lbl { flex: 1; }
+  .tab-badge {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    background: var(--ember, #4E6332);
+    color: white;
+    border-radius: 9px;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 18px;
+    text-align: center;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 0 2px var(--bg, #FFFFFF);
+    z-index: 5;
+  }
   .dnav-divider { height: 1px; background: rgba(0,0,0,.07); margin: 10px 4px; }
   .dnav-spacer { flex: 1; }
   .dnav-ai {
@@ -2259,6 +2340,124 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
 .office-cta-sec { padding: 8px 16px; border-radius: 8px; background: transparent; color: var(--ember, #4E6332); border: 1px solid var(--ember, #4E6332); font-size: 13px; cursor: pointer; text-decoration: none; display: inline-block; font-family: Outfit, sans-serif; font-weight: 600; transition: all 0.18s; }
 .office-cta-sec:hover { background: var(--ember, #4E6332); color: white; }
 
+/* ─────────────────────────────────────────────────────────────── */
+/* SMARTWATCH PREVIEW */
+/* ─────────────────────────────────────────────────────────────── */
+.watch-preview { margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--border, rgba(0,0,0,0.08)); }
+.wp-header { margin-bottom: 16px; }
+.wp-title { font-family: var(--font-serif, Fraunces, Georgia, serif); font-size: 18px; font-weight: 600; }
+.wp-sub { font-size: 12px; opacity: 0.6; margin-top: 2px; }
+.wp-frame { display: grid; grid-template-columns: 1fr; gap: 24px; align-items: start; }
+@media (min-width: 700px) { .wp-frame { grid-template-columns: 220px 1fr; } }
+.wp-watch { width: 200px; height: 240px; background: linear-gradient(180deg, #1A1510 0%, #2A2018 100%); border-radius: 36px; padding: 24px 18px; box-shadow: 0 16px 40px rgba(0,0,0,0.3), inset 0 0 0 6px #0A0807; position: relative; margin: 0 auto; box-sizing: border-box; }
+.wp-watch::before { content: ''; position: absolute; top: -8px; left: 50%; transform: translateX(-50%); width: 50px; height: 8px; background: #1A1510; border-radius: 4px 4px 0 0; }
+.wp-watch::after { content: ''; position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); width: 50px; height: 8px; background: #1A1510; border-radius: 0 0 4px 4px; }
+.wp-screen { color: #F5EDE3; height: 100%; display: flex; flex-direction: column; gap: 14px; font-family: var(--font-mono, ui-monospace, monospace); }
+.wp-time { font-size: 22px; font-weight: 300; opacity: 0.8; letter-spacing: 0.04em; }
+.wp-event-card { background: rgba(184,150,58,0.16); border: 1px solid rgba(184,150,58,0.4); border-radius: 10px; padding: 10px 12px; display: flex; gap: 10px; align-items: flex-start; }
+.wp-event-icon { color: #B8963A; font-size: 18px; line-height: 1; flex-shrink: 0; }
+.wp-event-title { font-weight: 600; font-size: 13px; line-height: 1.2; }
+.wp-event-meta { font-size: 10px; opacity: 0.65; margin-top: 3px; }
+.wp-haptic { font-size: 10px; opacity: 0.55; text-align: center; margin-top: auto; letter-spacing: 0.1em; }
+.wp-side-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.6; margin-bottom: 8px; }
+.wp-side-list { list-style: none; padding: 0; margin: 0 0 16px; }
+.wp-side-list li { padding: 6px 0; font-size: 13px; line-height: 1.45; opacity: 0.85; }
+.wp-side-list strong { color: var(--ember, #4E6332); font-weight: 600; }
+.wp-haptic-key { border-top: 1px solid var(--border, rgba(0,0,0,0.08)); padding-top: 12px; display: flex; flex-direction: column; gap: 6px; font-size: 12px; opacity: 0.75; }
+.wp-pulse-mark { display: inline-block; width: 28px; font-family: var(--font-mono, ui-monospace, monospace); color: var(--ember, #4E6332); font-weight: 600; }
+.wp-foot { margin-top: 14px; padding: 12px; background: var(--bg-card, rgba(184,150,58,0.06)); border-left: 3px solid var(--gold, #A8893A); border-radius: 6px; font-size: 12px; line-height: 1.5; }
+
+/* ─── DEMO CONTROLS ─── */
+.demo-controls { margin-top: 28px; padding: 14px; background: var(--surface-2, rgba(168,137,58,0.06)); border-left: 3px solid var(--gold, #A8893A); border-radius: 6px; }
+.dc-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.6; margin-bottom: 8px; font-weight: 600; }
+.dc-btn { padding: 6px 12px; border-radius: 6px; border: 1px solid var(--border, rgba(0,0,0,0.1)); background: transparent; cursor: pointer; font-size: 12px; font-family: Outfit, sans-serif; transition: all 0.15s; margin-right: 6px; }
+.dc-btn:hover { background: var(--ember, #4E6332); color: white; border-color: var(--ember, #4E6332); }
+
+/* ─────────────────────────────────────────────────────────────── */
+/* EVENTS PIPELINE & DETAIL */
+/* ─────────────────────────────────────────────────────────────── */
+.events-subtabs { display: flex; gap: 8px; margin-bottom: 16px; padding: 0 4px; border-bottom: 1px solid var(--border, rgba(0,0,0,0.06)); padding-bottom: 12px; }
+.est-pill { padding: 8px 14px; border-radius: 16px; border: 1px solid var(--border, rgba(0,0,0,0.1)); background: transparent; font-size: 13px; cursor: pointer; font-family: Outfit, sans-serif; font-weight: 500; transition: all 0.15s; }
+.est-pill.active { background: var(--ember, #4E6332); color: white; border-color: var(--ember, #4E6332); }
+
+.pipeline-board { display: grid; grid-template-columns: repeat(6, minmax(180px, 1fr)); gap: 10px; overflow-x: auto; padding-bottom: 8px; }
+@media (max-width: 1400px) { .pipeline-board { grid-template-columns: repeat(6, 220px); } }
+@media (max-width: 900px) { .pipeline-board { grid-template-columns: repeat(3, 1fr); } }
+.pl-col { background: var(--bg-card, rgba(0,0,0,0.03)); border-radius: 10px; padding: 10px; min-height: 140px; }
+.pl-col-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; padding: 0 4px; }
+.pl-col-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.07em; opacity: 0.6; font-weight: 600; font-family: Outfit, sans-serif; }
+.pl-col-meta { font-size: 11px; opacity: 0.55; font-family: Outfit, sans-serif; }
+.pl-cards { display: flex; flex-direction: column; gap: 6px; }
+.pl-card { background: var(--bg, white); padding: 10px 12px; border-radius: 8px; cursor: pointer; border: 1px solid var(--border, rgba(0,0,0,0.06)); transition: all 0.15s; }
+.pl-card:hover { border-color: var(--ember, #4E6332); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+.pl-card-title { font-size: 13px; font-weight: 500; line-height: 1.3; font-family: Outfit, sans-serif; }
+.pl-card-meta { font-size: 11px; opacity: 0.6; margin-top: 3px; font-family: Outfit, sans-serif; }
+.pl-card-rev { font-size: 12px; font-weight: 600; color: var(--ember, #4E6332); margin-top: 4px; font-family: DM Mono, monospace; }
+.pl-empty { font-size: 11px; opacity: 0.4; text-align: center; padding: 14px 4px; font-style: italic; font-family: Outfit, sans-serif; }
+.pl-summary { margin-top: 14px; padding: 12px 14px; background: var(--bg-card, rgba(184,150,58,0.06)); border-left: 3px solid var(--gold, #A8893A); border-radius: 6px; font-size: 13px; font-family: Outfit, sans-serif; }
+
+/* Event detail modal */
+.event-sheet { max-width: 640px; max-height: 88vh; overflow-y: auto; }
+.ed-header { padding-bottom: 16px; border-bottom: 1px solid var(--border, rgba(0,0,0,0.06)); margin-bottom: 18px; }
+.ed-eyebrow { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.55; font-family: Outfit, sans-serif; }
+.ed-title { font-family: Fraunces, Georgia, serif; font-size: 24px; font-weight: 600; margin: 4px 0 8px; line-height: 1.2; }
+.ed-meta { font-size: 13px; opacity: 0.7; font-family: Outfit, sans-serif; }
+.ed-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 22px; }
+@media (max-width: 600px) { .ed-stats { grid-template-columns: repeat(2, 1fr); } }
+.ed-stat { padding: 10px 12px; border: 1px solid var(--border, rgba(0,0,0,0.08)); border-radius: 8px; text-align: center; }
+.es-label { font-size: 10px; opacity: 0.6; text-transform: uppercase; letter-spacing: 0.06em; font-family: Outfit, sans-serif; }
+.es-val { font-size: 18px; font-weight: 600; font-family: Fraunces, Georgia, serif; margin-top: 4px; }
+.ed-section { margin-bottom: 20px; }
+.ed-section-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.6; margin-bottom: 8px; font-family: Outfit, sans-serif; }
+.ed-skills { display: flex; flex-wrap: wrap; gap: 6px; }
+.ed-skill { padding: 7px 12px; border-radius: 6px; border: 1px solid var(--ember, #4E6332); background: transparent; color: var(--ember, #4E6332); font-size: 12px; font-weight: 600; cursor: pointer; font-family: Outfit, sans-serif; transition: all 0.15s; }
+.ed-skill:hover { background: var(--ember, #4E6332); color: white; }
+.ed-stages { display: flex; flex-wrap: wrap; gap: 4px; }
+.ed-stage { padding: 6px 10px; border-radius: 12px; border: 1px solid var(--border, rgba(0,0,0,0.1)); background: transparent; font-size: 11px; cursor: pointer; font-family: Outfit, sans-serif; transition: all 0.15s; }
+.ed-stage.active { background: var(--gold, #A8893A); color: white; border-color: var(--gold, #A8893A); }
+.ed-prose { font-size: 14px; line-height: 1.5; opacity: 0.85; padding: 10px 12px; background: var(--bg-card, rgba(0,0,0,0.03)); border-radius: 6px; font-family: Outfit, sans-serif; }
+.ed-activity { font-size: 12px; font-family: Outfit, sans-serif; }
+.ed-act-row { display: flex; gap: 12px; padding: 6px 0; border-bottom: 1px solid var(--border, rgba(0,0,0,0.04)); }
+.ed-act-time { opacity: 0.5; min-width: 70px; font-family: DM Mono, monospace; font-size: 11px; }
+.ed-act-text { flex: 1; }
+.ed-act-empty { opacity: 0.5; font-style: italic; padding: 8px 0; }
+.ed-foot { display: flex; justify-content: space-between; gap: 10px; padding-top: 16px; border-top: 1px solid var(--border, rgba(0,0,0,0.06)); margin-top: 20px; }
+.cta { padding: 10px 16px; border-radius: 8px; background: var(--ember, #4E6332); color: white; border: 0; font-size: 13px; cursor: pointer; font-family: Outfit, sans-serif; font-weight: 600; transition: all 0.15s; }
+.cta:hover { opacity: 0.9; }
+.cta-sec { padding: 10px 16px; border-radius: 8px; background: transparent; color: var(--text-primary); border: 1px solid var(--border, rgba(0,0,0,0.1)); font-size: 13px; cursor: pointer; font-family: Outfit, sans-serif; font-weight: 600; transition: all 0.15s; }
+.welcome-overlay { display: none; position: fixed; inset: 0; z-index: 999; background: rgba(0,0,0,0.5); backdrop-filter: blur(6px); align-items: center; justify-content: center; padding: 5vh 16px; }
+.welcome-overlay.show { display: flex; }
+.welcome-sheet { background: var(--bg, #FFFFFF); color: var(--text-primary, #1A1510); border-radius: 16px; max-width: 560px; width: 100%; padding: 28px 24px 22px; max-height: 90vh; overflow-y: auto; box-shadow: 0 24px 80px rgba(0,0,0,0.4); animation: welcome-in 0.24s ease-out; }
+@keyframes welcome-in { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+.welcome-hero { text-align: center; margin-bottom: 20px; }
+.welcome-eyebrow { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.55; }
+.welcome-greeting { font-family: var(--font-serif, Fraunces, Georgia, serif); font-size: 28px; font-weight: 500; margin: 8px 0; line-height: 1.15; }
+.welcome-tagline { font-size: 14px; opacity: 0.7; font-style: italic; }
+.welcome-cards { display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
+.welcome-card { display: flex; gap: 14px; padding: 14px; border: 1px solid var(--border, rgba(0,0,0,0.08)); border-radius: 10px; }
+.wc-num { width: 28px; height: 28px; flex-shrink: 0; border-radius: 14px; background: var(--ember, #B86A42); color: white; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; }
+.wc-body { flex: 1; min-width: 0; }
+.wc-title { font-size: 15px; font-weight: 600; }
+.wc-sub { font-size: 13px; opacity: 0.7; margin-top: 4px; line-height: 1.4; }
+.wc-cta { margin-top: 10px; padding: 6px 14px; border-radius: 6px; border: 1px solid var(--ember, #B86A42); background: transparent; color: var(--ember, #B86A42); font-size: 12px; font-weight: 600; cursor: pointer; }
+.welcome-actions { display: flex; align-items: center; gap: 14px; justify-content: center; margin-top: 6px; }
+.welcome-actions .cta.primary { padding: 10px 22px; border-radius: 8px; background: var(--ember, #B86A42); color: white; border: 0; font-size: 14px; font-weight: 600; cursor: pointer; }
+.cta-link { background: transparent; border: 0; opacity: 0.6; cursor: pointer; font-size: 13px; text-decoration: underline; color: inherit; }
+.cta-sec:hover { background: var(--bg-card, rgba(0,0,0,0.03)); }
+
+/* ═══ INBOX ACTIONS ═══ */
+.inbox-card { display: flex; flex-direction: column; gap: 10px; padding: 12px; border: 1px solid var(--border, rgba(0,0,0,0.08)); border-radius: 10px; background: var(--bg-card, rgba(0,0,0,0.02)); }
+.inbox-card-header { display: flex; gap: 8px; align-items: flex-start; }
+.inbox-card-icon { width: 32px; height: 32px; flex-shrink: 0; border-radius: 6px; background: var(--ember, #B86A42); color: white; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+.inbox-card-body { flex: 1; min-width: 0; }
+.inbox-card-subject { font-weight: 600; font-size: 14px; line-height: 1.3; }
+.inbox-card-meta { font-size: 12px; opacity: 0.6; margin-top: 3px; }
+.inbox-actions { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+.ia-btn { padding: 5px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; border: 1px solid var(--border, rgba(0,0,0,0.1)); background: transparent; color: inherit; font-weight: 500; transition: all 0.15s ease; }
+.ia-btn.primary { background: var(--ember, #B86A42); color: white; border-color: var(--ember, #B86A42); }
+.ia-btn:hover { opacity: 0.85; }
+.ia-btn.sec:hover { background: rgba(0,0,0,0.05); }
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://accounts.google.com/gsi/client" async></script>
@@ -2335,6 +2534,7 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
       <img src="assets/food_studio_horizontal_600.png" alt="Food Studio" class="tb-logo" height="32">
     </div>
     <div class="tb-right">
+      <div id="presence-avatars" class="presence-avatars"></div>
       <button class="cmdk-trigger" onclick="openCmdK()" title="Search anything (⌘K)">
         <span>⌘</span><span>K</span>
       </button>
@@ -2356,17 +2556,17 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
     <!-- NAV TABS -->
     <div class="desktop-nav" id="desktop-nav">
       <div class="dnav-section">
-        <button class="dnav-item ntab active" onclick="switchTab('today',this)" data-tab="today" data-tab="today"><span class="dnav-ic">📋</span><span class="dnav-lbl">Today</span></button>
-        <button class="dnav-item ntab" onclick="switchTab('menu',this)" data-tab="menu" data-tab="menu"><span class="dnav-ic">🍽</span><span class="dnav-lbl">Menu</span></button>
-        <button class="dnav-item ntab" onclick="switchTab('mep',this)" data-tab="mep" data-tab="mep"><span class="dnav-ic">⚡</span><span class="dnav-lbl">MEP</span></button>
-        <button class="dnav-item ntab" onclick="switchTab('ordering',this)" data-tab="ordering"><span class="dnav-ic">📦</span><span class="dnav-lbl">Orders</span></button>
-        <button class="dnav-item ntab" onclick="switchTab('recipes',this)" data-tab="recipes"><span class="dnav-ic">📖</span><span class="dnav-lbl">Recipes</span></button>
+        <button class="dnav-item ntab active" onclick="switchTab('today',this)" data-tab="today" data-tab="today"><span class="dnav-ic">📋</span><span class="dnav-lbl">Today</span><span class="tab-badge" id="badge-today"></span></button>
+        <button class="dnav-item ntab" onclick="switchTab('menu',this)" data-tab="menu" data-tab="menu"><span class="dnav-ic">🍽</span><span class="dnav-lbl">Menu</span><span class="tab-badge" id="badge-menu"></span></button>
+        <button class="dnav-item ntab" onclick="switchTab('mep',this)" data-tab="mep" data-tab="mep"><span class="dnav-ic">⚡</span><span class="dnav-lbl">MEP</span><span class="tab-badge" id="badge-mep"></span></button>
+        <button class="dnav-item ntab" onclick="switchTab('ordering',this)" data-tab="ordering"><span class="dnav-ic">📦</span><span class="dnav-lbl">Orders</span><span class="tab-badge" id="badge-ordering"></span></button>
+        <button class="dnav-item ntab" onclick="switchTab('recipes',this)" data-tab="recipes"><span class="dnav-ic">📖</span><span class="dnav-lbl">Recipes</span><span class="tab-badge" id="badge-recipes"></span></button>
       </div>
       <div class="dnav-divider"></div>
       <div class="dnav-section">
-                <button class="dnav-item ntab" onclick="switchTab('cleaning',this)" data-tab="cleaning"><span class="dnav-ic">🧹</span><span class="dnav-lbl">Cleaning</span></button>
-        <button class="dnav-item ntab" onclick="switchTab('events',this)" data-tab="events"><span class="dnav-ic">🎉</span><span class="dnav-lbl">Events</span></button>
-        <button class="dnav-item ntab" onclick="switchTab('schedule',this)" data-tab="schedule"><span class="dnav-ic">📅</span><span class="dnav-lbl">Schedule</span></button>
+                <button class="dnav-item ntab" onclick="switchTab('cleaning',this)" data-tab="cleaning"><span class="dnav-ic">🧹</span><span class="dnav-lbl">Cleaning</span><span class="tab-badge" id="badge-cleaning"></span></button>
+        <button class="dnav-item ntab" onclick="switchTab('events',this)" data-tab="events"><span class="dnav-ic">🎉</span><span class="dnav-lbl">Events</span><span class="tab-badge" id="badge-events"></span></button>
+        <button class="dnav-item ntab" onclick="switchTab('schedule',this)" data-tab="schedule"><span class="dnav-ic">📅</span><span class="dnav-lbl">Schedule</span><span class="tab-badge" id="badge-schedule"></span></button>
       </div>
       <div class="dnav-spacer"></div>
       <button class="dnav-ai" onclick="openAI()"><span style="font-size:18px">✦</span><span>Ask AI</span></button>
@@ -2548,6 +2748,107 @@ const db = (typeof supabase !== 'undefined')
     })
   : null;
 
+// ── Multiplayer Presence (Supabase Realtime) ────────────────────────────
+let _presenceChannel = null;
+let _presenceState = {};
+let _presenceChannelName = null;
+
+function startPresence() {
+  try {
+    if (!db || !USER || !USER.name) {
+      setTimeout(startPresence, 1000);
+      return;
+    }
+    const restSlug = R === 0 ? 'taller' : 'bistro-mondo';
+    const channelName = `presence:${restSlug}:${currentTab || 'today'}`;
+
+    // Only start if channel name has changed
+    if (_presenceChannelName === channelName && _presenceChannel) return;
+
+    stopPresence();
+    _presenceChannelName = channelName;
+
+    _presenceChannel = db.channel(channelName, {
+      config: { presence: { key: USER.name } }
+    });
+
+    _presenceChannel
+      .on('presence', { event: 'sync' }, () => {
+        _presenceState = _presenceChannel.presenceState() || {};
+        renderPresenceAvatars();
+      })
+      .on('presence', { event: 'join' }, ({ key, newPresences }) => {
+        _presenceState[key] = newPresences;
+        renderPresenceAvatars();
+      })
+      .on('presence', { event: 'leave' }, ({ key }) => {
+        delete _presenceState[key];
+        renderPresenceAvatars();
+      })
+      .subscribe(async (status) => {
+        if (status === 'SUBSCRIBED') {
+          await _presenceChannel.track({
+            user_id: USER.name,
+            name: USER.name || 'Anon',
+            role: USER.role || 'worker',
+            avatar_url: USER._googlePicture || null,
+            tab: currentTab,
+            joined_at: new Date().toISOString()
+          });
+        }
+      });
+  } catch (e) {
+    console.warn('Presence start failed:', e.message);
+  }
+}
+
+function stopPresence() {
+  if (_presenceChannel) {
+    try { db.removeChannel(_presenceChannel); } catch(e){}
+    _presenceChannel = null;
+  }
+  _presenceState = {};
+  _presenceChannelName = null;
+  renderPresenceAvatars();
+}
+
+function refreshPresenceForTab() {
+  startPresence();
+}
+
+function renderPresenceAvatars() {
+  const root = document.getElementById('presence-avatars');
+  if (!root) return;
+
+  const others = [];
+  for (const [key, presences] of Object.entries(_presenceState)) {
+    if (key === USER.name) continue;
+    const p = presences[0];
+    if (p) others.push(p);
+  }
+
+  // Demo ghost colleague
+  if (others.length === 0 && window._showGhostColleague) {
+    others.push({ user_id: 'ghost', name: 'Vanessa', role: 'manager', _ghost: true });
+  }
+
+  if (others.length === 0) {
+    root.innerHTML = '';
+    return;
+  }
+
+  root.innerHTML = others.slice(0, 4).map(p => {
+    const initials = (p.name || '?').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+    const ghost = p._ghost ? ' presence-ghost' : '';
+    return `<div class="presence-pill${ghost}" title="${(p.name || '?').replace(/"/g, '&quot;')} · ${p.role || 'team'}${p._ghost ? ' (demo)' : ''}">
+      ${p.avatar_url ? `<img src="${p.avatar_url}" alt="${(p.name || '?').replace(/"/g, '&quot;')}">` : `<span class="pp-initials">${initials}</span>`}
+    </div>`;
+  }).join('') + (others.length > 4 ? `<div class="presence-pill presence-more">+${others.length - 4}</div>` : '');
+}
+
+function enableGhostColleague() { window._showGhostColleague = true; renderPresenceAvatars(); }
+function disableGhostColleague() { window._showGhostColleague = false; renderPresenceAvatars(); }
+
 // ── Supabase REST helper (anon key, read-only) ────────────────────────────
 async function sbFetch(path){
   const h={apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`};
@@ -2606,7 +2907,7 @@ const MENU_LIBRARY = [
 // ══ STATE ══
 let USER={name:'',role:'owner',lang:'en',zone:''},selRV='',selLV='en',selRestV=null,selAreaV='';
 let R=0,AREA='boh',ZONE='Hot Station';
-let currentTab='today',recEditId=null,menuAddSec='hot',prodTab='mep',todaySubTab='day';
+let currentTab='today',recEditId=null,menuAddSec='hot',prodTab='mep',todaySubTab='day',eventsView='pipeline';
 let currentMenuType='all';
 let menuViewMode='active'; // 'active' | 'library'
 let ordersSearchQuery='';
@@ -2962,6 +3263,7 @@ function initApp(){
     const ctxLbl=document.getElementById('ctx-name-lbl');
     if(ctxLbl)ctxLbl.textContent=USER.name+(USER._googleEmail?' ('+USER._googleEmail+')':'');
     initShiftSync();
+    startPresence();
     renderTab();
     // Populate team-edit restaurant dropdown
     (async()=>{try{const rs=await sbFetch('restaurants?select=id,name,slug&order=name.asc');const sel=document.getElementById('tm-rest');if(sel&&rs){rs.forEach(r=>{const o=document.createElement('option');o.value=r.id;o.textContent=r.name;sel.appendChild(o);});}}catch(e){}})();
@@ -2986,6 +3288,120 @@ function initApp(){
   }
 }
 
+// ══ INBOX HELPERS ══
+function suggestedActionsForInbox(item) {
+  const cat = (item.category || '').toLowerCase();
+  const src = (item.source || '').toLowerCase();
+  const subj = (item.subject || '').toLowerCase();
+  const actions = [];
+
+  if (cat === 'agent_escalation' && src === 'agent_dispatch') {
+    actions.push({ label: 'Categorise', kind: 'primary', fn: () => { if (typeof runAgentSkill === 'function') runAgentSkill('categorise_expense'); } });
+    actions.push({ label: 'View Holded', kind: 'sec', fn: () => window.open('https://app.holded.com', '_blank') });
+  }
+  else if (cat === 'booking' || cat === 'customer' || /inquiry|reservation|booking|private dinner/i.test(subj)) {
+    actions.push({ label: 'Draft reply', kind: 'primary', fn: () => {
+      switchTab('events', null);
+      setTimeout(() => {
+        const ta = document.getElementById('saBrief') || document.querySelector('.sales-asst textarea');
+        if (ta) { ta.value = (item.subject || '') + '\n\n' + (item.body || ''); ta.focus(); }
+      }, 200);
+    }});
+    actions.push({ label: 'Mark replied', kind: 'sec', fn: () => markInboxResolved(item.id) });
+  }
+  else if (cat === 'review' || src === 'google_reviews') {
+    actions.push({ label: 'Draft thank-you', kind: 'primary', fn: () => showToast('Thank-you drafter — coming soon') });
+    actions.push({ label: 'Open Business', kind: 'sec', fn: () => window.open('https://business.google.com', '_blank') });
+  }
+  else if (cat === 'supplier' || /supplier|provider|delivery|order|invoice/i.test(subj)) {
+    actions.push({ label: 'Mark received', kind: 'primary', fn: () => markInboxResolved(item.id) });
+    actions.push({ label: 'Report discrepancy', kind: 'sec', fn: () => showToast('Discrepancy form — coming soon') });
+  }
+  else if (cat === 'maintenance' || src === 'cleaning_feedback') {
+    actions.push({ label: 'Schedule fix', kind: 'primary', fn: () => showToast('Maintenance scheduling — coming soon') });
+    actions.push({ label: 'Flag urgent', kind: 'sec', fn: () => updateInboxPriority(item.id, 'high') });
+  }
+  else if (cat === 'regulatory' || src === 'sistema_red') {
+    actions.push({ label: 'Open Sistema RED', kind: 'primary', fn: () => window.open('https://sede.seg-social.gob.es', '_blank') });
+    actions.push({ label: 'Mark handled', kind: 'sec', fn: () => markInboxResolved(item.id) });
+  }
+  else if (cat === 'nightly_digest' || src === 'nightly_digest') {
+    actions.push({ label: 'Plan today', kind: 'primary', fn: () => switchTab('today', null) });
+  }
+
+  if (actions.length === 0) {
+    actions.push({ label: 'Mark read', kind: 'primary', fn: () => markInboxResolved(item.id) });
+  }
+  return actions;
+}
+
+let _inboxActions = {};
+function runInboxAction(itemId, idx) {
+  const a = (_inboxActions[itemId] || [])[idx];
+  if (a && typeof a.fn === 'function') a.fn();
+}
+
+async function markInboxResolved(id) {
+  if (typeof showToast === 'function') showToast('Marked as resolved', { undo_fn: () => {
+    const item = (INBOX_ITEMS || []).find(i => i.id === id);
+    if (item) item.status = 'new';
+    if (typeof renderTab === 'function') renderTab();
+  }});
+  const item = (INBOX_ITEMS || []).find(i => i.id === id);
+  if (item) item.status = 'resolved';
+  if (typeof renderTab === 'function') renderTab();
+  try {
+    await fetch(`${SUPABASE_URL}/rest/v1/inbox_items?id=eq.${id}`, {
+      method: 'PATCH',
+      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: 'resolved', resolved_at: new Date().toISOString() })
+    });
+  } catch (e) {}
+}
+
+async function updateInboxPriority(id, p) {
+  const item = (INBOX_ITEMS || []).find(i => i.id === id);
+  if (item) item.priority = p;
+  if (typeof renderTab === 'function') renderTab();
+  if (typeof showToast === 'function') showToast('Priority set to ' + p);
+}
+
+function renderInbox() {
+  if (typeof INBOX_ITEMS === 'undefined' || !Array.isArray(INBOX_ITEMS)) {
+    return `<div style="padding:24px;text-align:center;opacity:0.6;font-size:14px;">No inbox items yet.</div>`;
+  }
+
+  const unresolved = INBOX_ITEMS.filter(i => i.status !== 'resolved');
+  if (!unresolved.length) {
+    return `<div style="padding:24px;text-align:center;opacity:0.6;font-size:14px;">All caught up! Your inbox is empty.</div>`;
+  }
+
+  let html = `<div style="padding:12px 8px;">`;
+
+  for (const item of unresolved) {
+    const actions = suggestedActionsForInbox(item);
+    _inboxActions[item.id] = actions;
+
+    const priorityColor = item.priority === 'high' ? '#A03838' : item.priority === 'low' ? 'rgba(0,0,0,0.4)' : 'rgba(0,0,0,0.6)';
+    const categoryLabel = (item.category || 'inbox').charAt(0).toUpperCase() + (item.category || 'inbox').slice(1).replace(/_/g, ' ');
+
+    html += `<div class="inbox-card">
+      <div class="inbox-card-header">
+        <div class="inbox-card-icon">${item.source === 'google_reviews' ? '⭐' : item.category === 'booking' ? '📅' : item.category === 'supplier' ? '📦' : item.category === 'maintenance' ? '🔧' : '📬'}</div>
+        <div class="inbox-card-body">
+          <div class="inbox-card-subject">${escapeHtml(item.subject || '(no subject)')}</div>
+          <div class="inbox-card-meta" style="color:${priorityColor};">${escapeHtml(item.sender_name || item.sender || '?')} · ${categoryLabel}${item.received_at ? ' · ' + new Date(item.received_at).toLocaleDateString() : ''}</div>
+        </div>
+      </div>
+      ${item.body ? `<div style="font-size:13px;line-height:1.4;opacity:0.75;max-height:60px;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(item.body.slice(0, 200))}</div>` : ''}
+      <div class="inbox-actions">${actions.map((a, i) => `<button class="ia-btn ${a.kind}" onclick="runInboxAction('${item.id}', ${i})">${a.label}</button>`).join('')}</div>
+    </div>`;
+  }
+
+  html += `</div>`;
+  return html;
+}
+
 // ══ TAB ROUTING ══
 function switchTab(tab,el){
   currentTab=tab;
@@ -2996,6 +3412,7 @@ function switchTab(tab,el){
     document.querySelectorAll('.ntab[data-tab="'+tab+'"]').forEach(t=>t.classList.add('active'));
   }
   renderTab();
+  refreshPresenceForTab();
 }
 
 function renderTab(){
@@ -3018,7 +3435,38 @@ function renderTab(){
   else if(currentTab==='integrations')c.innerHTML=renderIntegrations();
   else if(currentTab==='team')c.innerHTML=renderTeam();
   else if(currentTab==='office')c.innerHTML=renderOffice();
+  else if(currentTab==='inbox')c.innerHTML=renderInbox();
+  updateAllBadges();
 }
+
+// ══ TAB BADGES: Menu (Ordering), Schedule, Cleaning, Events ══
+function setBadge(tabKey,n){
+  document.querySelectorAll('[id^="badge-'+tabKey+'"]').forEach(el=>{
+    if(n>0){el.textContent=(n>99?'99+':String(n));el.style.display='inline-flex';}
+    else{el.style.display='none';}
+  });
+}
+function updateAllBadges(){
+  try{
+    // CLOCK_VARIANCES (pending) → Schedule tab
+    const variancesN=(typeof CLOCK_VARIANCES!=='undefined'&&Array.isArray(CLOCK_VARIANCES))?CLOCK_VARIANCES.filter(v=>v.status==='pending').length:0;
+    setBadge('schedule',variancesN);
+    // SALES_EVENTS (inquiry, within 7 days) → Events tab
+    const inquiriesN=(typeof SALES_EVENTS!=='undefined'&&Array.isArray(SALES_EVENTS))?SALES_EVENTS.filter(e=>{
+      if(e.status!=='inquiry')return false;
+      const d=new Date(e.event_date),today=new Date();
+      const diff=(d-today)/86400000;
+      return diff>=-1&&diff<=7;
+    }).length:0;
+    setBadge('events',inquiriesN);
+    // TASKS (unsigned today) → Cleaning tab
+    const cleaningN=(typeof TASKS!=='undefined'&&Array.isArray(TASKS)&&typeof cleanState!=='undefined')?TASKS.filter(t=>!cleanState||!cleanState[`${R}_${t.zone||''}_${t.id}`]).length:0;
+    setBadge('cleaning',Math.min(cleaningN,99));
+  }catch(e){
+    console.warn('updateAllBadges:',e);
+  }
+}
+setInterval(()=>updateAllBadges(),60000);
 
 // ══ ADMIN OFFICE ══
 async function loadAgentSkills(){
@@ -3113,6 +3561,61 @@ function renderOffice(){
       <button class="office-cta">Send to team</button>
       <button class="office-cta-sec">Schedule</button>
       <button class="office-cta-sec" onclick="runAgentSkill('compose_newsletter')">Let agent write a draft</button>
+    </div>
+  </div>`;
+
+  // ═════════════════════════════════════════════════════════════════
+  // SECTION 4: Smartwatch Preview
+  // ═════════════════════════════════════════════════════════════════
+  html+=`<div class="watch-preview">
+    <div class="wp-header">
+      <div class="wp-title">Watch view (preview)</div>
+      <div class="wp-sub">What floor staff see on their wrist · hardware Q4 2026</div>
+    </div>
+    <div class="wp-frame">
+      <div class="wp-watch">
+        <div class="wp-screen">
+          <div class="wp-time">14:38</div>
+          <div class="wp-event-card">
+            <div class="wp-event-icon">●</div>
+            <div class="wp-event-text">
+              <div class="wp-event-title">VIP Julia arrived</div>
+              <div class="wp-event-meta">Table 4 · prefers Ribiera del Duero</div>
+            </div>
+          </div>
+          <div class="wp-haptic">━ ━ ━  long pulse</div>
+        </div>
+      </div>
+      <div class="wp-side">
+        <div class="wp-side-label">What this enables</div>
+        <ul class="wp-side-list">
+          <li><strong>Table-side dictation</strong> — waiters speak orders without leaving the guest</li>
+          <li><strong>Silent notifications</strong> — VIP arrival, food in pass, allergen alert</li>
+          <li><strong>Zero phones on the floor</strong> — protects guest experience</li>
+        </ul>
+        <div class="wp-haptic-key">
+          <div><span class="wp-pulse-mark">··</span> Food in the pass</div>
+          <div><span class="wp-pulse-mark">···</span> Allergen alert</div>
+          <div><span class="wp-pulse-mark">━</span> VIP arrived</div>
+        </div>
+      </div>
+    </div>
+    <div class="wp-foot">
+      Hardware roadmap: WatchOS app — Q4 2026. E-Ink waiter stations — Q1 2027. Bluetooth smart scales — Q2 2027.
+    </div>
+  </div>`;
+
+  // ═════════════════════════════════════════════════════════════════
+  // SECTION 5: Demo Controls (Multiplayer Presence)
+  // ═════════════════════════════════════════════════════════════════
+  html+=`<div class="demo-controls">
+    <div class="dc-label">Demo controls · Multiplayer presence</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;">
+      <button class="dc-btn" onclick="enableGhostColleague()">Show ghost colleague</button>
+      <button class="dc-btn" onclick="disableGhostColleague()">Hide ghost colleague</button>
+    </div>
+    <div style="font-size:11px;color:var(--text-tertiary);margin-top:8px;line-height:1.4;">
+      When 2+ team members view the same tab, they see each other's avatars in the top-right corner. Click <strong>Show ghost colleague</strong> to demo this pattern even when you're logged in alone.
     </div>
   </div>`;
 
@@ -4540,6 +5043,9 @@ window.addEventListener('DOMContentLoaded',()=>{
   setTimeout(initGoogleSignIn, 500); // after GSI script loads
 });
 
+// Stop presence on unload
+window.addEventListener('beforeunload', stopPresence);
+
 // ══ TASK ACTIONS ══
 function stKey(id){return `${R}_${AREA}_${ZONE}_${id}`;}
 function clKey(id){return `${R}_${AREA}_${ZONE}_cl_${id}`;}
@@ -4754,24 +5260,35 @@ let eventFormOpen = false;
 let selectedEventId = null;
 
 function renderEvents(){
-  let html = `<div class="sales-asst">
-    <h2>Sales Assistant</h2>
-    <div class="sub">Describe an event, get a proposal in your brand voice. Or pick a template to clone.</div>
-    <div class="sa-templates" id="saTemplates"></div>
-    <div class="sa-prompt">
-      <textarea id="saInput" placeholder="e.g. Masterclass Friday at Mondo, 12 people, lunch, pasta technique, €85/head with pairing, 2 sous chefs, Marina is the contact"></textarea>
-      <button id="saSubmit" onclick="saPropose()">Draft proposal</button>
-    </div>
-    <div class="sa-output empty" id="saOutput">Type a brief above or pick a template to begin.</div>
-  </div>
-  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;margin-top:24px;">
-    <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#9B8E7E;">${EVENTS.length} events</div>
-    <button onclick="toggleEventForm()" style="padding:8px 14px;border-radius:10px;border:none;background:#4E6332;color:white;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;">+ New event</button>
+  let html = `<div class="events-subtabs">
+    <button class="est-pill ${eventsView==='pipeline'?'active':''}" onclick="setEventsView('pipeline')">Pipeline</button>
+    <button class="est-pill ${eventsView==='assistant'?'active':''}" onclick="setEventsView('assistant')">Sales Assistant</button>
+    <button class="est-pill ${eventsView==='list'?'active':''}" onclick="setEventsView('list')">All events</button>
   </div>`;
 
-  if(eventFormOpen){ html += renderEventForm(); }
+  if(eventsView==='pipeline'){
+    html += renderEventsPipeline();
+  } else if(eventsView==='assistant'){
+    html += `<div class="sales-asst">
+      <h2>Sales Assistant</h2>
+      <div class="sub">Describe an event, get a proposal in your brand voice. Or pick a template to clone.</div>
+      <div class="sa-templates" id="saTemplates"></div>
+      <div class="sa-prompt">
+        <textarea id="saInput" placeholder="e.g. Masterclass Friday at Mondo, 12 people, lunch, pasta technique, €85/head with pairing, 2 sous chefs, Marina is the contact"></textarea>
+        <button id="saSubmit" onclick="saPropose()">Draft proposal</button>
+      </div>
+      <div class="sa-output empty" id="saOutput">Type a brief above or pick a template to begin.</div>
+    </div>`;
+    if(eventFormOpen){ html += renderEventForm(); }
+  } else if(eventsView==='list'){
+    html += `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;margin-top:8px;">
+      <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#9B8E7E;">${EVENTS.length} events</div>
+      <button onclick="toggleEventForm()" style="padding:8px 14px;border-radius:10px;border:none;background:#4E6332;color:white;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;">+ New event</button>
+    </div>`;
 
-  EVENTS.forEach(ev => {
+    if(eventFormOpen){ html += renderEventForm(); }
+
+    EVENTS.forEach(ev => {
     const totalCost = ev.menu.reduce((a,d) => a + d.costPer * d.qty, 0);
     const totalRevenue = ev.guests * ev.pricePerHead;
     const margin = Math.round((1 - totalCost/totalRevenue)*100);
@@ -4811,6 +5328,224 @@ function renderEvents(){
     </div>`;
   });
   return html;
+}
+
+function setEventsView(v) {
+  eventsView = v;
+  renderTab();
+}
+
+function renderEventsPipeline() {
+  const events = (typeof SALES_EVENTS !== 'undefined' && Array.isArray(SALES_EVENTS) ? SALES_EVENTS : []).filter(e =>
+    !e.restaurant_id || (R === 0 ? e.restaurant_id === 'taller' : e.restaurant_id === 'bistro-mondo')
+  );
+
+  const stages = ['inquiry', 'proposal_drafted', 'proposal_sent', 'confirmed', 'in_execution', 'closed'];
+  const stageLabels = {
+    inquiry: 'Inquiry',
+    proposal_drafted: 'Drafting',
+    proposal_sent: 'Sent',
+    confirmed: 'Confirmed',
+    in_execution: 'In execution',
+    closed: 'Closed'
+  };
+
+  const byStage = {};
+  for (const s of stages) byStage[s] = [];
+  for (const e of events) {
+    const s = stages.includes(e.status) ? e.status : 'inquiry';
+    byStage[s].push(e);
+  }
+
+  let html = `<div class="pipeline-board">`;
+  for (const s of stages) {
+    const items = byStage[s];
+    const total = items.reduce((acc, e) => {
+      const rev = (Number(e.guests_count || 0) * Number(e.price_per_guest || 0));
+      return acc + rev;
+    }, 0);
+
+    html += `<div class="pl-col" data-stage="${s}">
+      <div class="pl-col-head">
+        <div class="pl-col-label">${stageLabels[s]}</div>
+        <div class="pl-col-meta">${items.length} · €${total.toLocaleString()}</div>
+      </div>
+      <div class="pl-cards">`;
+
+    for (const e of items) {
+      const revenue = (Number(e.guests_count || 0) * Number(e.price_per_guest || 0));
+      html += `<div class="pl-card" onclick="openEventDetail('${e.id}')">
+        <div class="pl-card-title">${escapeHtml(e.title || '(untitled)')}</div>
+        <div class="pl-card-meta">${e.event_date || 'TBD'} · ${e.guests_count || 0} pax</div>
+        <div class="pl-card-rev">€${revenue.toLocaleString()}</div>
+      </div>`;
+    }
+
+    if (!items.length) {
+      html += `<div class="pl-empty">— empty —</div>`;
+    }
+
+    html += `</div></div>`;
+  }
+
+  html += `</div>
+  <div class="pl-summary">
+    Pipeline value: <strong>€${events.reduce((a, e) => a + (Number(e.guests_count || 0) * Number(e.price_per_guest || 0)), 0).toLocaleString()}</strong> across ${events.length} events
+  </div>`;
+
+  return html;
+}
+
+async function openEventDetail(eventId) {
+  let e = (typeof SALES_EVENTS !== 'undefined' && Array.isArray(SALES_EVENTS) ? SALES_EVENTS : []).find(x => x.id === eventId);
+  if (!e) {
+    showToast('Event not found');
+    return;
+  }
+
+  const revenue = (Number(e.guests_count || 0) * Number(e.price_per_guest || 0));
+  const stageLabels = {
+    inquiry: 'Inquiry',
+    proposal_drafted: 'Drafting proposal',
+    proposal_sent: 'Proposal sent',
+    confirmed: 'Confirmed',
+    in_execution: 'In execution',
+    closed: 'Closed'
+  };
+  const status = e.status || 'inquiry';
+
+  const html = `
+    <div class="modal-overlay" id="m-event-detail" onclick="if(event.target===this)closeModal('m-event-detail')">
+      <div class="modal-sheet event-sheet">
+        <div class="mh"></div>
+        <div class="ed-header">
+          <div class="ed-eyebrow">${stageLabels[status] || status}</div>
+          <div class="ed-title">${escapeHtml(e.title || 'Event')}</div>
+          <div class="ed-meta">${e.event_date || 'TBD'} · ${e.event_type || ''} · ${e.guests_count || 0} guests · €${revenue.toLocaleString()}</div>
+        </div>
+
+        <div class="ed-stats">
+          <div class="ed-stat"><div class="es-label">Guests</div><div class="es-val">${e.guests_count || 0}</div></div>
+          <div class="ed-stat"><div class="es-label">€ / pax</div><div class="es-val">€${e.price_per_guest || 0}</div></div>
+          <div class="ed-stat"><div class="es-label">Revenue</div><div class="es-val">€${revenue.toLocaleString()}</div></div>
+          <div class="ed-stat"><div class="es-label">Margin (est)</div><div class="es-val">€${Math.round(revenue * 0.65).toLocaleString()}</div></div>
+        </div>
+
+        <div class="ed-section">
+          <div class="ed-section-label">Skills — fire any agent</div>
+          <div class="ed-skills">
+            <button class="ed-skill" onclick="runEventSkill('${e.id}','price_event')">Price it</button>
+            <button class="ed-skill" onclick="runEventSkill('${e.id}','staff_event')">Staff it</button>
+            <button class="ed-skill" onclick="runEventSkill('${e.id}','provision_event')">Provision it</button>
+            <button class="ed-skill" onclick="runEventSkill('${e.id}','forecast_event')">Forecast it</button>
+            <button class="ed-skill" onclick="runEventSkill('${e.id}','compose_BEO')">Compose BEO</button>
+            <button class="ed-skill" onclick="runEventSkill('${e.id}','close_event')">Close out</button>
+          </div>
+        </div>
+
+        <div class="ed-section">
+          <div class="ed-section-label">Move stage</div>
+          <div class="ed-stages">
+            ${['inquiry','proposal_drafted','proposal_sent','confirmed','in_execution','closed'].map(st => `
+              <button class="ed-stage ${st===status?'active':''}" onclick="moveEventStage('${e.id}','${st}')">${stageLabels[st]}</button>
+            `).join('')}
+          </div>
+        </div>
+
+        ${e.theme || e.dietary_notes ? `
+        <div class="ed-section">
+          <div class="ed-section-label">Notes</div>
+          <div class="ed-prose">${escapeHtml(e.theme || e.dietary_notes || '')}</div>
+        </div>` : ''}
+
+        <div class="ed-section">
+          <div class="ed-section-label">Activity</div>
+          <div class="ed-activity" id="ed-activity-${e.id}">Loading recent agent calls…</div>
+        </div>
+
+        <div class="ed-foot">
+          <button class="cta-sec" onclick="closeModal('m-event-detail')">Close</button>
+          <button class="cta" onclick="exportEventBEO('${e.id}')">Export BEO PDF</button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  let el = document.getElementById('m-event-detail');
+  if (el) el.outerHTML = html;
+  else document.body.insertAdjacentHTML('beforeend', html);
+  setTimeout(() => {
+    const modal = document.getElementById('m-event-detail');
+    if (modal) modal.classList.add('show');
+  }, 10);
+
+  loadEventActivity(e.id);
+}
+
+async function runEventSkill(eventId, skillCode) {
+  showToast(`Firing ${skillCode}…`, { duration_ms: 2000 });
+  const e = (typeof SALES_EVENTS !== 'undefined' && Array.isArray(SALES_EVENTS) ? SALES_EVENTS : []).find(x => x.id === eventId);
+  try {
+    const resp = await fetch('/api/dispatch', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        skill: skillCode,
+        input: { event_id: eventId, event: e },
+        operator_entity_id: USER._operatorEntityId || 'd1ee19b6-5fb4-460c-8326-685dc86e47df'
+      })
+    });
+    const data = await resp.json();
+    if (data.ok) {
+      showToast(`${skillCode} → ${data.provider}/${data.model} (${data.latency_ms||'?'}ms)`, { kind: 'success', duration_ms: 4500 });
+      console.log(skillCode, data);
+    } else {
+      showToast(`Agent error: ${data.error || 'unknown'}`, { kind: 'error' });
+    }
+  } catch(err) {
+    showToast('Dispatch failed: ' + err.message, { kind: 'error' });
+  }
+}
+
+async function moveEventStage(eventId, newStage) {
+  const item = (typeof SALES_EVENTS !== 'undefined' && Array.isArray(SALES_EVENTS) ? SALES_EVENTS : []).find(x => x.id === eventId);
+  if (!item) return;
+  const prev = item.status;
+  item.status = newStage;
+  showToast(`Moved to ${newStage}`, { undo_fn: () => { item.status = prev; renderTab(); } });
+  renderTab();
+  try {
+    await fetch(`${SUPABASE_URL}/rest/v1/sales_events?id=eq.${eventId}`, {
+      method: 'PATCH',
+      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: newStage, updated_at: new Date().toISOString() })
+    });
+  } catch(e) {}
+}
+
+async function loadEventActivity(eventId) {
+  const root = document.getElementById('ed-activity-' + eventId);
+  if (!root) return;
+  try {
+    const rows = await sbFetch(`agent_call_log?order=created_at.desc&limit=10`);
+    const all = rows || [];
+    const html = all.length
+      ? all.slice(0, 5).map(r => `
+          <div class="ed-act-row">
+            <div class="ed-act-time">${new Date(r.created_at).toLocaleTimeString()}</div>
+            <div class="ed-act-text"><strong>${r.skill_code || r.agent_id}</strong> · ${r.provider || ''} · ${r.status || 'ok'}</div>
+          </div>
+        `).join('')
+      : '<div class="ed-act-empty">No agent activity yet.</div>';
+    root.innerHTML = html;
+  } catch(e) {
+    root.innerHTML = '<div class="ed-act-empty">Could not load activity.</div>';
+  }
+}
+
+function exportEventBEO(eventId) {
+  showToast('Composing BEO PDF…', { duration_ms: 2000 });
+  runEventSkill(eventId, 'compose_BEO');
 }
 
 function renderEventForm(){
@@ -7541,8 +8276,8 @@ function showInlineToastError(msg) {
 
 
 <div class="bottom-nav" id="bnav">
-  <button class="bnav-tab ntab active" onclick="switchTab('today',this)" data-tab="today"><span class="blb">Today</span></button>
-  <button class="bnav-tab ntab" onclick="switchTab('production',this)" data-tab="production"><span class="blb">Production</span></button>
+  <button class="bnav-tab ntab active" onclick="switchTab('today',this)" data-tab="today"><span class="blb">Today</span><span class="tab-badge" id="badge-today-mobile"></span></button>
+  <button class="bnav-tab ntab" onclick="switchTab('production',this)" data-tab="production"><span class="blb">Production</span><span class="tab-badge" id="badge-production-mobile"></span></button>
 </div>
 <!-- AI round button — right side, thumb-friendly -->
 <button class="ai-fab-right" onclick="openAI()" ontouchstart="startHold(event)" ontouchend="endHold(event)" ontouchcancel="endHold(event)">✦</button>
@@ -7550,11 +8285,11 @@ function showInlineToastError(msg) {
 <div class="more-menu" id="more-menu">
   <div class="more-handle"></div>
   <div id="more-grid-inner" class="more-grid">
-    <button class="more-btn" onclick="switchTab('menu',null);closeMore()"><span class="more-lbl">Menu</span></button>
-    <button class="more-btn" onclick="switchTab('cleaning',null);closeMore()"><span class="more-lbl">Cleaning</span></button>
-    <button class="more-btn" onclick="switchTab('events',null);closeMore()"><span class="more-lbl">Events</span></button>
-    <button class="more-btn" onclick="switchTab('schedule',null);closeMore()"><span class="more-lbl">Schedule</span></button>
-    <button class="more-btn" onclick="switchTab('skills',null);closeMore()"><span class="more-lbl">Skills</span></button>
+    <button class="more-btn" onclick="switchTab('menu',null);closeMore()"><span class="more-lbl">Menu</span><span class="tab-badge" id="badge-menu-mobile"></span></button>
+    <button class="more-btn" onclick="switchTab('cleaning',null);closeMore()"><span class="more-lbl">Cleaning</span><span class="tab-badge" id="badge-cleaning-mobile"></span></button>
+    <button class="more-btn" onclick="switchTab('events',null);closeMore()"><span class="more-lbl">Events</span><span class="tab-badge" id="badge-events-mobile"></span></button>
+    <button class="more-btn" onclick="switchTab('schedule',null);closeMore()"><span class="more-lbl">Schedule</span><span class="tab-badge" id="badge-schedule-mobile"></span></button>
+    <button class="more-btn" onclick="switchTab('skills',null);closeMore()"><span class="more-lbl">Skills</span><span class="tab-badge" id="badge-skills-mobile"></span></button>
     <button class="more-btn mgr-only" onclick="switchTab('team',null);closeMore()" style="display:none"><span class="more-lbl">Team</span></button>
     <button class="more-btn mgr-only" onclick="switchTab('command',null);closeMore()" style="display:none"><span class="more-lbl">Command</span></button>
     <button class="more-btn mgr-only" onclick="switchTab('integrations',null);closeMore()" style="display:none"><span class="more-lbl">Integrations</span></button>
@@ -8008,6 +8743,86 @@ setTimeout(() => {
     input.addEventListener('input', (e) => renderCmdKResults(e.target.value));
   }
 }, 1000);
+
+// Welcome Modal (First-Run Onboarding)
+function showWelcomeIfFirstRun() {
+  if (localStorage.getItem('fs_welcome_seen_v1')) return;
+  if (typeof USER === 'undefined' || !USER || !USER.name) {
+    setTimeout(showWelcomeIfFirstRun, 500);
+    return;
+  }
+  const role = (USER.role || 'worker').toLowerCase();
+  document.getElementById('welcome-greeting').textContent = `Welcome, ${USER.name.split(' ')[0]}.`;
+
+  let cards;
+  if (role === 'owner') {
+    cards = [
+      { num: '1', title: 'Tour the Office tab', sub: 'See all 14 deployed agents — fire any one to watch multi-provider routing.', cta: 'Open Office', fn: 'switchTab("office",null);closeWelcome(true);' },
+      { num: '2', title: 'Open the Sales Assistant', sub: 'Drop a brief, hit Draft proposal — brand-voiced response in 8 seconds.', cta: 'Open Events', fn: 'switchTab("events",null);closeWelcome(true);' },
+      { num: '3', title: 'Hit ⌘K from anywhere', sub: 'Search recipes, wines, suppliers, events. Skip the menus.', cta: 'Try it', fn: 'closeWelcome(true);setTimeout(()=>{if(typeof openCmdK==="function")openCmdK();},200);' }
+    ];
+  } else if (role === 'manager') {
+    cards = [
+      { num: '1', title: 'Invite your team', sub: 'Add members — they sign in with Google or magic link.', cta: 'Open Team', fn: 'switchTab("team",null);closeWelcome(true);' },
+      { num: '2', title: 'Open Today', sub: 'Your dashboard surfaces what needs attention right now.', cta: 'Open Today', fn: 'switchTab("today",null);closeWelcome(true);' },
+      { num: '3', title: 'Approve clock variances', sub: 'Schedule → Pending Approvals.', cta: 'Open Schedule', fn: 'switchTab("schedule",null);closeWelcome(true);' }
+    ];
+  } else if (role === 'chef' || role === 'maitre' || role === 'maître') {
+    cards = [
+      { num: '1', title: 'Clock in', sub: 'GPS-verified, Spanish hash-chain compliant.', cta: 'Clock in', fn: 'closeWelcome(true);if(typeof clockToggle==="function")clockToggle();' },
+      { num: '2', title: 'See today\'s prep', sub: 'Production tab shows your station\'s MEP for today.', cta: 'Open Production', fn: 'switchTab("mep",null);closeWelcome(true);' },
+      { num: '3', title: 'Sign off cleaning', sub: 'Cleaning tab shows your HACCP tasks for today.', cta: 'Open Cleaning', fn: 'switchTab("cleaning",null);closeWelcome(true);' }
+    ];
+  } else {
+    cards = [
+      { num: '1', title: 'Install the app', sub: 'iPhone: Share → Add to Home Screen. Android: tap install prompt.', cta: 'Got it', fn: 'closeWelcome(true);' },
+      { num: '2', title: 'Clock in', sub: 'Tap the clock-in pill at the top to start your shift.', cta: 'Clock in', fn: 'closeWelcome(true);if(typeof clockToggle==="function")clockToggle();' },
+      { num: '3', title: 'See your tasks', sub: 'Today tab shows what your station needs to do this shift.', cta: 'Open Today', fn: 'switchTab("today",null);closeWelcome(true);' }
+    ];
+  }
+
+  document.getElementById('welcome-cards').innerHTML = cards.map(c => `
+    <div class="welcome-card">
+      <div class="wc-num">${c.num}</div>
+      <div class="wc-body">
+        <div class="wc-title">${c.title}</div>
+        <div class="wc-sub">${c.sub}</div>
+        <button class="wc-cta" onclick='${c.fn}'>${c.cta}</button>
+      </div>
+    </div>
+  `).join('');
+
+  document.getElementById('m-welcome').style.display = 'flex';
+  setTimeout(() => document.getElementById('m-welcome').classList.add('show'), 10);
+}
+
+function closeWelcome(markSeen) {
+  if (markSeen) localStorage.setItem('fs_welcome_seen_v1', new Date().toISOString());
+  const el = document.getElementById('m-welcome');
+  if (el) { el.classList.remove('show'); el.style.display = 'none'; }
+}
+
+// Trigger welcome on boot (with timeout backstop for USER object initialization)
+setTimeout(() => {
+  if (typeof USER !== 'undefined' && USER && USER.name) showWelcomeIfFirstRun();
+}, 2500);
 </script>
+
+<!-- Welcome Modal (First-Run Onboarding) -->
+<div class="modal-overlay welcome-overlay" id="m-welcome" style="display:none">
+  <div class="modal-sheet welcome-sheet">
+    <div class="mh"></div>
+    <div class="welcome-hero">
+      <div class="welcome-eyebrow">Welcome to Food Studio OS</div>
+      <div class="welcome-greeting" id="welcome-greeting">Hello.</div>
+      <div class="welcome-tagline">The operating system for hospitality.</div>
+    </div>
+    <div class="welcome-cards" id="welcome-cards"></div>
+    <div class="welcome-actions">
+      <button class="cta primary" onclick="closeWelcome(true)">Get started</button>
+      <button class="cta-link" onclick="closeWelcome(false)">Skip for now</button>
+    </div>
+  </div>
+</div>
 
 </body>
