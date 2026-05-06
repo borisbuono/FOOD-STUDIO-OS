@@ -919,6 +919,28 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
 .mep-reorder-btn:hover { opacity: 1; }
 .mep-reorder-btn:active { opacity: 0.7; }
 
+/* [UNIQUE_ANCHOR: smart_mep_css] Smart MEP Regeneration */
+.smart-mep { padding: 16px; background: rgba(184,150,58,0.06); border-left: 3px solid var(--ember, #B86A42); border-radius: 8px; margin-bottom: 18px; }
+.sm-header { margin-bottom: 12px; }
+.sm-title { font-family: var(--font-serif, Fraunces, Georgia, serif); font-size: 16px; font-weight: 600; }
+.sm-sub { font-size: 12px; opacity: 0.7; margin-top: 2px; }
+.sm-empty { font-style: italic; opacity: 0.6; padding: 12px 0; font-size: 13px; }
+.sm-event-pill { display: inline-block; padding: 5px 10px; background: var(--bg, white); border: 1px solid var(--border, rgba(0,0,0,0.08)); border-radius: 12px; font-size: 12px; margin: 4px 4px 0 0; }
+.sm-items-grouped { margin-top: 14px; }
+.sm-station { margin-bottom: 12px; }
+.sm-station-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.07em; opacity: 0.6; margin-bottom: 6px; font-weight: 600; }
+.sm-station-items { display: flex; flex-direction: column; gap: 5px; }
+.sm-item { display: flex; align-items: center; gap: 10px; padding: 8px 10px; background: var(--bg, white); border-radius: 6px; border: 1px solid var(--border, rgba(0,0,0,0.06)); }
+.sm-item-priority { font-size: 9px; padding: 3px 6px; border-radius: 4px; font-weight: 700; letter-spacing: 0.04em; flex-shrink: 0; min-width: 50px; text-align: center; }
+.sm-priority-high { background: var(--ruby, #A03838); color: white; }
+.sm-priority-medium { background: var(--gold, #B8963A); color: white; }
+.sm-priority-low { background: var(--bg-card, rgba(0,0,0,0.05)); color: var(--text-secondary, #666); }
+.sm-item-info { flex: 1; min-width: 0; }
+.sm-item-name { font-size: 13px; font-weight: 500; }
+.sm-item-meta { font-size: 11px; opacity: 0.6; margin-top: 2px; font-family: var(--font-mono, ui-monospace, monospace); }
+.sm-item-add { padding: 5px 10px; border-radius: 5px; border: 1px solid var(--ember, #B86A42); background: transparent; color: var(--ember, #B86A42); font-size: 11px; cursor: pointer; flex-shrink: 0; font-family: 'Outfit', sans-serif; font-weight: 600; transition: all 0.15s; }
+.sm-item-add:hover { background: var(--ember, #B86A42); color: white; }
+
 /* ─── CLEANING ─── */
 .clean-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
 .cl-tile {
@@ -1172,6 +1194,30 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
 .mh { width: 32px; height: 4px; background: var(--glass-border); border-radius: 2px; margin: 0 auto 18px; }
 .mt { font-size: 17px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
 .ms { font-size: 13px; color: var(--text-tertiary); margin-bottom: 18px; }
+/* ──── RECIPE SCALING MODAL ──── ANCHOR: scale_recipe_css */
+.scale-sheet { max-width: 640px; max-height: 88vh; overflow-y: auto; }
+.sc-eyebrow { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.55; margin-bottom: 4px; }
+.sc-meta { font-size: 13px; opacity: 0.7; margin-bottom: 16px; font-family: 'DM Mono', ui-monospace, monospace; }
+.sc-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 18px; }
+.sc-stat { padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; text-align: center; }
+.sc-stat.sc-stat-warn { background: var(--ruby); color: white; border-color: var(--ruby); }
+.sc-stat-label { font-size: 10px; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.06em; }
+.sc-stat-val { font-size: 20px; font-weight: 600; font-family: 'Fraunces', Georgia, serif; margin-top: 4px; }
+.sc-warnings { background: rgba(160,56,56,0.08); border-left: 3px solid var(--ruby); padding: 12px 14px; border-radius: 6px; margin-bottom: 16px; font-size: 13px; }
+.sc-warn-label { font-weight: 600; color: var(--ruby); margin-bottom: 6px; }
+.sc-warn { font-size: 12px; line-height: 1.5; opacity: 0.85; }
+.sc-section-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.6; margin: 18px 0 8px; }
+.sc-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.sc-table th { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; opacity: 0.55; padding: 6px 8px; text-align: left; border-bottom: 1px solid var(--border); }
+.sc-table td { padding: 7px 8px; border-bottom: 1px solid rgba(0,0,0,0.04); }
+.sc-table tr.sc-row-warn td { background: rgba(160,56,56,0.06); }
+.sc-num { font-family: 'DM Mono', ui-monospace, monospace; }
+.sc-technique { margin: 18px 0; padding: 12px 14px; background: rgba(184,150,58,0.06); border-left: 3px solid var(--gold); border-radius: 6px; }
+.sc-tech-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.6; margin-bottom: 4px; }
+.sc-tech-text { font-size: 14px; line-height: 1.5; font-style: italic; }
+.sc-foot { display: flex; gap: 8px; justify-content: flex-end; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); flex-wrap: wrap; }
+.cta-sec { padding: 10px 16px; border-radius: 8px; border: 1px solid var(--border); background: var(--glass); color: var(--text-primary); font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.18s; }
+.cta-sec:active { transform: scale(0.97); }
 .mi {
   width: 100%; padding: 13px 15px; border-radius: 12px;
   border: 1px solid var(--glass-border); background: var(--glass);
@@ -1519,6 +1565,25 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
 .ost-pill.active { background: #4E6332; color: white; border-color: #4E6332; }
 .iv-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; gap: 10px; }
 .iv-empty, .rv-empty { padding: 32px 18px; text-align: center; opacity: 0.65; font-style: italic; font-size: 14px; color: var(--text-tertiary); }
+/* [UNIQUE_ANCHOR: receiving_css] Receiving delivery form — Lindy-pattern autonomous trigger demo */
+.receiving-view { padding: 0 4px; }
+.rv-header { margin-bottom: 16px; }
+.rv-header h3 { margin: 0 0 4px 0; font-size: 18px; font-weight: 600; color: var(--text-primary); }
+.rv-sub { font-size: 12px; opacity: 0.65; margin-top: 4px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.rv-lindy { padding: 2px 8px; background: var(--gold, #A8893A); color: white; border-radius: 10px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+.rv-form { display: flex; flex-direction: column; gap: 10px; padding: 14px; border: 1px solid var(--border, rgba(0,0,0,0.08)); border-radius: 10px; background: var(--bg-card, transparent); }
+.rv-form .mi { padding: 9px 12px; border: 1px solid var(--border, rgba(0,0,0,0.1)); border-radius: 6px; background: var(--bg, transparent); color: inherit; font-family: inherit; font-size: 13px; box-sizing: border-box; }
+.rv-lines { margin: 8px 0; }
+.rv-lines-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.07em; opacity: 0.6; margin-bottom: 8px; }
+.rv-line { display: grid; grid-template-columns: 2fr 1fr 1fr 0.6fr 30px; gap: 6px; margin-bottom: 6px; align-items: center; }
+@media (max-width: 600px) { .rv-line { grid-template-columns: 1fr 1fr; } .rv-line .rv-line-rm { grid-column: 2; } }
+.rv-line .rv-item-name { padding: 7px 10px; font-size: 13px; }
+.rv-line .rv-qty { padding: 7px 10px; font-size: 13px; text-align: right; font-family: var(--font-mono, ui-monospace, monospace); }
+.rv-line .rv-unit { padding: 7px 10px; font-size: 13px; }
+.rv-line-rm { width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--border, rgba(0,0,0,0.1)); background: transparent; cursor: pointer; opacity: 0.5; font-size: 18px; font-weight: 300; }
+.rv-line-rm:hover { opacity: 1; background: var(--ruby, #A03838); color: white; border-color: var(--ruby, #A03838); }
+.rv-actions { display: flex; gap: 8px; margin-top: 10px; }
+.rv-hint { margin-top: 12px; padding: 10px 12px; background: var(--bg-card, rgba(168,137,58,0.06)); border-left: 3px solid var(--gold, #A8893A); border-radius: 6px; font-size: 12px; line-height: 1.5; opacity: 0.85; }
 
 /* ── EVENTS MODULE ── */
 .event-card { background:#FFFFFF;border:1px solid rgba(0,0,0,0.07);border-radius:16px;margin-bottom:10px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.04); }
@@ -3049,6 +3114,51 @@ const db = (typeof supabase !== 'undefined')
   : null;
 
 // ════════════════════════════════════════════════════════════════════
+// ─── BROWSER PUSH NOTIFICATIONS [UNIQUE_ANCHOR: fire_notification_fn] ──
+// ════════════════════════════════════════════════════════════════════
+function fireNotification(title, body, opts = {}) {
+  // Permission gate
+  if (!('Notification' in window)) return;
+  if (Notification.permission !== 'granted') return;
+  if (localStorage.getItem('fs_notifs_enabled') !== '1') return;
+
+  try {
+    const notif = new Notification(title, {
+      body: body,
+      icon: opts.icon || '/assets/icon-192.png',
+      badge: '/assets/icon-192.png',
+      tag: opts.tag || ('food-studio-' + Date.now()),
+      requireInteraction: opts.urgent || false,
+      data: opts.data || {},
+      vibrate: opts.urgent ? [200, 100, 200] : [100]
+    });
+    notif.onclick = () => {
+      window.focus();
+      if (opts.tab) {
+        try { switchTab(opts.tab, null); } catch(e) {}
+      }
+      notif.close();
+    };
+    setTimeout(() => { try { notif.close(); } catch(e) {} }, opts.urgent ? 30000 : 8000);
+  } catch(e) { console.warn('notification:', e); }
+}
+
+// ════════════════════════════════════════════════════════════════════
+// ─── BROADCAST CHANNEL LISTENER [UNIQUE_ANCHOR: broadcast_inbox_listener] ──
+// ════════════════════════════════════════════════════════════════════
+try {
+  const _bcInbox = new BroadcastChannel('fs_inbox');
+  _bcInbox.onmessage = (e) => {
+    const m = e.data || {};
+    if (m.type === 'new_inquiry') {
+      fireNotification(m.title || 'New inquiry', m.body || '', { tag: 'inquiry-' + Date.now(), urgent: true, tab: 'inbox', data: m });
+      if (typeof updateAllBadges === 'function') updateAllBadges();
+      if (typeof loadInbox === 'function') loadInbox();
+    }
+  };
+} catch(e) { console.warn('BroadcastChannel setup:', e); }
+
+// ════════════════════════════════════════════════════════════════════
 // ─── PUBLIC SALES WIZARD (guest-facing, no auth) ───────────────────
 // ════════════════════════════════════════════════════════════════════
 
@@ -3247,6 +3357,18 @@ async function submitWizard() {
         priority: 'high'
       })
     });
+
+    // Fire notification + broadcast to other open tabs [UNIQUE_ANCHOR: wizard_inquiry_notif]
+    try {
+      const bc = new BroadcastChannel('fs_inbox');
+      bc.postMessage({
+        type: 'new_inquiry',
+        title: 'New inquiry: ' + (_wizardData.name || 'guest'),
+        body: `${_wizardData.occasion || 'Event'} · ${_wizardData.party_size || '?'} pax · ${_wizardData.date || 'TBD'}`,
+        contact: _wizardData.email
+      });
+      bc.close();
+    } catch(e) {}
   } catch(e) { console.warn('inbox insert:', e); }
 
   _wizardStep = 99;
@@ -3433,6 +3555,8 @@ let helpHistory=[];
 let voiceRec=false,recognizer=null,voiceText='';
 let ctxPending={R:0,AREA:'boh',ZONE:'Hot Station'};
 let todayPhase=null,activeWorkflows=[];
+// ── RECEIVING: Autonomous Lindy-pattern trigger ──
+let _newDelivery={supplier:'',invoiceRef:'',expected:[],received:[]};
 let SUPABASE_BRIEFINGS=[];let sbBriefingsLoaded=false;
 let SUPABASE_URGENT_TASKS=[];let sbUrgentLoaded=false;
 let HACCP_PLANS=[];let haccpLoaded=false;
@@ -3949,6 +4073,40 @@ function switchTab(tab,el){
   refreshPresenceForTab();
 }
 
+// ════════════════════════════════════════════════════════════════════
+// ─── SUPABASE REALTIME INBOX [UNIQUE_ANCHOR: realtime_inbox_subscription] ──
+// ════════════════════════════════════════════════════════════════════
+function startInboxRealtime() {
+  if (!db || !USER) { setTimeout(startInboxRealtime, 1000); return; }
+  if (window._inboxRealtimeOn) return;
+  window._inboxRealtimeOn = true;
+
+  try {
+    const ch = db.channel('inbox_items_realtime')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'inbox_items' }, (payload) => {
+        const newItem = payload.new;
+        if (!newItem) return;
+        // Only fire for items in the user's operator + restaurant
+        if (USER._operatorEntityId && newItem.operator_entity_id !== USER._operatorEntityId) return;
+        // Add to local INBOX_ITEMS array
+        if (typeof INBOX_ITEMS !== 'undefined' && Array.isArray(INBOX_ITEMS)) {
+          if (!INBOX_ITEMS.find(i => i.id === newItem.id)) INBOX_ITEMS.unshift(newItem);
+        }
+        // Notification
+        const isUrgent = newItem.priority === 'high';
+        fireNotification(
+          (newItem.sender_name || 'Inbox') + ' · ' + (newItem.subject || 'New message'),
+          (newItem.body || '').slice(0, 140),
+          { tag: 'inbox-' + newItem.id, urgent: isUrgent, tab: 'inbox', data: { id: newItem.id } }
+        );
+        if (typeof updateAllBadges === 'function') updateAllBadges();
+        if (typeof renderTab === 'function' && currentTab === 'inbox') renderTab();
+      })
+      .subscribe();
+  } catch(e) { console.warn('Realtime subscription failed:', e); }
+}
+setTimeout(startInboxRealtime, 2500);
+
 function renderTab(){
   const c=document.getElementById('tab-content');
   if(currentTab==='team'&&!teamLoaded){loadTeamMembers();}
@@ -4328,6 +4486,7 @@ function renderSettings() {
           </div>
           <button class="ss-toggle ${notifsEnabled?'on':''}" onclick="toggleNotifs()"><span class="ss-toggle-dot"></span></button>
         </div>
+        <button class="cta-sec" onclick="fireNotification('Food Studio OS test', 'If you see this, push notifications are working.')" style="margin-top:8px;width:100%;">Send test notification</button>
         <div class="ss-toggle-row">
           <div class="ss-toggle-label">
             <div class="ss-toggle-name">Morning digest in inbox</div>
@@ -4827,10 +4986,143 @@ function shareMenu(){
   }
 }
 
+// [UNIQUE_ANCHOR: smart_mep_state_and_handlers]
+let _smartMEPItems = [];
+let _smartMEPGeneratedAt = null;
+
+async function regenerateMEPFromEvents() {
+  showToast('Loading today\'s events…', { duration_ms: 1500 });
+  try {
+    const today = new Date().toISOString().slice(0,10);
+    const restSlug = R === 0 ? 'taller' : 'bistro-mondo';
+    const path = `sales_events?event_date=eq.${today}&status=in.(confirmed,in_execution)&order=created_at.desc`;
+    const events = await sbFetch(path);
+
+    if (!events || events.length === 0) {
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      const tomStr = tomorrow.toISOString().slice(0,10);
+      const path2 = `sales_events?event_date=in.(${today},${tomStr})&status=in.(confirmed,in_execution,proposal_sent)&order=created_at.desc`;
+      const events2 = await sbFetch(path2);
+      if (!events2 || events2.length === 0) {
+        document.getElementById('sm-events-summary').innerHTML = '<div class="sm-empty">No events today or tomorrow. MEP based on standard daily volume.</div>';
+        showToast('No events found — MEP not regenerated', { duration_ms: 3000 });
+        return;
+      }
+      generateMEPFromEvents(events2);
+      return;
+    }
+    generateMEPFromEvents(events);
+  } catch(e) {
+    showToast('Regenerate failed: ' + e.message, { kind: 'error' });
+  }
+}
+
+function generateMEPFromEvents(events) {
+  const items = [];
+  let totalGuests = 0;
+  for (const e of events) {
+    const guests = Number(e.guests_count || 0);
+    totalGuests += guests;
+    items.push(
+      { event_id: e.id, event_title: e.title, station: 'Hot Station', name: 'Mise — hot appetizers', qty: guests * 1.2, unit: 'portions', priority: 'high', est_minutes: Math.ceil(guests * 0.8) },
+      { event_id: e.id, event_title: e.title, station: 'Hot Station', name: 'Bisque/soup base', qty: guests * 0.25, unit: 'L', priority: 'high', est_minutes: 25 + Math.ceil(guests * 0.3) },
+      { event_id: e.id, event_title: e.title, station: 'Hot Station', name: 'Mains protein prep', qty: guests * 0.18, unit: 'kg', priority: 'medium', est_minutes: 20 + Math.ceil(guests * 0.4) },
+      { event_id: e.id, event_title: e.title, station: 'Cold Station', name: 'Cold appetizers', qty: guests * 0.15, unit: 'kg', priority: 'high', est_minutes: Math.ceil(guests * 0.6) },
+      { event_id: e.id, event_title: e.title, station: 'Pizzeria', name: 'Dessert plating prep', qty: guests, unit: 'portions', priority: 'medium', est_minutes: Math.ceil(guests * 0.6) }
+    );
+  }
+
+  const byKey = {};
+  for (const it of items) {
+    const key = it.station + '|' + it.name;
+    if (!byKey[key]) {
+      byKey[key] = { ...it, qty: 0, est_minutes: 0, sources: [] };
+    }
+    byKey[key].qty += it.qty;
+    byKey[key].est_minutes += it.est_minutes;
+    byKey[key].sources.push(it.event_title);
+  }
+  _smartMEPItems = Object.values(byKey).map(x => ({ ...x, qty: Math.round(x.qty * 10) / 10 }));
+  _smartMEPGeneratedAt = new Date();
+
+  const status = document.getElementById('sm-status');
+  if (status) status.textContent = `Generated ${_smartMEPItems.length} items from ${events.length} event${events.length===1?'':'s'} (${totalGuests} guests). Refreshed ${_smartMEPGeneratedAt.toLocaleTimeString()}.`;
+
+  const summary = document.getElementById('sm-events-summary');
+  if (summary) {
+    summary.innerHTML = events.map(e => `
+      <div class="sm-event-pill">
+        <strong>${escapeHtml(e.title || 'Event')}</strong> · ${e.guests_count || 0} pax · ${e.event_date || ''}
+      </div>
+    `).join('') + `<div class="sm-items-grouped">${renderSmartMEPItems()}</div>`;
+  }
+
+  showToast(`✓ Generated ${_smartMEPItems.length} prep items from ${events.length} event${events.length===1?'':'s'}`, { kind: 'success', duration_ms: 4000 });
+}
+
+function renderSmartMEPItems() {
+  if (!_smartMEPItems.length) return '';
+  const byStation = {};
+  for (const it of _smartMEPItems) {
+    if (!byStation[it.station]) byStation[it.station] = [];
+    byStation[it.station].push(it);
+  }
+  let html = '<div class="sm-station-list">';
+  for (const station of Object.keys(byStation).sort()) {
+    html += `<div class="sm-station">
+      <div class="sm-station-label">${station}</div>
+      <div class="sm-station-items">`;
+    for (const it of byStation[station].sort((a,b) => ({high:0,medium:1,low:2}[a.priority]||3) - ({high:0,medium:1,low:2}[b.priority]||3))) {
+      const pri = it.priority || 'medium';
+      html += `<div class="sm-item">
+        <div class="sm-item-priority sm-priority-${pri}">${pri.toUpperCase()}</div>
+        <div class="sm-item-info">
+          <div class="sm-item-name">${escapeHtml(it.name)}</div>
+          <div class="sm-item-meta">${it.qty} ${it.unit} · ~${it.est_minutes} min · for: ${escapeHtml((it.sources||[]).join(' + ').slice(0, 60))}</div>
+        </div>
+        <button class="sm-item-add" onclick="addSmartMEPToBoard(${_smartMEPItems.indexOf(it)})">+ Add to MEP</button>
+      </div>`;
+    }
+    html += `</div></div>`;
+  }
+  html += '</div>';
+  return html;
+}
+
+function addSmartMEPToBoard(idx) {
+  const item = _smartMEPItems[idx];
+  if (!item) return;
+  if (typeof MEP !== 'undefined' && MEP[R]) {
+    const zone = (item.station || 'Hot Station');
+    if (!MEP[R][zone]) MEP[R][zone] = [];
+    MEP[R][zone].push({
+      id: 'sm_' + Date.now() + '_' + idx,
+      dish: item.name + ` (${item.qty} ${item.unit})`,
+      components: [],
+      priority: item.priority,
+      est_minutes: item.est_minutes,
+      from_smart_mep: true
+    });
+    showToast(`Added "${item.name}" to ${zone}`);
+    if (typeof renderTab === 'function') renderTab();
+  } else {
+    showToast('MEP global not loaded yet — try Production tab first');
+  }
+}
+
 // ══ MEP ══
 function renderMEP(){
   const covers=parseInt(document.getElementById('cov-hidden')?.value||40);
-  let html=`<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;background:var(--ink-mid);border:1px solid var(--border);border-radius:13px;padding:12px 14px;">
+  let html = `<div class="smart-mep">
+    <div class="sm-header">
+      <div class="sm-title">Smart MEP</div>
+      <div class="sm-sub" id="sm-status">Auto-generated from today's events + reservations.</div>
+    </div>
+    <button class="cta" onclick="regenerateMEPFromEvents()">⟳ Regenerate from today's events</button>
+    <div class="sm-events" id="sm-events-summary"></div>
+  </div>`;
+  html+=`<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;background:var(--ink-mid);border:1px solid var(--border);border-radius:13px;padding:12px 14px;">
     <span style="font-size:12px;color:var(--text-tertiary);font-weight:500;flex-shrink:0;">Covers today</span>
     <input type="number" id="mep-cov" value="${covers}" min="1" max="300" style="flex:1;border:none;background:transparent;font-family:'DM Mono',monospace;font-size:17px;color:var(--fern);font-weight:600;text-align:center;outline:none;max-width:70px;" oninput="document.getElementById('cov-hidden')&&(document.getElementById('cov-hidden').value=this.value)">
     <button onclick="document.getElementById('cov-hidden').value=document.getElementById('mep-cov').value;renderTab()" style="padding:9px 14px;border-radius:9px;border:none;background:var(--ember);color:white;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;">Recalc</button>
@@ -5212,6 +5504,12 @@ async function checkCostSpikes(inventoryItemId, oldCost, newCost) {
       })
     });
     showToast(`⚠ Cost spike: ${item.name} ${direction} ${Math.abs(pctChange).toFixed(0)}% — flagged in inbox`, { duration_ms: 6000, kind: pctChange > 25 ? 'error' : 'success' });
+    // Fire browser notification [UNIQUE_ANCHOR: cost_spike_notif]
+    fireNotification(
+      '⚠ Cost spike: ' + item.name,
+      `${direction} ${Math.abs(pctChange).toFixed(0)}% (€${oldCost.toFixed(2)} → €${newCost.toFixed(2)}). ${affectedNames.length} recipe${affectedNames.length===1?'':'s'} affected.`,
+      { tag: 'cost-spike-' + item.id, urgent: pctChange > 25, tab: 'ordering', data: { kind: 'cost_spike', item_id: item.id } }
+    );
     if (typeof updateAllBadges === 'function') updateAllBadges();
   } catch(e) { console.warn('checkCostSpikes:', e); }
 }
@@ -5223,13 +5521,165 @@ function renderReceiving(){
     <button class="ost-pill" data-orders-view="inventory" onclick="setOrdersView('inventory')">Inventory</button>
     <button class="ost-pill active" data-orders-view="receiving" onclick="setOrdersView('receiving')">Receiving</button>
   </div>
-  <div style="margin-bottom:16px;">
-    <h3 style="margin:0 0 8px 0;font-size:18px;font-weight:600;color:var(--text-primary);">Receiving Log</h3>
-    <p style="margin:0;font-size:13px;color:var(--text-tertiary);">Track incoming orders and delivery notes.</p>
+  <div class="receiving-view">
+    <div class="rv-header">
+      <h3>Receiving</h3>
+      <div class="rv-sub">Log incoming deliveries · CFO Gem autonomously flags discrepancies <span class="rv-lindy">Lindy-pattern</span></div>
+    </div>
+    <div class="rv-form">
+      <input id="rv-supplier" class="mi" type="text" placeholder="Supplier name (e.g. Trufa Périgord SL)" value="${escapeHtml(_newDelivery.supplier)}">
+      <input id="rv-invoice-ref" class="mi" type="text" placeholder="Delivery note / invoice ref">
+      <div class="rv-lines">
+        <div class="rv-lines-label">Items expected vs received</div>
+        ${_newDelivery.expected.map((line, i) => \`
+          <div class="rv-line">
+            <input class="mi rv-item-name" placeholder="Item (e.g. Trufa fresca)" value="\${escapeHtml(line.name||'')}" oninput="updateDeliveryLine(\${i}, 'name', this.value)">
+            <input class="mi rv-qty" type="number" step="0.01" placeholder="Expected" value="\${line.expected_qty||''}" oninput="updateDeliveryLine(\${i}, 'expected_qty', this.value)">
+            <input class="mi rv-qty" type="number" step="0.01" placeholder="Received" value="\${line.received_qty||''}" oninput="updateDeliveryLine(\${i}, 'received_qty', this.value)">
+            <input class="mi rv-unit" placeholder="g/kg/L" value="\${escapeHtml(line.unit||'')}" oninput="updateDeliveryLine(\${i}, 'unit', this.value)">
+            <button class="rv-line-rm" onclick="removeDeliveryLine(\${i})">×</button>
+          </div>
+        \`).join('')}
+        <button class="cta-sec" onclick="addDeliveryLine()">+ Add line</button>
+      </div>
+      <div class="rv-actions">
+        <button class="cta" onclick="logDelivery()">Mark delivery received</button>
+        <button class="cta-sec" onclick="resetDelivery()">Clear</button>
+      </div>
+      <div class="rv-hint">
+        <strong>Demo:</strong> add a line "Trufa fresca", expected 200g, received 180g → CFO Gem autonomously detects the 10% shortage → posts a high-priority inbox card → fires a notification. No prompt needed.
+      </div>
+    </div>
   </div>
-  <div class="rv-empty">No incoming orders to receive. Orders will appear here when they are marked as sent.</div>
   `;
   return html;
+}
+
+// ── RECEIVING: Helper functions [UNIQUE_ANCHOR: receiving_helpers] ──
+function addDeliveryLine() {
+  _newDelivery.expected.push({ name: '', expected_qty: '', received_qty: '', unit: '' });
+  if (typeof renderTab === 'function') renderTab();
+}
+
+function updateDeliveryLine(idx, field, value) {
+  if (!_newDelivery.expected[idx]) _newDelivery.expected[idx] = {};
+  _newDelivery.expected[idx][field] = value;
+  // Don't re-render — keep input focus
+}
+
+function removeDeliveryLine(idx) {
+  _newDelivery.expected.splice(idx, 1);
+  if (typeof renderTab === 'function') renderTab();
+}
+
+function resetDelivery() {
+  _newDelivery = { supplier: '', invoiceRef: '', expected: [], received: [] };
+  if (typeof renderTab === 'function') renderTab();
+}
+
+async function logDelivery() {
+  const supplierEl = document.getElementById('rv-supplier');
+  const invRefEl = document.getElementById('rv-invoice-ref');
+  if (!supplierEl?.value.trim()) { showToast('Supplier required'); return; }
+  _newDelivery.supplier = supplierEl.value.trim();
+  _newDelivery.invoiceRef = invRefEl?.value?.trim() || '';
+
+  // Compute discrepancies
+  const discrepancies = [];
+  for (const line of _newDelivery.expected) {
+    const exp = Number(line.expected_qty || 0);
+    const rec = Number(line.received_qty || 0);
+    if (exp <= 0) continue;
+    const diff = exp - rec;
+    const pct = (diff / exp) * 100;
+    if (Math.abs(pct) > 5) {
+      discrepancies.push({
+        item: line.name,
+        expected: exp,
+        received: rec,
+        unit: line.unit || '',
+        shortage_pct: pct,
+        shortage_abs: diff
+      });
+    }
+  }
+
+  if (discrepancies.length === 0) {
+    showToast(`✓ Delivery from ${_newDelivery.supplier} logged — all quantities match.`, { kind: 'success', duration_ms: 4000 });
+    resetDelivery();
+    return;
+  }
+
+  // **AUTONOMOUS CFO GEM TRIGGER** [UNIQUE_ANCHOR: autonomous_cfo_trigger]
+  await fireAutonomousCFODiscrepancy(_newDelivery.supplier, _newDelivery.invoiceRef, discrepancies);
+
+  showToast(`⚠ ${discrepancies.length} discrepancy${discrepancies.length===1?'':'ies'} flagged — CFO Gem autonomously created an inbox card`, { kind: 'error', duration_ms: 6000 });
+  resetDelivery();
+}
+
+async function fireAutonomousCFODiscrepancy(supplier, invoiceRef, discrepancies) {
+  const totalShortageVal = discrepancies.reduce((sum, d) => sum + Math.abs(d.shortage_abs), 0);
+  const subject = `Discrepancy on ${supplier} delivery — ${discrepancies.length} line${discrepancies.length===1?'':'s'} flagged`;
+  const body = discrepancies.map(d =>
+    `${d.item}: expected ${d.expected} ${d.unit}, received ${d.received} ${d.unit} (short ${d.shortage_abs.toFixed(2)} ${d.unit}, ${d.shortage_pct.toFixed(0)}%)`
+  ).join('\n') + `\n\nReference: ${invoiceRef || '(none)'}\n\nNext: review with supplier, file credit note, or accept variance.`;
+
+  const now = new Date().toISOString();
+
+  // 1. Inbox card (high priority, agent_escalation, source='autonomous_cfo')
+  try {
+    await fetch(`${SUPABASE_URL}/rest/v1/inbox_items`, {
+      method: 'POST',
+      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        operator_entity_id: USER._operatorEntityId || 'd1ee19b6-5fb4-460c-8326-685dc86e47df',
+        restaurant_id: RESTAURANTS && RESTAURANTS[R] ? RESTAURANTS[R].id : null,
+        category: 'agent_escalation',
+        source: 'agent_dispatch',
+        sender_name: 'CFO Gem · autonomous',
+        sender_handle: 'cfo',
+        subject, body,
+        received_at: now,
+        status: 'new',
+        priority: 'high',
+        metadata: { trigger: 'autonomous_supplier_discrepancy', supplier, invoice_ref: invoiceRef, discrepancies, total_shortage: totalShortageVal }
+      })
+    });
+  } catch(e) { console.warn('inbox insert:', e); }
+
+  // 2. Log to agent_call_log so it appears in Office Activity feed
+  try {
+    await fetch(`${SUPABASE_URL}/rest/v1/agent_call_log`, {
+      method: 'POST',
+      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        operator_entity_id: USER._operatorEntityId || 'd1ee19b6-5fb4-460c-8326-685dc86e47df',
+        agent_id: 'cfo',
+        skill_code: 'detect_supplier_discrepancy',
+        routed_via: 'autonomous_trigger',
+        provider: 'rule_based',
+        status: 'ok',
+        confidence: 'high',
+        sources: { trigger: 'delivery_log', supplier, discrepancies },
+        requires_review: true,
+        created_at: now,
+        input_summary: { supplier, lines: _newDelivery.expected.length },
+        output_summary: { discrepancies_found: discrepancies.length, total_shortage: totalShortageVal }
+      })
+    });
+  } catch(e) { console.warn('call log insert:', e); }
+
+  // 3. Browser notification (if enabled)
+  if (typeof fireNotification === 'function') {
+    fireNotification(
+      `⚠ CFO Gem flagged ${supplier}`,
+      `${discrepancies.length} delivery discrepanc${discrepancies.length===1?'y':'ies'}. Review in inbox.`,
+      { tag: 'cfo-discrepancy-' + Date.now(), urgent: true, tab: 'inbox' }
+    );
+  }
+
+  // 4. Update badges
+  if (typeof updateAllBadges === 'function') updateAllBadges();
 }
 
 // ══ RECIPES ══
@@ -5339,6 +5789,7 @@ function showRecipeDetail(id){
         <div class="rcs-stat"><div class="rcs-label-sm">Last costed</div><div class="rcs-val rcs-val-sm">${r.last_costed_at ? new Date(r.last_costed_at).toLocaleDateString() : 'never'}</div></div>
       </div>
       <button class="cta" onclick="recomputeRecipeCost('${r.id}')" style="width:100%;padding:10px;border-radius:8px;background:var(--fern);color:white;border:none;font-size:12px;font-weight:600;cursor:pointer;">Recompute from inventory</button>
+      <button class="cta" onclick="openScaleRecipe('${r.id}', '${escapeHtml(r.name)}', ${r.portions || 1})" style="width:100%;padding:10px;border-radius:8px;background:var(--gold);color:white;border:none;font-size:12px;font-weight:600;cursor:pointer;margin-top:8px;">⟳ Scale recipe</button>
     </div>
     <div class="det-section">Version history</div>
     <div style="background:var(--ink-mid);border:1px solid var(--border);border-radius:12px;padding:4px 14px;margin-bottom:16px;">${verHtml}</div>
@@ -5600,6 +6051,137 @@ async function recomputeRecipeCost(recipeId){
   } catch(e) {
     showToast('Recompute failed: ' + e.message, { kind: 'error' });
   }
+}
+
+// ══ RECIPE SCALING (NEW) ══ ANCHOR: scale_recipe_functions
+async function openScaleRecipe(recipeId, recipeName, originalPortions) {
+  let target = window._scaleTargetOverride || parseInt(prompt(`Scale "${recipeName}" — how many covers?`, '60'), 10);
+  window._scaleTargetOverride = null;
+  if (!target || target < 1) return;
+
+  showToast(`Scaling ${recipeName} for ${target} covers…`, { duration_ms: 2000 });
+
+  try {
+    const recipe = RECIPES.find(x => x.id === recipeId);
+    if (!recipe) return;
+    const origPortions = recipe.portions || originalPortions || 1;
+    const factor = target / origPortions;
+
+    // Get ingredients from RECIPE_INGREDIENTS (assume structure: {recipe_id, ingredient_name, quantity, unit, unit_cost})
+    const ingredients = (RECIPE_INGREDIENTS[recipeId] || []).map(ri => {
+      const newQty = Math.round((Number(ri.quantity || 0) * factor) * 100) / 100;
+      const lineCost = Math.round((newQty * Number(ri.unit_cost || 0)) * 100) / 100;
+      return {
+        name: ri.ingredient_name || 'Ingredient',
+        original_qty: Number(ri.quantity || 0),
+        scaled_qty: newQty,
+        unit: ri.unit || '',
+        line_cost: lineCost,
+        on_hand: 0
+      };
+    });
+
+    const totalCost = ingredients.reduce((a, x) => a + x.line_cost, 0);
+    const perPortionCost = target > 0 ? Math.round((totalCost / target) * 100) / 100 : 0;
+    let techniqueNote = `Scaled linearly by ${factor.toFixed(2)}× — review batch yield mid-prep.`;
+
+    // Optional: call agent for technique note
+    try {
+      const resp = await fetch('/api/dispatch', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          skill: 'scale_recipe',
+          input: { recipe_id: recipeId, recipe_name: recipeName, target_covers: target, original_portions: origPortions, factor },
+          operator_entity_id: USER._operatorEntityId || 'd1ee19b6-5fb4-460c-8326-685dc86e47df'
+        })
+      });
+      const data = await resp.json();
+      if (data.ok && data.output?.technique_note) techniqueNote = data.output.technique_note;
+    } catch(e) { /* fallback note already set */ }
+
+    // Render modal
+    const html = `
+      <div class="modal-overlay" id="m-scale-recipe" onclick="if(event.target===this)closeModal('m-scale-recipe')">
+        <div class="modal-sheet scale-sheet">
+          <div class="mh"></div>
+          <div class="sc-eyebrow">Scaled recipe · ${target} covers</div>
+          <div class="mt">${escapeHtml(recipeName)}</div>
+          <div class="sc-meta">From ${origPortions} portion${origPortions===1?'':'s'} → ${target} covers (${factor.toFixed(2)}× scale)</div>
+
+          <div class="sc-stats">
+            <div class="sc-stat"><div class="sc-stat-label">Total cost</div><div class="sc-stat-val">€${totalCost.toFixed(2)}</div></div>
+            <div class="sc-stat"><div class="sc-stat-label">Per cover</div><div class="sc-stat-val">€${perPortionCost.toFixed(2)}</div></div>
+            <div class="sc-stat"><div class="sc-stat-label">Ingredients</div><div class="sc-stat-val">${ingredients.length}</div></div>
+          </div>
+
+          <div class="sc-section-label">Scaled ingredients</div>
+          <table class="sc-table">
+            <thead><tr><th>Ingredient</th><th>Original</th><th>Scaled</th><th>Cost</th></tr></thead>
+            <tbody>
+              ${ingredients.map(x => `
+                <tr>
+                  <td>${escapeHtml(x.name)}</td>
+                  <td class="sc-num">${x.original_qty} ${escapeHtml(x.unit)}</td>
+                  <td class="sc-num"><strong>${x.scaled_qty} ${escapeHtml(x.unit)}</strong></td>
+                  <td class="sc-num">€${x.line_cost.toFixed(2)}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+
+          <div class="sc-technique">
+            <div class="sc-tech-label">Technique note · Culinary Gem</div>
+            <div class="sc-tech-text">${escapeHtml(techniqueNote)}</div>
+          </div>
+
+          <div class="sc-foot">
+            <button class="cta-sec" onclick="closeModal('m-scale-recipe')">Close</button>
+            <button class="cta-sec" onclick="printScaledRecipe()">Print</button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    let el = document.getElementById('m-scale-recipe');
+    if (el) el.outerHTML = html;
+    else document.body.insertAdjacentHTML('beforeend', html);
+    setTimeout(() => {
+      const m = document.getElementById('m-scale-recipe');
+      if (m) m.classList.add('open');
+    }, 10);
+
+    window._lastScale = { recipeName, target, factor, ingredients, totalCost, perPortionCost, techniqueNote };
+  } catch(e) {
+    showToast('Scale failed: ' + e.message, { kind: 'error' });
+  }
+}
+
+function printScaledRecipe() {
+  const s = window._lastScale;
+  if (!s) return;
+  const w = window.open('', '_blank');
+  w.document.write(`<html><head><title>${escapeHtml(s.recipeName)} · scaled ${s.target} covers</title>
+    <style>body{font-family:Georgia,serif;max-width:600px;margin:30px auto;padding:0 16px;line-height:1.5}h1{font-size:22px}h2{font-size:13px;text-transform:uppercase;letter-spacing:0.08em;color:#888;margin-top:18px;margin-bottom:6px}table{width:100%;border-collapse:collapse;margin:8px 0}td,th{padding:6px 8px;border-bottom:1px solid #eee;text-align:left;font-size:13px}th{font-weight:500;text-transform:uppercase;font-size:10px;color:#888}</style>
+    </head><body>
+    <h1>${escapeHtml(s.recipeName)} — for ${s.target} covers</h1>
+    <p style="color:#666;font-size:13px">Scaled ${s.factor.toFixed(2)}× · Total cost €${s.totalCost.toFixed(2)} · Per cover €${s.perPortionCost.toFixed(2)}</p>
+    <h2>Scaled ingredients</h2>
+    <table><thead><tr><th>Ingredient</th><th>Quantity</th><th>Cost</th></tr></thead><tbody>
+    ${s.ingredients.map(x => `<tr><td>${escapeHtml(x.name)}</td><td>${x.scaled_qty} ${escapeHtml(x.unit)}</td><td>€${x.line_cost.toFixed(2)}</td></tr>`).join('')}
+    </tbody></table>
+    <h2>Technique note</h2><p>${escapeHtml(s.techniqueNote)}</p>
+    <script>setTimeout(()=>window.print(),200)</script>
+    </body></html>`);
+  w.document.close();
+}
+
+function promptScaleAnyRecipe() {
+  const name = prompt('Which recipe to scale?\n(Type a recipe name)');
+  if (!name) return;
+  const recipe = (typeof RECIPES !== 'undefined' ? RECIPES : []).find(r => (r.name||'').toLowerCase().includes(name.toLowerCase()));
+  if (!recipe) { showToast('Recipe not found: ' + name); return; }
+  openScaleRecipe(recipe.id, recipe.name, recipe.portions || 1);
 }
 
 async function applyComputedPrice(menuItemId) {
@@ -9010,6 +9592,22 @@ function handleVoiceCommand(text) {
     }
   }
 
+  // 4b. Scale recipe intent: "scale <recipe> for <N> covers"
+  const scaleMatch = t.match(/\bscale\s+(.+?)\s+(?:for\s+)?([\d.]+)\s+(?:covers?|portions?|servings?|guests?)\b/);
+  if (scaleMatch) {
+    const recipeName = scaleMatch[1].trim();
+    const target = parseInt(scaleMatch[2], 10);
+    const recipe = (typeof RECIPES !== 'undefined' ? RECIPES : []).find(r => (r.name||'').toLowerCase().includes(recipeName.toLowerCase()));
+    if (recipe) {
+      window._scaleTargetOverride = target;
+      openScaleRecipe(recipe.id, recipe.name, recipe.portions || 1);
+      closeAI();
+    } else {
+      showToast('Recipe not found: ' + recipeName);
+    }
+    return;
+  }
+
   // 5. Default — send to AI dispatcher
   closeAI();
   setTimeout(function() {
@@ -9812,6 +10410,7 @@ function cmdkSearch(query) {
     { type:'action', icon:'∎', title:'Start Cook Mode', sub:'Recipes · workflow', fn:()=>switchTab('cookmode',null), keywords:'cook mode recipe workflow' },
     { type:'action', icon:'☰', title:'Open Inbox', sub:'Messages · agents', fn:()=>switchTab('inbox',null), keywords:'inbox messages' },
     { type:'action', icon:'⌚', title:'Clock in / out', sub:'Time tracking', fn:()=>{ if (typeof clockToggle === 'function') clockToggle(); }, keywords:'clock in out time' },
+    { type:'action', icon:'⟳', title:'Scale a recipe', sub:'Culinary Gem · multiply for any cover count', fn:()=>{ closeCmdK(); setTimeout(promptScaleAnyRecipe, 100); }, keywords:'scale recipe culinary gem multiply' },
     { type:'action', icon:'☾', title:'Toggle dark mode', sub:'Theme', fn:()=>{ const cur=document.documentElement.getAttribute('data-theme'); applyTheme((cur==='midnight'||cur==='dark')?'bohemian':'midnight'); }, keywords:'dark light theme mode' },
     { type:'action', icon:'⌖', title:'Open Menu Library', sub:'All Canva designs', fn:()=>{ menuViewMode='library'; switchTab('menu',null); }, keywords:'menu library canva designs' },
   ];
@@ -10212,7 +10811,7 @@ setInterval(() => {
     <div class="aii-thread" id="aii-thread"></div>
     <div class="aii-chips" id="aii-chips"></div>
     <div class="aii-input-row">
-      <button class="aii-mic" id="aii-mic" onclick="if(typeof startVoiceCommand==='function') startVoiceCommand()" title="Voice">◉</button>
+      <button class="aii-mic" id="aii-mic" onclick="if(typeof toggleVoice==='function') toggleVoice()" title="Voice">◉</button>
       <input class="aii-input" id="aii-input" type="text" placeholder="Ask, command, or dictate…" onkeydown="if(event.key==='Enter')aiInlineSend()">
       <button class="aii-send" onclick="aiInlineSend()">Send</button>
     </div>
