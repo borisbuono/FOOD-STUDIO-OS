@@ -1513,6 +1513,14 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
 .menu-print-price { font-size: 13px; font-weight: 600; color: #1F2916; flex-shrink: 0; font-family: 'DM Mono', monospace; }
 .menu-print-desc { font-size: 11px; color: #9B8E7E; margin: -4px 0 6px; line-height: 1.5; }
 
+/* ── MENU LANGUAGE TOGGLE ── */
+.menu-lang-toggle { display: flex; gap: 6px; align-items: center; padding: 8px 0 12px; border-bottom: 1px solid rgba(0,0,0,0.06); margin-bottom: 12px; }
+.ml-lang-btn { padding: 6px 13px; border-radius: 14px; border: 1px solid rgba(0,0,0,0.1); background: transparent; font-size: 12px; cursor: pointer; font-weight: 600; color: var(--text-secondary, #5C4E3C); font-family: 'DM Mono', ui-monospace, monospace; transition: all 0.18s; }
+.ml-lang-btn.active { background: #4E6332; color: white; border-color: #4E6332; }
+.ml-lang-btn:active { opacity: 0.8; }
+.ml-translate-all { margin-left: auto; padding: 6px 13px; border-radius: 14px; border: 1px solid rgba(0,0,0,0.1); background: transparent; font-size: 12px; cursor: pointer; opacity: 0.65; color: var(--text-secondary, #5C4E3C); transition: all 0.18s; }
+.ml-translate-all:hover { opacity: 1; border-color: #4E6332; color: #4E6332; }
+
 /* ── DISH TRAINING LAYER ── */
 .dish-training { background: #F7F5F1; border-top: 1px solid rgba(0,0,0,0.06); padding: 14px 16px; display: none; }
 .dish-training.open { display: block; }
@@ -1823,6 +1831,62 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
 .login-err.show{display:block;}
 @keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
 .shake{animation:shake .35s ease;}
+
+/* ══════════════════════════════════════
+   MOBILE BOTTOM-SHEET MODAL PATTERN  ≤ 768px
+══════════════════════════════════════ */
+@media (max-width: 768px) {
+  .modal-overlay {
+    align-items: flex-end !important;
+    padding: 0 !important;
+  }
+  .modal-sheet {
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: 90vh !important;
+    border-radius: 20px 20px 0 0 !important;
+    margin: 0 !important;
+    padding-bottom: max(44px, env(safe-area-inset-bottom, 0)) !important;
+  }
+
+  /* Make drag handle more prominent on mobile */
+  .modal-sheet .mh {
+    display: block;
+    width: 40px;
+    height: 5px;
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 3px;
+    margin: 8px auto 16px;
+  }
+  [data-theme="midnight"] .modal-sheet .mh,
+  [data-theme="dark"] .modal-sheet .mh {
+    background: rgba(255, 255, 255, 0.25);
+  }
+
+  /* Larger tap targets for buttons inside modals */
+  .modal-sheet button.cta,
+  .modal-sheet button.cta-sec,
+  .modal-sheet button.mb {
+    min-height: 44px;
+    padding: 12px 20px;
+    line-height: 1.3;
+  }
+
+  /* Inputs in modals — larger touch targets */
+  .modal-sheet input.mi,
+  .modal-sheet textarea.mi,
+  .modal-sheet select.mi {
+    min-height: 44px;
+    font-size: 16px;
+    padding: 12px 14px;
+  }
+
+  /* General touch-target audit across mobile */
+  .cta, .cta-sec, .mb, .more-btn {
+    min-height: 44px;
+    line-height: 1.3;
+  }
+}
 
 /* ══════════════════════════════════════
    DESKTOP LAYOUT  ≥ 768px
@@ -2543,6 +2607,35 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
 .office-cta-sec:hover { background: var(--ember, #4E6332); color: white; }
 
 /* ─────────────────────────────────────────────────────────────── */
+/* ACTIVITY FEED [UNIQUE_ANCHOR: activity_feed_css] */
+/* ─────────────────────────────────────────────────────────────── */
+.activity-feed { margin-top: 24px; padding: 16px; border: 1px solid var(--border, rgba(0,0,0,0.08)); border-radius: 10px; background: var(--bg-card, transparent); }
+.af-header { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+.af-title { font-family: var(--font-serif, Fraunces, Georgia, serif); font-size: 16px; font-weight: 600; }
+.af-sub { font-size: 12px; opacity: 0.6; }
+.af-controls { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border, rgba(0,0,0,0.06)); }
+.af-status { font-size: 11px; opacity: 0.55; font-family: var(--font-mono, ui-monospace, monospace); }
+.af-refresh { width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--border, rgba(0,0,0,0.1)); background: transparent; cursor: pointer; opacity: 0.7; }
+.af-refresh:hover { opacity: 1; background: var(--ember, #4E6332); color: white; border-color: var(--ember, #4E6332); }
+.af-list { display: flex; flex-direction: column; gap: 4px; max-height: 360px; overflow-y: auto; padding: 4px 0; }
+.af-empty { padding: 20px; opacity: 0.55; font-style: italic; font-size: 13px; text-align: center; }
+.af-row { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 6px; font-size: 13px; transition: background 0.15s; }
+.af-row:hover { background: var(--bg, rgba(0,0,0,0.02)); }
+.af-row.af-autonomous { background: rgba(184,150,58,0.08); border-left: 3px solid var(--gold, #B8963A); padding-left: 7px; }
+.af-row.af-error { background: rgba(160,56,56,0.06); }
+.af-icon { width: 26px; height: 26px; flex-shrink: 0; border-radius: 6px; background: var(--bg-card, rgba(0,0,0,0.06)); color: var(--ember, #4E6332); font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono, ui-monospace, monospace); }
+.af-info { flex: 1; min-width: 0; }
+.af-line { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.af-line strong { font-size: 13px; font-weight: 500; }
+.af-tag { font-size: 9px; padding: 2px 6px; border-radius: 4px; background: var(--bg-card, rgba(0,0,0,0.05)); opacity: 0.75; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
+.af-tag-auto { background: var(--gold, #B8963A); color: white; opacity: 1; }
+.af-tag-fb { background: var(--ruby, #A03838); color: white; opacity: 1; }
+.af-meta { font-size: 11px; opacity: 0.55; margin-top: 2px; font-family: var(--font-mono, ui-monospace, monospace); }
+.af-status-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.af-dot-ok { background: var(--fern, #5A8A78); }
+.af-dot-err { background: var(--ruby, #A03838); }
+
+/* ─────────────────────────────────────────────────────────────── */
 /* SMARTWATCH PREVIEW */
 /* ─────────────────────────────────────────────────────────────── */
 .watch-preview { margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--border, rgba(0,0,0,0.08)); }
@@ -2683,6 +2776,33 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
 .ia-btn:hover { opacity: 0.85; }
 .ia-btn.sec:hover { background: rgba(0,0,0,0.05); }
 
+/* Shortcuts Cheatsheet Modal [UNIQUE_ANCHOR: shortcuts_css] */
+.shortcuts-sheet { max-width: 580px; max-height: 80vh; overflow-y: auto; }
+.sk-header { padding-bottom: 18px; border-bottom: 1px solid var(--border, rgba(0,0,0,0.06)); margin-bottom: 16px; }
+.sk-eyebrow { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.55; }
+.sk-title { font-family: var(--font-serif, Fraunces, Georgia, serif); font-size: 24px; font-weight: 600; margin: 6px 0; }
+.sk-sub { font-size: 13px; opacity: 0.65; }
+.sk-body { padding: 0 0 12px; }
+.sk-group { margin-bottom: 18px; }
+.sk-group-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.55; margin-bottom: 8px; font-weight: 600; }
+.sk-row { display: flex; align-items: flex-start; gap: 14px; padding: 8px 0; border-bottom: 1px dashed var(--border, rgba(0,0,0,0.05)); }
+.sk-keys { min-width: 180px; flex-shrink: 0; }
+.sk-keys kbd { font-family: var(--font-mono, ui-monospace, monospace); font-size: 11px; background: var(--bg-card, rgba(0,0,0,0.06)); padding: 3px 8px; border-radius: 4px; border: 1px solid var(--border, rgba(0,0,0,0.08)); }
+.sk-desc { font-size: 13px; line-height: 1.5; opacity: 0.85; }
+.sk-foot { padding-top: 14px; border-top: 1px solid var(--border, rgba(0,0,0,0.06)); display: flex; justify-content: flex-end; }
+
+/* Input error state [UNIQUE_ANCHOR: input_error_css] */
+.input-error {
+  border-color: var(--ruby, #A03838) !important;
+  box-shadow: 0 0 0 3px rgba(160,56,56,0.15) !important;
+  animation: shake 0.4s;
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
 /* SETTINGS PAGE [UNIQUE_ANCHOR: settings_css] */
 .settings-page { max-width: 720px; margin: 0 auto; padding: 16px 4px; }
 .settings-header { margin-bottom: 24px; }
@@ -2822,6 +2942,86 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
 .ob-trigger-section { margin-top: 28px; padding: 20px; background: var(--bg-card, rgba(184,106,66,0.06)); border-left: 3px solid var(--ember, #B86A42); border-radius: 8px; }
 .ob-trigger-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.55; margin-bottom: 8px; }
 .ob-trigger-text { font-size: 13px; line-height: 1.5; opacity: 0.8; margin: 0 0 12px; }
+
+/* ── AUDIT LOG STYLES [UNIQUE_ANCHOR: audit_log_css] ── */
+.audit-sheet { max-width: 600px; max-height: 80vh; overflow-y: auto; }
+.audit-eyebrow { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.55; }
+.audit-meta { font-size: 12px; opacity: 0.6; margin: 4px 0 14px; font-family: 'DM Mono', ui-monospace, monospace; }
+.audit-timeline { display: flex; flex-direction: column; gap: 10px; padding: 4px 0 14px; }
+.audit-empty { padding: 24px; text-align: center; opacity: 0.6; font-style: italic; }
+.audit-row { display: flex; gap: 12px; padding: 10px 12px; border-left: 2px solid var(--ember, #B86A42); background: var(--bg-card, rgba(184,150,58,0.04)); border-radius: 0 6px 6px 0; }
+.audit-time { min-width: 90px; font-size: 11px; opacity: 0.55; font-family: 'DM Mono', ui-monospace, monospace; padding-top: 2px; }
+.audit-body { flex: 1; min-width: 0; }
+.audit-action { font-size: 13px; font-weight: 600; text-transform: capitalize; }
+.audit-field { font-size: 11px; opacity: 0.7; margin-top: 2px; font-family: 'DM Mono', ui-monospace, monospace; }
+.audit-values { font-size: 12px; margin-top: 4px; line-height: 1.4; }
+.audit-old { background: rgba(160,56,56,0.08); padding: 1px 5px; border-radius: 3px; text-decoration: line-through; opacity: 0.7; font-family: 'DM Mono', ui-monospace, monospace; }
+.audit-new { background: rgba(74,123,106,0.1); padding: 1px 5px; border-radius: 3px; font-weight: 500; font-family: 'DM Mono', ui-monospace, monospace; }
+.audit-notes { font-size: 12px; opacity: 0.7; margin-top: 4px; font-style: italic; }
+.audit-by { font-size: 11px; opacity: 0.5; margin-top: 4px; }
+.audit-foot { display: flex; justify-content: flex-end; padding-top: 14px; border-top: 1px solid var(--border, rgba(0,0,0,0.06)); }
+.iv-history { width: 28px; height: 28px; border-radius: 50%; border: 1px solid var(--border, rgba(0,0,0,0.1)); background: transparent; cursor: pointer; font-size: 14px; opacity: 0.6; margin-left: 4px; }
+.iv-history:hover { opacity: 1; background: var(--gold, #B8963A); color: white; border-color: var(--gold, #B8963A); }
+
+/* ── LOADING SKELETONS & EMPTY STATES [UNIQUE_ANCHOR: skeleton_empty_styles] ── */
+@keyframes skeleton-shimmer {
+  0% { background-position: -200px 0; }
+  100% { background-position: 200px 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, var(--surface-2, rgba(0,0,0,0.04)) 0%, rgba(0,0,0,0.08) 50%, var(--surface-2, rgba(0,0,0,0.04)) 100%);
+  background-size: 200px 100%;
+  background-repeat: no-repeat;
+  border-radius: 4px;
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  animation: skeleton-shimmer 1.4s linear infinite;
+  color: transparent;
+  pointer-events: none;
+}
+.skel-line { height: 14px; width: 100%; margin: 6px 0; border-radius: 4px; }
+.skel-line-sm { height: 10px; width: 60%; }
+.skel-line-lg { height: 22px; width: 80%; }
+.skel-circle { width: 40px; height: 40px; border-radius: 50%; }
+.skel-card { padding: 16px; border: 1px solid var(--border, rgba(0,0,0,0.06)); border-radius: 10px; background: var(--surface-2, rgba(0,0,0,0.02)); margin-bottom: 8px; }
+.skel-card .skeleton { background: linear-gradient(90deg, rgba(0,0,0,0.04) 0%, rgba(0,0,0,0.08) 50%, rgba(0,0,0,0.04) 100%); }
+
+.empty-state { padding: 40px 24px; text-align: center; opacity: 0.85; }
+.empty-state-illust { width: 64px; height: 64px; margin: 0 auto 14px; border-radius: 50%; background: rgba(184,150,58,0.08); display: flex; align-items: center; justify-content: center; font-size: 28px; opacity: 0.6; color: var(--ember, #B86A42); }
+.empty-state-title { font-family: var(--font-serif, Fraunces, Georgia, serif); font-size: 17px; font-weight: 500; margin-bottom: 6px; color: var(--text-primary); }
+.empty-state-text { font-size: 13px; opacity: 0.65; margin-bottom: 16px; line-height: 1.5; max-width: 320px; margin-left: auto; margin-right: auto; color: var(--text-secondary); }
+.empty-state .cta { margin: 0 4px; }
+
+/* ════════════════════════════════════════════════════════════════════ */
+/* ─── PUBLIC ALLERGEN-AWARE MENU STYLES [UNIQUE_ANCHOR: public_menu_css] ─── */
+/* ════════════════════════════════════════════════════════════════════ */
+.pm-shell { position: fixed; inset: 0; overflow-y: auto; background: #F7F5F2; color: #1A1510; font-family: 'Outfit', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+.pm-bg { position: fixed; inset: 0; background: radial-gradient(circle at 20% 0%, rgba(184,106,66,0.06), transparent 50%), radial-gradient(circle at 80% 100%, rgba(74,123,106,0.05), transparent 50%); pointer-events: none; }
+.pm-frame { position: relative; max-width: 600px; margin: 0 auto; padding: 36px 24px 60px; }
+.pm-header { text-align: center; padding-bottom: 28px; border-bottom: 1px solid rgba(0,0,0,0.06); margin-bottom: 28px; }
+.pm-eyebrow { font-size: 11px; text-transform: uppercase; letter-spacing: 0.18em; color: #B86A42; opacity: 0.7; margin-bottom: 6px; }
+.pm-venue { font-family: 'Fraunces', Georgia, serif; font-size: 32px; font-weight: 600; line-height: 1.1; letter-spacing: -0.01em; }
+.pm-tagline { font-size: 14px; opacity: 0.65; margin-top: 6px; font-style: italic; }
+.pm-filter { margin-top: 16px; font-size: 13px; opacity: 0.85; }
+.pm-no-filter .pm-add-allergens { padding: 8px 16px; border: 1px solid #B86A42; background: transparent; color: #B86A42; border-radius: 18px; font-size: 12px; cursor: pointer; }
+.pm-allergen-pill { display: inline-block; padding: 3px 10px; background: #B86A42; color: white; border-radius: 11px; font-size: 11px; margin: 2px 3px; text-transform: uppercase; letter-spacing: 0.06em; }
+.pm-section { margin-bottom: 32px; }
+.pm-section-label { font-family: 'Fraunces', Georgia, serif; font-size: 13px; text-transform: uppercase; letter-spacing: 0.18em; color: #B86A42; margin-bottom: 14px; padding-bottom: 6px; border-bottom: 1px solid rgba(184,106,66,0.2); }
+.pm-item { padding: 14px 0; border-bottom: 1px solid rgba(0,0,0,0.04); transition: opacity 0.2s; }
+.pm-item:last-child { border-bottom: 0; }
+.pm-item-line { display: flex; justify-content: space-between; align-items: baseline; gap: 14px; }
+.pm-item-name { font-family: 'Fraunces', Georgia, serif; font-size: 16px; font-weight: 500; flex: 1; }
+.pm-item-price { font-family: 'Fraunces', Georgia, serif; font-size: 15px; font-weight: 500; color: #B86A42; flex-shrink: 0; }
+.pm-item-desc { font-size: 13px; opacity: 0.75; margin-top: 4px; line-height: 1.5; font-style: italic; }
+.pm-item-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+.pm-item-tag { font-size: 10px; padding: 2px 7px; border-radius: 8px; background: rgba(0,0,0,0.05); opacity: 0.7; text-transform: lowercase; }
+.pm-item-tag.pm-tag-flag { background: #A03838; color: white; opacity: 1; font-weight: 500; }
+.pm-conflict-note { margin-top: 8px; padding: 6px 10px; background: rgba(160,56,56,0.1); border-left: 3px solid #A03838; border-radius: 4px; font-size: 12px; color: #A03838; }
+.pm-conflict { opacity: 0.55; }
+.pm-conflict:hover { opacity: 1; }
+.pm-safe { background: rgba(74,123,106,0.04); border-radius: 6px; padding-left: 10px; padding-right: 10px; border-bottom-color: rgba(74,123,106,0.1); }
+.pm-foot { text-align: center; padding: 32px 16px 16px; font-size: 11px; opacity: 0.5; line-height: 1.6; border-top: 1px solid rgba(0,0,0,0.06); margin-top: 24px; }
 
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -3114,6 +3314,37 @@ const db = (typeof supabase !== 'undefined')
   : null;
 
 // ════════════════════════════════════════════════════════════════════
+// ─── AUDIT LOG HELPER [UNIQUE_ANCHOR: log_audit_fn] ──
+// ════════════════════════════════════════════════════════════════════
+async function logAudit(entityType, entityId, action, opts = {}) {
+  // Best-effort audit logging: never blocks, never throws
+  // opts: { field, oldValue, newValue, source, notes }
+  try {
+    const payload = {
+      operator_entity_id: USER?._operatorEntityId || 'd1ee19b6-5fb4-460c-8326-685dc86e47df',
+      restaurant_id: (typeof RESTAURANTS !== 'undefined' && RESTAURANTS[R]) ? RESTAURANTS[R].id : null,
+      entity_type: entityType,
+      entity_id: entityId,
+      action: action,
+      field: opts.field || null,
+      old_value: opts.oldValue !== undefined ? JSON.stringify(opts.oldValue) : null,
+      new_value: opts.newValue !== undefined ? JSON.stringify(opts.newValue) : null,
+      user_id: USER?.id || null,
+      user_name: USER?.name || null,
+      user_role: USER?.role || null,
+      source: opts.source || 'manual',
+      notes: opts.notes || null,
+      created_at: new Date().toISOString()
+    };
+    await fetch(`${SUPABASE_URL}/rest/v1/audit_log`, {
+      method: 'POST',
+      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+  } catch(e) { console.warn('logAudit failed:', e); }
+}
+
+// ════════════════════════════════════════════════════════════════════
 // ─── BROWSER PUSH NOTIFICATIONS [UNIQUE_ANCHOR: fire_notification_fn] ──
 // ════════════════════════════════════════════════════════════════════
 function fireNotification(title, body, opts = {}) {
@@ -3167,12 +3398,55 @@ function isPublicWizard() {
   return params.has('wizard') || window.location.hash === '#book' || window.location.hash === '#inquire';
 }
 
+function isPublicMenu() {
+  const params = new URLSearchParams(window.location.search);
+  return params.has('menu') || window.location.hash === '#menu';
+}
+
 let _wizardStep = 0;
 let _wizardData = {};
 
 function escapeHtml(text) {
   const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
   return String(text).replace(/[&<>"']/g, m => map[m]);
+}
+
+// ════════════════════════════════════════════════════════════════════
+// ─── SKELETON & EMPTY STATE HELPERS [UNIQUE_ANCHOR: skeleton_helpers] ───
+// ════════════════════════════════════════════════════════════════════
+function skeletonRows(count = 3) {
+  let html = '';
+  for (let i = 0; i < count; i++) {
+    html += `
+      <div class="skel-card">
+        <div class="skeleton skel-line skel-line-lg"></div>
+        <div class="skeleton skel-line skel-line-sm"></div>
+        <div class="skeleton skel-line"></div>
+      </div>`;
+  }
+  return html;
+}
+
+function skeletonGrid(count = 4) {
+  let html = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px">';
+  for (let i = 0; i < count; i++) {
+    html += `
+      <div class="skel-card" style="margin:0">
+        <div class="skeleton" style="aspect-ratio:3/4;width:100%;border-radius:8px;margin-bottom:10px"></div>
+        <div class="skeleton skel-line skel-line-lg"></div>
+        <div class="skeleton skel-line skel-line-sm"></div>
+      </div>`;
+  }
+  return html + '</div>';
+}
+
+function emptyState(icon, title, text, ctaButtons) {
+  return `<div class="empty-state">
+    <div class="empty-state-illust">${icon}</div>
+    <div class="empty-state-title">${escapeHtml(title)}</div>
+    <div class="empty-state-text">${escapeHtml(text)}</div>
+    ${ctaButtons || ''}
+  </div>`;
 }
 
 function renderPublicWizard() {
@@ -3298,6 +3572,15 @@ function toggleWizardDietary(d) {
 }
 
 function wizardNext() {
+  // Validate name and email on step 0 [UNIQUE_ANCHOR: wizard_step0_validation]
+  if (_wizardStep === 0) {
+    const valid = validateForm([
+      { selector: '#pw-name', label: 'Your name', required: true },
+      { selector: '#pw-email', label: 'Your email', required: true, type: 'email' }
+    ]);
+    if (!valid) return;
+  }
+
   const captureInput = (id, key) => { const el = document.getElementById(id); if (el && el.value.trim()) _wizardData[key] = el.value.trim(); };
   captureInput('pw-name', 'name');
   captureInput('pw-email', 'email');
@@ -3369,12 +3652,164 @@ async function submitWizard() {
       });
       bc.close();
     } catch(e) {}
+    logAudit('sales_event', null, 'wizard_inquiry', { source: 'public_wizard', newValue: { occasion: _wizardData.occasion, party_size: _wizardData.party_size, date: _wizardData.date, contact: _wizardData.email } });
   } catch(e) { console.warn('inbox insert:', e); }
 
   _wizardStep = 99;
   document.getElementById('pw-body').innerHTML = renderWizardStep(99);
   const bar = document.getElementById('pw-progress-bar');
   if (bar) bar.style.width = '100%';
+}
+
+// ════════════════════════════════════════════════════════════════════
+// ─── PUBLIC ALLERGEN-AWARE MENU [UNIQUE_ANCHOR: public_menu_render] ───
+// ════════════════════════════════════════════════════════════════════
+function renderPublicMenu() {
+  const params = new URLSearchParams(window.location.search);
+  const venueSlug = params.get('menu') || 'bistro-mondo';
+  const allergensParam = (params.get('allergens') || '').toLowerCase();
+  const guestAllergens = allergensParam ? allergensParam.split(',').map(s => s.trim()).filter(Boolean) : [];
+  const lang = params.get('lang') || 'en';
+
+  // Render shell — data loads async
+  setTimeout(() => loadAndRenderPublicMenu(venueSlug, guestAllergens, lang), 50);
+
+  return `
+    <div class="pm-shell">
+      <div class="pm-bg"></div>
+      <div class="pm-frame">
+        <div class="pm-header">
+          <div class="pm-eyebrow">Tonight at</div>
+          <div class="pm-venue" id="pm-venue">${escapeHtml(venueSlug.replace(/-/g, ' '))}</div>
+          <div class="pm-tagline" id="pm-tagline">Loading our menu…</div>
+          ${guestAllergens.length ? `
+            <div class="pm-filter">
+              Filtering for your allergens:
+              ${guestAllergens.map(a => `<span class="pm-allergen-pill">${escapeHtml(a)}</span>`).join('')}
+            </div>` : `
+            <div class="pm-filter pm-no-filter">
+              <button onclick="openAllergenPicker()" class="pm-add-allergens">Tell us about your allergies →</button>
+            </div>`}
+        </div>
+        <div class="pm-body" id="pm-body">
+          <div class="empty-state"><div class="empty-state-illust">◌</div><div class="empty-state-title">Loading menu…</div></div>
+        </div>
+        <div class="pm-foot">
+          <p>Made with care · ${escapeHtml(venueSlug.replace(/-/g, ' '))}</p>
+          <p>Always confirm with your server. Allergen labelling is best-effort and not a substitute for direct conversation.</p>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+async function loadAndRenderPublicMenu(venueSlug, guestAllergens, lang) {
+  const supaUrl = (typeof SUPABASE_URL !== 'undefined') ? SUPABASE_URL : 'https://rfdsysrdoncyoytcrzpg.supabase.co';
+  const supaKey = (typeof SUPABASE_KEY !== 'undefined') ? SUPABASE_KEY : '';
+
+  let restaurant = null;
+  let items = [];
+  try {
+    const restResp = await fetch(`${supaUrl}/rest/v1/restaurants?slug=eq.${encodeURIComponent(venueSlug)}&select=*&limit=1`, {
+      headers: { apikey: supaKey, Authorization: 'Bearer ' + supaKey }
+    });
+    const restData = await restResp.json();
+    restaurant = (Array.isArray(restData) ? restData[0] : null);
+    if (!restaurant) throw new Error('Restaurant not found: ' + venueSlug);
+
+    const itemsResp = await fetch(`${supaUrl}/rest/v1/menu_items?restaurant_id=eq.${restaurant.id}&is_active=eq.true&select=*&order=section`, {
+      headers: { apikey: supaKey, Authorization: 'Bearer ' + supaKey }
+    });
+    items = await itemsResp.json();
+  } catch(e) {
+    document.getElementById('pm-body').innerHTML = `<div class="empty-state"><div class="empty-state-title">Menu unavailable</div><div class="empty-state-text">${escapeHtml(e.message)}</div></div>`;
+    return;
+  }
+
+  // Update header
+  const venueEl = document.getElementById('pm-venue');
+  const tagEl = document.getElementById('pm-tagline');
+  if (venueEl && restaurant.name) venueEl.textContent = restaurant.name;
+  if (tagEl) tagEl.textContent = restaurant.tagline || 'Today\'s menu';
+
+  // Allergen keyword mapping
+  const allergenKeywords = {
+    gluten: ['gluten','wheat','flour','pasta','bread','sourdough','pizza','bun','crust','focaccia','toast','tortilla','crumb'],
+    nuts: ['nuts','almond','hazelnut','walnut','pecan','pine nut','pistachio','cashew','peanut'],
+    dairy: ['milk','butter','cream','cheese','parmes','parmigiano','yogurt','mantequilla','queso','crème','crema','mozzarella','feta'],
+    eggs: ['egg','aioli','mayo','mayonnaise','custard','meringue','huevo'],
+    shellfish: ['shrimp','prawn','gambas','lobster','crab','mussel','clam','oyster','mejillon','calamari','squid','octopus'],
+    fish: ['fish','salmon','tuna','sea bass','lubina','cod','bacalao','sardine','anchovy','sashimi','tartare','ceviche'],
+    soy: ['soy','soja','tofu','tempeh','edamame','miso'],
+    sesame: ['sesame','tahini','tahimbi'],
+    pork: ['pork','jamon','jamón','tocino','bacon','prosciutto','ham','chorizo'],
+    alcohol: ['wine','vodka','rum','beer','lager','spirit','liqueur','aperol','negroni','mezcal']
+  };
+
+  function classifyItem(item) {
+    const text = ((item.name || '') + ' ' + (item.description || '')).toLowerCase();
+    const detected = [];
+    for (const [allergen, words] of Object.entries(allergenKeywords)) {
+      for (const w of words) {
+        if (text.includes(w)) { detected.push(allergen); break; }
+      }
+    }
+    return detected;
+  }
+
+  // Group by section
+  const bySection = {};
+  for (const it of items) {
+    const sec = it.section || 'other';
+    (bySection[sec] = bySection[sec] || []).push({ ...it, _detectedAllergens: classifyItem(it) });
+  }
+
+  // Render
+  const sectionLabels = {
+    breakfast: 'Breakfast', lunch: 'Lunch', dinner: 'Dinner', specials: 'Today\'s specials',
+    cold: 'To start', hot: 'Hot dishes', pizza: 'Pizzas', desserts: 'Desserts',
+    wine: 'Wines', beer: 'Beers', cocktail: 'Cocktails', spirit: 'Spirits',
+    nonalcoholic: 'Non-alcoholic', soft: 'Soft drinks', hot_drinks: 'Coffee & tea', other: 'Other'
+  };
+  const sectionOrder = ['breakfast','lunch','dinner','specials','cold','hot','pizza','desserts','wine','beer','cocktail','spirit','nonalcoholic','soft','hot_drinks','other'];
+
+  let html = '';
+  for (const sec of sectionOrder) {
+    if (!bySection[sec]) continue;
+    const itemsList = bySection[sec];
+    html += `<div class="pm-section">
+      <div class="pm-section-label">${sectionLabels[sec] || sec}</div>`;
+    for (const it of itemsList) {
+      const conflicts = guestAllergens.filter(ga => it._detectedAllergens.includes(ga));
+      const isSafe = guestAllergens.length === 0 ? null : conflicts.length === 0;
+      let cls = 'pm-item';
+      if (isSafe === true) cls += ' pm-safe';
+      if (isSafe === false) cls += ' pm-conflict';
+      html += `<div class="${cls}">
+        <div class="pm-item-line">
+          <div class="pm-item-name">${escapeHtml(it.name)}</div>
+          <div class="pm-item-price">${it.price ? '€' + it.price : ''}</div>
+        </div>
+        ${it.description ? `<div class="pm-item-desc">${escapeHtml(it.description)}</div>` : ''}
+        ${it._detectedAllergens.length ? `<div class="pm-item-tags">${it._detectedAllergens.map(a => {
+          const isFlag = guestAllergens.includes(a);
+          return `<span class="pm-item-tag ${isFlag?'pm-tag-flag':''}">${escapeHtml(a)}</span>`;
+        }).join('')}</div>` : ''}
+        ${isSafe === false ? `<div class="pm-conflict-note">⚠ Contains: ${conflicts.join(', ')}. Ask your server for alternatives.</div>` : ''}
+      </div>`;
+    }
+    html += `</div>`;
+  }
+
+  document.getElementById('pm-body').innerHTML = html;
+}
+
+function openAllergenPicker() {
+  const allergens = prompt('Tell us your allergies (comma separated, e.g. gluten,nuts,dairy):');
+  if (!allergens) return;
+  const url = new URL(window.location);
+  url.searchParams.set('allergens', allergens.toLowerCase().replace(/\s+/g, ''));
+  window.location = url;
 }
 
 // ────────────────────────────────────────────────────────────────────
@@ -3577,6 +4012,95 @@ function onboardCaptureAndNext(fieldMappings){for(const m of fieldMappings){cons
 async function onboardCommit(){showToast('Creating '+_onboardData.name+'…',{duration_ms:2000});try{const restPayload={operator_entity_id:_onboardData.operator_entity_id,slug:_onboardData.slug,name:_onboardData.name,city:_onboardData.city||null,address:_onboardData.address||null,lat:_onboardData.lat?parseFloat(_onboardData.lat):null,lng:_onboardData.lng?parseFloat(_onboardData.lng):null,tagline:_onboardData.tagline||null,cuisine_desc:_onboardData.cuisine_desc||null,primary_color:_onboardData.primary_color||'#B86A42',is_active:true};await fetch(`${SUPABASE_URL}/rest/v1/restaurants`,{method:'POST',headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json'},body:JSON.stringify(restPayload)});}catch(e){console.warn('restaurant insert:',e);}
 if(_onboardData.mgr_email){try{await fetch(`${SUPABASE_URL}/rest/v1/team_members`,{method:'POST',headers:{apikey:SUPABASE_KEY,Authorization:`Bearer ${SUPABASE_KEY}`,'Content-Type':'application/json'},body:JSON.stringify({operator_entity_id:_onboardData.operator_entity_id,email:_onboardData.mgr_email,name:_onboardData.mgr_name,role:'manager',status:'invited'})});}catch(e){console.warn('team_members insert:',e);}}
 _onboardStep=99;document.getElementById('ob-body').innerHTML=renderOnboardStep(99);const bar=document.getElementById('ob-progress');if(bar)bar.style.width='100%';}
+// ── BILINGUAL MENU TRANSLATIONS (EN ↔ ES) ──────────────────────────
+let menuLang = localStorage.getItem('fs_menu_lang') || (navigator.language.startsWith('es') ? 'es' : 'en');
+let _translationCache = {}; // in-memory cache: { item_id: { es: { name, description } } }
+let _pendingTranslations = new Set();
+
+function setMenuLang(lang) {
+  menuLang = lang;
+  localStorage.setItem('fs_menu_lang', lang);
+  if (typeof renderTab === 'function') renderTab();
+}
+
+function getMenuItemDisplay(item) {
+  // Returns { name, description } in current menuLang
+  if (menuLang === 'en' || !menuLang) return { name: item.name, description: item.description || '' };
+  // Check translations jsonb on the item
+  const t = item.translations?.[menuLang];
+  if (t && (t.name || t.description)) {
+    return { name: t.name || item.name, description: t.description || item.description || '' };
+  }
+  // Check in-memory cache
+  if (_translationCache[item.id]?.[menuLang]) {
+    return _translationCache[item.id][menuLang];
+  }
+  // Not yet translated — request asynchronously, return original for now
+  requestTranslation(item.id, item.name, item.description, menuLang);
+  return { name: item.name, description: item.description || '' };
+}
+
+async function requestTranslation(itemId, name, description, lang) {
+  if (_pendingTranslations.has(itemId)) return;
+  _pendingTranslations.add(itemId);
+  try {
+    const targetLangLabel = lang === 'es' ? 'Spanish (Castilian)' : 'English';
+    const sourceText = `Name: ${name}\nDescription: ${description || '(none)'}`;
+    const resp = await fetch('/api/ai', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 300,
+        system: `You translate restaurant menu items. Return ONLY a JSON object like {"name": "...", "description": "..."} translating to ${targetLangLabel}. Preserve culinary nouns when they're traditional (e.g. "Lubina a la sal" stays). Keep tone elegant and brief.`,
+        messages: [{ role: 'user', content: sourceText }]
+      })
+    });
+    const data = await resp.json();
+    const text = data?.content?.[0]?.text || '';
+    // Extract JSON from text
+    const m = text.match(/\{[\s\S]*\}/);
+    if (m) {
+      const t = JSON.parse(m[0]);
+      _translationCache[itemId] = _translationCache[itemId] || {};
+      _translationCache[itemId][lang] = { name: t.name || name, description: t.description || description };
+
+      // Best-effort: persist to Supabase
+      try {
+        const existing = (typeof MENU !== 'undefined' && MENU[R]) ? (MENU[R].find(m => m.id === itemId) || {}) : {};
+        const newTranslations = { ...(existing.translations || {}), [lang]: t };
+        await fetch(`${SUPABASE_URL}/rest/v1/menu_items?id=eq.${itemId}`, {
+          method: 'PATCH',
+          headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ translations: newTranslations })
+        });
+        if (existing) existing.translations = newTranslations;
+      } catch(e) { /* best-effort */ }
+
+      // Re-render if user is still on Menu tab
+      if (currentTab === 'menu' && typeof renderTab === 'function') renderTab();
+    }
+  } catch(e) { console.warn('translate:', e); }
+  finally { _pendingTranslations.delete(itemId); }
+}
+
+async function pretranslateAllVisibleItems(lang) {
+  // Bulk-translate all items in current MENU[R] that don't have a translation yet
+  if (typeof MENU === 'undefined' || !MENU[R]) return;
+  showToast(`Translating ${MENU[R].length} items to ${lang.toUpperCase()}…`, { duration_ms: 2000 });
+  for (const item of MENU[R]) {
+    const t = item.translations?.[lang];
+    const cached = _translationCache[item.id]?.[lang];
+    if (!t && !cached) {
+      // Fire and forget — they'll trickle in
+      requestTranslation(item.id, item.name, item.description, lang);
+      // Throttle to avoid rate limits — 200ms between
+      await new Promise(r => setTimeout(r, 200));
+    }
+  }
+  showToast('Translation requests fired — items refresh as they return', { duration_ms: 3000 });
+}
+
 // ── CLOCK-IN / OUT (Spanish Registro de jornada compliance) ──────
 let CLOCK_EVENTS=[];let clockLoaded=false;
 let CLOCK_VARIANCES=[];let variancesLoaded=false;
@@ -3905,6 +4429,12 @@ function initApp(){
     return;
   }
 
+  // PUBLIC MENU: early short-circuit
+  if (isPublicMenu()) {
+    document.body.innerHTML = renderPublicMenu();
+    return;
+  }
+
   try {
     const rc=ROLE_COLORS[USER.role];
     const av=document.getElementById('tb-av');
@@ -4014,6 +4544,7 @@ async function markInboxResolved(id) {
       headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({ status: 'resolved', resolved_at: new Date().toISOString() })
     });
+    logAudit('inbox_item', id, 'status_change', { field: 'status', oldValue: 'new', newValue: 'resolved' });
   } catch (e) {}
 }
 
@@ -4026,12 +4557,12 @@ async function updateInboxPriority(id, p) {
 
 function renderInbox() {
   if (typeof INBOX_ITEMS === 'undefined' || !Array.isArray(INBOX_ITEMS)) {
-    return `<div style="padding:24px;text-align:center;opacity:0.6;font-size:14px;">No inbox items yet.</div>`;
+    return emptyState('☰', 'Quiet inbox', 'No new messages right now. Agents are listening — anything important will surface here.', '');
   }
 
   const unresolved = INBOX_ITEMS.filter(i => i.status !== 'resolved');
   if (!unresolved.length) {
-    return `<div style="padding:24px;text-align:center;opacity:0.6;font-size:14px;">All caught up! Your inbox is empty.</div>`;
+    return emptyState('✓', 'All caught up', 'Your inbox is empty. Great work managing incoming messages!', '');
   }
 
   let html = `<div style="padding:12px 8px;">`;
@@ -4230,6 +4761,93 @@ async function runAgentSkill(skillCode){
   }
 }
 
+// ══ ACTIVITY FEED [UNIQUE_ANCHOR: activity_feed_js_functions] ══
+let _activityFeedTimer = null;
+let _activityFeedLastFetch = null;
+
+async function loadActivityFeed() {
+  try {
+    const rows = await sbFetch('agent_call_log?order=created_at.desc&limit=20');
+    _activityFeedLastFetch = new Date();
+    renderActivityFeed(rows || []);
+  } catch(e) {
+    const root = document.getElementById('af-list');
+    if (root) root.innerHTML = `<div class="af-empty">Failed to load: ${escapeHtml(e.message)}</div>`;
+  }
+}
+
+function renderActivityFeed(rows) {
+  const root = document.getElementById('af-list');
+  const status = document.getElementById('af-status');
+  if (!root) return;
+  if (status) status.textContent = `${rows.length} calls · refreshed ${_activityFeedLastFetch.toLocaleTimeString()}`;
+
+  if (!rows.length) {
+    root.innerHTML = `<div style="padding:40px 24px;">${emptyState('✦', 'No agent calls yet', 'Run a skill from the Agent Console above to see live activity here. Each call logs provider, latency, confidence.', '')}</div>`;
+    return;
+  }
+
+  const agentIcons = {
+    cfo: 'CF', compliance: 'CP', hr_people: 'HR', kitchen_ops: 'KO',
+    procurement: 'PR', recipe: 'RC', sales_events: 'SE', executive: 'EX'
+  };
+  const providerLabels = {
+    anthropic: 'Sonnet', google: 'Gemini', rule_based: 'Rule', null: '—'
+  };
+
+  root.innerHTML = rows.map(r => {
+    const icon = agentIcons[r.agent_id] || (r.agent_id || '?').slice(0,2).toUpperCase();
+    const provLabel = providerLabels[r.provider] || (r.provider || '');
+    const latency = r.latency_ms ? r.latency_ms + 'ms' : '—';
+    const time = r.created_at ? new Date(r.created_at).toLocaleTimeString() : '—';
+    const isAutonomous = r.routed_via === 'autonomous_trigger';
+    const isError = r.status === 'error' || (r.error_message && r.error_message.length);
+    const conf = r.confidence ? r.confidence : '';
+    const cls = isError ? 'af-row af-error' : (isAutonomous ? 'af-row af-autonomous' : 'af-row');
+    return `<div class="${cls}">
+      <div class="af-icon">${icon}</div>
+      <div class="af-info">
+        <div class="af-line">
+          <strong>${escapeHtml(r.skill_code || r.agent_id || 'agent')}</strong>
+          ${isAutonomous ? '<span class="af-tag af-tag-auto">autonomous</span>' : ''}
+          ${conf ? `<span class="af-tag">${escapeHtml(conf)}</span>` : ''}
+          ${r.fell_back ? '<span class="af-tag af-tag-fb">fell back</span>' : ''}
+        </div>
+        <div class="af-meta">
+          ${escapeHtml(r.agent_id || '')} · ${escapeHtml(provLabel)} · ${latency} · ${escapeHtml(time)}
+        </div>
+      </div>
+      <div class="af-status-dot ${isError ? 'af-dot-err' : 'af-dot-ok'}" title="${escapeHtml(r.status || 'ok')}"></div>
+    </div>`;
+  }).join('');
+}
+
+function startActivityFeedPoll() {
+  if (_activityFeedTimer) return;
+  loadActivityFeed();
+  _activityFeedTimer = setInterval(() => {
+    if (currentTab === 'office') loadActivityFeed();
+  }, 15000);
+}
+
+function stopActivityFeedPoll() {
+  if (_activityFeedTimer) clearInterval(_activityFeedTimer);
+  _activityFeedTimer = null;
+}
+
+// Auto-manage polling when tab switches
+const _origRenderTab = window.renderTab;
+if (typeof renderTab === 'function' && !window._afHooked) {
+  window._afHooked = true;
+  setInterval(() => {
+    if (currentTab === 'office' && document.getElementById('af-list')) {
+      if (!_activityFeedTimer) startActivityFeedPoll();
+    } else if (currentTab !== 'office' && _activityFeedTimer) {
+      stopActivityFeedPoll();
+    }
+  }, 2000);
+}
+
 function setCommsView(view){
   currentCommsView=view;
   document.querySelectorAll('.cc-tab').forEach(t=>t.classList.remove('active'));
@@ -4341,6 +4959,23 @@ function renderOffice(){
   // SECTION 2: Agent Console (headline)
   // ═════════════════════════════════════════════════════════════════
   html+=renderAgentConsole();
+
+  // ═════════════════════════════════════════════════════════════════
+  // SECTION 2.5: Activity Feed [UNIQUE_ANCHOR: activity_feed_html_section]
+  // ═════════════════════════════════════════════════════════════════
+  html+=`<div class="activity-feed">
+    <div class="af-header">
+      <div class="af-title">Agent activity</div>
+      <div class="af-sub">Live ticker · last 20 calls · refreshes every 15s</div>
+      <div class="af-controls">
+        <span class="af-status" id="af-status">Loading…</span>
+        <button class="af-refresh" onclick="loadActivityFeed()" title="Refresh now">⟳</button>
+      </div>
+    </div>
+    <div class="af-list" id="af-list">
+      ${skeletonRows(5)}
+    </div>
+  </div>`;
 
   // ═════════════════════════════════════════════════════════════════
   // SECTION 3: Communications Composer
@@ -4572,7 +5207,7 @@ function signOut() {
 
 function renderAgentConsole(){
   if(!AGENT_SKILLS.length){
-    return `<div class="agent-console"><div style="padding:24px;opacity:0.6;font-style:italic">Loading agent registry…</div></div>`;
+    return `<div class="agent-console">${skeletonRows(3)}</div>`;
   }
 
   const groups={};
@@ -4844,12 +5479,18 @@ function renderMenu(){
     <button class="mt-pill ${menuViewMode==='active'?'active':''}" onclick="setMenuViewMode('active')">Active menu</button>
     <button class="mt-pill ${menuViewMode==='library'?'active':''}" onclick="setMenuViewMode('library')">Library</button>
   </div>`;
+  // ANCHOR: F54_menu_lang_toggle — Bilingual EN ↔ ES
+  html+=`<div class="menu-lang-toggle">
+    <button class="ml-lang-btn ${menuLang==='en'?'active':''}" onclick="setMenuLang('en')">EN</button>
+    <button class="ml-lang-btn ${menuLang==='es'?'active':''}" onclick="setMenuLang('es')">ES</button>
+    <button class="ml-translate-all" onclick="pretranslateAllVisibleItems(menuLang==='en'?'es':'en')" title="Pre-translate all items to the other language">Translate all →</button>
+  </div>`;
   html+=`<div class="menu-types"><button class="mt-pill ${currentMenuType==='all'?'active':''}" onclick="setMenuType('all')">All</button><button class="mt-pill ${currentMenuType==='breakfast'?'active':''}" onclick="setMenuType('breakfast')">Breakfast</button><button class="mt-pill ${currentMenuType==='lunch'?'active':''}" onclick="setMenuType('lunch')">Lunch</button><button class="mt-pill ${currentMenuType==='dinner'?'active':''}" onclick="setMenuType('dinner')">Dinner</button><button class="mt-pill ${currentMenuType==='specials'?'active':''}" onclick="setMenuType('specials')">Specials</button></div>`;
   html+=`<button class="menu-print-btn" onclick="printMenu()" style="width:100%;padding:10px;margin-bottom:12px;border:1.5px solid var(--border);background:var(--bg);color:var(--text-primary);border-radius:11px;font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;">🖨️ Print menu</button>`;
   const previewKey='preview_'+R;
   const previewOpen=!!menuSectionOpen[previewKey];
   html+=`<div class="menu-preview-card"><div class="menu-preview-head" onclick="menuSectionOpen['${previewKey}']=!menuSectionOpen['${previewKey}'];renderTab()"><span class="menu-preview-title">📄 Menu preview</span><span class="menu-preview-badge">${previewOpen?'Close':'View printed menu'}</span></div><div class="menu-preview-body${previewOpen?' open':''}"><div class="menu-print menu-print-target"><div class="menu-print-rest">${restName}</div><div class="menu-print-sub">Today's menu</div>`;
-  secs.forEach(sec=>{const dishes=menuFiltered.filter(d=>d.section===sec&&!d.off);if(!dishes.length)return;html+=`<div class="menu-print-section">${sNames[sec]}</div>`;dishes.forEach(d=>{html+=`<div class="menu-print-dish"><span class="menu-print-name">${d.name}</span><span class="menu-print-dots"></span><span class="menu-print-price">€${d.price||'–'}</span></div>`;if(d.desc)html+=`<div class="menu-print-desc">${d.desc}</div>`;});});
+  secs.forEach(sec=>{const dishes=menuFiltered.filter(d=>d.section===sec&&!d.off);if(!dishes.length)return;html+=`<div class="menu-print-section">${sNames[sec]}</div>`;dishes.forEach(d=>{const displayData=getMenuItemDisplay(d);html+=`<div class="menu-print-dish"><span class="menu-print-name">${displayData.name}</span><span class="menu-print-dots"></span><span class="menu-print-price">€${d.price||'–'}</span></div>`;if(displayData.description)html+=`<div class="menu-print-desc">${displayData.description}</div>`;});});
   html+=`</div></div></div>`;
   const special=menuFiltered.find(d=>d.special&&!d.off);
   if(special){html+=`<div style="background:#F5F2E6;border:1px solid rgba(78,99,50,0.2);border-radius:14px;padding:13px 16px;margin-bottom:12px;display:flex;align-items:center;gap:10px;"><span style="font-size:20px;">⭐</span><div style="flex:1"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#4E6332;margin-bottom:2px;">Today's special</div><div style="font-size:14px;font-weight:500;color:#1F2916;">${special.name} · €${special.price}</div></div><button onclick="clearSpecial()" style="background:#4E6332;color:white;border:none;border-radius:8px;padding:7px 12px;font-size:11px;font-weight:600;cursor:pointer;">Clear</button></div>`;}
@@ -4865,10 +5506,12 @@ function renderMenu(){
         const beverageSecs=['wine','beer','cocktail','spirit','nonalcoholic','soft','hot'];
         if(beverageSecs.includes(sec)){
           const priceLbl=d.price?'€'+d.price:'–';
-          html+='<div class="wine-item" onclick="openBeverageDetail(\''+d.id+'\')"><div class="wine-item-name">'+d.name+'</div><div class="wine-item-price">'+priceLbl+'</div></div>';
+          const displayData=getMenuItemDisplay(d);
+          html+='<div class="wine-item" onclick="openBeverageDetail(\''+d.id+'\')"><div class="wine-item-name">'+displayData.name+'</div><div class="wine-item-price">'+priceLbl+'</div></div>';
           return;
         }
         // Standard dish rendering
+        const displayData=getMenuItemDisplay(d);
         const mg=d.price&&d.cost?Math.round((1-d.cost/d.price)*100):null;
         const mgColor=mg===null?'#C8C0B8':mg>65?'#4A7B6A':mg>45?'#A8893A':'#A03838';
         // ANCHOR: menu_price_suggest_conditional
@@ -4877,7 +5520,7 @@ function renderMenu(){
         const trainingOpen=!!menuSectionOpen[trainingKey];
         const rec=RECIPES.find(r=>r.id===d.recipeId);
         const allergenNames=rec?rec.allergens.map(a=>{const al=ALLERGENS.find(x=>x.id===a);return al?al.icon+' '+al.label:'';}).filter(Boolean):[];
-        const off86Lbl=d.off?'Restore':'86';const trainingLbl=trainingOpen?'▴ Hide':'▾ Training';const priceLbl=d.price?'€'+d.price:'–';const mgHtml=mg!==null?('<span style="font-family:DM Mono,monospace;font-size:11px;color:'+mgColor+';">'+mg+'%</span>'):'';const allergenHtml=allergenNames.length?('<div class="dt-section">Allergens</div><div class="dt-allergen-row">'+allergenNames.map(function(a){return'<span class="dt-allergen">'+a+'</span>';}).join('')+'</div>'):'';const recHtml=rec?('<div class="dt-section">Recipe</div><div class="dt-recipe-link" onclick="showRecipeDetail(\''+rec.id+'\')"><span class="dt-recipe-icon">📋</span><span class="dt-recipe-text">'+rec.name+' — '+rec.portions+' portions base</span><span class="dt-recipe-arrow">→</span></div>'):'';const descHtml=rec?rec.desc:(d.desc||'No description yet.');const narrativePreview=(rec?(rec.narrative||rec.history||rec.cultural_inspiration||''):'').slice(0,90);const storyHtml=narrativePreview?'<div class="mi-story-preview">'+narrativePreview+(narrativePreview.length>90?'…':'')+'</div>':'';html+='<div class="dish-row'+(d.off?' off':'')+'"><div style="flex:1"><div class="dish-name">'+d.name+(d.special?' (special)':'')+'</div>'+storyHtml+'<div class="dish-meta">'+(d.cost?'Cost €'+d.cost.toFixed(2):'')+( rec?' · Recipe linked':'')+'</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0;"><span style="font-family:DM Mono,monospace;font-size:15px;font-weight:600;color:#1F2916;">'+priceLbl+'</span>'+mgHtml+'<div style="display:flex;gap:5px;align-items:center;margin-top:2px;"><button style="background:none;border:none;color:#4E6332;font-size:11px;font-weight:600;font-family:Outfit,sans-serif;cursor:pointer;" onclick="menuSectionOpen[\"'+trainingKey+'\"]=!menuSectionOpen[\"'+trainingKey+'\"];renderTab();">'+trainingLbl+'</button><button style="font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;border:none;cursor:pointer;background:#FBF0F0;color:#A03838;" onclick="toggle86(\"'+d.id+'\")">'+off86Lbl+'</button></div>'+priceSuggestBadge+'</div></div><div class="dish-training'+(trainingOpen?' open':'')+'"><div class="dt-section">Description & technique</div><div class="dt-desc">'+descHtml+'</div>'+allergenHtml+recHtml+'<div class="dt-section">Staff training</div><div class="dt-video"><div class="dt-video-icon">▶</div><div><div class="dt-video-text">Add training video</div><div class="dt-video-sub">Tap to link a video for this dish</div></div></div></div>';
+        const off86Lbl=d.off?'Restore':'86';const trainingLbl=trainingOpen?'▴ Hide':'▾ Training';const priceLbl=d.price?'€'+d.price:'–';const mgHtml=mg!==null?('<span style="font-family:DM Mono,monospace;font-size:11px;color:'+mgColor+';">'+mg+'%</span>'):'';const allergenHtml=allergenNames.length?('<div class="dt-section">Allergens</div><div class="dt-allergen-row">'+allergenNames.map(function(a){return'<span class="dt-allergen">'+a+'</span>';}).join('')+'</div>'):'';const recHtml=rec?('<div class="dt-section">Recipe</div><div class="dt-recipe-link" onclick="showRecipeDetail(\''+rec.id+'\')"><span class="dt-recipe-icon">📋</span><span class="dt-recipe-text">'+rec.name+' — '+rec.portions+' portions base</span><span class="dt-recipe-arrow">→</span></div>'):'';const descHtml=rec?rec.desc:(displayData.description||'No description yet.');const narrativePreview=(rec?(rec.narrative||rec.history||rec.cultural_inspiration||''):'').slice(0,90);const storyHtml=narrativePreview?'<div class="mi-story-preview">'+narrativePreview+(narrativePreview.length>90?'…':'')+'</div>':'';html+='<div class="dish-row'+(d.off?' off':'')+'"><div style="flex:1"><div class="dish-name">'+displayData.name+(d.special?' (special)':'')+'</div>'+storyHtml+'<div class="dish-meta">'+(d.cost?'Cost €'+d.cost.toFixed(2):'')+( rec?' · Recipe linked':'')+'</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0;"><span style="font-family:DM Mono,monospace;font-size:15px;font-weight:600;color:#1F2916;">'+priceLbl+'</span>'+mgHtml+'<div style="display:flex;gap:5px;align-items:center;margin-top:2px;"><button style="background:none;border:none;color:#4E6332;font-size:11px;font-weight:600;font-family:Outfit,sans-serif;cursor:pointer;" onclick="menuSectionOpen[\"'+trainingKey+'\"]=!menuSectionOpen[\"'+trainingKey+'\"];renderTab();">'+trainingLbl+'</button><button style="font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;border:none;cursor:pointer;background:#FBF0F0;color:#A03838;" onclick="toggle86(\"'+d.id+'\")">'+off86Lbl+'</button></div>'+priceSuggestBadge+'</div></div><div class="dish-training'+(trainingOpen?' open':'')+'"><div class="dt-section">Description & technique</div><div class="dt-desc">'+descHtml+'</div>'+allergenHtml+recHtml+'<div class="dt-section">Staff training</div><div class="dt-video"><div class="dt-video-icon">▶</div><div><div class="dt-video-text">Add training video</div><div class="dt-video-sub">Tap to link a video for this dish</div></div></div></div>';
       });
       if(!dishes.length)html+=`<div style="padding:14px 16px;font-size:13px;color:#C8C0B8;">No dishes yet — tap + Add</div>`;
       html+=`</div>`;
@@ -5005,7 +5648,7 @@ async function regenerateMEPFromEvents() {
       const path2 = `sales_events?event_date=in.(${today},${tomStr})&status=in.(confirmed,in_execution,proposal_sent)&order=created_at.desc`;
       const events2 = await sbFetch(path2);
       if (!events2 || events2.length === 0) {
-        document.getElementById('sm-events-summary').innerHTML = '<div class="sm-empty">No events today or tomorrow. MEP based on standard daily volume.</div>';
+        document.getElementById('sm-events-summary').innerHTML = `<div style="padding:40px 24px;">${emptyState('◐', 'No events today or tomorrow', 'When confirmed events exist, the OS scales prep automatically per station.', '')}</div>`;
         showToast('No events found — MEP not regenerated', { duration_ms: 3000 });
         return;
       }
@@ -5337,7 +5980,7 @@ function renderInventory(){
       <h3 style="margin:0;font-size:18px;font-weight:600;color:var(--text-primary);">Inventory</h3>
       <button class="cta" onclick="openAddInventoryItem()" style="padding:9px 14px;border-radius:9px;border:none;background:#4E6332;color:white;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;">+ Add item</button>
     </div>
-    <div class="iv-empty">${inventoryLoaded ? 'No inventory items yet. Add your first one.' : 'Loading inventory…'}</div>
+    <div class="iv-empty">${inventoryLoaded ? emptyState('◎', 'No inventory yet', 'Track what you have on hand. Edit costs inline → recipes recompute → menu prices propagate.', '<button class="cta" onclick="openAddInventoryItem()" style="padding:9px 14px;border-radius:9px;border:none;background:#4E6332;color:white;font-family:\'Outfit\',sans-serif;font-size:12px;font-weight:600;cursor:pointer;margin-top:8px;">+ Add first item</button>') : skeletonRows(4)}</div>
     `;
   }
   const q=(inventorySearch||'').toLowerCase();
@@ -5401,6 +6044,7 @@ async function updateInventoryCost(itemId,newCost){
   item.last_cost_update=new Date().toISOString();
   showToast(`${item.name} → €${v.toFixed(2)}`,{undo_fn:async()=>{item.unit_cost=oldCost;await persistInventoryCost(itemId,oldCost);renderTab();}});
   await persistInventoryCost(itemId,v);
+  logAudit('inventory_item', itemId, 'cost_change', { field: 'unit_cost', oldValue: oldCost, newValue: v });
   checkCostSpikes(itemId, oldCost, v);
   recomputeRecipesForInventoryItem(itemId);
 }
@@ -5851,11 +6495,12 @@ function openWineDetail(wineId){
 function openBeverageDetail(itemId){
   let item = (MENU[R] || []).find(m => m.id === itemId);
   if (!item) return;
+  const displayData = getMenuItemDisplay(item);
   const btype = item.beverage_type || item.section || 'beverage';
   const btypeLabel = ({wine:'Wine', beer:'Beer', cocktail:'Cocktail', spirit:'Spirit', nonalcoholic:'Non-alcoholic', soft:'Soft drink', hot:'Hot drink'}[btype] || 'Beverage');
 
   // Parse description into structured fields if delimited by · or ;
-  const desc = item.description || '';
+  const desc = displayData.description || '';
   const parts = desc.split(/[·;|]/).map(p => p.trim()).filter(Boolean);
 
   const html = `
@@ -5863,7 +6508,7 @@ function openBeverageDetail(itemId){
       <div class="modal-sheet bev-sheet">
         <div class="mh"></div>
         <div class="bev-eyebrow">${escapeHtml(btypeLabel)}</div>
-        <div class="mt">${escapeHtml(item.name)}</div>
+        <div class="mt">${escapeHtml(displayData.name)}</div>
         <div class="bev-price">€${item.price || '-'}</div>
         ${desc ? `<div class="bev-desc">${escapeHtml(desc)}</div>` : ''}
         ${parts.length > 1 ? `
@@ -5930,7 +6575,7 @@ function renderCleaning(){
       taskHtml+=`<div style="margin-bottom:20px;padding:12px;background:rgba(90,138,120,0.05);border-radius:8px;border-left:3px solid var(--fern);"><div style="font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:4px;">${planName}</div>${planDesc?`<div style="font-size:11px;color:var(--text-tertiary);margin-bottom:8px;line-height:1.4;">${planDesc}</div>`:''}<div style="font-size:11px;color:var(--text-secondary);margin-bottom:10px;">Progress: ${doneCnt}/${tasksToShow.length}</div><div class="clean-grid">${tskHtml}</div></div>`;
     });
   }
-  if(!taskHtml)taskHtml=`<div style="text-align:center;padding:48px 20px;"><div style="font-family:'Fraunces',serif;font-style:italic;font-size:18px;color:var(--text-secondary);margin-bottom:6px;">All clean.</div><div style="font-size:13px;color:var(--text-tertiary);line-height:1.5;">No cleaning checklist set for ${ZONE} yet.</div></div>`;
+  if(!taskHtml)taskHtml=`<div style="padding:40px 24px;">${emptyState('◫', 'All clean', `No cleaning checklist set for ${ZONE} yet. Set a routine in your zone setup.`, '')}</div>`;
   taskHtml+=`<div style="margin-top:24px;padding:16px;background:var(--ink-soft);border-radius:8px;border:1px solid var(--border-color);"><div style="font-size:12px;font-weight:600;color:var(--text-primary);margin-bottom:8px;">🔧 Maintenance Feedback</div><textarea id="maintenanceFeedback" placeholder="e.g. Hot water wasn't working last night..." style="width:100%;height:60px;padding:8px;border:1px solid var(--border-color);border-radius:4px;font-size:13px;font-family:Outfit,sans-serif;resize:none;"></textarea><button onclick="reportMaintenanceIssue()" style="margin-top:8px;padding:8px 12px;background:var(--ember);color:white;border:none;border-radius:4px;font-size:12px;font-weight:600;cursor:pointer;">Report</button></div>`;
   return html+taskHtml;
 }
@@ -6197,6 +6842,7 @@ async function applyComputedPrice(menuItemId) {
       headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({ price: item.computed_price, updated_at: new Date().toISOString() })
     });
+    logAudit('menu_item', menuItemId, 'price_change', { field: 'price', oldValue: oldPrice, newValue: item.computed_price, source: 'auto_recompute' });
     showToast('Menu price synced to Fresto (future)', { kind: 'info', duration_ms: 2000 });
   } catch(e) { console.warn('applyComputedPrice sync:', e.message); }
 }
@@ -6575,7 +7221,7 @@ function renderTeam(){
   if(!['owner','manager'].includes(USER.role)){
     return `<div style="text-align:center;padding:48px 20px;color:var(--text-tertiary);font-size:14px;">Team management is available to Owner and Manager roles only.</div>`;
   }
-  if(!teamLoaded){loadTeamMembers();return `<div style="text-align:center;padding:48px;color:var(--text-tertiary);">Loading team…</div>`;}
+  if(!teamLoaded){loadTeamMembers();return `<div style="padding:40px 24px;">${skeletonRows(4)}</div>`;}
   const statusColor={invited:'#A8893A',active:'#3B6D11',suspended:'#A03838',removed:'#9B8E7E'};
   const statusBg={invited:'#FBF3E8',active:'#EAF3DE',suspended:'#FBF0F0',removed:'#F0EDE8'};
   let html=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
@@ -6583,10 +7229,7 @@ function renderTeam(){
     <button onclick="openTeamInvite()" style="padding:9px 14px;border-radius:10px;border:none;background:#4E6332;color:#fff;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;">+ Invite member</button>
   </div>`;
   if(TEAM_MEMBERS.length===0){
-    html+=`<div style="text-align:center;padding:48px 20px;">
-      <div style="font-family:'Fraunces',serif;font-style:italic;font-size:18px;color:var(--text-secondary);margin-bottom:6px;">No team members yet.</div>
-      <div style="font-size:13px;color:var(--text-tertiary);line-height:1.5;">Tap <strong style="color:#4E6332;">+ Invite member</strong> to add the first one.</div>
-    </div>`;
+    html+=`<div style="padding:40px 24px;">${emptyState('👥', 'No team yet', 'Tap the "Invite member" button above to add the first team member.', '')}</div>`;
     return html;
   }
   TEAM_MEMBERS.forEach(m=>{
@@ -6847,6 +7490,60 @@ function confirmClosePin(){const p=document.getElementById('close-pin-val').valu
 function openModal(id){document.getElementById(id)?.classList.add('open');}
 function closeModal(id){document.getElementById(id)?.classList.remove('open');}
 document.addEventListener('click',e=>{document.querySelectorAll('.modal-overlay').forEach(el=>{if(e.target===el)el.classList.remove('open');});});
+
+// ─── BOTTOM-SHEET DRAG-TO-CLOSE GESTURE (Mobile) ─── ANCHOR: bottom_sheet_gestures
+function attachBottomSheetGestures(){if(window._bottomSheetWired)return;window._bottomSheetWired=true;
+document.addEventListener('touchstart',e=>{const sheet=e.target.closest('.modal-sheet');if(!sheet)return;const handle=e.target.closest('.mh');if(!handle)return;sheet._dragStartY=e.touches[0].clientY;sheet._dragStarted=true;},{passive:true});
+document.addEventListener('touchmove',e=>{const sheet=document.querySelector('.modal-overlay.open .modal-sheet');if(!sheet||!sheet._dragStarted)return;const dy=e.touches[0].clientY-sheet._dragStartY;if(dy>0&&dy<300){sheet.style.transform=`translateY(${dy}px)`;sheet.style.transition='none';}},{passive:true});
+document.addEventListener('touchend',e=>{const sheet=document.querySelector('.modal-overlay.open .modal-sheet');if(!sheet||!sheet._dragStarted)return;sheet._dragStarted=false;sheet.style.transition='';const transform=sheet.style.transform||'';const m=transform.match(/translateY\((\d+)px\)/);const dy=m?Number(m[1]):0;if(dy>80){const overlay=sheet.closest('.modal-overlay');if(overlay&&overlay.id){const id=overlay.id;if(typeof closeModal==='function')closeModal(id);else{overlay.classList.remove('open');overlay.style.display='none';}}}sheet.style.transform='';}
+,{passive:true});}
+attachBottomSheetGestures();
+
+// ════════════════════════════════════════════════════════════════════
+// ─── AUDIT HISTORY VIEWER [UNIQUE_ANCHOR: open_audit_history_modal] ──
+// ════════════════════════════════════════════════════════════════════
+async function openAuditHistory(entityType, entityId, entityLabel) {
+  showToast('Loading history…', { duration_ms: 1000 });
+  let rows = [];
+  try {
+    rows = await sbFetch(`audit_log?entity_type=eq.${encodeURIComponent(entityType)}&entity_id=eq.${entityId}&order=created_at.desc&limit=50`);
+  } catch(e) { showToast('History load failed: ' + e.message, { kind: 'error' }); return; }
+
+  rows = rows || [];
+  const escapeHtml = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+  const html = `
+    <div class="modal-overlay" id="m-audit" onclick="if(event.target===this)closeModal('m-audit')">
+      <div class="modal-sheet audit-sheet">
+        <div class="mh"></div>
+        <div class="audit-eyebrow">Change history</div>
+        <div class="mt">${escapeHtml(entityLabel || entityType)}</div>
+        <div class="audit-meta">${rows.length} change${rows.length===1?'':'s'} logged</div>
+        <div class="audit-timeline">
+          ${rows.length === 0 ? '<div class="audit-empty">No changes logged yet for this item.</div>' : rows.map(r => `
+            <div class="audit-row">
+              <div class="audit-time">${new Date(r.created_at).toLocaleString()}</div>
+              <div class="audit-body">
+                <div class="audit-action">${escapeHtml((r.action || '?').replace(/_/g, ' '))}</div>
+                ${r.field ? `<div class="audit-field"><strong>${escapeHtml(r.field)}</strong></div>` : ''}
+                ${r.old_value || r.new_value ? `<div class="audit-values">${r.old_value ? `<span class="audit-old">${escapeHtml(JSON.stringify(JSON.parse(r.old_value))).slice(0, 80)}</span>` : ''} ${r.old_value && r.new_value ? '→' : ''} ${r.new_value ? `<span class="audit-new">${escapeHtml(JSON.stringify(JSON.parse(r.new_value))).slice(0, 80)}</span>` : ''}</div>` : ''}
+                ${r.notes ? `<div class="audit-notes">${escapeHtml(r.notes)}</div>` : ''}
+                <div class="audit-by">by ${escapeHtml(r.user_name || 'system')} · ${escapeHtml(r.user_role || r.source)}</div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+        <div class="audit-foot">
+          <button class="cta-sec" onclick="closeModal('m-audit')">Close</button>
+        </div>
+      </div>
+    </div>
+  `;
+  let el = document.getElementById('m-audit');
+  if (el) el.outerHTML = html;
+  else document.body.insertAdjacentHTML('beforeend', html);
+  setTimeout(() => { const m = document.getElementById('m-audit'); if(m) m.classList.add('open'); }, 10);
+}
 
 // ══ TOAST ══
 function showToast(message, opts) {
@@ -7131,6 +7828,7 @@ async function openEventDetail(eventId) {
 
         <div class="ed-foot">
           <button class="cta-sec" onclick="closeModal('m-event-detail')">Close</button>
+          <button class="cta-sec" onclick="openAuditHistory('sales_event','${e.id}','${escapeHtml(e.title||'Event')}')">History</button>
           <button class="cta" onclick="exportEventBEO('${e.id}')">Export BEO PDF</button>
         </div>
       </div>
@@ -7189,6 +7887,7 @@ async function addAllergenToEvent(eventId) {
       headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({ metadata: e.metadata })
     });
+    logAudit('sales_event', eventId, 'allergen_added', { newValue: allergen });
   } catch (err) { console.error('Failed to update allergen:', err); }
   showToast(allergen + ' added — kitchen alerted');
   openEventDetail(eventId);
@@ -7226,6 +7925,7 @@ async function removeAllergenFromEvent(eventId, idx) {
       headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({ metadata: e.metadata })
     });
+    logAudit('sales_event', eventId, 'allergen_removed', { oldValue: removed });
   } catch (err) { console.error('Failed to remove allergen:', err); }
   showToast(removed + ' removed');
   openEventDetail(eventId);
@@ -7277,6 +7977,7 @@ async function moveEventStage(eventId, newStage) {
       headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({ status: newStage, updated_at: new Date().toISOString() })
     });
+    logAudit('sales_event', eventId, 'stage_change', { field: 'status', oldValue: prev, newValue: newStage });
   } catch(e) {}
 }
 
@@ -8231,6 +8932,149 @@ async function generateTodayBrief(){
   window.todayBriefLoading=false;renderTab();
 }
 
+// ══ END-OF-DAY REPORT ═════════════════════════════════════════════════════════
+async function generateEODReport(){
+  showToast('Compiling EOD report…', { duration_ms: 2000 });
+
+  const today = new Date().toISOString().slice(0, 10);
+  const todayLabel = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+  const restName = RESTAURANTS?.[R]?.name || 'Food Studio';
+  const restSlug = RESTAURANTS?.[R]?.slug || '';
+  const restId = RESTAURANTS?.[R]?.id;
+
+  let covers = []; let events = []; let agentCalls = []; let inventoryChanges = []; let inboxNew = [];
+
+  try {
+    const [coversResp, eventsResp, callsResp, auditResp, inboxResp] = await Promise.all([
+      sbFetch(restId ? `covers?restaurant_id=eq.${restId}&service_date=eq.${today}` : `covers?service_date=eq.${today}`).catch(() => []),
+      sbFetch(restId ? `sales_events?event_date=eq.${today}&restaurant_id=eq.${restId}` : `sales_events?event_date=eq.${today}`).catch(() => []),
+      sbFetch(`agent_call_log?created_at=gte.${today}T00:00:00&order=created_at.desc&limit=100`).catch(() => []),
+      sbFetch(`audit_log?created_at=gte.${today}T00:00:00&order=created_at.desc&limit=100`).catch(() => []),
+      sbFetch(restId ? `inbox_items?received_at=gte.${today}T00:00:00&restaurant_id=eq.${restId}` : `inbox_items?received_at=gte.${today}T00:00:00`).catch(() => []),
+    ]);
+    covers = coversResp || [];
+    events = eventsResp || [];
+    agentCalls = callsResp || [];
+    inventoryChanges = (auditResp || []).filter(a => a.entity_type === 'inventory_item');
+    inboxNew = inboxResp || [];
+  } catch(e) { console.warn('EOD fetch:', e); }
+
+  const totalCovers = covers.reduce((sum, c) => sum + Number(c.cover_count || 0), 0);
+  const eventRevenue = events.reduce((sum, e) => sum + (Number(e.guests_count||0) * Number(e.price_per_guest||0)), 0);
+  const totalRevenue = covers.reduce((sum, c) => sum + Number(c.revenue || 0), 0) || eventRevenue;
+  const avgCheck = totalCovers > 0 ? (totalRevenue / totalCovers) : 0;
+  const eventsExec = events.filter(e => e.status === 'in_execution' || e.status === 'closed').length;
+  const eventsConf = events.filter(e => e.status === 'confirmed').length;
+  const inquiries = events.filter(e => e.status === 'inquiry').length;
+  const agentCallsByProvider = {};
+  for (const c of agentCalls) {
+    const p = c.provider || 'unknown';
+    agentCallsByProvider[p] = (agentCallsByProvider[p] || 0) + 1;
+  }
+  const inboxHigh = inboxNew.filter(i => i.priority === 'high').length;
+
+  const w = window.open('', '_blank');
+  w.document.write(`<html><head><title>EOD ${restName} · ${todayLabel}</title>
+    <style>
+      @page { size: A4; margin: 18mm; }
+      body { font-family: 'Times New Roman', Times, serif; max-width: 720px; margin: 0 auto; padding: 0 16px; line-height: 1.55; color: #1a1a1a; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .eod-head { text-align: center; padding-bottom: 18px; border-bottom: 3px double #B86A42; margin-bottom: 28px; }
+      .eod-eyebrow { font-size: 10px; text-transform: uppercase; letter-spacing: 0.24em; color: #B86A42; }
+      .eod-title { font-size: 30px; font-weight: 600; margin: 8px 0 0; font-style: italic; }
+      .eod-sub { font-size: 13px; opacity: 0.65; margin-top: 6px; }
+      .eod-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 12px; margin: 28px 0; }
+      .eod-stat { padding: 14px 16px; border: 1px solid #E5DFD5; border-radius: 6px; }
+      .eod-stat-label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.12em; color: #888; }
+      .eod-stat-val { font-size: 26px; font-weight: 600; margin-top: 6px; font-style: italic; }
+      .eod-stat-sub { font-size: 11px; opacity: 0.6; margin-top: 2px; }
+      .eod-section { margin-top: 32px; }
+      .eod-section h2 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.16em; color: #B86A42; border-bottom: 1px solid #E5DFD5; padding-bottom: 6px; margin-bottom: 12px; }
+      .eod-list { list-style: none; padding: 0; margin: 0; }
+      .eod-list li { padding: 6px 0; border-bottom: 1px dashed #E5DFD5; font-size: 13px; }
+      .eod-list li strong { display: inline-block; min-width: 120px; }
+      .eod-narrative { font-size: 14px; font-style: italic; line-height: 1.7; padding: 14px 16px; background: #FAF8F3; border-left: 3px solid #B86A42; border-radius: 0 4px 4px 0; }
+      .eod-foot { margin-top: 40px; padding-top: 16px; border-top: 1px solid #E5DFD5; font-size: 10px; text-align: center; opacity: 0.55; line-height: 1.6; }
+      .eod-tag { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 10px; background: #FAF8F3; color: #B86A42; }
+      table { width: 100%; border-collapse: collapse; }
+      td, th { padding: 6px 8px; text-align: left; font-size: 12px; }
+      th { font-weight: 500; color: #888; text-transform: uppercase; font-size: 10px; letter-spacing: 0.06em; border-bottom: 1px solid #E5DFD5; }
+      tr:nth-child(even) td { background: #FBFAF7; }
+      @media print { body { font-size: 11pt; } .no-print { display: none; } }
+    </style>
+    </head><body>
+
+    <div class="eod-head">
+      <div class="eod-eyebrow">End-of-Day Report</div>
+      <div class="eod-title">${escapeHtml(restName)}</div>
+      <div class="eod-sub">${escapeHtml(todayLabel)}</div>
+    </div>
+
+    <div class="eod-grid">
+      <div class="eod-stat"><div class="eod-stat-label">Covers</div><div class="eod-stat-val">${totalCovers || '—'}</div><div class="eod-stat-sub">guests served</div></div>
+      <div class="eod-stat"><div class="eod-stat-label">Revenue</div><div class="eod-stat-val">€${Math.round(totalRevenue).toLocaleString()}</div><div class="eod-stat-sub">total</div></div>
+      <div class="eod-stat"><div class="eod-stat-label">Avg check</div><div class="eod-stat-val">€${avgCheck > 0 ? avgCheck.toFixed(0) : '—'}</div><div class="eod-stat-sub">per cover</div></div>
+      <div class="eod-stat"><div class="eod-stat-label">Events</div><div class="eod-stat-val">${eventsExec}</div><div class="eod-stat-sub">${eventsConf} confirmed · ${inquiries} inquiries</div></div>
+    </div>
+
+    <div class="eod-section">
+      <h2>Today's events</h2>
+      ${events.length === 0 ? '<p style="opacity:0.55;font-style:italic">No events recorded today.</p>' : `
+        <table><thead><tr><th>Title</th><th>Type</th><th>Guests</th><th>€/pax</th><th>Revenue</th><th>Status</th></tr></thead>
+        <tbody>${events.map(e => `<tr>
+          <td><strong>${escapeHtml(e.title || '?')}</strong></td>
+          <td>${escapeHtml(e.event_type || '—')}</td>
+          <td>${e.guests_count || 0}</td>
+          <td>€${e.price_per_guest || 0}</td>
+          <td>€${(Number(e.guests_count||0) * Number(e.price_per_guest||0)).toLocaleString()}</td>
+          <td><span class="eod-tag">${escapeHtml(e.status || '—')}</span></td>
+        </tr>`).join('')}</tbody></table>
+      `}
+    </div>
+
+    <div class="eod-section">
+      <h2>Agent activity</h2>
+      ${agentCalls.length === 0 ? '<p style="opacity:0.55;font-style:italic">No agent calls today.</p>' : `
+        <p>${agentCalls.length} skill calls fired today across providers: ${Object.entries(agentCallsByProvider).map(([p,n]) => `<span class="eod-tag">${escapeHtml(p)}: ${n}</span>`).join(' ')}</p>
+        <p style="font-size:12px;opacity:0.7;margin-top:8px">Top skills: ${[...new Set(agentCalls.map(c => c.skill_code).filter(Boolean))].slice(0, 5).map(s => `<span class="eod-tag">${escapeHtml(s)}</span>`).join(' ')}</p>
+      `}
+    </div>
+
+    ${inventoryChanges.length > 0 ? `
+    <div class="eod-section">
+      <h2>Inventory changes</h2>
+      <ul class="eod-list">${inventoryChanges.slice(0, 10).map(a => {
+        let oldV = ''; let newV = '';
+        try { oldV = JSON.parse(a.old_value); newV = JSON.parse(a.new_value); } catch(e) {}
+        return '<li><strong>' + escapeHtml(a.field || 'changed') + '</strong> ' + (oldV ? escapeHtml(String(oldV)) + ' → ' : '') + escapeHtml(String(newV)) + ' <span style="opacity:0.5;font-size:11px">' + escapeHtml(a.user_name||'system') + ' · ' + new Date(a.created_at).toLocaleTimeString() + '</span></li>';
+      }).join('')}</ul>
+    </div>` : ''}
+
+    <div class="eod-section">
+      <h2>Inbox</h2>
+      <p>${inboxNew.length} new item${inboxNew.length===1?'':'s'} today${inboxHigh > 0 ? ' · <strong>' + inboxHigh + ' high-priority</strong>' : ''}.</p>
+      ${inboxNew.slice(0, 5).length > 0 ? '<ul class="eod-list">' + inboxNew.slice(0, 5).map(i => '<li>' + escapeHtml(i.subject || '(no subject)') + ' <span style="opacity:0.5;font-size:11px">· ' + escapeHtml(i.sender_name || i.source || '') + '</span></li>').join('') + '</ul>' : ''}
+    </div>
+
+    <div class="eod-section">
+      <h2>End-of-day note</h2>
+      <div class="eod-narrative">
+        Tomorrow morning, the OS will deliver a Gemini-generated digest at 06:00 UTC summarising overnight highlights, today's wins, risks for the week, and three specific actions to prioritise.
+        ${totalCovers > 0 || events.length > 0 ? '' : ' (Today\\'s data is light — that\\'s expected on slow days or before the OS has full POS sync.)'}
+      </div>
+    </div>
+
+    <div class="eod-foot">
+      Food Studio OS — generated ${new Date().toLocaleTimeString()}<br>
+      ${restName} · ${escapeHtml(restSlug)}
+    </div>
+
+    <script>setTimeout(()=>window.print(), 400)</script>
+    </body></html>
+  `);
+  w.document.close();
+  showToast('EOD report opened in new window — print dialog will appear', { duration_ms: 4000 });
+}
+
 // ══ PRODUCTION (Recipes + Cook Mode + Orders combined) ══
 function renderProduction(){
   // When in active cook step view — full screen, no sub-tabs
@@ -8905,7 +9749,7 @@ function renderIntegrations(){
   const canMgr=['manager','owner'].includes(USER.role);
   if(!canMgr)return`<div style="padding:32px;text-align:center;color:var(--text-tertiary);font-size:13px;">Manager or owner access required.</div>`;
   if(!intData&&!intLoading){loadIntegrations();}
-  if(intLoading||!intData)return`<div style="text-align:center;padding:48px;color:var(--text-tertiary);font-size:13px;">Loading…</div>`;
+  if(intLoading||!intData)return`<div style="padding:40px 24px;">${skeletonRows(4)}</div>`;
   if(intData._error)return`<div style="padding:16px;background:#FBF0F0;border-radius:12px;color:#A03838;font-size:13px;">Error: ${intData._error}</div>`;
 
   const{bookings,accounting,covers}=intData;
@@ -10139,6 +10983,7 @@ function showInlineToastError(msg) {
     <button class="more-btn mgr-only" onclick="switchTab('integrations',null);closeMore()" style="display:none"><span class="more-lbl">Integrations</span></button>
     <button class="more-btn mgr-only" onclick="switchTab('onboarding',null);closeMore()" style="display:none"><span class="more-lbl">Onboard</span></button>
     <button class="more-btn mgr-only" onclick="switchTab('office',null);closeMore()" style="display:none"><span class="more-lbl">Office</span></button>
+    <button class="more-btn" onclick="generateEODReport();closeMore()"><span class="more-lbl">End-of-day report</span></button>
     <button class="more-btn" onclick="switchTab('settings',null);closeMore()"><span class="more-lbl">Settings</span></button>
   </div>
   <div style="border-top:1px solid var(--border);margin-top:12px;padding-top:12px;">
@@ -10379,6 +11224,97 @@ function saEditAndRedraft() {
 initTheme();
 saLoadTemplates();
 
+// ==== Form Validation Helper [UNIQUE_ANCHOR: form_validation] ====
+function validateForm(rules) {
+  const errors = [];
+  for (const r of rules) {
+    const el = document.querySelector(r.selector);
+    if (!el) { errors.push({ selector: r.selector, msg: r.label + ' field not found' }); continue; }
+    const val = (el.value || '').trim();
+    if (r.required && !val) { errors.push({ selector: r.selector, msg: r.label + ' is required', element: el }); continue; }
+    if (val && r.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) { errors.push({ selector: r.selector, msg: r.label + ' must be a valid email', element: el }); continue; }
+    if (val && r.type === 'number') {
+      const n = Number(val);
+      if (isNaN(n)) { errors.push({ selector: r.selector, msg: r.label + ' must be a number', element: el }); continue; }
+      if (r.min !== undefined && n < r.min) { errors.push({ selector: r.selector, msg: r.label + ' must be at least ' + r.min, element: el }); continue; }
+      if (r.max !== undefined && n > r.max) { errors.push({ selector: r.selector, msg: r.label + ' must be at most ' + r.max, element: el }); continue; }
+    }
+    if (val && r.pattern && !r.pattern.test(val)) { errors.push({ selector: r.selector, msg: r.label + ' format is invalid', element: el }); continue; }
+    if (r.custom && typeof r.custom === 'function') {
+      const result = r.custom(val);
+      if (result !== true) errors.push({ selector: r.selector, msg: result || r.label + ' is invalid', element: el });
+    }
+  }
+  document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
+  for (const e of errors) {
+    if (e.element) e.element.classList.add('input-error');
+  }
+  if (errors.length > 0) {
+    const first = errors[0];
+    if (first.element && first.element.scrollIntoView) first.element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (typeof showToast === 'function') showToast(first.msg, { kind: 'error', duration_ms: 4000 });
+    return false;
+  }
+  return true;
+}
+
+// ==== Keyboard Shortcuts Cheatsheet [UNIQUE_ANCHOR: shortcuts_help] ====
+function openShortcutsHelp() {
+  const isMac = /Mac|iPhone|iPad/.test(navigator.platform);
+  const cmd = isMac ? '⌘' : 'Ctrl';
+  const groups = [
+    { label: 'Navigation', items: [
+      { keys: cmd + '+K', desc: 'Open command palette — search recipes, wines, suppliers, events, agents' },
+      { keys: cmd + '+/', desc: 'Show this help' },
+      { keys: 'Esc', desc: 'Close any modal or palette' },
+      { keys: '↑ ↓', desc: 'Navigate command palette / inbox / lists' },
+      { keys: 'Enter', desc: 'Open the highlighted result' },
+    ]},
+    { label: 'Voice', items: [
+      { keys: 'Tap mic', desc: 'Voice commands — say "open cleaning", "find albariño", "scale Bisque for 60 covers"' },
+    ]},
+    { label: 'Tabs', items: [
+      { keys: 'Voice: "open X"', desc: 'Open Today / Menu / Recipes / Cleaning / Events / Schedule / Production / Inbox / Office' },
+    ]},
+    { label: 'Theme', items: [
+      { keys: 'More → Theme', desc: 'Bohemian (warm) · Midnight (evening service) · Concierge (back office) · Auto' },
+    ]},
+    { label: 'Power moves', items: [
+      { keys: cmd + '+K → "draft proposal"', desc: 'Jump straight to Sales Assistant' },
+      { keys: cmd + '+K → "scale a recipe"', desc: 'Open scale modal for any recipe' },
+      { keys: cmd + '+K → "categorise expense"', desc: 'Fire CFO Gem on demand' },
+      { keys: 'Tap mic → "scale [recipe] for N covers"', desc: 'Voice-driven recipe scaling' },
+    ]},
+    { label: 'Public routes', items: [
+      { keys: 'foodstudio.ai/?wizard=1', desc: 'Public Sales Assistant — guests submit inquiry forms' },
+      { keys: 'foodstudio.ai/?menu=bistro-mondo', desc: 'Public allergen-aware menu (add &allergens=gluten,nuts to filter)' },
+    ]},
+  ];
+  const root = document.getElementById('sk-body');
+  if (!root) return;
+  root.innerHTML = groups.map(g => `
+    <div class="sk-group">
+      <div class="sk-group-label">${g.label}</div>
+      ${g.items.map(it => `
+        <div class="sk-row">
+          <div class="sk-keys"><kbd>${it.keys}</kbd></div>
+          <div class="sk-desc">${it.desc}</div>
+        </div>
+      `).join('')}
+    </div>
+  `).join('');
+  const el = document.getElementById('m-shortcuts');
+  if (el) { el.style.display = 'flex'; setTimeout(() => el.classList.add('show'), 10); }
+}
+
+// Cmd+/ keyboard shortcut listener
+document.addEventListener('keydown', (e) => {
+  if ((e.metaKey || e.ctrlKey) && (e.key === '/' || e.key === '?')) {
+    e.preventDefault();
+    openShortcutsHelp();
+  }
+});
+
 // ==== Cmd+K command palette ====
 let cmdkOpen = false;
 let cmdkSelectedIdx = 0;
@@ -10413,6 +11349,7 @@ function cmdkSearch(query) {
     { type:'action', icon:'⟳', title:'Scale a recipe', sub:'Culinary Gem · multiply for any cover count', fn:()=>{ closeCmdK(); setTimeout(promptScaleAnyRecipe, 100); }, keywords:'scale recipe culinary gem multiply' },
     { type:'action', icon:'☾', title:'Toggle dark mode', sub:'Theme', fn:()=>{ const cur=document.documentElement.getAttribute('data-theme'); applyTheme((cur==='midnight'||cur==='dark')?'bohemian':'midnight'); }, keywords:'dark light theme mode' },
     { type:'action', icon:'⌖', title:'Open Menu Library', sub:'All Canva designs', fn:()=>{ menuViewMode='library'; switchTab('menu',null); }, keywords:'menu library canva designs' },
+    { type:'action', icon:'⌘', title:'Keyboard shortcuts', sub:'See all available shortcuts', fn: () => { closeCmdK(); setTimeout(openShortcutsHelp, 100); }, keywords:'keyboard shortcut help cheatsheet' },
   ];
   for (const a of actions) {
     if (!q || a.title.toLowerCase().includes(q) || a.keywords.includes(q)) results.push(a);
@@ -10814,6 +11751,22 @@ setInterval(() => {
       <button class="aii-mic" id="aii-mic" onclick="if(typeof toggleVoice==='function') toggleVoice()" title="Voice">◉</button>
       <input class="aii-input" id="aii-input" type="text" placeholder="Ask, command, or dictate…" onkeydown="if(event.key==='Enter')aiInlineSend()">
       <button class="aii-send" onclick="aiInlineSend()">Send</button>
+    </div>
+  </div>
+</div>
+
+<!-- Keyboard Shortcuts Cheatsheet Modal -->
+<div class="modal-overlay" id="m-shortcuts" onclick="if(event.target===this)closeModal('m-shortcuts')" style="display:none">
+  <div class="modal-sheet shortcuts-sheet">
+    <div class="mh"></div>
+    <div class="sk-header">
+      <div class="sk-eyebrow">Keyboard shortcuts</div>
+      <div class="sk-title">Move at speed.</div>
+      <div class="sk-sub">Every shortcut available right now in Food Studio OS.</div>
+    </div>
+    <div class="sk-body" id="sk-body"></div>
+    <div class="sk-foot">
+      <button class="cta-sec" onclick="closeModal('m-shortcuts')">Close</button>
     </div>
   </div>
 </div>
