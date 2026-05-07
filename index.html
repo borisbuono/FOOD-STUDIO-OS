@@ -3405,6 +3405,9 @@ const db = (typeof supabase !== 'undefined')
       auth: { autoRefreshToken: false, persistSession: false, detectSessionInUrl: false }
     })
   : null;
+// `sb` alias used by sales-assistant + auth flows (saLoadTemplates, saUseTemplate, saveBooking, magic-link signin, friction_log inserts, etc.)
+const sb = db;
+window.sb = db;
 
 // ════════════════════════════════════════════════════════════════════
 // ─── AUDIT LOG HELPER [UNIQUE_ANCHOR: log_audit_fn] ──
@@ -4933,8 +4936,19 @@ function initApp(){
     }
   } catch(err) {
     console.error('[initApp] crashed:', err);
+    // Surface a useful diagnostic instead of "Something went wrong"
+    // — find which globals are missing, since that's the regression class
+    // that took down 2026-05-06's deploy (renderEvents missing close-brace
+    // pulled TASKS/MENU/RECIPES/etc. into local scope).
+    var missing = [];
+    ['TASKS','MENU','RECIPES','MEP','PROVIDERS','SHIFTS','RECIPE_STEPS','WEEK_SHIFTS','ALLERGENS'].forEach(function(g){
+      if (typeof window[g] === 'undefined') missing.push(g);
+    });
     var app = document.getElementById('app');
-    if (app) app.innerHTML = '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:60vh;gap:16px;padding:32px;text-align:center"><div style="font-size:40px">⚠️</div><div style="font-family:Outfit,sans-serif;font-size:18px;font-weight:600;color:#1F2916">Something went wrong</div><div style="font-size:13px;color:#9B8E7E;line-height:1.6">The app failed to load.<br>Please refresh the page.</div><button onclick="location.reload()" style="margin-top:8px;padding:12px 24px;border-radius:12px;border:none;background:#4E6332;color:#fff;font-family:Outfit,sans-serif;font-size:14px;font-weight:600;cursor:pointer;">Refresh</button></div>';
+    var detail = missing.length
+      ? '<div style="font-size:12px;color:#A03838;margin-top:6px;font-family:DM Mono,monospace">Missing data globals: ' + missing.join(', ') + '<br>(usually means a brace/syntax bug pushed top-level consts into a local scope)</div>'
+      : '<div style="font-size:12px;color:#A03838;margin-top:6px;font-family:DM Mono,monospace">' + (err && err.message ? String(err.message).replace(/[<>]/g,'') : '') + '</div>';
+    if (app) app.innerHTML = '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:60vh;gap:16px;padding:32px;text-align:center"><div style="font-size:40px">⚠️</div><div style="font-family:Outfit,sans-serif;font-size:18px;font-weight:600;color:#1F2916">Something went wrong</div><div style="font-size:13px;color:#9B8E7E;line-height:1.6">The app failed to load.<br>Please refresh the page.</div>' + detail + '<button onclick="location.reload()" style="margin-top:8px;padding:12px 24px;border-radius:12px;border:none;background:#4E6332;color:#fff;font-family:Outfit,sans-serif;font-size:14px;font-weight:600;cursor:pointer;">Refresh</button></div>';
   }
 }
 
@@ -8146,6 +8160,7 @@ function renderEvents(){
       </div>` : ''}
     </div>`;
   });
+  }
   return html;
 }
 
@@ -11589,7 +11604,6 @@ function showInlineToastError(msg) {
   t.style.background = '#C0392B';
   t.classList.add('show');
   setTimeout(function(){ t.classList.remove('show'); t.style.background = ''; }, 2800);
-}
 }
 </script>
 
