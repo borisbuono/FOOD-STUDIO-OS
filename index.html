@@ -2639,6 +2639,32 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
 .office-cta-sec:hover { background: var(--ember, #4E6332); color: white; }
 
 /* ─────────────────────────────────────────────────────────────── */
+/* THE OWNER'S DESK — Decisions panel (Office Step 1, 2026-05-08) */
+/* ─────────────────────────────────────────────────────────────── */
+.ows-domain { padding: 32px 0 24px; border-bottom: 1px solid var(--border, rgba(0,0,0,0.08)); }
+.ows-domain:last-child { border-bottom: none; }
+.ows-label { font-family: var(--font-serif, Fraunces, Georgia, serif); font-style: italic; font-weight: 400; font-size: 11px; letter-spacing: 0.32em; text-transform: uppercase; color: var(--text-tertiary, #9B8E7E); margin: 0 0 18px 0; padding: 0 4px; display: flex; align-items: center; gap: 12px; }
+.ows-label::after { content: ''; flex: 1; border-top: 1px solid var(--border, rgba(0,0,0,0.12)); }
+.ows-empty { text-align: center; padding: 56px 24px 32px; }
+.ows-empty-quote { font-family: var(--font-serif, Fraunces, Georgia, serif); font-style: italic; font-weight: 300; font-size: 30px; color: var(--text-primary); margin-bottom: 8px; line-height: 1.2; }
+.ows-empty-sub { font-size: 13px; color: var(--text-tertiary, #9B8E7E); max-width: 44ch; margin: 0 auto; line-height: 1.55; }
+.ows-tier-label { font-family: 'Outfit', sans-serif; font-size: 10.5px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-tertiary, #9B8E7E); padding: 18px 4px 8px; font-weight: 600; }
+.ows-decision { background: var(--bg-card, #FFFFFF); border: 1px solid var(--border, rgba(0,0,0,0.08)); border-radius: 12px; padding: 18px 22px; margin: 8px 0; transition: border-color 0.18s ease, box-shadow 0.18s ease; }
+.ows-decision:hover { border-color: var(--rule, rgba(0,0,0,0.18)); box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+.ows-decision.high { border-left: 3px solid var(--ember, #B86A42); padding-left: 19px; }
+.ows-decision-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; gap: 12px; }
+.ows-decision-source { font-family: 'Outfit', sans-serif; font-size: 9.5px; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 600; opacity: 0.85; }
+.ows-decision-age { font-family: var(--font-mono, 'DM Mono', monospace); font-size: 10.5px; color: var(--text-tertiary, #9B8E7E); white-space: nowrap; }
+.ows-decision-title { font-family: var(--font-serif, Fraunces, Georgia, serif); font-weight: 500; font-size: 18px; color: var(--text-primary); margin-bottom: 6px; line-height: 1.3; }
+.ows-decision-context { font-family: var(--font-serif, Fraunces, Georgia, serif); font-weight: 300; font-size: 14.5px; line-height: 1.65; color: var(--text-secondary, #5C4E3C); margin-bottom: 14px; max-width: 64ch; }
+.ows-decision-meta { font-family: var(--font-mono, 'DM Mono', monospace); font-size: 10.5px; color: var(--text-tertiary, #9B8E7E); margin-bottom: 12px; letter-spacing: 0.04em; }
+.ows-decision-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.ows-action { background: transparent; border: 1px solid var(--border, rgba(0,0,0,0.12)); border-radius: 8px; padding: 8px 14px; font-family: 'Outfit', sans-serif; font-size: 12.5px; font-weight: 500; color: var(--text-secondary, #5C4E3C); cursor: pointer; transition: all 0.18s ease; }
+.ows-action:hover { border-color: var(--ember, #B86A42); color: var(--ember, #B86A42); }
+.ows-action.primary { background: var(--ember, #B86A42); border-color: var(--ember, #B86A42); color: white; }
+.ows-action.primary:hover { opacity: 0.92; }
+
+/* ─────────────────────────────────────────────────────────────── */
 /* ACTIVITY FEED [UNIQUE_ANCHOR: activity_feed_css] */
 /* ─────────────────────────────────────────────────────────────── */
 .activity-feed { margin-top: 24px; padding: 16px; border: 1px solid var(--border, rgba(0,0,0,0.08)); border-radius: 10px; background: var(--bg-card, transparent); }
@@ -4435,6 +4461,24 @@ const MENU_LIBRARY = [
 let USER={name:'',role:'owner',lang:'en',zone:''},selRV='',selLV='en',selRestV=null,selAreaV='';
 let R=0,AREA='boh',ZONE='Hot Station';
 let currentTab='today',recEditId=null,menuAddSec='hot',prodTab='mep',todaySubTab='day',eventsView='pipeline',cleaningView='tasks';
+// RESTAURANTS: populated at boot from Supabase via loadRestaurants(). Indexed by R: [0]=Taller, [1]=Bistro Mondo.
+// Many call sites use `typeof RESTAURANTS !== 'undefined'` guards, but a few (loadBookings, etc.)
+// reference RESTAURANTS[R] directly — declaring it as [] here means those calls return undefined cleanly via optional chaining instead of throwing ReferenceError.
+let RESTAURANTS = [];
+async function loadRestaurants(){
+  try {
+    const rows = await sbFetch('restaurants?select=id,name,slug,latitude,longitude,fence_radius_m');
+    if (!rows || !rows.length) return;
+    const bySlug = {};
+    rows.forEach(r => { bySlug[r.slug] = r; });
+    // Stable index mapping by slug (per CLAUDE.md: R=0=Taller, R=1=Bistro Mondo)
+    RESTAURANTS = [
+      bySlug['taller'] || bySlug['taller-sa-penya'] || rows[0],
+      bySlug['bistro-mondo'] || rows[1] || rows[0]
+    ];
+    window.RESTAURANTS = RESTAURANTS;
+  } catch(e) { console.warn('[loadRestaurants] failed:', e.message); }
+}
 let currentMenuType='all';
 let menuViewMode='active'; // 'active' | 'library'
 let ordersSearchQuery='';
@@ -4921,6 +4965,7 @@ function initApp(){
     // Populate team-edit restaurant dropdown
     (async()=>{try{const rs=await sbFetch('restaurants?select=id,name,slug&order=name.asc');const sel=document.getElementById('tm-rest');if(sel&&rs){rs.forEach(r=>{const o=document.createElement('option');o.value=r.id;o.textContent=r.name;sel.appendChild(o);});}}catch(e){}})();
     // ── Supabase: load live recipes in background ──
+    loadRestaurants(); // populates RESTAURANTS[] global; many tabs depend on it
     loadSupabaseRecipes();
     loadSupabaseBriefings();
     loadSupabaseUrgentTasks();
@@ -5399,6 +5444,205 @@ function markInvoiceReceived(idx) {
   renderTab();
 }
 
+// ══════════════════════════════════════════════════════════════════════
+// THE OWNER'S DESK — Decisions panel (Office Step 1, 2026-05-08)
+// Renders at the top of the Office tab. Aggregates open items across
+// review_flags + inbox_items + recent HACCP exceptions into a single
+// priority-ordered feed with action buttons (resolve / defer).
+// See: 02_Build/decisions/office_module_redesign.md
+// ══════════════════════════════════════════════════════════════════════
+let owsDecisionsCache = null;
+let owsDecisionsLoading = false;
+
+async function loadOwsDecisions() {
+  if (owsDecisionsLoading) return;
+  owsDecisionsLoading = true;
+  try {
+    const sevenDaysAgo = new Date(Date.now() - 7 * 86400000).toISOString();
+    const [flags, inbox, haccp] = await Promise.all([
+      sbFetch('review_flags?resolved=eq.false&order=created_at.desc&limit=20').catch(() => []),
+      sbFetch('inbox_items?status=not.in.(resolved,dismissed,archived)&order=received_at.desc.nullslast&limit=20').catch(() => []),
+      sbFetch(`haccp_temperature_logs?is_within_range=eq.false&measured_at=gte.${sevenDaysAgo}&order=measured_at.desc&limit=10`).catch(() => [])
+    ]);
+    owsDecisionsCache = normalizeOwsDecisions(flags || [], inbox || [], haccp || []);
+  } catch (e) {
+    console.warn('[loadOwsDecisions] failed:', e.message);
+    owsDecisionsCache = [];
+  }
+  owsDecisionsLoading = false;
+  if (currentTab === 'office') renderTab();
+}
+
+function normalizeOwsDecisions(flags, inbox, haccp) {
+  const decisions = [];
+  flags.forEach(f => {
+    const cat = (f.skill_category || 'review').replace(/_/g, ' ');
+    const isHigh = ['GAP', 'CONFLICT'].includes(f.flag_type);
+    decisions.push({
+      id: 'flag:' + f.id,
+      source: 'review_flag',
+      sourceLabel: 'review',
+      priority: isHigh ? 'high' : 'medium',
+      title: `${f.flag_type || 'Flag'} · ${cat}`,
+      context: f.description || 'No description provided.',
+      meta: f.source_ref ? `Source: ${f.source_ref}` : '',
+      actions: [
+        { label: 'Mark resolved', fn: `owsResolveDecision('flag','${f.id}')`, primary: true },
+        { label: 'Defer', fn: `owsDeferDecision('flag:${f.id}')` }
+      ],
+      created_at: f.created_at
+    });
+  });
+  inbox.forEach(i => {
+    const pri = (i.priority || 'medium').toLowerCase();
+    const subj = i.subject || '(no subject)';
+    const from = i.sender_name || i.sender || i.source || 'inbox';
+    decisions.push({
+      id: 'inbox:' + i.id,
+      source: 'inbox_item',
+      sourceLabel: i.source || 'inbox',
+      priority: ['high', 'medium', 'low'].includes(pri) ? pri : 'medium',
+      title: subj,
+      context: (i.body || '').slice(0, 320) + ((i.body || '').length > 320 ? '…' : ''),
+      meta: `From: ${from}${i.category ? ' · ' + i.category : ''}`,
+      actions: [
+        i.external_url ? { label: 'Open ↗', fn: `window.open('${i.external_url}','_blank')`, primary: true } : { label: 'Open in inbox', fn: `switchTab('inbox')`, primary: true },
+        { label: 'Dismiss', fn: `owsResolveDecision('inbox','${i.id}')` }
+      ],
+      created_at: i.received_at || i.created_at
+    });
+  });
+  haccp.forEach(h => {
+    const tempC = parseFloat(h.temperature_c);
+    const min = parseFloat(h.target_min_c);
+    const max = parseFloat(h.target_max_c);
+    let direction = '';
+    if (!isNaN(tempC) && !isNaN(max) && tempC > max) direction = `${(tempC - max).toFixed(1)}°C above max`;
+    else if (!isNaN(tempC) && !isNaN(min) && tempC < min) direction = `${(min - tempC).toFixed(1)}°C below min`;
+    const when = h.measured_at ? new Date(h.measured_at).toLocaleString() : 'unknown time';
+    decisions.push({
+      id: 'haccp:' + h.id,
+      source: 'haccp',
+      sourceLabel: 'haccp',
+      priority: 'high',
+      title: `HACCP · ${h.equipment_name || h.equipment_type || 'equipment'} out of range`,
+      context: `${h.temperature_c}°C at ${when}. ${direction} (target ${h.target_min_c}–${h.target_max_c}°C).${h.corrective_action ? ' Corrective action logged: ' + h.corrective_action + '.' : ' No corrective action logged.'}`,
+      meta: h.equipment_id ? `Equipment: ${h.equipment_id}` : '',
+      actions: [
+        { label: 'Mark reviewed', fn: `owsResolveDecision('haccp','${h.id}')`, primary: true },
+        { label: 'Open HACCP →', fn: `switchTab('cleaning')` }
+      ],
+      created_at: h.measured_at
+    });
+  });
+  const order = { high: 0, medium: 1, low: 2 };
+  decisions.sort((a, b) => {
+    const pa = order[a.priority] ?? 1;
+    const pb = order[b.priority] ?? 1;
+    if (pa !== pb) return pa - pb;
+    return new Date(b.created_at || 0) - new Date(a.created_at || 0);
+  });
+  return decisions;
+}
+
+function owsAge(iso) {
+  if (!iso) return '—';
+  const ms = Date.now() - new Date(iso).getTime();
+  if (ms < 0 || isNaN(ms)) return '—';
+  if (ms < 60 * 1000) return 'just now';
+  if (ms < 60 * 60 * 1000) return Math.floor(ms / 60000) + ' min ago';
+  if (ms < 24 * 60 * 60 * 1000) return Math.floor(ms / 3600000) + ' h ago';
+  if (ms < 7 * 24 * 60 * 60 * 1000) return Math.floor(ms / 86400000) + ' d ago';
+  return new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+}
+
+function owsSourceColor(source) {
+  return ({ review_flag: 'var(--ember, #B86A42)', inbox_item: 'var(--fern, #5A8A78)', haccp: 'var(--ruby, #A03838)' })[source] || 'var(--text-tertiary, #9B8E7E)';
+}
+
+function renderOwsDecisionCard(d) {
+  const tier = d.priority === 'high' ? ' high' : '';
+  const safe = (s) => (typeof escapeHtml === 'function' ? escapeHtml(s || '') : String(s || '').replace(/[<>&]/g, c => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;' }[c])));
+  return `<div class="ows-decision${tier}" data-id="${d.id}">
+    <div class="ows-decision-head">
+      <span class="ows-decision-source" style="color:${owsSourceColor(d.source)}">${safe(d.sourceLabel)}</span>
+      <span class="ows-decision-age">${owsAge(d.created_at)}</span>
+    </div>
+    <div class="ows-decision-title">${safe(d.title)}</div>
+    <div class="ows-decision-context">${safe(d.context)}</div>
+    ${d.meta ? `<div class="ows-decision-meta">${safe(d.meta)}</div>` : ''}
+    <div class="ows-decision-actions">
+      ${d.actions.map(a => `<button class="ows-action${a.primary ? ' primary' : ''}" onclick="${a.fn}">${safe(a.label)}</button>`).join('')}
+    </div>
+  </div>`;
+}
+
+function renderOwsDecisions() {
+  if (owsDecisionsCache === null) {
+    if (!owsDecisionsLoading) loadOwsDecisions();
+    return `<section class="ows-domain"><div class="ows-label">Decisions</div><div class="ows-empty"><div class="ows-empty-quote">Loading…</div></div></section>`;
+  }
+  const decisions = owsDecisionsCache;
+  if (!decisions.length) {
+    return `<section class="ows-domain"><div class="ows-label">Decisions</div>
+      <div class="ows-empty">
+        <div class="ows-empty-quote">All clear.</div>
+        <div class="ows-empty-sub">Nothing needs your call right now. The agents are watching — anything important will surface here.</div>
+      </div>
+    </section>`;
+  }
+  const high = decisions.filter(d => d.priority === 'high');
+  const med = decisions.filter(d => d.priority === 'medium');
+  const low = decisions.filter(d => d.priority === 'low');
+  let html = `<section class="ows-domain">
+    <div class="ows-label">Decisions · ${decisions.length} open
+      <button onclick="owsDecisionsCache=null;loadOwsDecisions();renderTab();" title="Refresh" style="background:transparent;border:none;cursor:pointer;font-family:'DM Mono',monospace;font-size:13px;color:var(--text-tertiary,#9B8E7E);padding:0 4px;line-height:1;">↻</button>
+    </div>`;
+  if (high.length) {
+    html += `<div class="ows-tier-label">High priority · ${high.length}</div>`;
+    high.forEach(d => html += renderOwsDecisionCard(d));
+  }
+  if (med.length) {
+    html += `<div class="ows-tier-label">Medium · ${med.length}</div>`;
+    med.forEach(d => html += renderOwsDecisionCard(d));
+  }
+  if (low.length) {
+    html += `<div class="ows-tier-label">Low · ${low.length}</div>`;
+    low.forEach(d => html += renderOwsDecisionCard(d));
+  }
+  html += `</section>`;
+  return html;
+}
+
+async function owsResolveDecision(source, id) {
+  const conf = ({ flag: ['review_flags', { resolved: true, resolved_at: new Date().toISOString() }],
+                  inbox: ['inbox_items', { status: 'resolved', resolved_at: new Date().toISOString() }],
+                  haccp: ['haccp_temperature_logs', { corrective_action: 'Reviewed by ' + (USER && USER.name || 'operator') + ' at ' + new Date().toLocaleString() }] })[source];
+  if (!conf) return;
+  const [table, body] = conf;
+  try {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}?id=eq.${id}`, {
+      method: 'PATCH',
+      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+      body: JSON.stringify(body)
+    });
+    if (!r.ok) throw new Error('PATCH ' + r.status);
+    owsDecisionsCache = (owsDecisionsCache || []).filter(d => d.id !== `${source}:${id}`);
+    if (typeof showToast === 'function') showToast('Decision resolved');
+    if (currentTab === 'office') renderTab();
+  } catch (e) {
+    if (typeof showToast === 'function') showToast('Couldn\'t resolve: ' + e.message);
+    else console.warn('[owsResolveDecision]', e);
+  }
+}
+
+function owsDeferDecision(decisionId) {
+  // v1: client-side dismissal until next refresh. Future: persist deferred_until on the source row.
+  owsDecisionsCache = (owsDecisionsCache || []).filter(d => d.id !== decisionId);
+  if (typeof showToast === 'function') showToast('Deferred until next refresh');
+  if (currentTab === 'office') renderTab();
+}
+
 function renderOffice(){
   const canMgr=['manager','owner'].includes(USER.role);
   if(!canMgr)return`<div style="padding:32px;text-align:center;color:var(--text-tertiary);font-size:13px;">Office access is for owners and managers.</div>`;
@@ -5406,6 +5650,14 @@ function renderOffice(){
   loadAgentSkills();
 
   let html=`<div style="padding:16px 8px;">`;
+
+  // ═════════════════════════════════════════════════════════════════
+  // SECTION 0: Decisions panel (Owner's Desk Step 1)
+  // The first thing the operator sees on the Office tab. Aggregates
+  // open review_flags + active inbox_items + recent HACCP exceptions
+  // into a single priority-ordered feed with action buttons.
+  // ═════════════════════════════════════════════════════════════════
+  html+=renderOwsDecisions();
 
   // ═════════════════════════════════════════════════════════════════
   // SECTION 1: Finance Pulse
@@ -8695,11 +8947,17 @@ async function loadSalesEventsForSchedule() {
 
     // Load covers per day (if table exists)
     try {
-      const covers = await sbFetch(`covers?restaurant_id=eq.${restId}&cover_date=gte.${minStr}&cover_date=lte.${maxStr}`);
+      // Schema: covers has columns `restaurant` (slug, not UUID) and `service_date`.
+      // Old query used cover_date + restaurant_id, both wrong. Switching to slug-based filter.
+      const restSlug = RESTAURANTS?.[R]?.slug;
+      const coversPath = restSlug
+        ? `covers?restaurant=eq.${restSlug}&service_date=gte.${minStr}&service_date=lte.${maxStr}`
+        : `covers?service_date=gte.${minStr}&service_date=lte.${maxStr}`;
+      const covers = await sbFetch(coversPath);
       COVERS_BY_DATE = {};
       if (covers && covers.length) {
         covers.forEach(c => {
-          const dateStr = (c.cover_date || '').slice(0, 10);
+          const dateStr = (c.service_date || c.cover_date || '').slice(0, 10);
           if (!COVERS_BY_DATE[dateStr]) COVERS_BY_DATE[dateStr] = [];
           COVERS_BY_DATE[dateStr].push(c);
         });
@@ -8749,10 +9007,11 @@ async function loadBookings() {
   dayDate.setDate(dayDate.getDate() - today + selectedDay);
   const dayDateStr = dayDate.toISOString().slice(0, 10);
 
-  const restId = RESTAURANTS?.[R]?.id;
+  // covers.restaurant is a slug (text), NOT a UUID FK. See bug fix 2026-05-08.
+  const restSlug = RESTAURANTS?.[R]?.slug;
   try {
-    const path = restId
-      ? `covers?restaurant_id=eq.${restId}&service_date=eq.${dayDateStr}&order=reservation_time.asc.nullsfirst`
+    const path = restSlug
+      ? `covers?restaurant=eq.${restSlug}&service_date=eq.${dayDateStr}&order=reservation_time.asc.nullsfirst`
       : `covers?service_date=eq.${dayDateStr}&order=reservation_time.asc.nullsfirst`;
     const rows = await sbFetch(path);
     _bookingsCache = rows || [];
@@ -9652,7 +9911,7 @@ async function generateEODReport(){
 
   try {
     const [coversResp, eventsResp, callsResp, auditResp, inboxResp] = await Promise.all([
-      sbFetch(restId ? `covers?restaurant_id=eq.${restId}&service_date=eq.${today}` : `covers?service_date=eq.${today}`).catch(() => []),
+      sbFetch(restSlug ? `covers?restaurant=eq.${restSlug}&service_date=eq.${today}` : `covers?service_date=eq.${today}`).catch(() => []),
       sbFetch(restId ? `sales_events?event_date=eq.${today}&restaurant_id=eq.${restId}` : `sales_events?event_date=eq.${today}`).catch(() => []),
       sbFetch(`agent_call_log?created_at=gte.${today}T00:00:00&order=created_at.desc&limit=100`).catch(() => []),
       sbFetch(`audit_log?created_at=gte.${today}T00:00:00&order=created_at.desc&limit=100`).catch(() => []),
@@ -9855,24 +10114,42 @@ function renderCommandCenter(){
 }
 
 function renderCCEntities(entities,rels){
-  // Build adjacency: parent_id → [children]
+  // Schema: entities.entity_type (NOT .type), entity_relationships.source_entity_id/target_entity_id (NOT parent/child).
+  // Type values: 'holding_company' | 'operating_venue' | 'consultancy_client' | 'partner' | 'supplier'.
+  // Build adjacency: source → [target]. Source is the parent for hierarchy purposes.
   const children={};
-  rels.forEach(r=>{if(!children[r.parent_id])children[r.parent_id]=[];children[r.parent_id].push(r.child_id);});
-  // Find roots (no parent)
-  const hasParent=new Set(rels.map(r=>r.child_id));
+  rels.forEach(r=>{
+    const src=r.source_entity_id, tgt=r.target_entity_id;
+    if(!src||!tgt)return;
+    if(!children[src])children[src]=[];
+    children[src].push(tgt);
+  });
+  const hasParent=new Set(rels.map(r=>r.target_entity_id).filter(Boolean));
   const roots=entities.filter(e=>!hasParent.has(e.id));
-  const typeColor={holding:'#4E6332',venue:'#4A7B6A',client:'#2A5F7A',partner:'#6B4E8A',supplier:'#A8893A'};
+  const typeColor={
+    holding_company:'#4E6332', operating_venue:'#4A7B6A', consultancy_client:'#2A5F7A',
+    partner:'#6B4E8A', supplier:'#A8893A',
+    // legacy short keys (defensive in case any legacy row uses them)
+    holding:'#4E6332', venue:'#4A7B6A', client:'#2A5F7A'
+  };
+  const typeLabel={
+    holding_company:'holding', operating_venue:'venue', consultancy_client:'client',
+    partner:'partner', supplier:'supplier'
+  };
   function renderNode(id,depth){
     const e=entities.find(x=>x.id===id);if(!e)return'';
+    const t=e.entity_type||e.type||'—';
+    const tLabel=typeLabel[t]||t;
     const kids=(children[id]||[]);
     const indent=depth*16;
+    const loc=[e.city,e.country].filter(Boolean).join(', ');
     let html=`<div class="cc-node" style="padding-left:${indent+12}px">
-      <span class="cc-node-dot" style="background:${typeColor[e.type]||'#C8C0B8'}"></span>
+      <span class="cc-node-dot" style="background:${typeColor[t]||'#C8C0B8'}"></span>
       <div class="cc-node-body">
         <div class="cc-node-name">${e.name}</div>
-        <div class="cc-node-meta">${e.type}${e.city?` · ${e.city}`:''}${e.country?`, ${e.country}`:''}</div>
+        <div class="cc-node-meta">${tLabel}${loc?` · ${loc}`:''}${e.legal_name?` · <em style="color:var(--text-tertiary)">${e.legal_name}</em>`:''}</div>
       </div>
-      <span class="cc-node-type" style="color:${typeColor[e.type]||'var(--text-tertiary)'};">${e.type}</span>
+      <span class="cc-node-type" style="color:${typeColor[t]||'var(--text-tertiary)'};">${tLabel}</span>
     </div>`;
     kids.forEach(kid=>html+=renderNode(kid,depth+1));
     return html;
@@ -9887,7 +10164,8 @@ function renderCCEntities(entities,rels){
 function renderCCSkills(entities,skills){
   const cats=['brand','kitchen','ops','finance'];
   const catLabel={brand:'Brand',kitchen:'Kitchen',ops:'Ops',finance:'Finance'};
-  const venues=entities.filter(e=>['holding','venue'].includes(e.type));
+  // Schema: entities.entity_type — values include holding_company, operating_venue (legacy short keys also tolerated)
+  const venues=entities.filter(e=>['holding','venue','holding_company','operating_venue'].includes(e.entity_type||e.type));
   let html=`<div class="sect-label">Skill coverage matrix</div>
   <div class="cc-matrix">
     <div class="cc-matrix-row header">
@@ -9927,14 +10205,18 @@ function renderCCFlags(flags,entities){
   const typeBg={GAP:'#FBF0F0',JUDGMENT:'#FBF3E8',CONFLICT:'#FBF0F0',OUTDATED:'#F7F5F1'};
   let html=`<div class="sect-label">${flags.length} open flag${flags.length>1?'s':''}</div>`;
   flags.forEach(f=>{
+    // Schema: review_flags.flag_type, .skill_category, .description (no gap_description / what_was_ambiguous)
+    const t=f.flag_type||f.type||'GAP';
+    const sect=f.skill_category||f.section||'';
+    const desc=f.description||f.gap_description||f.what_was_ambiguous||'';
     const ent=entities?.find(e=>e.id===f.entity_id);
     html+=`<div class="cc-flag">
       <div class="cc-flag-head">
-        <span class="cc-flag-type" style="background:${typeBg[f.type]};color:${typeColor[f.type]};">${f.type}</span>
-        <span class="cc-flag-section">${f.section||''}</span>
+        <span class="cc-flag-type" style="background:${typeBg[t]||'#F7F5F1'};color:${typeColor[t]||'var(--text-tertiary)'};">${t}</span>
+        <span class="cc-flag-section">${sect}</span>
         ${ent?`<span class="cc-flag-entity">${ent.name}</span>`:''}
       </div>
-      <div class="cc-flag-desc">${f.description||f.gap_description||f.what_was_ambiguous||''}</div>
+      <div class="cc-flag-desc">${desc}</div>
     </div>`;
   });
   return html;
@@ -9950,10 +10232,14 @@ function renderCCCoA(coa,entities){
     html+=`<div class="cc-coa-group">
       <div class="cc-coa-group-label">${groupLabel[g]||g}</div>`;
     accts.forEach(a=>{
+      // Schema: chart_of_accounts has label_es / label_en (no .name); no .holded_id column.
+      // Pick label by USER.lang, fall back to either available label.
+      const lang=(typeof USER!=='undefined'&&USER.lang)||'en';
+      const label=(lang==='es'?a.label_es:a.label_en)||a.label_en||a.label_es||a.name||'—';
       html+=`<div class="cc-coa-row">
         <span class="cc-coa-code">${a.code}</span>
-        <span class="cc-coa-name">${a.name}</span>
-        ${a.holded_id?`<span class="cc-coa-holded">${a.holded_id}</span>`:''}
+        <span class="cc-coa-name">${label}</span>
+        ${a.category?`<span class="cc-coa-holded">${a.category}</span>`:''}
       </div>`;
     });
     html+='</div>';
@@ -11794,9 +12080,12 @@ let saCurrentEvent = null;
 let saCurrentCallId = null;
 
 async function saLoadTemplates() {
+  // Guard: this is called both at script-load and from renderEvents()
+  // — at script-load the Events tab isn't mounted yet, so the container doesn't exist
+  const root = document.getElementById('saTemplates');
+  if (!root) return;
   const { data, error } = await sb.from('sales_events').select('id,title,event_type,guests_count,price_per_guest,theme').eq('status', 'template').order('event_type');
   if (error) { console.warn(error); return; }
-  const root = document.getElementById('saTemplates');
   root.innerHTML = (data || []).map(t => `
     <div class="sa-tpl-card" onclick="saUseTemplate('${t.id}')">
       <div class="tpl-type">${t.event_type.replace('_',' ')}</div>
