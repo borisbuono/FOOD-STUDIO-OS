@@ -2664,6 +2664,55 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
 .ows-action.primary { background: var(--ember, #B86A42); border-color: var(--ember, #B86A42); color: white; }
 .ows-action.primary:hover { opacity: 0.92; }
 
+/* ─── The Day ─────────────────────────────────────────────────── */
+.ows-day { padding: 32px 0 24px; border-bottom: 1px solid var(--border, rgba(0,0,0,0.08)); }
+.ows-day-meta { font-family: 'Outfit', sans-serif; font-size: 10.5px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-tertiary, #9B8E7E); margin-bottom: 14px; font-weight: 600; }
+.ows-day-headline { font-family: var(--font-serif, Fraunces, Georgia, serif); font-style: italic; font-weight: 400; font-size: 32px; line-height: 1.15; color: var(--text-primary); margin-bottom: 12px; max-width: 22ch; }
+.ows-day-stats { font-family: var(--font-mono, 'DM Mono', monospace); font-size: 11.5px; letter-spacing: 0.04em; color: var(--text-tertiary, #9B8E7E); margin-bottom: 18px; text-transform: uppercase; }
+.ows-day-stats span + span::before { content: ' · '; opacity: 0.5; margin: 0 4px; }
+.ows-day-body { font-family: var(--font-serif, Fraunces, Georgia, serif); font-weight: 300; font-size: 17px; line-height: 1.75; color: var(--text-primary); max-width: 64ch; margin-bottom: 22px; white-space: pre-wrap; }
+.ows-day-things { background: var(--bg-card, #FBF8F2); border-left: 2px solid var(--ember, #B86A42); padding: 14px 18px; margin: 18px 0; max-width: 64ch; }
+.ows-day-things-label { font-family: 'Outfit', sans-serif; font-size: 9.5px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--ember, #B86A42); font-weight: 600; margin-bottom: 8px; }
+.ows-day-things ul { list-style: none; margin: 0; padding: 0; }
+.ows-day-things li { font-family: var(--font-serif, Fraunces, Georgia, serif); font-weight: 300; font-size: 14.5px; line-height: 1.55; color: var(--text-primary); padding: 4px 0 4px 18px; position: relative; }
+.ows-day-things li::before { content: '·'; position: absolute; left: 4px; color: var(--ember, #B86A42); font-size: 18px; line-height: 1; top: 4px; }
+.ows-day-actions { display: flex; gap: 10px; margin-top: 6px; flex-wrap: wrap; }
+.ows-day-empty { font-family: var(--font-serif, Fraunces, Georgia, serif); font-style: italic; font-weight: 300; font-size: 16px; color: var(--text-secondary, #5C4E3C); line-height: 1.65; max-width: 56ch; margin-bottom: 14px; }
+
+/* ─── Cash & Flow ────────────────────────────────────────────── */
+.ows-cashflow { padding: 32px 0 24px; border-bottom: 1px solid var(--border, rgba(0,0,0,0.08)); }
+.ows-health { display: inline-flex; align-items: center; gap: 8px; padding: 4px 10px; border-radius: 999px; font-family: 'Outfit', sans-serif; font-size: 10.5px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600; margin-bottom: 14px; }
+.ows-health.ok { background: rgba(74, 123, 106, 0.12); color: var(--fern, #4A7B6A); }
+.ows-health.pending { background: rgba(184, 150, 58, 0.12); color: var(--gold, #B8963A); }
+.ows-health.error { background: rgba(160, 56, 56, 0.12); color: var(--ruby, #A03838); }
+.ows-health-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.ows-cf-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 22px; }
+.ows-cf-card { background: var(--bg-card, #FBF8F2); border: 1px solid var(--border, rgba(0,0,0,0.06)); border-radius: 12px; padding: 14px 16px; }
+.ows-cf-label { font-family: 'Outfit', sans-serif; font-size: 9.5px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--text-tertiary, #9B8E7E); font-weight: 600; margin-bottom: 6px; }
+.ows-cf-val { font-family: var(--font-serif, Fraunces, Georgia, serif); font-weight: 400; font-size: 26px; line-height: 1.1; color: var(--text-primary); margin-bottom: 4px; font-variant-numeric: tabular-nums; }
+.ows-cf-val.muted { color: var(--text-tertiary, #9B8E7E); font-style: italic; }
+.ows-cf-val.up { color: var(--fern, #4A7B6A); }
+.ows-cf-val.down { color: var(--ruby, #A03838); }
+.ows-cf-sub { font-family: var(--font-mono, 'DM Mono', monospace); font-size: 10px; color: var(--text-tertiary, #9B8E7E); letter-spacing: 0.04em; }
+.ows-cf-narrative { font-family: var(--font-serif, Fraunces, Georgia, serif); font-weight: 300; font-size: 16.5px; line-height: 1.7; color: var(--text-primary); max-width: 64ch; margin: 18px 0 22px; }
+.ows-cf-narrative.muted { color: var(--text-tertiary, #9B8E7E); font-style: italic; }
+.ows-cf-actions { display: flex; gap: 10px; margin: 18px 0; flex-wrap: wrap; }
+.ows-cf-pending-label { font-family: 'Outfit', sans-serif; font-size: 10.5px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-tertiary, #9B8E7E); margin: 22px 0 10px; font-weight: 600; }
+.ows-cf-missing { background: var(--bg-card, #FBF8F2); border: 1px solid var(--border, rgba(0,0,0,0.06)); border-radius: 12px; padding: 14px 18px; margin: 8px 0; }
+.ows-cf-missing-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 4px; gap: 12px; }
+.ows-cf-missing-supplier { font-family: var(--font-serif, Fraunces, Georgia, serif); font-weight: 500; font-size: 16px; color: var(--text-primary); }
+.ows-cf-missing-amount { font-family: var(--font-mono, 'DM Mono', monospace); font-size: 13px; color: var(--text-secondary, #5C4E3C); font-variant-numeric: tabular-nums; }
+.ows-cf-missing-meta { font-family: var(--font-mono, 'DM Mono', monospace); font-size: 10.5px; color: var(--text-tertiary, #9B8E7E); letter-spacing: 0.04em; }
+@media (max-width: 720px) { .ows-cf-grid { grid-template-columns: repeat(2, 1fr); } }
+
+/* ─── Quiet Room ─────────────────────────────────────────────── */
+.ows-quiet { min-height: 64vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 72px 32px 48px; text-align: center; }
+.ows-quiet-date { font-family: var(--font-serif, Fraunces, Georgia, serif); font-style: italic; font-weight: 400; font-size: 56px; line-height: 1.05; color: var(--text-primary); margin-bottom: 24px; letter-spacing: -0.015em; }
+.ows-quiet-quote { font-family: var(--font-serif, Fraunces, Georgia, serif); font-weight: 300; font-style: italic; font-size: 22px; line-height: 1.55; color: var(--text-secondary, #5C4E3C); max-width: 52ch; margin: 0 auto 18px; }
+.ows-quiet-attrib { font-family: 'Outfit', sans-serif; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-tertiary, #9B8E7E); margin-bottom: 56px; font-weight: 500; }
+.ows-quiet-line { font-family: var(--font-mono, 'DM Mono', monospace); font-size: 12px; letter-spacing: 0.16em; color: var(--text-tertiary, #9B8E7E); margin-top: 24px; }
+.ows-quiet-hero { width: 100%; max-width: 480px; aspect-ratio: 16/9; background: linear-gradient(135deg, var(--ember-pale, #F4E7DD) 0%, var(--bg-card, #FBF8F2) 60%, rgba(184, 106, 66, 0.12) 100%); border-radius: 8px; margin: 0 auto 36px; }
+
 /* ─────────────────────────────────────────────────────────────── */
 /* ACTIVITY FEED [UNIQUE_ANCHOR: activity_feed_css] */
 /* ─────────────────────────────────────────────────────────────── */
@@ -5643,6 +5692,348 @@ function owsDeferDecision(decisionId) {
   if (currentTab === 'office') renderTab();
 }
 
+// ══════════════════════════════════════════════════════════════════════
+// THE OWNER'S DESK — The Day + Quiet Room (Office Step 3, 2026-05-08)
+// The Day: pulls the most recent nightly_digest from inbox_items and
+// renders it as editorial body + "things to look at" list.
+// Quiet Room: when there are zero decisions AND no fresh digest, the
+// Office becomes a single editorial page with a chef anecdote and the
+// date — the OS literally disappears when there is nothing to do.
+// ══════════════════════════════════════════════════════════════════════
+let owsDayCache = null;
+let owsDayLoading = false;
+let owsQuietPickCache = null;
+
+async function loadOwsDay() {
+  if (owsDayLoading) return;
+  owsDayLoading = true;
+  try {
+    // Look for a recent digest. Different cron versions have used different sources/categories.
+    const candidates = await sbFetch(
+      `inbox_items?or=(source.eq.nightly_digest,source.eq.daily_digest,source.eq.morning_digest,category.eq.nightly_digest,category.eq.daily_digest,category.eq.morning_digest)&order=received_at.desc.nullslast,created_at.desc&limit=1`
+    ).catch(() => []);
+    owsDayCache = (candidates && candidates[0]) || null;
+  } catch (e) {
+    console.warn('[loadOwsDay] failed:', e.message);
+    owsDayCache = null;
+  }
+  owsDayLoading = false;
+  if (currentTab === 'office') renderTab();
+}
+
+async function loadOwsQuietPick() {
+  // Pick a random anecdote from lexicon_dishes (founder_anecdote) or lexicon_culture (body).
+  // Cached for the session — same anecdote each render, refreshes only on full reload.
+  if (owsQuietPickCache !== null) return owsQuietPickCache;
+  try {
+    const [dishes, culture] = await Promise.all([
+      sbFetch('lexicon_dishes?select=founder_anecdote,recipe_id&founder_anecdote=not.is.null&limit=20').catch(() => []),
+      sbFetch('lexicon_culture?select=title,body,category&body=not.is.null&limit=20').catch(() => [])
+    ]);
+    const candidates = [];
+    (dishes || []).forEach(d => {
+      if (d.founder_anecdote && d.founder_anecdote.length > 20) {
+        candidates.push({ kind: 'anecdote', text: d.founder_anecdote, attrib: 'From the recipe lexicon', recipe_id: d.recipe_id });
+      }
+    });
+    (culture || []).forEach(c => {
+      if (c.body && c.body.length > 20) {
+        candidates.push({ kind: 'culture', text: c.body, attrib: c.title || (c.category || 'From the lexicon'), recipe_id: null });
+      }
+    });
+    if (!candidates.length) {
+      owsQuietPickCache = { kind: 'fallback', text: 'A kitchen at rest is a kitchen at its truest. The fridges are humming, the pans are stacked, the floor is mopped, the lights are low.', attrib: 'House voice', recipe_id: null };
+    } else {
+      owsQuietPickCache = candidates[Math.floor(Math.random() * candidates.length)];
+    }
+  } catch (e) {
+    owsQuietPickCache = { kind: 'fallback', text: 'A kitchen at rest is a kitchen at its truest.', attrib: 'House voice', recipe_id: null };
+  }
+  return owsQuietPickCache;
+}
+
+function owsFormatDateLong(d) {
+  d = d ? new Date(d) : new Date();
+  return d.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+}
+
+function owsFormatDateLongIt(d) {
+  d = d ? new Date(d) : new Date();
+  return d.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' });
+}
+
+function renderOwsDay() {
+  if (owsDayCache === null && !owsDayLoading) loadOwsDay();
+  const dig = owsDayCache;
+  const restName = (typeof RESTAURANTS !== 'undefined' && RESTAURANTS && RESTAURANTS[R]) ? RESTAURANTS[R].name : null;
+  const safe = (s) => (typeof escapeHtml === 'function' ? escapeHtml(s || '') : String(s || '').replace(/[<>&]/g, c => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;' }[c])));
+
+  // No digest yet — honest empty state with a manual trigger button
+  if (!dig) {
+    return `<section class="ows-day">
+      <div class="ows-day-meta">${safe(owsFormatDateLong())}${restName ? ' · ' + safe(restName) : ''}</div>
+      <div class="ows-day-headline">A morning brief lands here daily.</div>
+      <div class="ows-day-empty">The nightly job runs at 06:00 UTC. It hasn't written anything yet, or you haven't been here since the last one cleared. You can also trigger one now if you want to see today's state synthesised.</div>
+      <div class="ows-day-actions">
+        <button class="office-cta-sec" onclick="owsTriggerDigest()">Trigger morning brief now</button>
+      </div>
+    </section>`;
+  }
+
+  // Render the digest. Body comes from inbox_items.body. Subject is the headline.
+  // metadata.things_to_look_at is the optional 3-item list (nightly-digest function may write it).
+  const headline = dig.subject || 'Yesterday';
+  const body = dig.body || '';
+  const things = (dig.metadata && Array.isArray(dig.metadata.things_to_look_at)) ? dig.metadata.things_to_look_at : [];
+  const when = owsFormatDateLong(dig.received_at || dig.created_at);
+
+  return `<section class="ows-day">
+    <div class="ows-day-meta">${safe(when)}${restName ? ' · ' + safe(restName) : ''}</div>
+    <div class="ows-day-headline">${safe(headline)}</div>
+    ${body ? `<div class="ows-day-body">${safe(body)}</div>` : ''}
+    ${things.length ? `<div class="ows-day-things">
+      <div class="ows-day-things-label">Three things to look at</div>
+      <ul>${things.slice(0, 5).map(t => `<li>${safe(t)}</li>`).join('')}</ul>
+    </div>` : ''}
+    <div class="ows-day-actions">
+      ${dig.external_url ? `<button class="office-cta" onclick="window.open('${dig.external_url}','_blank')">Open full digest ↗</button>` : ''}
+      <button class="office-cta-sec" onclick="owsResolveDecision('inbox','${dig.id}');owsDayCache=null;loadOwsDay();">Mark as read</button>
+    </div>
+  </section>`;
+}
+
+async function owsTriggerDigest() {
+  if (typeof showToast === 'function') showToast('Triggering brief — this can take 20s…');
+  try {
+    const r = await fetch('/api/nightly-digest', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ manual: true, restaurant_index: typeof R !== 'undefined' ? R : 0 }) });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    if (typeof showToast === 'function') showToast('Brief saved to inbox');
+    owsDayCache = null; loadOwsDay();
+  } catch (e) {
+    if (typeof showToast === 'function') showToast('Couldn\'t trigger: ' + e.message + ' (endpoint may not be wired)');
+  }
+}
+
+function renderOwsQuietRoom() {
+  // Pick is async; we render synchronously with whatever's cached or trigger a fetch.
+  if (!owsQuietPickCache) {
+    loadOwsQuietPick().then(() => { if (currentTab === 'office') renderTab(); });
+    // Render placeholder while we wait
+    return `<section class="ows-quiet"><div class="ows-quiet-date">${owsFormatDateLongIt()}</div><div class="ows-quiet-line">The OS is quiet.</div></section>`;
+  }
+  const safe = (s) => (typeof escapeHtml === 'function' ? escapeHtml(s || '') : String(s || '').replace(/[<>&]/g, c => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;' }[c])));
+  const pick = owsQuietPickCache;
+  return `<section class="ows-quiet">
+    <div class="ows-quiet-hero"></div>
+    <div class="ows-quiet-date">${owsFormatDateLongIt()}</div>
+    <div class="ows-quiet-quote">${safe(pick.text)}</div>
+    <div class="ows-quiet-attrib">— ${safe(pick.attrib)}</div>
+    <div class="ows-quiet-line">The OS is quiet. Nothing needs you.</div>
+  </section>`;
+}
+
+function owsShouldShowQuietRoom() {
+  // Quiet Room conditions: zero decisions AND no fresh digest in the last 18h.
+  // If the data hasn't loaded yet, default to NOT showing the quiet room (avoid flicker).
+  if (owsDecisionsCache === null) return false;
+  if ((owsDecisionsCache || []).length > 0) return false;
+  // No decisions — check if the digest is "stale enough" to count as "no fresh digest"
+  if (!owsDayCache) return true; // no digest at all = quiet room is honest
+  const digestAge = Date.now() - new Date(owsDayCache.received_at || owsDayCache.created_at || 0).getTime();
+  return digestAge > 18 * 60 * 60 * 1000;
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// THE OWNER'S DESK — Cash & Flow (Office Step 2, 2026-05-08)
+// Pulls Holded health + missing-invoices count (real today),
+// tries bank-movements + open-invoices endpoints (gracefully degrades
+// when not yet wired), runs cash_flow_forecast skill via dispatch
+// when data is available, renders KPI cards + narrative + missing-invoices.
+// Three Holded GET endpoints still needed — see brief
+// 02_Build/decisions/holded_endpoints_for_cash_flow.md
+// ══════════════════════════════════════════════════════════════════════
+let owsCashFlowCache = null;
+let owsCashFlowLoading = false;
+
+async function loadOwsCashFlow() {
+  if (owsCashFlowLoading) return;
+  owsCashFlowLoading = true;
+
+  const restSlug = (typeof RESTAURANTS !== 'undefined' && RESTAURANTS && RESTAURANTS[R]) ? RESTAURANTS[R].slug : null;
+  const result = {
+    health: { ok: null, configured: null, error: null },
+    missing: { count: null, items: [], error: null },
+    bankMovements: { available: false, items: [], error: null },
+    openInvoices: { available: false, items: [], error: null },
+    summary: null,
+    forecast: null,
+  };
+
+  // 1. Holded health (real, this endpoint exists)
+  try {
+    const r = await fetch(`/api/holded?action=health&restaurant=${restSlug || 'taller'}`);
+    if (r.ok) {
+      const d = await r.json();
+      result.health = { ok: !!d.ok, configured: !!d.configured, error: d.error || null };
+    } else {
+      result.health.error = 'HTTP ' + r.status;
+    }
+  } catch (e) { result.health.error = e.message; }
+
+  // 2. Missing invoices (real, this endpoint exists)
+  try {
+    const r = await fetch('/api/missing-invoices', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ restaurant: restSlug || 'taller', days_back: 30 }) });
+    if (r.ok) {
+      const d = await r.json();
+      result.missing.count = (d.missing || d.deliveries_without_invoices || []).length;
+      result.missing.items = (d.missing || d.deliveries_without_invoices || []).slice(0, 5);
+    } else {
+      result.missing.error = 'HTTP ' + r.status;
+    }
+  } catch (e) { result.missing.error = e.message; }
+
+  // 3. Bank movements (NOT YET WIRED — gracefully handle 404)
+  try {
+    const r = await fetch(`/api/holded?action=bank-movements&restaurant=${restSlug || 'taller'}&days_back=30`);
+    if (r.ok) {
+      const d = await r.json();
+      if (Array.isArray(d.movements)) {
+        result.bankMovements.available = true;
+        result.bankMovements.items = d.movements;
+      }
+    } else {
+      result.bankMovements.error = 'awaiting endpoint';
+    }
+  } catch (e) { result.bankMovements.error = 'awaiting endpoint'; }
+
+  // 4. Open invoices (NOT YET WIRED — gracefully handle 404)
+  try {
+    const r = await fetch(`/api/holded?action=open-invoices&restaurant=${restSlug || 'taller'}`);
+    if (r.ok) {
+      const d = await r.json();
+      if (Array.isArray(d.invoices)) {
+        result.openInvoices.available = true;
+        result.openInvoices.items = d.invoices;
+      }
+    } else {
+      result.openInvoices.error = 'awaiting endpoint';
+    }
+  } catch (e) { result.openInvoices.error = 'awaiting endpoint'; }
+
+  // 5. Run cash_flow_forecast via dispatch only if we have real movements + invoices
+  if (result.bankMovements.available && result.openInvoices.available) {
+    try {
+      const operatorEntityId = (typeof window.CURRENT_OPERATOR_ENTITY_ID !== 'undefined') ? window.CURRENT_OPERATOR_ENTITY_ID : null;
+      const r = await fetch('/api/dispatch', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          skill: 'cash_flow_forecast',
+          input: {
+            current_balance: result.bankMovements.items.reduce((s, m) => s + Number(m.amount || 0), 0),
+            recent_movements_30d: result.bankMovements.items,
+            open_receivables: result.openInvoices.items.filter(i => i.type === 'sale'),
+            open_payables: result.openInvoices.items.filter(i => i.type === 'purchase'),
+            recurring_payments: []
+          },
+          operator_entity_id: operatorEntityId
+        })
+      });
+      if (r.ok) {
+        const d = await r.json();
+        result.forecast = d.output || d;
+      }
+    } catch (e) { /* silent — narrative just shows placeholder */ }
+  }
+
+  owsCashFlowCache = result;
+  owsCashFlowLoading = false;
+  if (currentTab === 'office') renderTab();
+}
+
+function renderOwsCashFlow() {
+  if (owsCashFlowCache === null && !owsCashFlowLoading) loadOwsCashFlow();
+  const c = owsCashFlowCache;
+  const safe = (s) => (typeof escapeHtml === 'function' ? escapeHtml(s || '') : String(s || '').replace(/[<>&]/g, ch => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;' }[ch])));
+
+  // Health badge
+  let healthBadge = '<span class="ows-health pending"><span class="ows-health-dot"></span>Connecting…</span>';
+  if (c) {
+    if (c.health.ok) healthBadge = '<span class="ows-health ok"><span class="ows-health-dot"></span>Holded connected</span>';
+    else if (c.health.configured && !c.health.ok) healthBadge = `<span class="ows-health error"><span class="ows-health-dot"></span>Holded auth failed</span>`;
+    else if (c.health.configured === false) healthBadge = '<span class="ows-health pending"><span class="ows-health-dot"></span>Holded credentials missing</span>';
+    else healthBadge = '<span class="ows-health error"><span class="ows-health-dot"></span>Holded unreachable</span>';
+  }
+
+  // KPI helpers — show "—" + "awaiting endpoint" when data not available
+  const eur = (n) => n == null ? '—' : '€' + Number(n).toLocaleString('en-GB', { maximumFractionDigits: 0 });
+  let revenue = '—', revenueSub = 'Awaiting bank-movements endpoint';
+  let receivables = '—', receivablesSub = 'Awaiting open-invoices endpoint';
+  let payables = '—', payablesSub = 'Awaiting open-invoices endpoint';
+  let balance = '—', balanceSub = 'Awaiting bank-movements endpoint';
+
+  if (c && c.bankMovements.available) {
+    const todayStr = new Date().toISOString().slice(0, 10);
+    const todayMovements = c.bankMovements.items.filter(m => (m.date || '').startsWith(todayStr));
+    const todayIn = todayMovements.filter(m => Number(m.amount) > 0).reduce((s, m) => s + Number(m.amount), 0);
+    revenue = eur(todayIn);
+    revenueSub = todayMovements.length + ' movement' + (todayMovements.length === 1 ? '' : 's');
+    const balance30 = c.bankMovements.items.reduce((s, m) => s + Number(m.amount || 0), 0);
+    balance = eur(balance30);
+    balanceSub = '30-day net flow';
+  }
+  if (c && c.openInvoices.available) {
+    const recv = c.openInvoices.items.filter(i => i.type === 'sale').reduce((s, i) => s + Number(i.amount || 0), 0);
+    const pay = c.openInvoices.items.filter(i => i.type === 'purchase').reduce((s, i) => s + Number(i.amount || 0), 0);
+    receivables = eur(recv);
+    receivablesSub = c.openInvoices.items.filter(i => i.type === 'sale').length + ' invoices open';
+    payables = eur(pay);
+    payablesSub = c.openInvoices.items.filter(i => i.type === 'purchase').length + ' invoices open';
+  }
+
+  const narrative = (c && c.forecast && c.forecast.narrative)
+    ? `<div class="ows-cf-narrative">${safe(c.forecast.narrative)}</div>`
+    : `<div class="ows-cf-narrative muted">Cash-flow narrative will appear here once the bank-movements + open-invoices endpoints are wired and the cash_flow_forecast skill has data to reason about.</div>`;
+
+  // Missing invoices section
+  let missingSection = '';
+  if (c && c.missing.count !== null) {
+    if (c.missing.count === 0) {
+      missingSection = `<div class="ows-cf-pending-label">Missing invoices · 0 pending</div>
+        <div class="ows-cf-narrative muted" style="margin:0">All deliveries in the last 30 days have matching invoices. Holded is current.</div>`;
+    } else {
+      missingSection = `<div class="ows-cf-pending-label">Missing invoices · ${c.missing.count} pending</div>` +
+        c.missing.items.map(m => `<div class="ows-cf-missing">
+          <div class="ows-cf-missing-head">
+            <span class="ows-cf-missing-supplier">${safe(m.supplier_name || m.contact_name || 'Unknown supplier')}</span>
+            <span class="ows-cf-missing-amount">${eur(m.amount || m.total)}</span>
+          </div>
+          <div class="ows-cf-missing-meta">Delivery: ${safe(m.date || m.delivery_date || '—')}${m.days_overdue ? ' · ' + m.days_overdue + ' days waiting' : ''}</div>
+        </div>`).join('');
+    }
+  } else if (c && c.missing.error) {
+    missingSection = `<div class="ows-cf-pending-label">Missing invoices · ${safe(c.missing.error)}</div>`;
+  }
+
+  return `<section class="ows-cashflow">
+    <div class="ows-label">Cash &amp; Flow</div>
+    ${healthBadge}
+    <div class="ows-cf-grid">
+      <div class="ows-cf-card"><div class="ows-cf-label">Today's revenue</div><div class="ows-cf-val${c && c.bankMovements.available ? '' : ' muted'}">${revenue}</div><div class="ows-cf-sub">${safe(revenueSub)}</div></div>
+      <div class="ows-cf-card"><div class="ows-cf-label">Open receivables</div><div class="ows-cf-val${c && c.openInvoices.available ? '' : ' muted'}">${receivables}</div><div class="ows-cf-sub">${safe(receivablesSub)}</div></div>
+      <div class="ows-cf-card"><div class="ows-cf-label">Open payables</div><div class="ows-cf-val${c && c.openInvoices.available ? '' : ' muted'}">${payables}</div><div class="ows-cf-sub">${safe(payablesSub)}</div></div>
+      <div class="ows-cf-card"><div class="ows-cf-label">30-day balance</div><div class="ows-cf-val${c && c.bankMovements.available ? '' : ' muted'}">${balance}</div><div class="ows-cf-sub">${safe(balanceSub)}</div></div>
+    </div>
+    ${narrative}
+    <div class="ows-cf-actions">
+      <button class="office-cta" onclick="runAgentSkill('reconcile_today')">Reconcile today's bank ↗</button>
+      <button class="office-cta-sec" onclick="runAgentSkill('categorise_expense')">Categorise pending expense</button>
+      <a class="office-cta-sec" href="https://app.holded.com" target="_blank">Open Holded ledger ↗</a>
+    </div>
+    ${missingSection}
+  </section>`;
+}
+
 function renderOffice(){
   const canMgr=['manager','owner'].includes(USER.role);
   if(!canMgr)return`<div style="padding:32px;text-align:center;color:var(--text-tertiary);font-size:13px;">Office access is for owners and managers.</div>`;
@@ -5652,10 +6043,33 @@ function renderOffice(){
   let html=`<div style="padding:16px 8px;">`;
 
   // ═════════════════════════════════════════════════════════════════
-  // SECTION 0: Decisions panel (Owner's Desk Step 1)
-  // The first thing the operator sees on the Office tab. Aggregates
-  // open review_flags + active inbox_items + recent HACCP exceptions
-  // into a single priority-ordered feed with action buttons.
+  // QUIET ROOM CONDITIONAL (Owner's Desk Step 3)
+  // When there are zero open decisions AND no fresh digest in the
+  // last 18h, the entire Office becomes a single editorial page —
+  // a chef anecdote and the date. The OS literally disappears when
+  // there is nothing to do (Invisible Technology principle).
+  // ═════════════════════════════════════════════════════════════════
+  if (owsShouldShowQuietRoom()) {
+    html += renderOwsQuietRoom();
+    html += `</div>`;
+    return html;
+  }
+
+  // ═════════════════════════════════════════════════════════════════
+  // SECTION 0a: The Day — yesterday's editorial summary (Step 3)
+  // ═════════════════════════════════════════════════════════════════
+  html+=renderOwsDay();
+
+  // ═════════════════════════════════════════════════════════════════
+  // SECTION 0b: Cash & Flow (Owner's Desk Step 2)
+  // Real Holded health + missing-invoices today; honest "awaiting
+  // endpoint" placeholders for KPIs that need bank-movements +
+  // open-invoices GETs Boris is wiring next.
+  // ═════════════════════════════════════════════════════════════════
+  html+=renderOwsCashFlow();
+
+  // ═════════════════════════════════════════════════════════════════
+  // SECTION 0c: Decisions panel (Owner's Desk Step 1)
   // ═════════════════════════════════════════════════════════════════
   html+=renderOwsDecisions();
 
