@@ -2705,6 +2705,44 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
 .ows-cf-missing-meta { font-family: var(--font-mono, 'DM Mono', monospace); font-size: 10.5px; color: var(--text-tertiary, #9B8E7E); letter-spacing: 0.04em; }
 @media (max-width: 720px) { .ows-cf-grid { grid-template-columns: repeat(2, 1fr); } }
 
+/* ─── The Agents ─────────────────────────────────────────────── */
+.ows-agents { padding: 32px 0 24px; border-bottom: 1px solid var(--border, rgba(0,0,0,0.08)); }
+.ows-agents-summary { font-family: var(--font-mono, 'DM Mono', monospace); font-size: 11.5px; color: var(--text-tertiary, #9B8E7E); margin: -10px 0 18px; letter-spacing: 0.04em; }
+.ows-agents-summary span { color: var(--text-primary); font-weight: 500; }
+.ows-agents-summary span + span { margin-left: 14px; }
+.ows-agents-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 12px; flex-wrap: wrap; }
+.ows-toggle { display: inline-flex; gap: 0; background: var(--bg-card, #FBF8F2); border: 1px solid var(--border, rgba(0,0,0,0.08)); border-radius: 8px; padding: 2px; }
+.ows-toggle button { background: transparent; border: none; padding: 6px 12px; font-family: 'Outfit', sans-serif; font-size: 11.5px; font-weight: 500; color: var(--text-secondary, #5C4E3C); cursor: pointer; border-radius: 6px; transition: all 0.18s; letter-spacing: 0.02em; }
+.ows-toggle button.active { background: var(--ember, #B86A42); color: white; }
+.ows-agents-table { width: 100%; border-collapse: collapse; font-family: var(--font-mono, 'DM Mono', monospace); font-size: 12px; }
+.ows-agents-table th { text-align: left; font-family: 'Outfit', sans-serif; font-size: 9.5px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-tertiary, #9B8E7E); font-weight: 600; padding: 10px 12px; border-bottom: 1px solid var(--border, rgba(0,0,0,0.12)); }
+.ows-agents-table td { padding: 14px 12px; border-bottom: 1px solid var(--border, rgba(0,0,0,0.05)); vertical-align: top; }
+.ows-agents-table tr:hover td { background: var(--bg-card, #FBF8F2); }
+.ows-agents-table .agent-name { font-family: var(--font-serif, Fraunces, Georgia, serif); font-style: italic; font-size: 16px; color: var(--text-primary); font-weight: 500; }
+.ows-agents-table .agent-desc { font-family: 'Outfit', sans-serif; font-size: 10.5px; color: var(--text-tertiary, #9B8E7E); margin-top: 2px; letter-spacing: 0; }
+.ows-agents-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+.ows-agents-table .last-call { color: var(--text-secondary, #5C4E3C); }
+.ows-agents-table .last-call em { font-style: italic; color: var(--text-tertiary, #9B8E7E); margin-left: 6px; }
+.ows-agents-skill-row { background: var(--bg-card, #FBF8F2); }
+.ows-agents-skill-row td { padding-left: 36px !important; font-size: 11.5px; }
+.ows-agents-skill-row .skill-code { color: var(--text-secondary, #5C4E3C); font-weight: 500; }
+.ows-agents-skill-row .skill-meta { color: var(--text-tertiary, #9B8E7E); }
+.ows-agents-skill-row button { background: transparent; border: 1px solid var(--border, rgba(0,0,0,0.12)); border-radius: 6px; padding: 4px 10px; font-family: 'Outfit', sans-serif; font-size: 11px; cursor: pointer; color: var(--ember, #B86A42); }
+.ows-agents-skill-row button:hover { background: var(--ember, #B86A42); color: white; border-color: var(--ember, #B86A42); }
+.ows-ticker { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--border, rgba(0,0,0,0.08)); }
+.ows-ticker-label { font-family: 'Outfit', sans-serif; font-size: 10.5px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-tertiary, #9B8E7E); margin-bottom: 12px; font-weight: 600; display: flex; align-items: center; justify-content: space-between; }
+.ows-ticker-row { font-family: var(--font-mono, 'DM Mono', monospace); font-size: 11.5px; color: var(--text-secondary, #5C4E3C); padding: 6px 0; border-bottom: 1px solid var(--border, rgba(0,0,0,0.04)); display: flex; gap: 12px; align-items: baseline; }
+.ows-ticker-row:last-child { border-bottom: none; }
+.ows-ticker-time { color: var(--text-tertiary, #9B8E7E); min-width: 56px; }
+.ows-ticker-skill { color: var(--text-primary); flex: 1; }
+.ows-ticker-skill em { font-style: italic; color: var(--text-tertiary, #9B8E7E); }
+.ows-ticker-tag { font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ember, #B86A42); padding: 2px 8px; background: rgba(184, 106, 66, 0.08); border-radius: 999px; }
+.ows-ticker-tag.err { color: var(--ruby, #A03838); background: rgba(160, 56, 56, 0.08); }
+.ows-ticker-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--fern, #5A8A78); flex-shrink: 0; }
+.ows-ticker-dot.err { background: var(--ruby, #A03838); }
+.ows-ticker-dot.warn { background: var(--gold, #B8963A); }
+@media (max-width: 720px) { .ows-agents-table { font-size: 11px; } .ows-agents-table .col-cost, .ows-agents-table .col-success { display: none; } }
+
 /* ─── Quiet Room ─────────────────────────────────────────────── */
 .ows-quiet { min-height: 64vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 72px 32px 48px; text-align: center; }
 .ows-quiet-date { font-family: var(--font-serif, Fraunces, Georgia, serif); font-style: italic; font-weight: 400; font-size: 56px; line-height: 1.05; color: var(--text-primary); margin-bottom: 24px; letter-spacing: -0.015em; }
@@ -3300,6 +3338,10 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
                 <button class="dnav-item ntab" onclick="switchTab('cleaning',this)" data-tab="cleaning"><span class="dnav-ic">🧹</span><span class="dnav-lbl">Cleaning</span><span class="tab-badge" id="badge-cleaning"></span></button>
         <button class="dnav-item ntab" onclick="switchTab('events',this)" data-tab="events"><span class="dnav-ic">🎉</span><span class="dnav-lbl">Events</span><span class="tab-badge" id="badge-events"></span></button>
         <button class="dnav-item ntab" onclick="switchTab('schedule',this)" data-tab="schedule"><span class="dnav-ic">📅</span><span class="dnav-lbl">Schedule</span><span class="tab-badge" id="badge-schedule"></span></button>
+      </div>
+      <div class="dnav-divider"></div>
+      <div class="dnav-section">
+        <button class="dnav-item ntab" onclick="switchTab('office',this)" data-tab="office"><span class="dnav-ic">✦</span><span class="dnav-lbl">Office</span><span class="tab-badge" id="badge-office"></span></button>
       </div>
       <div class="dnav-spacer"></div>
       <button class="dnav-ai" onclick="openAI()"><span style="font-size:18px">✦</span><span>Ask AI</span></button>
@@ -5951,6 +5993,175 @@ async function loadOwsCashFlow() {
   if (currentTab === 'office') renderTab();
 }
 
+// ══════════════════════════════════════════════════════════════════════
+// THE OWNER'S DESK — The Agents (Office Step 4, 2026-05-08)
+// Unified production console: tabular by-agent (CFO, Kitchen Ops, Recipe,
+// Sales & Events, Procurement, Compliance, HR), live activity ticker,
+// "Inspect routing" toggle expands per-agent skills + run buttons.
+// Replaces the older renderAgentConsole + renderActivityFeed split.
+// ══════════════════════════════════════════════════════════════════════
+let owsAgentsCache = null;
+let owsAgentsLoading = false;
+let owsAgentsView = 'production'; // 'production' | 'inspect'
+
+const OWS_AGENT_LABELS = {
+  cfo: { name: 'CFO', desc: 'Finance, reconciliation, expense categorisation' },
+  compliance: { name: 'Compliance', desc: 'HACCP temperatures, regulatory alerts' },
+  hr_people: { name: 'HR & People', desc: 'Shifts, attestations, team' },
+  kitchen_ops: { name: 'Kitchen Ops', desc: 'Briefings, MEP coordination, 86 lists' },
+  procurement: { name: 'Procurement', desc: 'Supplier orders, reorder logic' },
+  recipe: { name: 'Recipe', desc: 'Drafting, scaling, technique notes' },
+  sales_events: { name: 'Sales & Events', desc: 'Proposals, BEOs, pricing, staffing' },
+  executive: { name: 'Executive', desc: 'Cross-domain orchestration' }
+};
+
+async function loadOwsAgents() {
+  if (owsAgentsLoading) return;
+  owsAgentsLoading = true;
+  try {
+    const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+    const [skills, calls] = await Promise.all([
+      sbFetch('agent_skills?is_active=eq.true&select=skill_code,agent_id,display_name,description,provider,model,fallback_provider,fallback_model,human_review_required,estimated_cost_eur_per_call,version&order=agent_id,skill_code').catch(() => []),
+      sbFetch(`agent_call_log?created_at=gte.${since}&order=created_at.desc&limit=100`).catch(() => [])
+    ]);
+    owsAgentsCache = { skills: skills || [], calls: calls || [] };
+  } catch (e) {
+    console.warn('[loadOwsAgents] failed:', e.message);
+    owsAgentsCache = { skills: [], calls: [] };
+  }
+  owsAgentsLoading = false;
+  if (currentTab === 'office') renderTab();
+}
+
+function owsAgentAggregate(agentId, skills, calls) {
+  const agentSkills = skills.filter(s => s.agent_id === agentId);
+  const agentCalls = calls.filter(c => c.agent_id === agentId);
+  const lastCall = agentCalls[0] || null;
+  const errors = agentCalls.filter(c => c.status === 'error' || (c.error_message && c.error_message.length)).length;
+  const successPct = agentCalls.length ? Math.round(((agentCalls.length - errors) / agentCalls.length) * 100) : null;
+  const totalCostEur = agentSkills.reduce((s, sk) => {
+    const skillCalls = agentCalls.filter(c => c.skill_code === sk.skill_code).length;
+    return s + skillCalls * Number(sk.estimated_cost_eur_per_call || 0);
+  }, 0);
+  return { skills: agentSkills, calls: agentCalls, lastCall, successPct, totalCostEur };
+}
+
+function owsAgeShort(iso) {
+  if (!iso) return '—';
+  const ms = Date.now() - new Date(iso).getTime();
+  if (isNaN(ms)) return '—';
+  if (ms < 60 * 1000) return 'just now';
+  if (ms < 60 * 60 * 1000) return Math.floor(ms / 60000) + ' min ago';
+  if (ms < 24 * 60 * 60 * 1000) return Math.floor(ms / 3600000) + ' h ago';
+  return Math.floor(ms / 86400000) + ' d ago';
+}
+
+function renderOwsAgents() {
+  if (owsAgentsCache === null && !owsAgentsLoading) loadOwsAgents();
+  const c = owsAgentsCache;
+  const safe = (s) => (typeof escapeHtml === 'function' ? escapeHtml(s || '') : String(s || '').replace(/[<>&]/g, ch => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;' }[ch])));
+
+  if (!c) {
+    return `<section class="ows-agents"><div class="ows-label">The Agents</div><div class="ows-empty"><div class="ows-empty-quote">Connecting…</div></div></section>`;
+  }
+
+  const skills = c.skills;
+  const calls = c.calls;
+  const agentIds = Array.from(new Set([...skills.map(s => s.agent_id), ...calls.map(cl => cl.agent_id)])).filter(Boolean).sort();
+  const totalCalls = calls.length;
+  const totalErrors = calls.filter(cl => cl.status === 'error' || (cl.error_message && cl.error_message.length)).length;
+  const successPct = totalCalls ? Math.round(((totalCalls - totalErrors) / totalCalls) * 100) : null;
+  const totalCost = skills.reduce((s, sk) => {
+    const skCalls = calls.filter(cl => cl.skill_code === sk.skill_code).length;
+    return s + skCalls * Number(sk.estimated_cost_eur_per_call || 0);
+  }, 0);
+
+  let html = `<section class="ows-agents">
+    <div class="ows-label">The Agents</div>
+    <div class="ows-agents-summary">
+      <span>${skills.length}</span> skills active ·
+      <span>${totalCalls}</span> calls today ·
+      <span>${successPct == null ? '—' : successPct + '%'}</span> success ·
+      <span>€${totalCost.toFixed(2)}</span> spend
+    </div>
+    <div class="ows-agents-toolbar">
+      <div class="ows-toggle">
+        <button class="${owsAgentsView === 'production' ? 'active' : ''}" onclick="owsAgentsView='production';renderTab();">Production</button>
+        <button class="${owsAgentsView === 'inspect' ? 'active' : ''}" onclick="owsAgentsView='inspect';renderTab();">Inspect routing</button>
+      </div>
+      <button class="ows-action" onclick="owsAgentsCache=null;loadOwsAgents();">Refresh</button>
+    </div>
+    <table class="ows-agents-table">
+      <thead><tr>
+        <th>Agent</th>
+        <th class="col-success" style="text-align:right">Calls 24h</th>
+        <th>Last call</th>
+        <th class="col-success" style="text-align:right">Success</th>
+        <th class="col-cost" style="text-align:right">Cost</th>
+      </tr></thead>
+      <tbody>`;
+
+  for (const aid of agentIds) {
+    const agg = owsAgentAggregate(aid, skills, calls);
+    const meta = OWS_AGENT_LABELS[aid] || { name: aid, desc: '' };
+    const lc = agg.lastCall;
+    const lcLabel = lc
+      ? `${safe(lc.skill_code || '')} <em>${safe(owsAgeShort(lc.created_at))}</em>`
+      : '<em style="color:var(--text-tertiary)">no calls yet</em>';
+    html += `<tr>
+      <td><div class="agent-name">${safe(meta.name)}</div><div class="agent-desc">${safe(meta.desc)}</div></td>
+      <td class="num col-success">${agg.calls.length}</td>
+      <td class="last-call">${lcLabel}</td>
+      <td class="num col-success">${agg.successPct == null ? '—' : agg.successPct + '%'}</td>
+      <td class="num col-cost">${agg.totalCostEur > 0 ? '€' + agg.totalCostEur.toFixed(2) : '€—'}</td>
+    </tr>`;
+
+    // Inspection view: expand per-skill rows
+    if (owsAgentsView === 'inspect' && agg.skills.length) {
+      for (const s of agg.skills) {
+        const provLabel = s.provider === 'google' ? 'Gemini' : 'Sonnet';
+        const reviewBadge = s.human_review_required ? ' · human review' : '';
+        const skillCalls = agg.calls.filter(cl => cl.skill_code === s.skill_code);
+        const lastSkillCall = skillCalls[0];
+        html += `<tr class="ows-agents-skill-row">
+          <td colspan="2"><div class="skill-code">${safe(s.display_name || s.skill_code)}</div><div class="skill-meta">${safe(s.skill_code)} · ${provLabel} · ${safe(s.model)}${reviewBadge} · v${s.version || 1}</div></td>
+          <td class="last-call">${lastSkillCall ? `<em>${safe(owsAgeShort(lastSkillCall.created_at))}</em>` : '<em>—</em>'}</td>
+          <td class="num col-success">${skillCalls.length}</td>
+          <td class="num col-cost"><button onclick="runAgentSkill('${safe(s.skill_code)}')">Run</button></td>
+        </tr>`;
+      }
+    }
+  }
+  html += `</tbody></table>`;
+
+  // Activity ticker
+  const recent = calls.slice(0, 12);
+  html += `<div class="ows-ticker">
+    <div class="ows-ticker-label">
+      <span>Activity · last ${recent.length}</span>
+      <span style="font-family:var(--font-mono,monospace);font-size:10px;letter-spacing:0.04em;color:var(--text-tertiary)">refresh: every 15s</span>
+    </div>`;
+  if (!recent.length) {
+    html += `<div style="font-family:var(--font-serif,Fraunces,serif);font-style:italic;color:var(--text-tertiary,#9B8E7E);font-size:14px;padding:12px 0">No agent calls in the last 24 hours. Run a skill from the table above to see live activity here.</div>`;
+  } else {
+    recent.forEach(cl => {
+      const isError = cl.status === 'error' || (cl.error_message && cl.error_message.length);
+      const provLabel = cl.provider === 'google' ? 'gemini' : (cl.provider === 'anthropic' ? 'sonnet' : (cl.provider || '—'));
+      const time = cl.created_at ? new Date(cl.created_at).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) : '—';
+      const latency = cl.latency_ms ? (cl.latency_ms / 1000).toFixed(1) + 's' : '—';
+      const tag = isError ? `<span class="ows-ticker-tag err">error</span>` : (cl.fell_back ? `<span class="ows-ticker-tag">fell back</span>` : `<span class="ows-ticker-tag">ok</span>`);
+      html += `<div class="ows-ticker-row">
+        <span class="ows-ticker-dot${isError ? ' err' : ''}"></span>
+        <span class="ows-ticker-time">${safe(time)}</span>
+        <span class="ows-ticker-skill">${safe(cl.agent_id || '')}.${safe(cl.skill_code || '')} <em>${safe(latency)}</em> · ${safe(provLabel)}</span>
+        ${tag}
+      </div>`;
+    });
+  }
+  html += `</div></section>`;
+  return html;
+}
+
 function renderOwsCashFlow() {
   if (owsCashFlowCache === null && !owsCashFlowLoading) loadOwsCashFlow();
   const c = owsCashFlowCache;
@@ -6098,132 +6309,181 @@ function renderOffice(){
   html+=renderMissingInvoicesPanel();
 
   // ═════════════════════════════════════════════════════════════════
-  // SECTION 2: Agent Console (headline)
+  // SECTION 2: The Agents (Owner's Desk Step 4)
+  // Unified production console — replaces the older Agent Console +
+  // Activity Feed split. Tabular by-agent + Inspect-routing toggle +
+  // live activity ticker, all in Bohemian Precision treatment.
   // ═════════════════════════════════════════════════════════════════
-  html+=renderAgentConsole();
+  html+=renderOwsAgents();
 
   // ═════════════════════════════════════════════════════════════════
-  // SECTION 2.5: Activity Feed [UNIQUE_ANCHOR: activity_feed_html_section]
+  // SECTION 3: Reports & Archive (Owner's Desk Step 5)
+  // Back-of-the-magazine: digest archive, decisions log, future
+  // monthly P&L exports. Low-density, mostly links + thumbnails.
   // ═════════════════════════════════════════════════════════════════
-  html+=`<div class="activity-feed">
-    <div class="af-header">
-      <div class="af-title">Agent activity</div>
-      <div class="af-sub">Live ticker · last 20 calls · refreshes every 15s</div>
-      <div class="af-controls">
-        <span class="af-status" id="af-status">Loading…</span>
-        <button class="af-refresh" onclick="loadActivityFeed()" title="Refresh now">⟳</button>
+  html+=renderOwsReports();
+
+  // ═════════════════════════════════════════════════════════════════
+  // LEGACY / DEV-ONLY (gated behind ?debug=1) — Step 5 relocations
+  // The following sections used to render unconditionally on Office.
+  // They've been cleaned up per the Owner's Desk redesign:
+  //   - Communications composer → future Comms tab
+  //   - Smartwatch preview     → strategic asset, surface elsewhere
+  //   - Customer Feedback QR   → moves to Settings > Guest feedback
+  //   - Demo controls          → developer-only
+  //   - Add new venue          → already in Onboard tab
+  // Add ?debug=1 to the URL to surface them again for dev access.
+  // ═════════════════════════════════════════════════════════════════
+  const isDebug = (typeof location !== 'undefined' && location.search.includes('debug=1'));
+  if (isDebug) {
+    html+=`<div style="margin-top:48px;padding-top:24px;border-top:2px dashed var(--border,rgba(0,0,0,0.12));"><div style="font-family:'Outfit',sans-serif;font-size:9.5px;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold,#B8963A);font-weight:600;margin-bottom:18px;">Developer · ?debug=1</div>`;
+
+    html+=`<div class="comms-composer">
+      <div class="cc-header"><div class="cc-title">Communications</div><div class="cc-sub">Legacy — to relocate to a Comms tab</div></div>
+      <div class="cc-tabs">
+        <button class="cc-tab active" data-comms-view="internal" onclick="setCommsView('internal')">Internal team</button>
+        <button class="cc-tab" data-comms-view="social" onclick="setCommsView('social')">Social media</button>
+        <button class="cc-tab" data-comms-view="newsletter" onclick="setCommsView('newsletter')">Newsletter</button>
       </div>
-    </div>
-    <div class="af-list" id="af-list">
-      ${skeletonRows(5)}
-    </div>
-  </div>`;
-
-  // ═════════════════════════════════════════════════════════════════
-  // SECTION 3: Communications Composer
-  // ═════════════════════════════════════════════════════════════════
-  html+=`<div class="comms-composer">
-    <div class="cc-header">
-      <div class="cc-title">Communications</div>
-      <div class="cc-sub">Internal messages · social · newsletter</div>
-    </div>
-    <div class="cc-tabs">
-      <button class="cc-tab active" data-comms-view="internal" onclick="setCommsView('internal')">Internal team</button>
-      <button class="cc-tab" data-comms-view="social" onclick="setCommsView('social')">Social media</button>
-      <button class="cc-tab" data-comms-view="newsletter" onclick="setCommsView('newsletter')">Newsletter</button>
-    </div>
-    <textarea class="cc-textarea" placeholder="Draft a message to your team, a social post, or a newsletter…" rows="6"></textarea>
-    <div class="cc-actions">
-      <button class="office-cta">Send to team</button>
-      <button class="office-cta-sec">Schedule</button>
-      <button class="office-cta-sec" onclick="runAgentSkill('compose_newsletter')">Let agent write a draft</button>
-    </div>
-  </div>`;
-
-  // ═════════════════════════════════════════════════════════════════
-  // SECTION 4: Smartwatch Preview
-  // ═════════════════════════════════════════════════════════════════
-  html+=`<div class="watch-preview">
-    <div class="wp-header">
-      <div class="wp-title">Watch view (preview)</div>
-      <div class="wp-sub">What floor staff see on their wrist · hardware Q4 2026</div>
-    </div>
-    <div class="wp-frame">
-      <div class="wp-watch">
-        <div class="wp-screen">
-          <div class="wp-time">14:38</div>
-          <div class="wp-event-card">
-            <div class="wp-event-icon">●</div>
-            <div class="wp-event-text">
-              <div class="wp-event-title">VIP Julia arrived</div>
-              <div class="wp-event-meta">Table 4 · prefers Ribiera del Duero</div>
-            </div>
-          </div>
-          <div class="wp-haptic">━ ━ ━  long pulse</div>
-        </div>
+      <textarea class="cc-textarea" placeholder="Draft a message…" rows="4"></textarea>
+      <div class="cc-actions">
+        <button class="office-cta">Send to team</button>
+        <button class="office-cta-sec">Schedule</button>
       </div>
-      <div class="wp-side">
-        <div class="wp-side-label">What this enables</div>
-        <ul class="wp-side-list">
-          <li><strong>Table-side dictation</strong> — waiters speak orders without leaving the guest</li>
-          <li><strong>Silent notifications</strong> — VIP arrival, food in pass, allergen alert</li>
-          <li><strong>Zero phones on the floor</strong> — protects guest experience</li>
-        </ul>
-        <div class="wp-haptic-key">
-          <div><span class="wp-pulse-mark">··</span> Food in the pass</div>
-          <div><span class="wp-pulse-mark">···</span> Allergen alert</div>
-          <div><span class="wp-pulse-mark">━</span> VIP arrived</div>
-        </div>
+    </div>`;
+
+    html+=`<div class="watch-preview">
+      <div class="wp-header"><div class="wp-title">Watch view (preview)</div><div class="wp-sub">Hardware roadmap · Q4 2026</div></div>
+      <div class="wp-frame">
+        <div class="wp-watch"><div class="wp-screen"><div class="wp-time">14:38</div><div class="wp-event-card"><div class="wp-event-icon">●</div><div class="wp-event-text"><div class="wp-event-title">VIP Julia arrived</div><div class="wp-event-meta">Table 4 · prefers Ribiera del Duero</div></div></div><div class="wp-haptic">━ ━ ━  long pulse</div></div></div>
+        <div class="wp-side"><div class="wp-side-label">What this enables</div><ul class="wp-side-list"><li><strong>Table-side dictation</strong></li><li><strong>Silent notifications</strong></li><li><strong>Zero phones on the floor</strong></li></ul></div>
       </div>
-    </div>
-    <div class="wp-foot">
-      Hardware roadmap: WatchOS app — Q4 2026. E-Ink waiter stations — Q1 2027. Bluetooth smart scales — Q2 2027.
-    </div>
-  </div>`;
+    </div>`;
 
-  // ═════════════════════════════════════════════════════════════════
-  // SECTION 4.5: Customer Feedback QR [UNIQUE_ANCHOR: qr_widget_office]
-  // ═════════════════════════════════════════════════════════════════
-  html+=`<div class="qr-widget">
-    <div class="qr-widget-header">
-      <div class="qr-widget-title">Customer feedback QR</div>
-      <div class="qr-widget-sub">Print this. Stick it on the back of the bill folder. Guests scan after the meal — feedback lands in your inbox.</div>
-    </div>
-    <div class="qr-widget-body">
-      <div class="qr-placeholder" id="qr-placeholder">
-        <div class="qr-text">${(typeof RESTAURANTS !== 'undefined' ? RESTAURANTS[R]?.slug : 'bistro-mondo') || 'bistro-mondo'}</div>
-        <div class="qr-url">foodstudio.ai/?feedback=${(typeof RESTAURANTS !== 'undefined' ? RESTAURANTS[R]?.slug : 'bistro-mondo') || 'bistro-mondo'}</div>
+    html+=`<div class="qr-widget">
+      <div class="qr-widget-header"><div class="qr-widget-title">Customer feedback QR</div><div class="qr-widget-sub">Print, stick on bill folder. Will move to Settings > Guest feedback.</div></div>
+      <div class="qr-widget-body">
+        <div class="qr-placeholder"><div class="qr-text">${(typeof RESTAURANTS !== 'undefined' && RESTAURANTS[R]) ? RESTAURANTS[R].slug : 'bistro-mondo'}</div><div class="qr-url">foodstudio.ai/?feedback=${(typeof RESTAURANTS !== 'undefined' && RESTAURANTS[R]) ? RESTAURANTS[R].slug : 'bistro-mondo'}</div></div>
+        <button class="office-cta-sec" onclick="window.open('https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=' + encodeURIComponent('https://foodstudio.ai/?feedback=' + ((RESTAURANTS && RESTAURANTS[R] && RESTAURANTS[R].slug) || 'bistro-mondo')), '_blank')">Generate QR ↗</button>
+        <button class="office-cta-sec" onclick="window.open('/?feedback=' + ((RESTAURANTS && RESTAURANTS[R] && RESTAURANTS[R].slug) || 'bistro-mondo'), '_blank')">Preview form ↗</button>
       </div>
-      <button class="office-cta-sec" onclick="window.open('https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=' + encodeURIComponent('https://foodstudio.ai/?feedback=' + (RESTAURANTS[R]?.slug || 'bistro-mondo')), '_blank')">Generate QR (opens in new tab)</button>
-      <button class="office-cta-sec" onclick="window.open('/?feedback=' + (RESTAURANTS[R]?.slug || 'bistro-mondo'), '_blank')">Preview the form</button>
-    </div>
-  </div>`;
+    </div>`;
 
-  // ═════════════════════════════════════════════════════════════════
-  // SECTION 5: Demo Controls (Multiplayer Presence)
-  // ═════════════════════════════════════════════════════════════════
-  html+=`<div class="demo-controls">
-    <div class="dc-label">Demo controls · Multiplayer presence</div>
-    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;">
-      <button class="dc-btn" onclick="enableGhostColleague()">Show ghost colleague</button>
-      <button class="dc-btn" onclick="disableGhostColleague()">Hide ghost colleague</button>
-    </div>
-    <div style="font-size:11px;color:var(--text-tertiary);margin-top:8px;line-height:1.4;">
-      When 2+ team members view the same tab, they see each other's avatars in the top-right corner. Click <strong>Show ghost colleague</strong> to demo this pattern even when you're logged in alone.
-    </div>
-  </div>`;
+    html+=`<div class="demo-controls">
+      <div class="dc-label">Demo controls · Multiplayer presence</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;">
+        <button class="dc-btn" onclick="enableGhostColleague()">Show ghost colleague</button>
+        <button class="dc-btn" onclick="disableGhostColleague()">Hide ghost colleague</button>
+      </div>
+    </div>`;
 
-  // ═════════════════════════════════════════════════════════════════
-  // SECTION 6: Expand the System — Add New Venue
-  // ═════════════════════════════════════════════════════════════════
-  html+=`<div class="ob-trigger-section">
-    <div class="ob-trigger-label">Expand the system</div>
-    <p class="ob-trigger-text">Adding a new venue takes 2 minutes. The OS handles the rest — menu, cleaning, schedule, and team scaffolding all carry over.</p>
-    <button class="cta" onclick="openVenueOnboarding()">+ Add a new venue</button>
-  </div>`;
+    html+=`<div class="ob-trigger-section">
+      <div class="ob-trigger-label">Expand the system</div>
+      <p class="ob-trigger-text">Already accessible from the Onboard tab. Kept here for dev access only.</p>
+      <button class="cta" onclick="openVenueOnboarding()">+ Add a new venue</button>
+    </div>`;
+
+    html+=`</div>`;
+  }
 
   html+=`</div>`;
   return html;
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// THE OWNER'S DESK — Reports & Archive (Office Step 5, 2026-05-08)
+// Back-of-the-magazine. Daily digest archive (recent inbox_items with
+// digest source) + Decisions resolved log (recent review_flags
+// where resolved=true) + placeholder cards for monthly P&L / exports
+// (light when not yet wired). Low-density, mostly links/thumbnails.
+// ══════════════════════════════════════════════════════════════════════
+let owsReportsCache = null;
+let owsReportsLoading = false;
+
+async function loadOwsReports() {
+  if (owsReportsLoading) return;
+  owsReportsLoading = true;
+  try {
+    const cutoff30 = new Date(Date.now() - 30 * 86400000).toISOString();
+    const [digests, resolvedFlags] = await Promise.all([
+      sbFetch(`inbox_items?or=(source.eq.nightly_digest,category.eq.nightly_digest)&order=received_at.desc.nullslast,created_at.desc&limit=14`).catch(() => []),
+      sbFetch(`review_flags?resolved=eq.true&resolved_at=gte.${cutoff30}&order=resolved_at.desc&limit=20`).catch(() => [])
+    ]);
+    owsReportsCache = { digests: digests || [], resolvedFlags: resolvedFlags || [] };
+  } catch (e) {
+    console.warn('[loadOwsReports] failed:', e.message);
+    owsReportsCache = { digests: [], resolvedFlags: [] };
+  }
+  owsReportsLoading = false;
+  if (currentTab === 'office') renderTab();
+}
+
+function renderOwsReports() {
+  if (owsReportsCache === null && !owsReportsLoading) loadOwsReports();
+  const c = owsReportsCache;
+  const safe = (s) => (typeof escapeHtml === 'function' ? escapeHtml(s || '') : String(s || '').replace(/[<>&]/g, ch => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;' }[ch])));
+
+  let archiveBody = '';
+  if (!c) {
+    archiveBody = `<div class="ows-day-empty">Loading archive…</div>`;
+  } else {
+    const digests = c.digests;
+    if (!digests.length) {
+      archiveBody = `<div class="ows-day-empty">No digests in the last 14 days. Once the nightly cron writes one, it appears here for re-reading.</div>`;
+    } else {
+      archiveBody = digests.map(d => {
+        const when = (d.received_at || d.created_at) ? new Date(d.received_at || d.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) : '—';
+        const headline = d.subject || 'Morning brief';
+        return `<div style="padding:10px 0;border-bottom:1px solid var(--border,rgba(0,0,0,0.05));display:flex;gap:14px;align-items:baseline">
+          <span style="font-family:var(--font-mono,'DM Mono',monospace);font-size:11px;color:var(--text-tertiary,#9B8E7E);min-width:64px;letter-spacing:0.04em">${safe(when)}</span>
+          <span style="font-family:var(--font-serif,Fraunces,Georgia,serif);font-style:italic;font-size:15px;color:var(--text-primary);flex:1">${safe(headline)}</span>
+          <button class="office-cta-sec" style="padding:4px 12px;font-size:11.5px" onclick="owsDayCache=${JSON.stringify(d).replace(/"/g, '&quot;')};currentTab='office';renderTab();window.scrollTo(0,0);">Re-read</button>
+        </div>`;
+      }).join('');
+    }
+  }
+
+  let decisionsLog = '';
+  if (c) {
+    const r = c.resolvedFlags;
+    if (!r.length) {
+      decisionsLog = `<div class="ows-day-empty">No decisions resolved in the last 30 days. Each one you resolve from the Decisions panel above will appear here as a record.</div>`;
+    } else {
+      decisionsLog = r.map(f => {
+        const when = f.resolved_at ? new Date(f.resolved_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) : '—';
+        return `<div style="padding:10px 0;border-bottom:1px solid var(--border,rgba(0,0,0,0.05));display:flex;gap:14px;align-items:baseline">
+          <span style="font-family:var(--font-mono,'DM Mono',monospace);font-size:11px;color:var(--text-tertiary,#9B8E7E);min-width:64px;letter-spacing:0.04em">${safe(when)}</span>
+          <span style="font-family:var(--font-serif,Fraunces,Georgia,serif);font-style:italic;font-size:14.5px;color:var(--text-secondary,#5C4E3C);flex:1">${safe((f.flag_type || 'Flag') + ' · ' + (f.skill_category || ''))} — <span style="color:var(--text-tertiary,#9B8E7E)">resolved${f.resolution ? ': ' + safe(f.resolution).slice(0, 80) : ''}</span></span>
+        </div>`;
+      }).join('');
+    }
+  } else {
+    decisionsLog = `<div class="ows-day-empty">Loading…</div>`;
+  }
+
+  return `<section class="ows-domain">
+    <div class="ows-label">Reports &amp; Archive</div>
+
+    <div style="margin-bottom:28px">
+      <div class="ows-tier-label" style="padding-top:6px">Daily digest archive · last 14 days</div>
+      ${archiveBody}
+    </div>
+
+    <div style="margin-bottom:28px">
+      <div class="ows-tier-label">Decisions resolved · last 30 days</div>
+      ${decisionsLog}
+    </div>
+
+    <div style="margin-bottom:18px">
+      <div class="ows-tier-label">Monthly P&amp;L</div>
+      <div class="ows-day-empty">Auto-generated monthly P&amp;L summaries land here once the bank-movements + open-invoices Holded endpoints ship and the cash_flow_forecast skill has historical data. See <code style="font-family:var(--font-mono,monospace);font-size:11px;color:var(--text-secondary)">api/holded.js.STEP2_NOTES.md</code> in the repo for spec.</div>
+    </div>
+
+    <div>
+      <div class="ows-tier-label">Custom exports</div>
+      <div class="ows-day-empty">Excel / PDF / CSV exports of any module's data — coming when the underlying modules have populated data. Recipes / menu_items / agent_call_log are exportable today via SQL queries; the in-app surface lands here.</div>
+    </div>
+  </section>`;
 }
 
 // ══ SETTINGS ══ [UNIQUE_ANCHOR: renderSettings_function]
