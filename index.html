@@ -4561,7 +4561,7 @@ let currentTab='today',recEditId=null,menuAddSec='hot',prodTab='mep',todaySubTab
 let RESTAURANTS = [];
 async function loadRestaurants(){
   try {
-    const rows = await sbFetch('restaurants?select=id,name,slug,latitude,longitude,fence_radius_m');
+    const rows = await sbFetch('restaurants?select=id,name,slug,lat,lng,clock_in_radius_m');
     if (!rows || !rows.length) return;
     const bySlug = {};
     rows.forEach(r => { bySlug[r.slug] = r; });
@@ -4745,13 +4745,14 @@ async function clockToggle(){
   let restId=null, restLat=null, restLng=null, restName=null, fenceRadius=100;
   try{
     const restSlug=R===0?'taller':'bistro-mondo';
-    const rs=await sbFetch(`restaurants?slug=eq.${restSlug}&select=id,name,latitude,longitude,fence_radius_m`);
+    const rs=await sbFetch(`restaurants?slug=eq.${restSlug}&select=id,name,lat,lng,clock_in_radius_m`);
     if(rs.length){
       restId=rs[0].id;
-      restLat=rs[0].latitude;
-      restLng=rs[0].longitude;
+      // DB stores lat/lng as NUMERIC → Supabase returns strings. Coerce to Number for haversine math.
+      restLat=rs[0].lat!=null?parseFloat(rs[0].lat):null;
+      restLng=rs[0].lng!=null?parseFloat(rs[0].lng):null;
       restName=rs[0].name;
-      if(rs[0].fence_radius_m)fenceRadius=rs[0].fence_radius_m;
+      if(rs[0].clock_in_radius_m)fenceRadius=rs[0].clock_in_radius_m;
     }
   }catch(e){}
 
