@@ -2050,7 +2050,10 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
 
   /* Recipe detail desktop layout: full width + 2-column grid */
   .det-scroll { max-width: 100%; width: 100%; padding: 28px 48px calc(140px + env(safe-area-inset-bottom,0px)); }
-  #screen-detail { width: 100%; }
+  /* #screen-detail is a child of #app (which is grid w/ 220px sidebar + 1fr content)
+   * — without an explicit grid-column it lands in the 220px sidebar slot, collapsing
+   * the recipe page to a narrow column. Span both columns when shown. */
+  #screen-detail { grid-column: 1 / -1; grid-row: 2; width: 100%; max-width: 100%; }
 }
 
 /* Mobile: hide desktop sidebar */
