@@ -3,12 +3,26 @@
  *
  * POST /api/holded/pos-report
  *      Sends a daily POS/EOD summary to Holded as journal entries
- *      Body: { restaurant, date, revenue_food, revenue_wine, revenue_bar,
- *               revenue_softdrinks, revenue_tips, revenue_other,
- *               cogs_food, cogs_wine, cogs_bar, cogs_other, actual_covers }
  *
- * GET  /api/holded/health?restaurant=taller
+ * GET  /api/holded?action=health&restaurant=taller
  *      Checks if the Holded API key for this restaurant is valid
+ *
+ * GET  /api/holded?action=bank-movements&restaurant=bistro-mondo&days_back=30
+ *      Returns treasury movements for cash-flow KPIs.
+ *      Response: { ok, movements: [{id, date, amount, currency, description,
+ *                  category, account_id, balance_after}], since, count }
+ *
+ * GET  /api/holded?action=open-invoices&restaurant=bistro-mondo
+ *      Returns BOTH open sales invoices (receivables) AND open purchase
+ *      invoices (payables), tagged with type field.
+ *      Response: { ok, invoices: [{id, type, date, due_date, amount, currency,
+ *                  contact_id, contact_name, concept, status, days_overdue}],
+ *                  receivables_total, payables_total, count }
+ *
+ * GET  /api/holded?action=contact&restaurant=bistro-mondo&id=<contactId>
+ *      Returns supplier/customer contact details for the Decisions panel
+ *      missing-invoice follow-up flow (prefills mailto: link).
+ *      Response: { ok, contact: {id, name, email, phone, vat_number, country} }
  *
  * POST /api/holded/categorize
  *      Triggers document categorization in Holded (purchase invoices → PGC codes)
@@ -36,7 +50,8 @@ export default async function handler(req) {
   if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: CORS });
 
   const url      = new URL(req.url);
-  const action   = url.pathname.split('/').pop(); // 'pos-report' | 'health' | 'categorize'
+  // Accept action via ?action=X query OR via path segment /api/holded/X for backwards compat
+  const action   = url.searchParams.get('action') || url.pathname.split('/').pop();
   const rest     = url.searchParams.get('restaurant') || 'taller';
   const heldedKey = getHoldedKey(rest);
 
@@ -54,6 +69,110 @@ export default async function handler(req) {
       return json({ ok: resp.ok, restaurant: rest, configured: true });
     } catch (e) {
       return json({ ok: false, error: e.message, restaurant: rest, configured: true });
+    }
+  }
+
+  // ── GET /api/holded?action=bank-movements ──────────────────────────────────
+  // Returns treasury movements for cash-flow KPIs. Holded's treasury API is /treasury/v1/transactions.
+  // Falls back gracefully if the endpoint shape changes — UI handles empty movements array.
+  if (req.method === 'GET' && action === 'bank-movements') {
+    const daysBack = parseInt(url.searchParams.get('days_back') || '30', 10);
+    const since = new Date(Date.now() - daysBack * 86400000).toISOString().slice(0, 10);
+    try {
+      // Try the treasury endpoint first; some Holded plans expose it as /accounting/v1/transactions
+      let resp = await holdedFetch(`/treasury/v1/transactions?startDate=${since}&page=1&limit=200`, heldedKey);
+      if (!resp.ok && resp.status === 404) {
+        resp = await holdedFetch(`/accounting/v1/transactions?startDate=${since}&page=1&limit=200`, heldedKey);
+      }
+      if (!resp.ok) {
+        return json({ ok: true, movements: [], note: `Holded treasury endpoint returned ${resp.status} — endpoint may not be exposed on this plan`, since });
+      }
+      const data = await resp.json();
+      const rows = Array.isArray(data) ? data : (data.data || data.transactions || []);
+      const movements = rows.map(r => ({
+        id: r.id || r._id || null,
+        date: r.date || r.transactionDate || null,
+        amount: parseFloat(r.amount || r.value || 0),
+        currency: r.currency || 'EUR',
+        description: r.description || r.concept || r.note || '',
+        category: categoriseMovement(r),
+        account_id: r.accountId || r.account_id || null,
+        balance_after: r.balance != null ? parseFloat(r.balance) : null,
+      }));
+      return json({ ok: true, movements, since, count: movements.length });
+    } catch (e) {
+      return json({ ok: false, error: e.message, movements: [] }, 200);
+    }
+  }
+
+  // ── GET /api/holded?action=open-invoices ───────────────────────────────────
+  // Returns BOTH open sales invoices (customers owe us) AND open purchase invoices (we owe suppliers).
+  // The UI's receivables/payables KPIs split by `type` field.
+  if (req.method === 'GET' && action === 'open-invoices') {
+    try {
+      const [salesResp, purchaseResp] = await Promise.all([
+        holdedFetch('/invoicing/v1/documents/invoices?status=open&page=1&limit=200', heldedKey),
+        holdedFetch('/invoicing/v1/documents/purchaseinvoices?status=open&page=1&limit=200', heldedKey),
+      ]);
+      const today = new Date(); today.setHours(0, 0, 0, 0);
+      const parse = (raw, type) => {
+        const arr = Array.isArray(raw) ? raw : (raw.data || raw.documents || []);
+        return arr.map(d => {
+          const dueIso = d.dueDate ? new Date(d.dueDate * 1000).toISOString().slice(0,10)
+                        : d.due_date || d.dueDateStr || null;
+          const daysOverdue = dueIso ? Math.max(0, Math.floor((today - new Date(dueIso)) / 86400000)) : 0;
+          return {
+            id: d.id || d._id,
+            type,
+            date: d.date ? (typeof d.date === 'number' ? new Date(d.date * 1000).toISOString().slice(0,10) : d.date) : null,
+            due_date: dueIso,
+            amount: parseFloat(d.total || d.amount || 0),
+            currency: d.currency || 'EUR',
+            contact_id: d.contactId || d.contact_id || null,
+            contact_name: d.contactName || d.contact_name || '',
+            concept: d.concept || d.description || '',
+            status: d.status || 'open',
+            days_overdue: daysOverdue,
+          };
+        });
+      };
+      const sales = salesResp.ok ? parse(await salesResp.json(), 'sale') : [];
+      const purchases = purchaseResp.ok ? parse(await purchaseResp.json(), 'purchase') : [];
+      const invoices = [...sales, ...purchases];
+      return json({
+        ok: true,
+        invoices,
+        count: invoices.length,
+        receivables_total: sales.reduce((s, i) => s + i.amount, 0),
+        payables_total: purchases.reduce((s, i) => s + i.amount, 0),
+      });
+    } catch (e) {
+      return json({ ok: false, error: e.message, invoices: [] }, 200);
+    }
+  }
+
+  // ── GET /api/holded?action=contact&id=<contactId> ──────────────────────────
+  // Returns supplier/customer contact details for the Decisions panel mailto: flow.
+  if (req.method === 'GET' && action === 'contact') {
+    const id = url.searchParams.get('id');
+    if (!id) return json({ ok: false, error: 'Missing id parameter' }, 400);
+    try {
+      const resp = await holdedFetch(`/invoicing/v1/contacts/${encodeURIComponent(id)}`, heldedKey);
+      if (!resp.ok) return json({ ok: false, error: `Holded returned ${resp.status}` }, 200);
+      const c = await resp.json();
+      return json({
+        ok: true,
+        contact: {
+          id: c.id || c._id || id,
+          name: c.name || '',
+          email: c.email || '',
+          phone: c.phone || c.mobile || '',
+          vat_number: c.vat_number || c.vatnumber || c.code || '',
+          country: c.country || c.billAddress?.country || '',
+        },
+      });
+    } catch (e) {
+      return json({ ok: false, error: e.message }, 200);
     }
   }
 
@@ -155,8 +274,25 @@ export default async function handler(req) {
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
 function getHoldedKey(restaurant) {
-  if (restaurant === 'bistro_mondo') return process.env.HOLDED_API_KEY_BISTRO_MONDO || null;
+  // Accept both 'bistro_mondo' and 'bistro-mondo' (the slug used in the UI)
+  if (restaurant === 'bistro_mondo' || restaurant === 'bistro-mondo') {
+    return process.env.HOLDED_API_KEY_BISTRO_MONDO || null;
+  }
   return process.env.HOLDED_API_KEY_TALLER || process.env.HOLDED_API_KEY || null;
+}
+
+/**
+ * Best-effort categorisation of a bank movement → {sales, suppliers, labour, utilities, other}
+ * Used by the bank-movements endpoint when Holded doesn't surface a category code.
+ * The cash_flow_forecast agent skill applies finer categorisation downstream.
+ */
+function categoriseMovement(mov) {
+  const txt = ((mov.description || '') + ' ' + (mov.concept || '') + ' ' + (mov.note || '')).toLowerCase();
+  if (mov.amount > 0) return 'sales';
+  if (/nomina|salario|sueldo|seguridad social|irpf|payroll/i.test(txt)) return 'labour';
+  if (/luz|gas|agua|electricidad|telefono|internet|endesa|naturgy|movistar|orange|vodafone/i.test(txt)) return 'utilities';
+  if (/proveedor|supplier|maison|delivery|mercado|fresh|carne|pescado|verdura|vino/i.test(txt)) return 'suppliers';
+  return 'other';
 }
 
 async function holdedFetch(path, apiKey) {
