@@ -407,7 +407,11 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
 #screen-detail { display: none; }
 #screen-recipe { display: none; }
 
-.dash-scroll { overflow-y: auto; padding: 12px 16px 140px; background: #FFFFFF; min-height: calc(100dvh - 120px); }
+/* Mobile: padding-top clears the fixed topbar (top:12px + ~60px height + breathing room).
+   Desktop overrides this in the min-width:768px media query.
+   Background uses --bg theme variable so dark themes (Midnight Pass) don't show white
+   while --text-primary is also white — the white-on-white bug Boris caught 2026-05-12. */
+.dash-scroll { overflow-y: auto; padding: 88px 16px 140px; background: var(--bg, #FFFFFF); min-height: calc(100dvh - 120px); }
 
 /* ─── GREETING ─── */
 .greeting { margin-bottom: 20px; }
@@ -753,7 +757,7 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
 .rc-margin { font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 600; }
 
 /* ─── RECIPE DETAIL SCREEN ─── */
-.det-scroll { overflow-y: auto; padding: 16px 16px 140px; }
+.det-scroll { overflow-y: auto; padding: 88px 16px 140px; }
 .det-back {
   display: flex; align-items: center; gap: 8px; margin-bottom: 20px;
   color: var(--text-secondary); font-size: 13px; cursor: pointer; background: transparent; border: none;
@@ -2072,6 +2076,24 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
 
   /* Body padding-top so tab content doesn't hide under the floating topbar */
   body { padding-top: env(safe-area-inset-top, 0px); }
+
+  /* ── Mobile readability bumps — operator walkthrough feedback 2026-05-12 ──
+     Tap-on-phone testing surfaced "fonts are very small. We need to do everything
+     we can to bring it up." Bumping the small-label patterns that hurt readability
+     while preserving the typographic hierarchy. */
+  /* Tags, badges, micro-labels: 10-11px → 12px */
+  .det-tag, .cl-freq, .sop-meta, .ow-status-badge, .ow-meta,
+  .tab-badge, .sm-cap, .meta-label, .pill-sm,
+  .greeting-time, .det-meta { font-size: 12px !important; }
+  /* 12px body labels → 14px on phone */
+  .sect-label, .ow-label, .recipe-card-meta, .sop-cat-label,
+  .det-section, .ow-stat-label { font-size: 14px !important; }
+  /* Buttons: bump small CTAs */
+  .cta-sec, .mb.sec, .det-btn.secondary { font-size: 14px; }
+  /* Recipe ingredient table cells on mobile — bigger for line-cook readability */
+  .ing-name, .ing-qty, .ing-unit { font-size: 15px; }
+  /* Cleaning tile names */
+  .cl-name { font-size: 14px !important; }
 }
 
 
@@ -4653,6 +4675,24 @@ let taskState={},cleanState={},mepState={},dishOpen={},menuSectionOpen={};
 let taskPriority={},taskUrgent={};
 let wSigned=[false,false],mSigned=[false,false],clSigned=[false,false];
 let recFilter='all',recSearch='';
+// Debounced recipe search — typing was destroying input focus on every keystroke
+// (renderTab re-renders the whole tab, including the input). Debounce 150ms + restore
+// focus + cursor position after re-render so typing feels normal.
+let _recSearchTimer=null;
+function recSearchDebounced(value){
+  recSearch=value;
+  clearTimeout(_recSearchTimer);
+  _recSearchTimer=setTimeout(()=>{
+    renderTab();
+    // Re-focus the search input and restore cursor to end
+    const inp=document.getElementById('recipe-search-input');
+    if(inp){
+      inp.focus();
+      const len=inp.value.length;
+      inp.setSelectionRange(len,len);
+    }
+  },150);
+}
 let helpHistory=[];
 let voiceRec=false,recognizer=null,voiceText='';
 let ctxPending={R:0,AREA:'boh',ZONE:'Hot Station'};
@@ -7843,7 +7883,7 @@ function renderRecipes(){
   const sbCount  =RECIPES.filter(r=>r._fromSupabase).length;
 
   let html=`<div style="display:flex;gap:7px;margin-bottom:10px;">
-    <input value="${recSearch}" placeholder="Search recipes..." oninput="recSearch=this.value;renderTab()" style="flex:1;padding:10px 13px;border-radius:10px;border:1px solid var(--glass-border);background:var(--ink-mid);font-family:'Outfit',sans-serif;font-size:13px;color:var(--text-primary);outline:none;">
+    <input id="recipe-search-input" value="${recSearch}" placeholder="Search recipes..." oninput="recSearchDebounced(this.value)" style="flex:1;padding:10px 13px;border-radius:10px;border:1px solid var(--glass-border);background:var(--ink-mid);font-family:'Outfit',sans-serif;font-size:13px;color:var(--text-primary);outline:none;">
     <button onclick="openAddRec()" style="padding:10px 14px;border-radius:10px;border:none;background:var(--ember);color:white;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;flex-shrink:0;">+ New</button>
   </div>
   <div style="display:flex;gap:5px;overflow-x:auto;scrollbar-width:none;margin-bottom:12px;padding-bottom:2px;">
@@ -12683,8 +12723,12 @@ function showInlineToastError(msg) {
     <div style="display:flex;gap:8px;">
       <button id="draft-save-btn" onclick="saveDraft()" style="flex:2;padding:16px;border-radius:14px;border:none;background:#4E6332;color:white;font-family:'Outfit',sans-serif;font-size:15px;font-weight:600;cursor:pointer;box-shadow:0 4px 16px rgba(78,99,50,0.3);">Save to catalogue</button>
       <button onclick="closeDraft()" style="flex:1;padding:16px;border-radius:14px;border:1px solid rgba(0,0,0,0.1);background:transparent;color:#9B8E7E;font-family:'Outfit',sans-serif;font-size:14px;cursor:pointer;">Discard</button>
+    </div>
+  </div>
+</div>
 
-<!-- CMD+K COMMAND PALETTE MODAL -->
+<!-- CMD+K COMMAND PALETTE MODAL — must be at body level so it doesn't inherit
+     the recipe-draft-modal's opacity:0 (was nested inside, that's why it never appeared). -->
 <div id="cmdk-overlay" class="cmdk-overlay" onclick="if(event.target===this)closeCmdK()">
   <div class="cmdk-modal" role="dialog" aria-label="Command palette">
     <div class="cmdk-input-wrap">
@@ -12695,9 +12739,6 @@ function showInlineToastError(msg) {
     <div id="cmdk-results" class="cmdk-results"></div>
     <div class="cmdk-foot">
       <span><kbd>↑</kbd><kbd>↓</kbd> to move · <kbd>↵</kbd> to open · <kbd>esc</kbd> to close</span>
-    </div>
-  </div>
-</div>
     </div>
   </div>
 </div>
