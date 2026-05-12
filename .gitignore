@@ -1,0 +1,5 @@
+
+# Local-only — added 2026-05-12 for parser validation
+node_modules/
+package*.json
+_archive/
