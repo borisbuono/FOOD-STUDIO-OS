@@ -297,6 +297,14 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
 #app { display: none; min-height: 100dvh; }
 #app.visible { display: block; }
 
+/* ── Role-based visibility — Boris's walkthrough lockdown ──
+   "Taller hot station should not have office accessibility at all."
+   body[data-role] is set by applyRoleVisibility() once USER.role is known.
+   Manager + owner: see everything. worker/chef/maitre: only operational tabs. */
+body[data-role="worker"] .mgr-only,
+body[data-role="chef"]   .mgr-only,
+body[data-role="maitre"] .mgr-only { display: none !important; }
+
 /* ─── TOP BAR ─── */
 .topbar {
   display: flex; align-items: center; justify-content: space-between;
@@ -3389,12 +3397,12 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
       <div class="dnav-divider"></div>
       <div class="dnav-section">
                 <button class="dnav-item ntab" onclick="switchTab('cleaning',this)" data-tab="cleaning"><span class="dnav-ic">🧹</span><span class="dnav-lbl">Cleaning</span><span class="tab-badge" id="badge-cleaning"></span></button>
-        <button class="dnav-item ntab" onclick="switchTab('events',this)" data-tab="events"><span class="dnav-ic">🎉</span><span class="dnav-lbl">Events</span><span class="tab-badge" id="badge-events"></span></button>
-        <button class="dnav-item ntab" onclick="switchTab('schedule',this)" data-tab="schedule"><span class="dnav-ic">📅</span><span class="dnav-lbl">Schedule</span><span class="tab-badge" id="badge-schedule"></span></button>
+        <button class="dnav-item ntab mgr-only" onclick="switchTab('events',this)" data-tab="events"><span class="dnav-ic">🎉</span><span class="dnav-lbl">Events</span><span class="tab-badge" id="badge-events"></span></button>
+        <button class="dnav-item ntab mgr-only" onclick="switchTab('schedule',this)" data-tab="schedule"><span class="dnav-ic">📅</span><span class="dnav-lbl">Schedule</span><span class="tab-badge" id="badge-schedule"></span></button>
       </div>
-      <div class="dnav-divider"></div>
-      <div class="dnav-section">
-        <button class="dnav-item ntab" onclick="switchTab('office',this)" data-tab="office"><span class="dnav-ic">✦</span><span class="dnav-lbl">Office</span><span class="tab-badge" id="badge-office"></span></button>
+      <div class="dnav-divider mgr-only"></div>
+      <div class="dnav-section mgr-only">
+        <button class="dnav-item ntab mgr-only" onclick="switchTab('office',this)" data-tab="office"><span class="dnav-ic">✦</span><span class="dnav-lbl">Office</span><span class="tab-badge" id="badge-office"></span></button>
       </div>
       <div class="dnav-spacer"></div>
       <button class="dnav-ai" onclick="openAI()"><span style="font-size:18px">✦</span><span>Ask AI</span></button>
@@ -4673,6 +4681,13 @@ const MENU_LIBRARY = [
 
 // ══ STATE ══
 let USER={name:'',role:'owner',lang:'en',zone:''},selRV='',selLV='en',selRestV=null,selAreaV='';
+// Role-based visibility: sets body[data-role] so CSS can hide .mgr-only elements
+// when the active user is a chef/worker/maitre. Call this after USER.role changes.
+function applyRoleVisibility(){
+  if(document.body && USER && USER.role){
+    document.body.setAttribute('data-role', USER.role);
+  }
+}
 let R=0,AREA='boh',ZONE='Hot Station';
 let currentTab='today',recEditId=null,menuAddSec='hot',prodTab='mep',todaySubTab='day',eventsView='pipeline',cleaningView='tasks';
 // RESTAURANTS: populated at boot from Supabase via loadRestaurants(). Indexed by R: [0]=Taller, [1]=Bistro Mondo.
@@ -5148,7 +5163,7 @@ function doLogin(){
   R=selRestV; AREA=selAreaV;
   const zonesForArea=ZONES[R]?.[AREA]||[];
   ZONE=zonesForArea[0]||'';
-  USER={name,role:selRV,lang:selLV,zone:ZONE};
+  USER={name,role:selRV,lang:selLV,zone:ZONE};applyRoleVisibility();
   if(prev._googleId){USER._googleId=prev._googleId;USER._googleEmail=prev._googleEmail;USER._googlePicture=prev._googlePicture;}
   saveSession();
   loadState(); // restore today's operational state if any
@@ -5346,7 +5361,16 @@ function renderInbox() {
 }
 
 // ══ TAB ROUTING ══
+// Role-restricted tabs (manager + owner only). Workers/chefs/maitres land back on Today.
+const MGR_ONLY_TABS = new Set(['office','events','schedule','team','command','integrations','onboarding']);
 function switchTab(tab,el){
+  // Defense in depth — even if the UI somehow exposes a mgr-only nav button,
+  // navigation is blocked at the function level for non-manager roles.
+  if (MGR_ONLY_TABS.has(tab) && USER && USER.role && !['manager','owner'].includes(USER.role)) {
+    if (typeof showToast === 'function') showToast('Ask your manager for access');
+    tab = 'today';
+    el = document.querySelector('.ntab[data-tab="today"]');
+  }
   currentTab=tab;
   document.querySelectorAll('.ntab').forEach(t=>t.classList.remove('active'));
   if(el){
@@ -8722,6 +8746,7 @@ async function handleGoogleCredential(response){
     USER.lang=teamRow.language||'es';
     USER._teamMemberId=teamRow.id;
     USER._operatorEntityId=teamRow.operator_entity_id;
+    applyRoleVisibility();
 
     // Resolve restaurant + area + zone from team_members defaults
     if(teamRow.default_restaurant_id){
