@@ -2094,6 +2094,28 @@ body:not(.oauth-active) .lf-google-primary-hint { display: none; }
   .ing-name, .ing-qty, .ing-unit { font-size: 15px; }
   /* Cleaning tile names */
   .cl-name { font-size: 14px !important; }
+
+  /* ── Mobile touch responsiveness — Boris's iPhone walkthrough flagged
+     "ordering — I can't even touch an order, it's not active". Adding
+     touch-action: manipulation (removes 300ms tap delay + double-tap-zoom)
+     and visible tap highlight + active state so taps land cleanly. */
+  .provider-card, .provider-head, .ost-pill, .ord-ai-btn,
+  .cmdk-trigger, .tb-context, .tb-more-btn,
+  .recipe-card, .dish-card, .cl-tile, .sop-card,
+  .te-card, .wf-card, .tqa, .ow-decision-card,
+  button, [onclick] {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: rgba(184, 106, 66, 0.18);
+  }
+  .provider-head:active,
+  .recipe-card:active,
+  .dish-card:active,
+  .sop-card:active,
+  .tqa:active,
+  .ow-decision-card:active {
+    background: rgba(0, 0, 0, 0.04) !important;
+    transform: scale(0.98);
+  }
 }
 
 
@@ -12572,11 +12594,20 @@ async function sendAIOv(){
 
   var lq=q.toLowerCase();
   var isDraft=lq.includes('draft')||lq.includes('recipe')||lq.includes('receta')||lq.includes('dish')||(lq.includes('make')&&(lq.includes('a ')||lq.includes('me ')))||lq.includes('cook ');
-  var isSave=lq.includes('save')||lq.includes('library')||lq.includes('add to')||lq.includes('store this')||lq.includes('keep this')||(lq.includes('add')&&lq.includes('it'));
+  var isSave=lq.includes('save')||lq.includes('library')||lq.includes('store this')||lq.includes('keep this');
   var isBriefing=lq.includes('briefing')||lq.includes('brief')||lq.includes('pre-service');
   var isOrder=lq.includes('order')||lq.includes('supplier')||lq.includes('pedido');
+  // Action requests — user wants me to DO something, not explain
+  var isAction=/^(add|remove|log|set|create|update|delete|schedule|book|cancel|mark|flag|send)\s/i.test(q.trim())
+              || lq.includes('to my shopping')||lq.includes('shopping list')
+              || lq.includes('to the mep')||lq.includes(' to mep ')
+              || lq.includes('clock me')||lq.includes('clock in')||lq.includes('clock out');
 
   var sys='You are the Food Studio OS AI assistant for Taller and Bistro Mondo restaurants in Ibiza. '+ctx;
+  sys+=' CRITICAL RULE: Never tell the user to "navigate to" a tab or "go to" a section. The user is talking to you BECAUSE they want you to do it, not be told to do it themselves. If you cannot directly perform the requested action yet (because the action-routing layer is not wired for it), say so honestly in one sentence + offer the closest thing you CAN do (draft text they can paste, calculate a quantity, retrieve data, suggest an SOP). Never give instructions for the user to do the task manually. ';
+  if(isAction){
+    sys+=' The user is asking you to take an action. Tools available right now: draft a recipe (with <RECIPE> tag below). Other actions (add to shopping list, update MEP, clock in/out, create supplier order) are NOT yet wired through me — the action-routing layer is still being built. Respond honestly: "I can\'t directly [do that] yet — that wiring lands next week." Then if relevant, offer to draft the message/order/note for the user to paste into the right surface, OR retrieve the data they need (current MEP for X dish, supplier for Y product, etc.). Be 2-3 sentences. Never tell them to navigate to a tab. ';
+  }
   if(isDraft){
     sys+=' The chef wants a recipe. Respond in TWO parts:\n1. A brief professional explanation in markdown (1-2 short paragraphs OR an ingredient table + method, max 200 words)\n2. AT THE END, append the structured recipe JSON wrapped in <RECIPE>…</RECIPE> tags so it can be saved to the recipe library with one click.\nJSON shape: {"name":"","section":"hot","rest":"both","portions":10,"desc":"2-3 sentence professional description","costPerPortion":0,"menuPrice":0,"ingredients":[{"name":"","qty":"","unit":""}],"allergens":[],"versionNote":"AI draft v1"}. section: cold|hot|pizza|dessert|breakfast. rest: taller|bistro-mondo|both. Allergens from EU 14: gluten,crustacean,eggs,fish,peanuts,soy,milk,nuts,celery,mustard,sesame,sulphites,lupin,molluscs. Use realistic restaurant quantities. The <RECIPE> tag is required so the user can save the recipe — never skip it.';
   } else if(isSave&&!currentDraft){
