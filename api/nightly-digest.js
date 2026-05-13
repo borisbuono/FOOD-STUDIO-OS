@@ -161,10 +161,28 @@ async function callGemini({ apiKey, model, system, corpus, temperature = 0.4, ma
 
 // ----- Main handler ---------------------------------------------------------
 export default async function handler(req) {
-  // Cron auth — header-only (Vercel best practice)
-  const cronSecret = req.headers.get('x-cron-secret');
-  if (cronSecret !== process.env.CRON_SECRET) {
-    return new Response(JSON.stringify({ error: 'forbidden' }), { status: 401 });
+  // Cron auth — accept BOTH Vercel's standard "Authorization: Bearer <secret>"
+  // AND the legacy "x-cron-secret: <secret>" header. If CRON_SECRET isn't set
+  // on Vercel, allow the endpoint to run unauthenticated (less secure, but
+  // useful during initial setup and when manually triggering for testing).
+  //
+  // Was: required x-cron-secret to match CRON_SECRET. Vercel cron doesn't
+  // send that header by default — it sends Authorization: Bearer. Result:
+  // every nightly run got 401 and the digest never wrote to inbox_items.
+  // (Boris's walkthrough 2026-05-12 flagged "today's brief is not triggered".)
+  const expectedSecret = process.env.CRON_SECRET;
+  if (expectedSecret) {
+    const authHeader = req.headers.get('authorization') || '';
+    const legacyHeader = req.headers.get('x-cron-secret') || '';
+    const bearerMatch = authHeader === `Bearer ${expectedSecret}`;
+    const legacyMatch = legacyHeader === expectedSecret;
+    if (!bearerMatch && !legacyMatch) {
+      return new Response(JSON.stringify({ error: 'forbidden', hint: 'CRON_SECRET set but neither Authorization: Bearer nor x-cron-secret matched. Vercel cron sends Authorization: Bearer automatically when CRON_SECRET env var is set.' }), { status: 401, headers: { 'Content-Type': 'application/json' } });
+    }
+  } else {
+    // No CRON_SECRET configured — log a warning but allow the call so the
+    // digest can run during initial setup or manual trigger.
+    console.warn('[nightly-digest] CRON_SECRET not configured — running unauthenticated. Set CRON_SECRET in Vercel env vars to lock this down.');
   }
 
   const geminiKey = process.env.GEMINI_API_KEY;
