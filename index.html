@@ -6411,6 +6411,33 @@ function renderOwsCashFlow() {
   </section>`;
 }
 
+// Office sub-dashboard nav state — Boris's walkthrough insight:
+// "Office should have, like, a tree-fork of communication, finance, CFO."
+// Office persona has different top-level nav than kitchen persona.
+let officeSubTab = (typeof window !== 'undefined' && window._officeSubTab) || 'today';
+function setOfficeSubTab(tab){
+  officeSubTab = tab;
+  if (typeof window !== 'undefined') window._officeSubTab = tab;
+  renderTab();
+}
+
+function renderOfficeSubNav(){
+  const tabs = [
+    {id:'today',     label:'Today',     icon:'◐'},
+    {id:'finance',   label:'Finance',   icon:'€'},
+    {id:'decisions', label:'Decisions', icon:'◇'},
+    {id:'agents',    label:'Agents',    icon:'✦'},
+    {id:'comms',     label:'Comms',     icon:'✉'},
+    {id:'reports',   label:'Reports',   icon:'▤'},
+  ];
+  return `<div style="display:flex;gap:4px;margin-bottom:20px;padding:4px;background:rgba(0,0,0,0.04);border-radius:14px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;">${
+    tabs.map(t => {
+      const active = officeSubTab === t.id;
+      return `<button onclick="setOfficeSubTab('${t.id}')" style="flex-shrink:0;display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;border:none;background:${active?'#FFFFFF':'transparent'};color:${active?'var(--text-primary)':'var(--text-secondary)'};font-family:'Outfit',sans-serif;font-size:13px;font-weight:${active?700:500};cursor:pointer;box-shadow:${active?'0 2px 6px rgba(0,0,0,0.06)':'none'};transition:all 0.15s;white-space:nowrap;"><span style="font-size:14px;opacity:0.8;">${t.icon}</span>${t.label}</button>`;
+    }).join('')
+  }</div>`;
+}
+
 function renderOffice(){
   const canMgr=['manager','owner'].includes(USER.role);
   if(!canMgr)return`<div style="padding:32px;text-align:center;color:var(--text-tertiary);font-size:13px;">Office access is for owners and managers.</div>`;
@@ -6420,18 +6447,87 @@ function renderOffice(){
   let html=`<div style="padding:16px 8px;">`;
 
   // ═════════════════════════════════════════════════════════════════
-  // QUIET ROOM CONDITIONAL (Owner's Desk Step 3)
-  // When there are zero open decisions AND no fresh digest in the
-  // last 18h, the entire Office becomes a single editorial page —
-  // a chef anecdote and the date. The OS literally disappears when
-  // there is nothing to do (Invisible Technology principle).
+  // QUIET ROOM CONDITIONAL (only on Today sub-tab when nothing to do)
   // ═════════════════════════════════════════════════════════════════
-  if (owsShouldShowQuietRoom()) {
+  if (officeSubTab === 'today' && owsShouldShowQuietRoom()) {
     html += renderOwsQuietRoom();
     html += `</div>`;
     return html;
   }
 
+  // Sub-tab navigation
+  html += renderOfficeSubNav();
+
+  // ═════════════════════════════════════════════════════════════════
+  // SUB-TAB ROUTING — each sub-tab is its own focused view
+  // No more long scroll across all domains — pick one
+  // ═════════════════════════════════════════════════════════════════
+  if (officeSubTab === 'today') {
+    // Today: yesterday's day + top-of-mind decisions + 1 cash KPI strip
+    html += renderOwsDay();
+    html += renderOwsCashFlow();
+    html += renderOwsDecisions();
+    html += `</div>`;
+    return html;
+  }
+
+  if (officeSubTab === 'finance') {
+    html += renderOwsCashFlow();
+    // Finance Pulse + Missing Invoices live here
+    html += `<div class="finance-pulse" style="margin-top:24px;">
+      <div class="fp-header"><div class="fp-title">Finance pulse</div><div class="fp-sub">CFO Gem · grounded in Holded data</div></div>
+      <div class="fp-grid">
+        <div class="fp-card"><div class="fp-card-label">Today's revenue</div><div class="fp-card-val">€—</div><div class="fp-card-todo">Awaiting Holded webhook</div></div>
+        <div class="fp-card"><div class="fp-card-label">Pending invoices</div><div class="fp-card-val">—</div><div class="fp-card-todo">Awaiting Holded sync</div></div>
+        <div class="fp-card"><div class="fp-card-label">Last reconciliation</div><div class="fp-card-val">2 days</div><div class="fp-card-todo">Boris's local cli run</div></div>
+      </div>
+      <div class="fp-actions">
+        <button class="office-cta" onclick="runAgentSkill('categorise_expense')">Categorise pending expense</button>
+        <a class="office-cta-sec" href="https://app.holded.com" target="_blank">Open Holded ledger →</a>
+      </div>
+    </div>`;
+    html += renderMissingInvoicesPanel();
+    html += `</div>`;
+    return html;
+  }
+
+  if (officeSubTab === 'decisions') {
+    html += renderOwsDecisions();
+    html += `</div>`;
+    return html;
+  }
+
+  if (officeSubTab === 'agents') {
+    html += renderOwsAgents();
+    html += `</div>`;
+    return html;
+  }
+
+  if (officeSubTab === 'reports') {
+    html += renderOwsReports();
+    html += `</div>`;
+    return html;
+  }
+
+  if (officeSubTab === 'comms') {
+    // Placeholder — Comms composer is a future build
+    html += `<div style="padding:32px;text-align:center;color:var(--text-tertiary);">
+      <div style="font-family:'Fraunces',serif;font-style:italic;font-size:22px;color:var(--text-secondary);margin-bottom:8px;">Communications</div>
+      <div style="font-size:14px;line-height:1.6;max-width:380px;margin:0 auto;">Unified inbox + outbox across both venues' Gmail accounts, AI-drafted replies, brand-voice review pipeline. Build queued for Week 2 — most email work happens in Cowork or Chat for now.</div>
+    </div>`;
+    html += `</div>`;
+    return html;
+  }
+
+  // Fallback for unknown sub-tab — restore Today view
+  officeSubTab = 'today';
+  html += renderOwsDay();
+  html += renderOwsCashFlow();
+  html += renderOwsDecisions();
+
+  // Legacy fallthrough — only reached if sub-tab routing breaks. Original sections preserved
+  // below until everything is confirmed working in the sub-tab structure.
+  if (false) {  // ===== UNREACHABLE: kept for reference =====
   // ═════════════════════════════════════════════════════════════════
   // SECTION 0a: The Day — yesterday's editorial summary (Step 3)
   // ═════════════════════════════════════════════════════════════════
@@ -6551,6 +6647,7 @@ function renderOffice(){
 
     html+=`</div>`;
   }
+  }  // ===== closes the if (false) { wrapper around legacy sections =====
 
   html+=`</div>`;
   return html;
