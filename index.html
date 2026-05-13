@@ -2130,6 +2130,134 @@ body[data-role="maitre"] .mgr-only { display: none !important; }
 
   /* Hide keyboard shortcut hints on phones — no Cmd key */
   .aii-shortcut, .cmdk-trigger { display: none !important; }
+
+  /* ══════════════════════════════════════════════════════════════════
+     MOBILE VISUAL CONSISTENCY PASS — 2026-05-12
+     Boris's walkthrough: "phone visuals are all over the place and very
+     different than desktop." Years of inline styling created 10 border-
+     radius values, 17 padding combos, 436 inline styles. Can't rewrite
+     all of that in one session — overriding the worst inconsistencies
+     here so the OS LOOKS like one product on phone.
+     ══════════════════════════════════════════════════════════════════ */
+
+  /* 1. Unified section labels — the small uppercase tracking-wide eyebrow
+        text above every section. Was: 5 different styles. Now: one. */
+  .det-section, .sect-label, .te-label, .fp-title, .cl-section-label,
+  .sop-cat-label, .ds-label, .wb-label, .ow-section-label,
+  .recipe-list-section-label {
+    font-family: 'DM Mono', monospace !important;
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.12em !important;
+    color: var(--ember, #B86A42) !important;
+    opacity: 0.85;
+    margin: 22px 0 10px 0 !important;
+    padding: 0 !important;
+    display: block !important;
+  }
+  /* First section label of a tab shouldn't have top margin */
+  .det-section:first-child, .sect-label:first-child { margin-top: 0 !important; }
+
+  /* 2. Unified card treatment — same radius, padding, border, shadow.
+        Was: 8/10/12/14/16px radius, varying padding, some no border, some heavy shadows. */
+  .recipe-card, .provider-card, .sop-card, .cl-tile, .cost-tile,
+  .te-card, .wf-card, .tqa, .ow-decision-card, .ow-stat-card,
+  .fp-card, .cook-recipe-sel, .dish-card {
+    border-radius: 14px !important;
+    padding: 16px !important;
+    background: var(--bg-card, #FFFFFF) !important;
+    border: 1px solid rgba(0, 0, 0, 0.06) !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+    margin-bottom: 10px !important;
+  }
+  /* Cards-in-grids keep smaller side padding */
+  .clean-grid .cl-tile { padding: 14px 10px !important; text-align: center; }
+  .cost-grid .cost-tile { padding: 14px 10px !important; }
+  .fp-grid .fp-card { padding: 14px !important; }
+
+  /* 3. Unified button hierarchy — Primary (ember), Secondary (ghost), Pill (small).
+        Was: 20+ inline-styled buttons each looking slightly different. */
+  .cta, .mb, button.primary, .det-btn.primary, .office-cta,
+  .ai-ov-send, .draft-save-btn {
+    background: var(--ember, #B86A42) !important;
+    color: #FFFFFF !important;
+    border: none !important;
+    border-radius: 12px !important;
+    padding: 13px 18px !important;
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.01em !important;
+    box-shadow: 0 2px 8px rgba(184, 106, 66, 0.18) !important;
+    transition: transform 0.12s, box-shadow 0.12s !important;
+  }
+  .cta-sec, .mb.sec, .det-btn.secondary, .office-cta-sec {
+    background: transparent !important;
+    color: var(--text-primary) !important;
+    border: 1.5px solid rgba(0, 0, 0, 0.12) !important;
+    border-radius: 12px !important;
+    padding: 13px 18px !important;
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    box-shadow: none !important;
+  }
+  .cta:active, .mb:active, .office-cta:active { transform: scale(0.97); }
+
+  /* 4. Vertical rhythm — section-to-section spacing on mobile.
+        Was: inconsistent margins. Now: 24px between major sections. */
+  .today-attention, .today-events, .today-quick-actions,
+  .finance-pulse, .ows-cashflow, .ows-decisions-panel,
+  .ows-agents, .ows-reports, .ows-day {
+    margin-bottom: 24px !important;
+  }
+
+  /* 5. Hero greeting — give it room to breathe on phone */
+  .today-hero, .th-greeting { padding-top: 8px !important; }
+  .th-greeting { font-size: 26px !important; line-height: 1.15 !important; }
+  .th-date { font-size: 13px !important; }
+  .th-tagline { font-size: 14px !important; margin-top: 10px !important; }
+
+  /* 6. Sub-tab pills — used in Cleaning, Orders, Office sub-dashboard */
+  .ost-pill, .cst-pill, .ow-decisions-tab {
+    padding: 9px 14px !important;
+    border-radius: 10px !important;
+    font-family: 'Outfit', sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    border: none !important;
+    background: transparent !important;
+    color: var(--text-secondary) !important;
+  }
+  .ost-pill.active, .cst-pill.active, .ow-decisions-tab.active {
+    background: var(--bg-card, #FFFFFF) !important;
+    color: var(--text-primary) !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06) !important;
+  }
+
+  /* 7. Ingredient + cost numerals — DM Mono everywhere for that
+        Bohemian Precision data feel. Some cards had system font numerals
+        which looked inconsistent next to others with mono. */
+  .cost-n, .fp-card-val, .ow-stat-val, .cook-ing-qty,
+  .clock-since, .te-pax { font-family: 'DM Mono', monospace !important; }
+
+  /* 8. Inputs — unified treatment for all text/number inputs on mobile */
+  input[type="text"], input[type="number"], input[type="email"],
+  input[type="search"], textarea, select {
+    border-radius: 10px !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    padding: 11px 14px !important;
+    font-size: 16px !important; /* iOS no-zoom */
+    background: var(--bg-card, #FFFFFF) !important;
+    color: var(--text-primary) !important;
+    font-family: 'Outfit', sans-serif !important;
+  }
+  input:focus, textarea:focus, select:focus {
+    border-color: var(--ember, #B86A42) !important;
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(184, 106, 66, 0.12) !important;
+  }
 }
 
 
