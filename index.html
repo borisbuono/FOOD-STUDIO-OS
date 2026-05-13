@@ -6665,11 +6665,16 @@ function renderOwsCashFlow() {
 // Office sub-dashboard nav state — Boris's walkthrough insight:
 // "Office should have, like, a tree-fork of communication, finance, CFO."
 // Office persona has different top-level nav than kitchen persona.
-let officeSubTab = (typeof window !== 'undefined' && window._officeSubTab) || 'today';
+var officeSubTab = (typeof window !== 'undefined' && window._officeSubTab) || 'today';
 function setOfficeSubTab(tab){
   officeSubTab = tab;
   if (typeof window !== 'undefined') window._officeSubTab = tab;
   renderTab();
+}
+// Explicit window exports — defensive against any script-scope edge cases that
+// would prevent the inline onclick="setOfficeSubTab('finance')" from resolving.
+if (typeof window !== 'undefined') {
+  window.setOfficeSubTab = setOfficeSubTab;
 }
 
 function renderOfficeSubNav(){
