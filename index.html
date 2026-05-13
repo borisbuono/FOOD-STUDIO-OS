@@ -7982,8 +7982,63 @@ function renderRecipes(){
   return html;
 }
 
-function showRecipeDetail(id){
+function showRecipeDetail(id, opts){
   const r=RECIPES.find(x=>x.id===id);if(!r)return;
+  // Cook Mode unification (2026-05-12): same recipe page, two modes via recipePageState.stepMode
+  if (recipePageState.recipeId !== id) {
+    recipePageState.recipeId = id;
+    recipePageState.currentStep = 0;
+    recipePageState.portions = null;
+  }
+  if (opts && opts.stepMode != null) recipePageState.stepMode = !!opts.stepMode;
+
+  // ── STEP MODE branch: full-screen single-step rendering inside the same page ──
+  if (recipePageState.stepMode) {
+    const steps = (RECIPE_STEPS[id] || r.steps || []);
+    if (steps.length) {
+      const idx = Math.min(recipePageState.currentStep, steps.length - 1);
+      const step = steps[idx];
+      const portions = recipePageState.portions || r.portions || 10;
+      const scale = portions / (r.portions || 10);
+      const scaledIngs = r.ingredients.map(i => {
+        const qty = parseFloat(i.qty) * scale;
+        const qtyDisplay = isNaN(qty) ? i.qty : (qty % 1 === 0 ? qty.toString() : qty.toFixed(1));
+        return `<div style="display:flex;justify-content:space-between;align-items:baseline;padding:8px 0;border-bottom:1px solid rgba(0,0,0,0.05);"><span style="font-size:14px;color:var(--text-primary);">${i.name}</span><span style="font-family:'DM Mono',monospace;font-size:13px;color:var(--text-secondary);font-weight:600;">${qtyDisplay} ${i.unit||''}</span></div>`;
+      }).join('');
+      const progBar = steps.map((_, i) => `<div onclick="jumpRecipeStep(${i})" style="height:5px;flex:1;border-radius:3px;background:${i <= idx ? 'var(--ember,#B86A42)' : 'rgba(0,0,0,0.08)'};transition:all 0.25s;cursor:pointer;"></div>`).join('');
+      const stepText = (typeof step === 'string') ? step : (step.text || '');
+      const stepTimer = (typeof step === 'object' && step.timer) ? step.timer : null;
+      document.getElementById('det-content').innerHTML = `
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:10px;">
+          <button onclick="setRecipeStepMode(false)" style="display:flex;align-items:center;gap:6px;background:transparent;border:none;color:var(--text-secondary);font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;padding:8px 12px 8px 0;">← Exit cook mode</button>
+          <div style="display:flex;align-items:center;gap:8px;background:rgba(0,0,0,0.04);border-radius:14px;padding:4px 6px;">
+            <button onclick="adjustRecipePortions(-1)" style="width:28px;height:28px;border-radius:50%;border:none;background:transparent;font-size:18px;cursor:pointer;color:var(--text-primary);">−</button>
+            <span style="font-family:'DM Mono',monospace;font-weight:700;font-size:14px;min-width:46px;text-align:center;">×${portions}</span>
+            <button onclick="adjustRecipePortions(1)" style="width:28px;height:28px;border-radius:50%;border:none;background:transparent;font-size:18px;cursor:pointer;color:var(--text-primary);">+</button>
+          </div>
+        </div>
+        <div style="font-family:'Fraunces',serif;font-style:italic;font-size:24px;color:var(--text-primary);margin-bottom:4px;line-height:1.15;">${r.name}</div>
+        <div style="display:flex;gap:5px;align-items:center;margin-bottom:14px;">${progBar}<span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text-tertiary);margin-left:8px;white-space:nowrap;">${idx+1}/${steps.length}</span></div>
+        <div style="background:#FFFFFF;border:1px solid rgba(0,0,0,0.06);border-radius:16px;padding:20px 22px;margin-bottom:14px;box-shadow:0 2px 8px rgba(0,0,0,0.04);">
+          <div style="font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-tertiary);margin-bottom:8px;">Step ${idx+1} of ${steps.length}</div>
+          <div style="font-size:17px;line-height:1.55;color:var(--text-primary);font-family:'Outfit',sans-serif;">${stepText}</div>
+          ${stepTimer ? `<div style="margin-top:14px;display:flex;align-items:center;gap:10px;background:rgba(184,106,66,0.08);border-radius:10px;padding:10px 14px;"><span style="font-size:18px;">⏱</span><span style="font-family:'DM Mono',monospace;font-weight:700;color:var(--ember,#B86A42);">${formatTime(stepTimer)}</span><button onclick="startCookTimer(${stepTimer})" id="cook-timer-btn" style="margin-left:auto;padding:6px 14px;border-radius:8px;border:none;background:var(--ember,#B86A42);color:#fff;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;cursor:pointer;">Start timer</button></div>` : ''}
+        </div>
+        <div style="display:flex;gap:8px;margin-bottom:18px;">
+          <button onclick="prevRecipeStep()" ${idx===0?'disabled':''} style="flex:1;padding:14px;border-radius:12px;border:1.5px solid rgba(0,0,0,0.1);background:transparent;color:var(--text-primary);font-family:'Outfit',sans-serif;font-size:14px;font-weight:600;cursor:pointer;${idx===0?'opacity:0.4;cursor:not-allowed;':''}">← Prev</button>
+          <button onclick="nextRecipeStep()" ${idx>=steps.length-1?'disabled':''} style="flex:2;padding:14px;border-radius:12px;border:none;background:var(--ember,#B86A42);color:#fff;font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;cursor:pointer;${idx>=steps.length-1?'opacity:0.4;cursor:not-allowed;':''}">${idx>=steps.length-1?'✓ Done':'Next →'}</button>
+        </div>
+        <div style="font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-tertiary);margin-bottom:6px;">Ingredients · ${portions} portions</div>
+        <div style="background:#FFFFFF;border:1px solid rgba(0,0,0,0.06);border-radius:12px;padding:6px 14px;">${scaledIngs}</div>
+      `;
+      document.getElementById('screen-dashboard').style.display='none';
+      document.getElementById('screen-detail').style.display='block';
+      return;
+    }
+    // No steps defined — fall through to normal view
+    recipePageState.stepMode = false;
+  }
+
   const cv=r.versions.find(v=>v.current)||r.versions[r.versions.length-1];
   const mg=r.menuPrice?Math.round((1-r.costPerPortion/r.menuPrice)*100):null;
   const mgColor=mg===null?'var(--text-tertiary)':mg>60?'#5A8A78':mg>40?'#C4783A':'#A83232';
@@ -8027,7 +8082,7 @@ function showRecipeDetail(id){
       <button class="det-btn primary" onclick="openEditRec('${r.id}')">Edit recipe</button>
       <button class="det-btn secondary" onclick="openNewVer('${r.id}')">New version</button>
     </div>
-    ${RECIPE_STEPS[r.id]?.length ? `<button onclick="hideDetail();switchToProduction();startCookMode('${r.id}')" style="width:100%;margin-top:8px;padding:13px;border-radius:12px;border:none;background:var(--ember);color:white;font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;cursor:pointer;">▶ Cook now</button>`:''}
+    ${(RECIPE_STEPS[r.id]?.length || (r.steps && r.steps.length)) ? `<button onclick="setRecipeStepMode(true)" style="width:100%;margin-top:8px;padding:13px;border-radius:12px;border:none;background:var(--ember);color:white;font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;cursor:pointer;">▶ Start cook mode</button>`:''}
     <button onclick="wfStart('${r.id}');showToast('${r.name} pinned to Today')" style="width:100%;margin-top:8px;padding:12px;border-radius:12px;border:1.5px solid var(--ember);background:transparent;color:var(--ember);font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;">📌 Pin to Today</button>`;
   document.getElementById('screen-dashboard').style.display='none';
   document.getElementById('screen-detail').style.display='block';
@@ -10186,6 +10241,50 @@ let cookPortions = 10;
 let cookTimerInterval = null;
 let cookTimerSeconds = 0;
 let cookTimerRunning = false;
+
+// ── UNIFIED RECIPE PAGE STATE (Boris's cook-mode unification, 2026-05-12) ──
+// Single source of truth for the recipe page across normal + cook-mode views.
+// Cook Mode is a STATE of the recipe page, not a separate page or overlay.
+let recipePageState = {
+  recipeId: null,       // currently-displayed recipe
+  stepMode: false,      // false = full editorial view · true = cook-mode (single step, big)
+  currentStep: 0,       // active step index in cook mode
+  portions: null,       // user-adjusted portions (null = use recipe.portions)
+};
+function setRecipeStepMode(on) {
+  recipePageState.stepMode = !!on;
+  if (on) {
+    recipePageState.currentStep = 0;
+    // Initialise portions to recipe base if not yet set
+    const r = RECIPES.find(x => x.id === recipePageState.recipeId);
+    if (r && recipePageState.portions == null) recipePageState.portions = r.portions || 10;
+  }
+  // Re-render in place — same #screen-detail container, different content
+  if (recipePageState.recipeId) showRecipeDetail(recipePageState.recipeId);
+}
+function nextRecipeStep() {
+  const r = RECIPES.find(x => x.id === recipePageState.recipeId);
+  if (!r) return;
+  const steps = RECIPE_STEPS[recipePageState.recipeId] || r.steps || [];
+  if (recipePageState.currentStep < steps.length - 1) {
+    recipePageState.currentStep++;
+    showRecipeDetail(recipePageState.recipeId);
+  }
+}
+function prevRecipeStep() {
+  if (recipePageState.currentStep > 0) {
+    recipePageState.currentStep--;
+    showRecipeDetail(recipePageState.recipeId);
+  }
+}
+function jumpRecipeStep(i) {
+  recipePageState.currentStep = i;
+  showRecipeDetail(recipePageState.recipeId);
+}
+function adjustRecipePortions(delta) {
+  recipePageState.portions = Math.max(1, (recipePageState.portions || 10) + delta);
+  showRecipeDetail(recipePageState.recipeId);
+}
 
 const RECIPE_STEPS = {
   'r1': [
