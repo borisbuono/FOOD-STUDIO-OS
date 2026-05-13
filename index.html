@@ -5510,6 +5510,98 @@ async function runFindMissingInvoices(){
   }
 }
 
+// Recipe optimization — Boris's "shitty recipes on paper" filter (2026-05-12)
+// Heuristic: does this recipe look like it needs cleanup?
+function recipeNeedsOptimization(r){
+  if(!r) return false;
+  const titleBad = /^(#{1,4}\s|para\s|ingredien|\d+\s*(g|gr|kg|ml|l|cup|tsp|tbsp)\b|step\s*\d|paso\s*\d)/i.test(r.name||'');
+  const descMissing = !(r.desc||r.description) || (r.desc||r.description||'').length < 40;
+  const stepsRow = RECIPE_STEPS[r.id] || r.steps || [];
+  const methodMissing = stepsRow.length < 2 || (stepsRow.length === 1 && (typeof stepsRow[0]==='string' ? stepsRow[0] : stepsRow[0].text||'').length > 250);
+  const allergensMissing = (!r.allergens || r.allergens.length===0) && /(harina|flour|wheat|leche|milk|huevo|egg|crema|cream|mantequilla|butter|almendra|almond|sesamo|sesame)/i.test(JSON.stringify(r.ingredients||[]));
+  return titleBad || descMissing || methodMissing || allergensMissing;
+}
+
+async function optimizeRecipe(recipeId){
+  const r = RECIPES.find(x => x.id === recipeId);
+  if(!r){ showToast('Recipe not found'); return; }
+  showToast('✦ Asking the optimizer to review…', {duration_ms: 3000});
+  try {
+    const resp = await fetch('/api/dispatch', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        skill: 'recipe_optimizer',
+        input: {
+          recipe_id: recipeId,
+          recipe: {
+            name: r.name,
+            description: r.desc || '',
+            section: r.section,
+            restaurant: r.rest,
+            portions: r.portions || 10,
+            is_base_recipe: !!r.is_base_recipe,
+            ingredients: (r.ingredients||[]).map(i => ({name:i.name, quantity:i.qty, unit:i.unit, note:i.note||null})),
+            method_steps: (RECIPE_STEPS[r.id] || r.steps || []).map(s => typeof s === 'string' ? s : (s.text||'')),
+            allergens: r.allergens || []
+          },
+          venue_voice: 'precise + warm — Mediterranean Mediterranean technical, no jargon, magazine voice'
+        },
+        operator_entity_id: USER._operatorEntityId || 'd1ee19b6-5fb4-460c-8326-685dc86e47df'
+      })
+    });
+    const data = await resp.json();
+    if(data.ok && data.output){
+      showRecipeOptimizerProposal(r, data.output);
+    } else {
+      showToast('Optimizer error: '+(data.error||'no output'), {kind:'error', duration_ms: 5000});
+      console.warn('optimizer response:', data);
+    }
+  } catch(e){
+    showToast('Could not reach optimizer: '+e.message, {kind:'error'});
+  }
+}
+
+function showRecipeOptimizerProposal(originalRecipe, proposal){
+  // Minimal modal: show issues_found + proposed_recipe. Chef can apply individually later.
+  const issues = (proposal.issues_found || []).map(iss =>
+    `<div style="padding:10px 12px;background:rgba(184,106,66,0.06);border-radius:8px;margin-bottom:8px;border-left:3px solid var(--ember,#B86A42);">
+      <div style="font-family:'DM Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:var(--ember,#B86A42);margin-bottom:4px;">${iss.dimension} · ${iss.severity}</div>
+      ${iss.current ? `<div style="font-size:12px;color:var(--text-tertiary);margin-bottom:3px;"><em>Current:</em> ${(iss.current||'').replace(/[<>]/g,c=>c==='<'?'&lt;':'&gt;')}</div>` : ''}
+      ${iss.proposed ? `<div style="font-size:13px;color:var(--text-primary);"><em>Proposed:</em> ${(iss.proposed||'').replace(/[<>]/g,c=>c==='<'?'&lt;':'&gt;')}</div>` : ''}
+      <div style="font-size:11px;color:var(--text-secondary);margin-top:4px;font-style:italic;">${iss.reason||''}</div>
+    </div>`
+  ).join('');
+  const conf = proposal.confidence != null ? Math.round(proposal.confidence * 100) : null;
+  const html = `<div class="modal-overlay" id="m-rec-opt" onclick="if(event.target===this)closeModal('m-rec-opt')">
+    <div class="modal-sheet" style="max-height:88vh;overflow-y:auto;">
+      <div class="mh"></div>
+      <div class="mt">✦ Optimizer review</div>
+      <div class="ms-sub">${(proposal.issues_found||[]).length} issue${(proposal.issues_found||[]).length===1?'':'s'} found · ${conf!==null?conf+'% confidence':'confidence unknown'}</div>
+      <div style="margin-top:14px;">${issues || '<div style="padding:16px;color:var(--text-tertiary);">No issues — the optimizer thinks this recipe is fine.</div>'}</div>
+      ${(proposal.human_review_required||[]).length ? `<div style="margin-top:12px;padding:10px;background:rgba(255,200,100,0.12);border-radius:8px;font-size:12px;color:var(--text-secondary);"><strong>Chef review needed:</strong> ${(proposal.human_review_required||[]).join(', ')}</div>` : ''}
+      <div style="display:flex;gap:8px;margin-top:16px;">
+        <button class="mb" onclick="applyRecipeOptimization('${originalRecipe.id}')" style="flex:2;">Apply all proposed changes</button>
+        <button class="mb sec" onclick="closeModal('m-rec-opt')">Close</button>
+      </div>
+      <div style="font-size:11px;color:var(--text-tertiary);margin-top:8px;text-align:center;">Per-dimension accept/reject UI ships next sprint — for now it's all-or-nothing.</div>
+    </div>
+  </div>`;
+  document.body.insertAdjacentHTML('beforeend', html);
+  setTimeout(()=>document.getElementById('m-rec-opt')?.classList.add('open'), 10);
+  // Cache the proposal so applyRecipeOptimization can read it
+  window._lastOptimizerProposal = proposal;
+}
+
+async function applyRecipeOptimization(recipeId){
+  const p = window._lastOptimizerProposal;
+  if(!p || !p.proposed_recipe){ showToast('No proposal cached'); return; }
+  // For tonight: just log; per-dimension apply ships next sprint
+  console.log('Would apply optimizer proposal for', recipeId, ':', p.proposed_recipe);
+  showToast('Proposal logged — per-dimension apply ships next sprint', {duration_ms:3500});
+  closeModal('m-rec-opt');
+}
+
 async function runAgentSkill(skillCode){
   // Special-case skills with dedicated endpoints
   if(skillCode==='find_missing_invoices'){
@@ -8180,6 +8272,7 @@ function showRecipeDetail(id, opts){
       <button class="det-btn secondary" onclick="openNewVer('${r.id}')">New version</button>
     </div>
     ${(RECIPE_STEPS[r.id]?.length || (r.steps && r.steps.length)) ? `<button onclick="setRecipeStepMode(true)" style="width:100%;margin-top:8px;padding:13px;border-radius:12px;border:none;background:var(--ember);color:white;font-family:'Outfit',sans-serif;font-size:14px;font-weight:700;cursor:pointer;">▶ Start cook mode</button>`:''}
+    ${recipeNeedsOptimization(r) ? `<button onclick="optimizeRecipe('${r.id}')" style="width:100%;margin-top:8px;padding:12px;border-radius:12px;border:1.5px dashed var(--ember,#B86A42);background:rgba(184,106,66,0.06);color:var(--ember,#B86A42);font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;">✦ Help me improve this recipe →</button>` : ''}
     <button onclick="wfStart('${r.id}');showToast('${r.name} pinned to Today')" style="width:100%;margin-top:8px;padding:12px;border-radius:12px;border:1.5px solid var(--ember);background:transparent;color:var(--ember);font-family:'Outfit',sans-serif;font-size:13px;font-weight:600;cursor:pointer;">📌 Pin to Today</button>`;
   document.getElementById('screen-dashboard').style.display='none';
   document.getElementById('screen-detail').style.display='block';
