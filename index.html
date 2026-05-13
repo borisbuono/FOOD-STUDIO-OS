@@ -6667,9 +6667,17 @@ function renderOwsCashFlow() {
 // Office persona has different top-level nav than kitchen persona.
 var officeSubTab = (typeof window !== 'undefined' && window._officeSubTab) || 'today';
 function setOfficeSubTab(tab){
+  console.log('[setOfficeSubTab] click fired →', tab, 'was:', officeSubTab);
   officeSubTab = tab;
   if (typeof window !== 'undefined') window._officeSubTab = tab;
+  // Briefly flash a confirmation toast so the user knows the click registered
+  if (typeof showToast === 'function') showToast('· ' + tab, { duration_ms: 600 });
   renderTab();
+  // Scroll the new content into view (in case sub-nav was below fold on mobile)
+  setTimeout(function(){
+    var c = document.getElementById('tab-content');
+    if (c) c.scrollTop = 0;
+  }, 50);
 }
 // Explicit window exports — defensive against any script-scope edge cases that
 // would prevent the inline onclick="setOfficeSubTab('finance')" from resolving.
@@ -6686,10 +6694,17 @@ function renderOfficeSubNav(){
     {id:'comms',     label:'Comms',     icon:'✉'},
     {id:'reports',   label:'Reports',   icon:'▤'},
   ];
-  return `<div style="display:flex;gap:4px;margin-bottom:20px;padding:4px;background:rgba(0,0,0,0.04);border-radius:14px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;">${
+  return `<div style="display:flex;gap:6px;margin-bottom:24px;padding:6px;background:rgba(0,0,0,0.06);border-radius:14px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;">${
     tabs.map(t => {
       const active = officeSubTab === t.id;
-      return `<button onclick="setOfficeSubTab('${t.id}')" style="flex-shrink:0;display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;border:none;background:${active?'#FFFFFF':'transparent'};color:${active?'var(--text-primary)':'var(--text-secondary)'};font-family:'Outfit',sans-serif;font-size:13px;font-weight:${active?700:500};cursor:pointer;box-shadow:${active?'0 2px 6px rgba(0,0,0,0.06)':'none'};transition:all 0.15s;white-space:nowrap;"><span style="font-size:14px;opacity:0.8;">${t.icon}</span>${t.label}</button>`;
+      // Active state now MUCH stronger: ember background + white text + lift shadow.
+      // Boris kept reporting "tabs not working" — even when they did, the active state
+      // was too subtle (white-on-light) to confirm the click. This makes it obvious.
+      const bg = active ? 'var(--ember, #B86A42)' : 'transparent';
+      const fg = active ? '#FFFFFF' : 'var(--text-primary, #1F2916)';
+      const shadow = active ? '0 4px 12px rgba(184, 106, 66, 0.30)' : 'none';
+      const fontWeight = active ? 700 : 500;
+      return `<button type="button" onclick="setOfficeSubTab('${t.id}');return false;" data-office-sub="${t.id}" style="flex-shrink:0;display:flex;align-items:center;gap:7px;padding:10px 16px;border-radius:10px;border:none;background:${bg};color:${fg};font-family:'Outfit',sans-serif;font-size:13.5px;font-weight:${fontWeight};cursor:pointer;box-shadow:${shadow};transition:all 0.18s;white-space:nowrap;-webkit-tap-highlight-color:rgba(184,106,66,0.2);touch-action:manipulation;"><span style="font-size:14px;opacity:${active?1:0.7};">${t.icon}</span>${t.label}</button>`;
     }).join('')
   }</div>`;
 }
