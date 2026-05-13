@@ -274,10 +274,19 @@ export default async function handler(req) {
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
 function getHoldedKey(restaurant) {
-  // Accept both 'bistro_mondo' and 'bistro-mondo' (the slug used in the UI)
-  if (restaurant === 'bistro_mondo' || restaurant === 'bistro-mondo') {
+  // Boris's three-tier Holded architecture (locked 2026-05-13):
+  //   - Holdings (parent entity, aggregates child data)
+  //   - Taller (operating venue, Ibiza Food Lab SL)
+  //   - Bistro Mondo (operating venue, Bistro Mondo S.L.)
+  // Each has its own Holded company + own API key. Frontend passes the slug.
+  const slug = (restaurant || '').toLowerCase();
+  if (slug === 'holdings' || slug === 'boris-buono-holdings' || slug === 'boris_buono_holdings') {
+    return process.env.HOLDED_API_KEY_HOLDINGS || process.env.HOLDED_API_KEY_BORIS_BUONO_HOLDINGS || null;
+  }
+  if (slug === 'bistro_mondo' || slug === 'bistro-mondo') {
     return process.env.HOLDED_API_KEY_BISTRO_MONDO || null;
   }
+  // Default: Taller (legacy single-tenant fallback)
   return process.env.HOLDED_API_KEY_TALLER || process.env.HOLDED_API_KEY || null;
 }
 
