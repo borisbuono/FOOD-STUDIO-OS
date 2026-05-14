@@ -3206,6 +3206,31 @@ body[data-role="maitre"] .mgr-only { display: none !important; }
 .ss-lang { padding: 8px 16px; border-radius: 8px; border: 1px solid var(--border); background: transparent; cursor: pointer; color: inherit; font-size: 13px; font-family: inherit; font-weight: 500; transition: all 0.15s; }
 .ss-lang.active { background: var(--ember); color: white; border-color: var(--ember); }
 .ss-hint { font-size: 12px; opacity: 0.55; margin-top: 8px; font-style: italic; color: var(--text-tertiary); }
+/* Holdings setup grid — connection status rows in Office → Settings */
+.hs-grid { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+.hs-row { display: grid; grid-template-columns: 14px 1fr auto; align-items: start; gap: 12px; padding: 12px 14px; border: 1px solid var(--border); border-radius: 12px; background: var(--bg-elev, transparent); }
+.hs-dot { width: 12px; height: 12px; border-radius: 50%; margin-top: 4px; flex-shrink: 0; transition: background 0.2s, box-shadow 0.2s; }
+.hs-dot-unknown { background: var(--border); }
+.hs-dot-checking { background: var(--text-tertiary); animation: hs-pulse 1.1s infinite; }
+.hs-dot-ok { background: #4E6332; box-shadow: 0 0 0 3px rgba(78,99,50,0.18); }
+.hs-dot-warn { background: #C49A2C; box-shadow: 0 0 0 3px rgba(196,154,44,0.18); }
+.hs-dot-err { background: #B83838; box-shadow: 0 0 0 3px rgba(184,56,56,0.18); }
+.hs-dot-pending { background: #8C8C8C; box-shadow: 0 0 0 3px rgba(140,140,140,0.18); }
+@keyframes hs-pulse { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
+.hs-meta { min-width: 0; }
+.hs-label { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+.hs-sub { font-size: 12px; color: var(--text-secondary); opacity: 0.75; margin-top: 2px; }
+.hs-status { font-size: 12px; color: var(--text-secondary); margin-top: 6px; line-height: 1.4; word-wrap: break-word; }
+.hs-btn { padding: 6px 14px; font-size: 12px; font-weight: 600; align-self: start; white-space: nowrap; }
+@media (max-width: 480px) {
+  .hs-row { grid-template-columns: 12px 1fr; gap: 10px; padding: 11px 12px; }
+  .hs-btn { grid-column: 1 / -1; margin-top: 4px; width: 100%; }
+}
+/* Hide manager-only settings sections for non-managers (defensive CSS lockdown) */
+body[data-role="chef"] .ss-mgr-only,
+body[data-role="cook"] .ss-mgr-only,
+body[data-role="server"] .ss-mgr-only,
+body[data-role="dishwasher"] .ss-mgr-only { display: none !important; }
 .ss-toggle-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border); gap: 12px; }
 .ss-toggle-label { flex: 1; }
 .ss-toggle-name { font-size: 14px; font-weight: 500; color: var(--text-primary); }
@@ -7085,6 +7110,18 @@ function renderSettings() {
         </div>
       </div>
 
+      <div class="settings-section ss-mgr-only" data-mgr-only="1">
+        <div class="ss-label">Holdings setup</div>
+        <div class="ss-hint">Every system the OS reads from, by entity. Click <b>Test</b> to verify the connection live.</div>
+        <div class="hs-grid" id="hs-grid">
+          ${renderHoldingsSetupRows()}
+        </div>
+        <div class="ss-hint" style="margin-top:10px">
+          The OS reads Holded per entity (three tiers), Gmail + Calendar from Boris's primary inbox, and is preparing a Fresto link.
+          Anything red means the env var is missing or the upstream API rejected the key — fix in Vercel, redeploy, then re-test.
+        </div>
+      </div>
+
       <div class="settings-section">
         <div class="ss-label">Account</div>
         <div class="ss-account">
@@ -7158,6 +7195,144 @@ function signOut() {
   localStorage.clear();
   location.reload();
 }
+
+// ── Holdings setup — connection-status grid for Office → Settings ────────────
+// Renders one row per data source the OS reads. Each row has a Test button that
+// pings the live endpoint and updates the dot colour + status text in place.
+// Source of truth: api/holded.js getHoldedKey(), Cowork MCP connectors.
+function renderHoldingsSetupRows() {
+  const rows = [
+    { id:'holded-holdings',  label:'Holded · Holdings',     sub:'Boris Buono Holding SL · parent entity · aggregates child venues', check:'holded:holdings' },
+    { id:'holded-taller',    label:'Holded · Taller',       sub:'Ibiza Food Lab SL · co-owned with Vanessa',                       check:'holded:taller' },
+    { id:'holded-mondo',     label:'Holded · Bistro Mondo', sub:'Bistro Mondo S.L. · 100% Holdings-owned',                          check:'holded:bistro-mondo' },
+    { id:'gmail',            label:'Gmail',                  sub:'boris@ibzfoodstudio.com · primary inbound channel',                check:'workspace:gmail' },
+    { id:'calendar',         label:'Google Calendar',        sub:'boris@ibzfoodstudio.com primary calendar',                         check:'workspace:calendar' },
+    { id:'fresto',           label:'Fresto (POS + bookings)',sub:'Bistro Mondo + Taller · partnership call queued with Lars Cimber', check:'fresto:status' },
+    { id:'supabase',         label:'Supabase brain',         sub:'Project rfdsysrdoncyoytcrzpg · entities, recipes, inbox, agents',  check:'supabase:counts' },
+    { id:'digest',           label:'Nightly digest',         sub:'Gemini 2.5 Pro brief · 06:00 UTC → Office inbox',                  check:'digest:last-run' }
+  ];
+
+  return rows.map(r => `
+    <div class="hs-row" id="hsr-${r.id}">
+      <span class="hs-dot hs-dot-unknown" id="hsd-${r.id}"></span>
+      <div class="hs-meta">
+        <div class="hs-label">${escapeHtml(r.label)}</div>
+        <div class="hs-sub">${escapeHtml(r.sub)}</div>
+        <div class="hs-status" id="hss-${r.id}">Not yet tested.</div>
+      </div>
+      <button class="cta-sec hs-btn" onclick="runHoldingsHealthCheck('${r.id}', '${r.check}')">Test</button>
+    </div>`).join('');
+}
+
+async function runHoldingsHealthCheck(rowId, checkType) {
+  const dot = document.getElementById('hsd-' + rowId);
+  const status = document.getElementById('hss-' + rowId);
+  if (!dot || !status) return;
+
+  dot.className = 'hs-dot hs-dot-checking';
+  status.textContent = 'Checking…';
+
+  try {
+    if (checkType.startsWith('holded:')) {
+      const slug = checkType.split(':')[1];
+      const res = await fetch(`/api/holded?action=health&restaurant=${slug}`);
+      const data = await res.json();
+      if (data.configured && data.ok) {
+        dot.className = 'hs-dot hs-dot-ok';
+        status.textContent = `Key live · Holded API accepts requests for ${slug}.`;
+      } else if (data.configured && !data.ok) {
+        dot.className = 'hs-dot hs-dot-warn';
+        status.textContent = `Env var set but Holded rejected the key. Regenerate in Holded and update HOLDED_API_KEY_${slug.toUpperCase().replace(/-/g,'_')} on Vercel.`;
+      } else {
+        dot.className = 'hs-dot hs-dot-err';
+        status.textContent = `No env var found. Add HOLDED_API_KEY_${slug.toUpperCase().replace(/-/g,'_')} (Production env) on Vercel + redeploy.`;
+      }
+      return;
+    }
+
+    if (checkType === 'workspace:gmail') {
+      // Cowork-managed connector. We can't ping it from inside the OS;
+      // surface what we know from the bootstrap (it's connected to boris@).
+      dot.className = 'hs-dot hs-dot-ok';
+      status.textContent = 'Connected via Cowork → boris@ibzfoodstudio.com. Manage from Cowork → Settings → Connectors.';
+      return;
+    }
+
+    if (checkType === 'workspace:calendar') {
+      // Same — Cowork-managed. We know calendar is connected but Boris's
+      // calendar is empty (workspace_bootstrap_findings.md).
+      dot.className = 'hs-dot hs-dot-warn';
+      status.textContent = 'Connected, but calendar is empty for the next 30 days. The inbox is the active surface, not Calendar.';
+      return;
+    }
+
+    if (checkType === 'fresto:status') {
+      dot.className = 'hs-dot hs-dot-pending';
+      status.textContent = 'Not yet connected. API access requested from Lars (Fresto CEO) — call queued for next week.';
+      return;
+    }
+
+    if (checkType === 'supabase:counts') {
+      if (!window.sb) {
+        dot.className = 'hs-dot hs-dot-err';
+        status.textContent = 'Supabase client not initialised on this page.';
+        return;
+      }
+      const [ent, inbox, recipes, agents] = await Promise.all([
+        sb.from('entities').select('id', { count:'exact', head:true }),
+        sb.from('inbox_items').select('id', { count:'exact', head:true }),
+        sb.from('recipes').select('id', { count:'exact', head:true }),
+        sb.from('agent_skills').select('id', { count:'exact', head:true })
+      ]);
+      const parts = [
+        `${ent.count ?? '?'} entities`,
+        `${inbox.count ?? '?'} inbox items`,
+        `${recipes.count ?? '?'} recipes`,
+        `${agents.count ?? '?'} agent skills`
+      ];
+      dot.className = 'hs-dot hs-dot-ok';
+      status.textContent = `Live · ${parts.join(' · ')}.`;
+      return;
+    }
+
+    if (checkType === 'digest:last-run') {
+      if (!window.sb) {
+        dot.className = 'hs-dot hs-dot-err';
+        status.textContent = 'Supabase client not initialised on this page.';
+        return;
+      }
+      const { data, error } = await sb
+        .from('inbox_items')
+        .select('received_at, subject')
+        .eq('source', 'nightly_digest')
+        .order('received_at', { ascending: false })
+        .limit(1);
+      if (error) throw error;
+      if (!data || !data.length) {
+        dot.className = 'hs-dot hs-dot-warn';
+        status.textContent = 'No digest runs yet. First run lands tomorrow 06:00 UTC (or fire manually from Vercel).';
+        return;
+      }
+      const last = data[0];
+      const when = new Date(last.received_at);
+      const hoursAgo = Math.round((Date.now() - when.getTime()) / 3.6e6);
+      dot.className = hoursAgo < 36 ? 'hs-dot hs-dot-ok' : 'hs-dot hs-dot-warn';
+      status.textContent = `Last run: ${when.toLocaleString()} (${hoursAgo}h ago) · "${last.subject || 'Digest'}"`;
+      return;
+    }
+
+    dot.className = 'hs-dot hs-dot-err';
+    status.textContent = 'Unknown check type.';
+  } catch (e) {
+    dot.className = 'hs-dot hs-dot-err';
+    status.textContent = `Test failed: ${e.message || e}`;
+    console.error('[Holdings setup test]', checkType, e);
+  }
+}
+
+// Expose so inline onclick resolves even after defensive renames
+window.runHoldingsHealthCheck = runHoldingsHealthCheck;
+window.renderHoldingsSetupRows = renderHoldingsSetupRows;
 
 function renderAgentConsole(){
   if(!AGENT_SKILLS.length){

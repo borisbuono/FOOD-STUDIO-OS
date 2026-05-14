@@ -1,10 +1,10 @@
-// Food Studio service worker — v3 (2026-05-13: bust stale Office sub-tab HTML)
+// Food Studio service worker — v4 (2026-05-14: Holdings setup screen in Settings)
 // Strategy:
 //   - HTML (navigation): network-first, fall back to cache; ensures updates pick up
 //   - Static assets (PNG/JSON/JS/CSS): cache-first with stale-while-revalidate
 //   - Supabase + /api/: pass-through (never cached, always live)
-const STATIC_CACHE = 'fs-static-v3';
-const HTML_CACHE = 'fs-html-v3';
+const STATIC_CACHE = 'fs-static-v4';
+const HTML_CACHE = 'fs-html-v4';
 
 const STATIC_ASSETS = [
   '/manifest.json',
